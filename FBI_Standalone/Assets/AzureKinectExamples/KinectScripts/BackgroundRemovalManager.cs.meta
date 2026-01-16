@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: a559e12c3f373eb4c8d0e1096fec8a67
+timeCreated: 1426178739
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/KinectScripts/BackgroundRemovalManager.cs
+  uploadId: 707669

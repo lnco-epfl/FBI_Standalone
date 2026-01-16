@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2c67d59386b9ed5488e27990f858ca77
+ComputeShaderImporter:
+  externalObjects: {}
+  currentAPIMask: 2097152
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/Resources/ColorDepthShaderK2.compute
+  uploadId: 707669

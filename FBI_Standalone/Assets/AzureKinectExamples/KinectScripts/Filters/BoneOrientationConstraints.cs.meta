@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 24a68b3ab03e9e24d8fb673f4f8d107a
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/KinectScripts/Filters/BoneOrientationConstraints.cs
+  uploadId: 707669

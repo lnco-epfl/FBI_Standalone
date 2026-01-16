@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a669d15f0035bbf4889c8092b5bcd201
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/KinectScripts/InteractionManager.cs
+  uploadId: 707669

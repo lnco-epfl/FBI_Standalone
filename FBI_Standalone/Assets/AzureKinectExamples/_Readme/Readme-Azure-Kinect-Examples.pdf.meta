@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 1e1e0b0b83859cd49a25c76e2d96219c
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/_Readme/Readme-Azure-Kinect-Examples.pdf
+  uploadId: 707669

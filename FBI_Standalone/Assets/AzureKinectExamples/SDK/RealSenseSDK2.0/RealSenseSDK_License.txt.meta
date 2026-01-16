@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 016cffcd5b1951c438991ca44dab28ce
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/SDK/RealSenseSDK2.0/RealSenseSDK_License.txt
+  uploadId: 707669

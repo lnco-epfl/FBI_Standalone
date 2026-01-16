@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 81c8678d683e46e46b0c7653a2f9f307
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/Resources/BackgroundRenderShader.shader
+  uploadId: 707669

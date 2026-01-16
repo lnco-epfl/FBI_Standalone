@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 227b4806b7fe0c648aae429abd234194
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/Resources/DepthIrFilterShader.shader
+  uploadId: 707669

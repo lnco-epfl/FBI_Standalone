@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e52e5d018dfd6eb4286cca0342815a1a
+ComputeShaderImporter:
+  externalObjects: {}
+  currentAPIMask: 2097152
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/Resources/FloorDetectionOffsetMinMaxShader.compute
+  uploadId: 707669

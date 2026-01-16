@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 492579dd15c959649a26f6e772db6aff
+timeCreated: 1460648058
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/Resources/UserBlendShader.shader
+  uploadId: 707669

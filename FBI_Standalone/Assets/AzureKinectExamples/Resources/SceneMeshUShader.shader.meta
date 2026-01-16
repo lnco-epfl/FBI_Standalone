@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 8cdc5e333ff3f5849bbc1b8109632f16
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/Resources/SceneMeshUShader.shader
+  uploadId: 707669

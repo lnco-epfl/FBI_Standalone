@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: a273e35c2904bb442bc367cf2ad1b8cb
+timeCreated: 1484259322
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/KinectScripts/PhotoShooter.cs
+  uploadId: 707669

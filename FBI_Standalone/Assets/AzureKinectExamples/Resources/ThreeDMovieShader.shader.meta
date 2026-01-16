@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: d655f3d9a8f1f274eb2a8e6441cb1999
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/Resources/ThreeDMovieShader.shader
+  uploadId: 707669

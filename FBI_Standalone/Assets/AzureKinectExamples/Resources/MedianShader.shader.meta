@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: ffb111704c8d0ae49b97d60e5419fe35
+timeCreated: 1495833444
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/Resources/MedianShader.shader
+  uploadId: 707669

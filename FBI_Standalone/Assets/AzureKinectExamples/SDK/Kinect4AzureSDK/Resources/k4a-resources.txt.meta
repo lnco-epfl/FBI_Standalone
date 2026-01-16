@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 861e3276924a71b46b7f1853d777c3fb
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/SDK/Kinect4AzureSDK/Resources/k4a-resources.txt
+  uploadId: 707669
