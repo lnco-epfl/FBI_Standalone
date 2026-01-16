@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 31507b0aadcf2ce48bbb4b902f62ada7
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/KinectScripts/Filters/JointPositionsFilter.cs
+  uploadId: 707669

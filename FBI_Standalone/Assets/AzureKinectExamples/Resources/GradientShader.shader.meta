@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: bf10c391a662b0547932914f6fff494f
+timeCreated: 1498321181
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/Resources/GradientShader.shader
+  uploadId: 707669

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 1c4f00d5c925e73448c38d2bc8ecb520
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/Resources/UserBodyImageShader.shader
+  uploadId: 707669

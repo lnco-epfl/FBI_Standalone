@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9295668a6cc2448488dfd9c142dd3449
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/_Readme/Howto-Use-Gestures-or-Create-Your-Own-Ones.pdf
+  uploadId: 707669

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 1b8e8bab868197f45a1bb05b1e060265
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/_Readme/Howto-Use-KinectManager-Across-Multiple-Scenes.pdf
+  uploadId: 707669

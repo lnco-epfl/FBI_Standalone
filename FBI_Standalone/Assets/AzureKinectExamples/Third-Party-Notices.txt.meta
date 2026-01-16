@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: fe346cd965fd4ad41a8183dfc25a82f5
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/Third-Party-Notices.txt
+  uploadId: 707669

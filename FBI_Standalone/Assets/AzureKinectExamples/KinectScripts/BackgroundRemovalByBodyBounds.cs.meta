@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 314091ebf33d9fd47a58c6cfd6213f1d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/KinectScripts/BackgroundRemovalByBodyBounds.cs
+  uploadId: 707669

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6ddb9911bd41b8b479071065c427f2d2
+ComputeShaderImporter:
+  externalObjects: {}
+  currentAPIMask: 2097152
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/Resources/PointCloudBodyVertexShaderAll.compute
+  uploadId: 707669

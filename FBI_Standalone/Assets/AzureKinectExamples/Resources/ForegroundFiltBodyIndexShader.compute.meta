@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a2d74b5f03f83994dad0e61bf4d9c060
+ComputeShaderImporter:
+  externalObjects: {}
+  currentAPIMask: 2097152
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/Resources/ForegroundFiltBodyIndexShader.compute
+  uploadId: 707669

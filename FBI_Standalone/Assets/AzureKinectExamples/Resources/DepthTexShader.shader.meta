@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 9e7d26869be7adf4790dcc60ad937836
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/Resources/DepthTexShader.shader
+  uploadId: 707669

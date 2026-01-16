@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: c30c3ab4691c98a4d8e4ae95a31321cb
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/KinectScripts/SceneMeshRendererGpu.cs
+  uploadId: 707669

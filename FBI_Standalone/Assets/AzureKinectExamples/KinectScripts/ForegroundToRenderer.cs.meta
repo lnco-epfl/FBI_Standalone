@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 1516a5d945302e546a218c0c7a3f048c
+timeCreated: 1478884175
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/KinectScripts/ForegroundToRenderer.cs
+  uploadId: 707669

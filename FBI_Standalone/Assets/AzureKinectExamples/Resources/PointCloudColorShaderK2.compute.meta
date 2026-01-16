@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8a009ea1276e72142aef5e18896a7819
+ComputeShaderImporter:
+  externalObjects: {}
+  currentAPIMask: 2097152
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 149700
+  packageName: Azure Kinect and Femto Bolt Examples for Unity
+  packageVersion: 1.20.1
+  assetPath: Assets/AzureKinectExamples/Resources/PointCloudColorShaderK2.compute
+  uploadId: 707669
