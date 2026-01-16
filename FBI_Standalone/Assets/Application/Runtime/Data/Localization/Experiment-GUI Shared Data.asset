@@ -1,0 +1,244 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Experiment-GUI Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Experiment-GUI
+  m_TableCollectionNameGuidString: 4823a8d02f8d786498601cdb3db61537
+  m_Entries:
+  - m_Id: 18156314402816
+    m_Key: version
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24314848714752
+    m_Key: title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28716586213376
+    m_Key: participant view
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29346939772928
+    m_Key: age
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29375876276224
+    m_Key: gender
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29623403126784
+    m_Key: gender-male
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29678293983232
+    m_Key: gender-female
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29700809007104
+    m_Key: gender-other
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34489252945920
+    m_Key: credit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35246383538176
+    m_Key: debug-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35287714209792
+    m_Key: debug-text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41353080446976
+    m_Key: device-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41449100648448
+    m_Key: participant-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68869698592768
+    m_Key: breathing-belt-device
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71772102434816
+    m_Key: status-disconnected
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71824782893056
+    m_Key: status-connected
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75645483458560
+    m_Key: use-device
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76478610644992
+    m_Key: connection-button-connection
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76552719802368
+    m_Key: connection-button-disconnection
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79761270087680
+    m_Key: airflow-device
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80718972297216
+    m_Key: language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80823074922496
+    m_Key: language-fr
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80865462558720
+    m_Key: language-en
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2557531237621760
+    m_Key: status-streaming
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2682517822611456
+    m_Key: parameter-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2682657119641600
+    m_Key: parameter-device-name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2682722919882752
+    m_Key: parameter-device-type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2682767958319104
+    m_Key: parameter-device-rate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2683144640372736
+    m_Key: parameter-outlet-source
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2683207848534016
+    m_Key: parameter-path-file
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2683608907882496
+    m_Key: parameter-arguments
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2683679049228288
+    m_Key: parameter-arguments-name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2683709168525312
+    m_Key: parameter-arguments-value
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10154375685840896
+    m_Key: graph-legend-raw-data
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10154669144514560
+    m_Key: graph-legend-ema
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10154907628445696
+    m_Key: graph-legend-ema-max
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10154985592168448
+    m_Key: graph-legend-ema-min
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10175768137801728
+    m_Key: graph-legend-fixed-delay
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10216318194917376
+    m_Key: data-settings-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10216913572175872
+    m_Key: data-settings-ema-alpha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10217194976419840
+    m_Key: data-settings-alpha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10218163705454592
+    m_Key: data-settings-ema-min-alpha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10218206038564864
+    m_Key: data-settings-ema-max-alpha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10218287353536512
+    m_Key: data-settings-delay
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10219069540900864
+    m_Key: data-settings-ema-period-alpha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10219156623040512
+    m_Key: data-settings-ema-etrema-alpha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10220973402595328
+    m_Key: data-settings-buffersize
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10221415448682496
+    m_Key: data-settings-delay-factor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12362254037360640
+    m_Key: start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12362283561066496
+    m_Key: play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12362327165050880
+    m_Key: stop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12362527317237760
+    m_Key: pause
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12365989253816320
+    m_Key: shortcut
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14898052821491712
+    m_Key: data-settings-randomdelay
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 6624376755661832411
+  references:
+    version: 2
+    RefIds:
+    - rid: 6624376755661832411
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1751006447827
