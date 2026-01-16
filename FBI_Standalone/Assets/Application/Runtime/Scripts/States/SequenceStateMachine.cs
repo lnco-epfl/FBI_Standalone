@@ -6,6 +6,7 @@ using UnityEngine;
 public class SequenceStateMachine : MonoBehaviour
 {
     private Sequence sequence;
+    private string currentSequenceName;
 
     private Dictionary<string, IState> states;
     private Coroutine currentSequenceCoroutine;
@@ -44,6 +45,48 @@ public class SequenceStateMachine : MonoBehaviour
         states.Add("DisplayQuestion", new DisplayQuestionState());
         states.Add("PlaySound", new PlaySoundState());
     }
+
+    /// <summary>
+    /// Charge et initialise une séquence depuis un fichier YAML par son nom
+    /// </summary>
+    public void LoadSequenceByName(string sequenceName)
+    {
+        Sequence loadedSequence = SequencesManager.Instance.GetSequence(sequenceName);
+
+        if (loadedSequence != null)
+        {
+            SetSequence(loadedSequence);
+            currentSequenceName = sequenceName;
+            Debug.Log($"Loaded sequence: {sequenceName}");
+        }
+        else
+        {
+            Debug.LogError($"Failed to load sequence: {sequenceName}");
+        }
+    }
+
+    /// <summary>
+    /// Recharge la séquence actuelle depuis le fichier YAML
+    /// </summary>
+    public void ReloadCurrentSequence()
+    {
+        if (!string.IsNullOrEmpty(currentSequenceName))
+        {
+            bool wasPlaying = isPlaying;
+            int savedIndex = currentStepIndex;
+
+            Stop(false);
+            LoadSequenceByName(currentSequenceName);
+
+            currentStepIndex = savedIndex;
+
+            if (wasPlaying)
+            {
+                Play(false);
+            }
+        }
+    }
+
 
     public void Play(bool resetCurrentIndex = false)
     {
