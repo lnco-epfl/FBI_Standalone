@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8028725216027065645
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 689399226030499604}
+  - component: {fileID: 3943147194999862868}
+  m_Layer: 0
+  m_Name: ShortcutManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &689399226030499604
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8028725216027065645}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3943147194999862868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8028725216027065645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a092fdb03e75a74492ea2502c23d85d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartActionReference: {fileID: 6174471271258841197, guid: 9df9307e5230e5949b946ada28151914, type: 3}
+  StopActionReference: {fileID: 7045108854170311445, guid: 9df9307e5230e5949b946ada28151914, type: 3}
+  PauseActionReference: {fileID: 7406087216572447833, guid: 9df9307e5230e5949b946ada28151914, type: 3}
+  NextStepActionReference: {fileID: -2317120599964365419, guid: 9df9307e5230e5949b946ada28151914, type: 3}
+  PreviousStepActionReference: {fileID: 5998176310828937312, guid: 9df9307e5230e5949b946ada28151914, type: 3}
+  MuteActionReference: {fileID: 305930618955721017, guid: 9df9307e5230e5949b946ada28151914, type: 3}
+  ResetXROriginActionReference: {fileID: 1325166840194232567, guid: 9df9307e5230e5949b946ada28151914, type: 3}
+  EnablePasstroughAvatarActionReference: {fileID: 8826972942290961930, guid: 9df9307e5230e5949b946ada28151914, type: 3}
