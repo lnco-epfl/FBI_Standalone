@@ -77,7 +77,6 @@ public class ExperimentManager : MonoBehaviour
         EventFileManager.Instance.Initialize();
     }
 
-
     void Update()
     {
         if (isRunning)
@@ -182,7 +181,7 @@ public class ExperimentManager : MonoBehaviour
         if (!isInitialized)
         {
             //Should be disable in prob
-            InitializeExperiment(Sequences.Instance.sequences[0]);
+            InitializeExperiment(SequencesManager.Instance.Sequences[0]);
         }
         StartExperiment();
     }

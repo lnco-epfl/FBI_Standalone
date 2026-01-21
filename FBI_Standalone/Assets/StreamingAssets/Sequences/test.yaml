@@ -1,0 +1,55 @@
+steps:
+  - stepType: DisplayText
+    text: "welcome_message"
+    fadeToBlack: false
+    fadeToClear: true
+    displayDuration: 3.0
+
+  - stepType: Wait
+    waitTime: 2.0
+
+  - stepType: DisplayImage
+    imagePath: "UI/Instructions/intro_image"
+    scale: 1.0
+    fixationCross: false
+    fadeToBlack: false
+    fadeToClear: true
+    displayDuration: 5.0
+
+  - stepType: PlaySound
+    soundPath: "Audio/Effects/notification"
+
+  - stepType: DisplayQuestion
+    question: "question_1"
+    leftLabel: "label_disagree"
+    rightLabel: "label_agree"
+    correctResponse: "left"
+    fadeToBlack: false
+    fadeToClear: false
+
+  - stepType: DisplayLikertScale
+    question: "satisfaction_question"
+    leftLabel: "not_satisfied"
+    rightLabel: "very_satisfied"
+    fadeToBlack: false
+    fadeToClear: false
+
+  - stepType: Break
+    instructionText: "break_instructions"
+    breakDuration: 90
+    fadeToBlack: true
+    fadeToClear: true
+
+  - stepType: LoadScene
+    scenePath: "Scenes/MainExperiment"
+    fadeToClear: true
+    duration: 2.0
+
+  - stepType: Wait
+    waitTime: 1.0
+
+  - stepType: DisplayText
+    text: "thank_you_message"
+    fadeToBlack: true
+    fadeToClear: false
+    displayDuration: 4.0

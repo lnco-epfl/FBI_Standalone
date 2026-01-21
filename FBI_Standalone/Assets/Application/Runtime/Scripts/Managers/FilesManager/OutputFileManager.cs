@@ -153,7 +153,6 @@ public class OutputFileManager : MonoBehaviour
         OutputFileData.SequenceFile = sequence != null ? sequence.name : string.Empty;
         OutputFileData.Gender = UIManager.Instance.SelectedGender;
         OutputFileData.Age = UIManager.Instance.SelectedAge;
-        OutputFileData.Language = UIManager.Instance.SelectedLanguage;
     }
 
 

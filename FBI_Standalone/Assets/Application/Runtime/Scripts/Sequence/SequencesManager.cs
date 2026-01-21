@@ -2,27 +2,20 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
 
-/// <summary>
-/// Gestionnaire de séquences remplaçant le ScriptableObject Sequences
-/// Charge les séquences depuis des fichiers YAML
-/// </summary>
+
 public class SequencesManager : MonoBehaviour
 {
     private static SequencesManager instance;
-
-    public static SequencesManager Instance
+    public static SequencesManager Instance { get { return instance; } }
+    private void Awake()
     {
-        get
+        if (instance != null && instance != this) { Destroy(this.gameObject); }
+        else
         {
-            if (instance == null)
-            {
-                GameObject go = new GameObject("SequencesManager");
-                instance = go.AddComponent<SequencesManager>();
-                DontDestroyOnLoad(go);
-                instance.Initialize();
-            }
-            return instance;
+            instance = this;
         }
+
+        Initialize();
     }
 
     [SerializeField]
@@ -33,28 +26,11 @@ public class SequencesManager : MonoBehaviour
 
     public List<Sequence> Sequences => sequences;
 
-    void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-            Initialize();
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    private void Initialize()
+    public void Initialize()
     {
         LoadAllSequences();
     }
 
-    /// <summary>
-    /// Charge toutes les séquences depuis le dossier YAML
-    /// </summary>
     public void LoadAllSequences()
     {
         loadedSequences.Clear();
@@ -84,9 +60,6 @@ public class SequencesManager : MonoBehaviour
         Debug.Log($"Loaded {sequences.Count} sequences from YAML files");
     }
 
-    /// <summary>
-    /// Charge une séquence depuis un fichier YAML spécifique
-    /// </summary>
     public Sequence LoadSequence(string filePath)
     {
         string fileName = Path.GetFileNameWithoutExtension(filePath);
@@ -97,7 +70,7 @@ public class SequencesManager : MonoBehaviour
             return loadedSequences[fileName];
         }
 
-        Sequence sequence = SequenceYamlLoader.LoadSequenceFromYaml(filePath);
+        Sequence sequence = SequenceYamlLoader.Instance.LoadSequenceFromYaml(filePath);
 
         if (sequence != null)
         {
@@ -110,9 +83,6 @@ public class SequencesManager : MonoBehaviour
         return sequence;
     }
 
-    /// <summary>
-    /// Récupère une séquence par son nom
-    /// </summary>
     public Sequence GetSequence(string sequenceName)
     {
         if (loadedSequences.TryGetValue(sequenceName, out Sequence sequence))
@@ -124,45 +94,11 @@ public class SequencesManager : MonoBehaviour
         return null;
     }
 
-    /// <summary>
-    /// Sauvegarde une séquence dans un fichier YAML
-    /// </summary>
-    public void SaveSequence(Sequence sequence, string fileName = null)
-    {
-        if (sequence == null)
-        {
-            Debug.LogError("Cannot save null sequence");
-            return;
-        }
-
-        if (string.IsNullOrEmpty(fileName))
-        {
-            fileName = sequence.name;
-        }
-
-        string folderPath = Path.Combine(Application.streamingAssetsPath, sequencesFolder);
-        string filePath = Path.Combine(folderPath, $"{fileName}.yaml");
-
-        SequenceYamlLoader.SaveSequenceToYaml(sequence, filePath);
-
-        if (!loadedSequences.ContainsKey(fileName))
-        {
-            loadedSequences[fileName] = sequence;
-            sequences.Add(sequence);
-        }
-    }
-
-    /// <summary>
-    /// Recharge toutes les séquences depuis les fichiers YAML
-    /// </summary>
     public void ReloadSequences()
     {
         LoadAllSequences();
     }
 
-    /// <summary>
-    /// Crée une nouvelle séquence vide
-    /// </summary>
     public Sequence CreateNewSequence(string name)
     {
         Sequence newSequence = ScriptableObject.CreateInstance<Sequence>();

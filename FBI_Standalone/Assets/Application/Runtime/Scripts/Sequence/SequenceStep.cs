@@ -17,7 +17,7 @@ public abstract class SequenceStep
 [System.Serializable]
 public class DisplayTextStep : SequenceStep
 {
-    public LocalizedString text;
+    public string text;
 
     public bool fadeToBlack;
 
@@ -31,7 +31,7 @@ public class DisplayTextStep : SequenceStep
     public override string GetDisplayName()
     {
 
-        var displaytext = text.IsEmpty ? "Not text" : text.GetLocalizedString();
+        var displaytext = string.IsNullOrEmpty(text) ? "Not text" : text;
 
         return $"Display {displaytext}";
 
@@ -84,11 +84,11 @@ public class LoadSceneStep : SequenceStep
 [System.Serializable]
 public class DisplayLikertScaleStep : SequenceStep
 {
-    public LocalizedString question;
+    public string question;
 
-    public LocalizedString leftLabel;
+    public string leftLabel;
 
-    public LocalizedString rightLabel;
+    public string rightLabel;
 
     public bool fadeToBlack;
 
@@ -97,7 +97,7 @@ public class DisplayLikertScaleStep : SequenceStep
     public override string GetStateName() => "DisplayLikertScale";
     public override string GetDisplayName()
     {
-        var text = question.IsEmpty ? "No Text" : question.GetLocalizedString();
+        var text = string.IsNullOrEmpty(question) ? "No Text" : question;
         return $"Display Likert Scale {text}";
 
     }
@@ -107,9 +107,9 @@ public class DisplayLikertScaleStep : SequenceStep
 [System.Serializable]
 public class BreakStep : SequenceStep
 {
-    public LocalizedString instructionText;
+    public string instructionText;
 
-    public int duration = 90;
+    public float duration = 90;
 
     public bool fadeToBlack;
 
@@ -156,13 +156,9 @@ public class DisplayImageStep : SequenceStep
 [System.Serializable]
 public class DisplayQuestionStep : SequenceStep
 {
-    public LocalizedString question;
-
-    public LocalizedString leftLabel;
-
-    public LocalizedString rightLabel;
-
-    public String correctResponse;
+    public string question;
+    
+    public List<string> responseOptions = new List<string>();
 
     public bool fadeToBlack;
 
@@ -171,7 +167,7 @@ public class DisplayQuestionStep : SequenceStep
     public override string GetStateName() => "DisplayQuestion";
     public override string GetDisplayName()
     {
-        var text = question.IsEmpty ? "No Text" : question.GetLocalizedString();
+        var text = string.IsNullOrEmpty(question) ? "No Text" : question;
         return $"Display Question {text}";
     }
     public override Color GetColor() => Color.yellow;
@@ -205,7 +201,7 @@ public class SequenceStepWrapper
 
     public enum StepType
     {
-        DisplayText, Wait, SpawnObject, LoadScene, DisplayLikertScale, Break, DisplayImage, DisplayQuestion, PlaySound, DisplayQuestionMulti, DisplayConditionQuestions
+        DisplayText, Wait, SpawnObject, LoadScene, DisplayLikertScale, Break, DisplayImage, DisplayQuestion, PlaySound,
     }
 
     public SequenceStepWrapper()

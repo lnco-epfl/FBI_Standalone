@@ -37,11 +37,6 @@ public class WorldUIManager : MonoBehaviour
 
     private CanvasGroup canvasGroupLikertScaleContainer;
 
-    [SerializeField] private InputActionReference sliderRightInputActionReference;
-    [SerializeField] private InputActionReference sliderLeftInputActionReference;
-
-    [SerializeField] private InputActionReference validationButtonLikertInputActionReference;
-
     [SerializeField] private int sliderStepValue = 1;
 
     public event Action<int> OnLikertScaleValidated;
@@ -53,7 +48,6 @@ public class WorldUIManager : MonoBehaviour
     private TMP_Text counterTextBreakContainer;
     private Button skipHoldButtonBreakContainer;
     private Image holdmaskButtonBreakContainer;
-    [SerializeField] private InputActionReference skipHoldInputActionReference;
     private Tween holdTween;
 
     [Header("Image")]
@@ -66,38 +60,13 @@ public class WorldUIManager : MonoBehaviour
 
     [Header("Question")]
     [SerializeField] private Transform questionContainer;
+    [SerializeField] private Button responceButtonPrefab;
     private CanvasGroup canvasGroupQuestionContainer;
-    private Button buttonLeftQuestionContainer;
-    private TMP_Text buttonLeftTextQuestionContainer;
-    private Button buttonRightQuestionContainer;
-    private TMP_Text buttonRightTextQuestionContainer;
     private TMP_Text questionTextQuestionContainer;
-
-    [SerializeField] private InputActionReference buttonLeftInputActionReference;
-    [SerializeField] private InputActionReference buttonRightInputActionReference;
+    private Transform reponseButtonsTransform; 
+    private List<Button> responseButtonsList = new List<Button>();
 
     public event Action<QuestionAnswer> OnQuestionValidated;
-
-    [Header("QuestionMulti")]
-    [SerializeField] private Transform questionMultiContainer;
-    private CanvasGroup canvasGroupQuestionMultiContainer;
-    private Button buttonLeftQuestionMultiContainer;
-    private Button buttonRightQuestionMultiContainer;
-    private TMP_Text carrouselTextQuestionMultiContainer;
-    private TMP_Text questionTextQuestionMultiContainer;
-    private Button buttonValidationQuestionMultiContainer;
-
-    private List<string> carrouselOptionList = new List<string>();
-    private int currentCarrouselIndex = 0;
-
-    [SerializeField] private InputActionReference carrouselLeftInputActionReference;
-    [SerializeField] private InputActionReference carrouselRightInputActionReference;
-    [SerializeField] private InputActionReference validationButtonCarrouselInputActionReference;
-
-    [Header("Other")]
-    [SerializeField] private InputActionReference trackpadInputActionReference;
-    public event Action<int> OnQuestionMultiValidated;
-
 
     private static WorldUIManager instance;
 
@@ -136,18 +105,8 @@ public class WorldUIManager : MonoBehaviour
         imageImageTransform = imageImageContainer.GetComponent<Transform>();
 
         canvasGroupQuestionContainer = questionContainer.GetComponent<CanvasGroup>();
-        buttonLeftQuestionContainer = questionContainer.Find("LeftButton").GetComponent<Button>();
-        buttonLeftTextQuestionContainer = buttonLeftQuestionContainer.GetComponentInChildren<TMP_Text>();
-        buttonRightQuestionContainer = questionContainer.Find("RightButton").GetComponent<Button>();
-        buttonRightTextQuestionContainer = buttonRightQuestionContainer.GetComponentInChildren<TMP_Text>();
         questionTextQuestionContainer = questionContainer.Find("Question").GetComponent<TMP_Text>();
-
-        canvasGroupQuestionMultiContainer = questionMultiContainer.GetComponent<CanvasGroup>();
-        buttonLeftQuestionMultiContainer = questionMultiContainer.Find("LeftButton").GetComponent<Button>();
-        buttonRightQuestionMultiContainer = questionMultiContainer.Find("RightButton").GetComponent<Button>();
-        carrouselTextQuestionMultiContainer = questionMultiContainer.Find("Carrousel").GetComponent<TMP_Text>();
-        questionTextQuestionMultiContainer = questionMultiContainer.Find("Question").GetComponent<TMP_Text>();
-        buttonValidationQuestionMultiContainer = questionMultiContainer.Find("ValidationButton").GetComponent<Button>();
+        reponseButtonsTransform = questionContainer.Find("ResponseButtons");
 
     }
 
@@ -172,67 +131,17 @@ public class WorldUIManager : MonoBehaviour
 
         canvasGroupQuestionContainer.alpha = 0;
         questionTextQuestionContainer.text = string.Empty;
-        buttonLeftTextQuestionContainer.text = string.Empty;
-        buttonRightTextQuestionContainer.text = string.Empty;
 
-        canvasGroupQuestionMultiContainer.alpha = 0;
-        questionTextQuestionMultiContainer.text = string.Empty;
-        carrouselOptionList.Clear();
-
-        sliderRightInputActionReference.action.Disable();
-        sliderLeftInputActionReference.action.Disable();
-        validationButtonLikertInputActionReference.action.Disable();
-
-        skipHoldInputActionReference.action.Disable();
-
-        buttonLeftInputActionReference.action.Disable();
-        buttonRightInputActionReference.action.Disable();
-
-        carrouselLeftInputActionReference.action.Disable();
-        carrouselRightInputActionReference.action.Disable();
-        validationButtonCarrouselInputActionReference.action.Disable();
     }
 
     private void OnEnable()
     {
-
-        sliderRightInputActionReference.action.performed += OnSliderRightActionPerformed;
-        sliderLeftInputActionReference.action.performed += OnSliderLeftActionPerformed;
-
-        validationButtonLikertInputActionReference.action.performed += OnValidationLikertButtonActionPerformed;
-        validationButtonLikertInputActionReference.action.started += OnValidationLikertButtonActionStarted;
-        validationButtonLikertInputActionReference.action.canceled += OnValidationLikertButtonActionCanceled;
 
         sliderLikertScaleContainer.onValueChanged.AddListener(OnSliderValueChanged);
 
         validationButtonLikertScaleContrainer.onClick.AddListener(OnValidationLikertButtonPressed);
 
         skipHoldButtonBreakContainer.onClick.AddListener(OnSkipHoldButtonPressed);
-
-        skipHoldInputActionReference.action.started += OnSkipHoldActionStarted;
-        skipHoldInputActionReference.action.performed += OnSkipHoldActionPerformed;
-        skipHoldInputActionReference.action.canceled += OnSkipHoldActionCanceled;
-
-        buttonLeftQuestionContainer.onClick.AddListener(OnButtonLeftQuestionPressed);
-        buttonRightQuestionContainer.onClick.AddListener(OnButtonRightQuestionPressed);
-
-        buttonLeftInputActionReference.action.performed += OnButtonLeftActionPerformed;
-        buttonLeftInputActionReference.action.started += OnButtonLeftActionStarted;
-        buttonLeftInputActionReference.action.canceled += OnButtonLeftActionCanceled;
-
-        buttonRightInputActionReference.action.performed += OnButtonRightActionPerformed;
-        buttonRightInputActionReference.action.started += OnButtonRightActionStarted;
-        buttonRightInputActionReference.action.canceled += OnButtonRightActionCanceled;
-
-        carrouselLeftInputActionReference.action.performed += OnCarrouselLeftActionPerformed;
-        carrouselRightInputActionReference.action.performed += OnCarrouselRightActionPerformed;
-
-        validationButtonCarrouselInputActionReference.action.performed += OnValidationCarrouselButtonActionPerformed;
-        validationButtonCarrouselInputActionReference.action.started += OnValidationCarrouselButtonActionStarted;
-        validationButtonCarrouselInputActionReference.action.canceled += OnValidationCarrouselButtonActionCanceled;
-
-        buttonValidationQuestionMultiContainer.onClick.AddListener(OnValidationCarrouselButtonPressed);
-
 
     }
 
@@ -241,103 +150,12 @@ public class WorldUIManager : MonoBehaviour
     private void OnDisable()
     {
 
-        sliderRightInputActionReference.action.performed -= OnSliderRightActionPerformed;
-        sliderLeftInputActionReference.action.performed -= OnSliderLeftActionPerformed;
-
-        validationButtonLikertInputActionReference.action.performed -= OnValidationLikertButtonActionPerformed;
-
         sliderLikertScaleContainer.onValueChanged.RemoveListener(OnSliderValueChanged);
 
         validationButtonLikertScaleContrainer.onClick.RemoveListener(OnValidationLikertButtonPressed);
 
         skipHoldButtonBreakContainer.onClick.RemoveListener(OnSkipHoldButtonPressed);
 
-        skipHoldInputActionReference.action.started -= OnSkipHoldActionStarted;
-        skipHoldInputActionReference.action.performed -= OnSkipHoldActionPerformed;
-        skipHoldInputActionReference.action.canceled -= OnSkipHoldActionCanceled;
-
-
-        buttonLeftQuestionContainer.onClick.RemoveListener(OnButtonLeftQuestionPressed);
-        buttonRightQuestionContainer.onClick.RemoveListener(OnButtonRightQuestionPressed);
-
-        carrouselLeftInputActionReference.action.performed -= OnCarrouselLeftActionPerformed;
-        carrouselRightInputActionReference.action.performed -= OnCarrouselRightActionPerformed;
-
-
-        validationButtonCarrouselInputActionReference.action.performed -= OnValidationCarrouselButtonActionPerformed;
-        validationButtonCarrouselInputActionReference.action.started -= OnValidationCarrouselButtonActionStarted;
-        validationButtonCarrouselInputActionReference.action.canceled -= OnValidationCarrouselButtonActionCanceled;
-
-        buttonValidationQuestionMultiContainer.onClick.AddListener(OnValidationCarrouselButtonPressed);
-
-
-    }
-
-    private void OnSliderRightActionPerformed(InputAction.CallbackContext context)
-    {
-        sliderLikertScaleContainer.value += sliderStepValue;
-    }
-    private void OnSliderLeftActionPerformed(InputAction.CallbackContext context)
-    {
-        sliderLikertScaleContainer.value -= sliderStepValue;
-    }
-
-    private void OnValidationLikertButtonActionPerformed(InputAction.CallbackContext context)
-    {
-        validationButtonLikertScaleContrainer.onClick.Invoke();
-    }
-    private void OnValidationLikertButtonActionCanceled(InputAction.CallbackContext context)
-    {
-        if (validationButtonLikertScaleContrainer.targetGraphic)
-        {
-            validationButtonLikertScaleContrainer.targetGraphic.color = validationButtonLikertScaleContrainer.colors.normalColor;
-        }
-    }
-
-    private void OnValidationLikertButtonActionStarted(InputAction.CallbackContext context)
-    {
-        if (validationButtonLikertScaleContrainer.targetGraphic)
-        {
-            validationButtonLikertScaleContrainer.targetGraphic.color = validationButtonLikertScaleContrainer.colors.pressedColor;
-        }
-    }
-
-    private void OnButtonRightActionPerformed(InputAction.CallbackContext context)
-    {
-        buttonRightQuestionContainer.onClick.Invoke();
-    }
-    private void OnButtonRightActionStarted(InputAction.CallbackContext context)
-    {
-        if (buttonRightQuestionContainer.targetGraphic)
-        {
-            buttonRightQuestionContainer.targetGraphic.color = buttonRightQuestionContainer.colors.pressedColor;
-        }
-    }
-    private void OnButtonRightActionCanceled(InputAction.CallbackContext context)
-    {
-        if (buttonRightQuestionContainer.targetGraphic)
-        {
-            buttonRightQuestionContainer.targetGraphic.color = buttonRightQuestionContainer.colors.normalColor;
-        }
-    }
-    private void OnButtonLeftActionPerformed(InputAction.CallbackContext context)
-    {
-        buttonLeftQuestionContainer.onClick.Invoke();
-    }
-
-    private void OnButtonLeftActionStarted(InputAction.CallbackContext context)
-    {
-        if (buttonLeftQuestionContainer.targetGraphic)
-        {
-            buttonLeftQuestionContainer.targetGraphic.color = buttonLeftQuestionContainer.colors.pressedColor;
-        }
-    }
-    private void OnButtonLeftActionCanceled(InputAction.CallbackContext context)
-    {
-        if (buttonLeftQuestionContainer.targetGraphic)
-        {
-            buttonLeftQuestionContainer.targetGraphic.color = buttonLeftQuestionContainer.colors.normalColor;
-        }
     }
 
     private void OnSliderValueChanged(float value)
@@ -360,89 +178,10 @@ public class WorldUIManager : MonoBehaviour
         OnSkipHoldValidated?.Invoke();
     }
 
-    private void OnSkipHoldActionStarted(InputAction.CallbackContext context)
-    {
-
-        holdmaskButtonBreakContainer.fillAmount = 0;
-        var hold = context.interaction as HoldInteraction;
-        holdTween = Tween.UIFillAmount(holdmaskButtonBreakContainer, endValue: 1, duration: hold.duration);
-
-        if (skipHoldButtonBreakContainer.targetGraphic)
-        {
-            skipHoldButtonBreakContainer.targetGraphic.color = skipHoldButtonBreakContainer.colors.pressedColor;
-        }
-    }
-
-    private void OnSkipHoldActionPerformed(InputAction.CallbackContext context)
-    {
-        holdTween.Stop();
-
-        holdmaskButtonBreakContainer.fillAmount = 0;
-
-        if (skipHoldButtonBreakContainer.targetGraphic)
-        {
-            skipHoldButtonBreakContainer.targetGraphic.color = skipHoldButtonBreakContainer.colors.normalColor;
-        }
-
-        skipHoldButtonBreakContainer.onClick.Invoke();
-
-    }
-
-    private void OnSkipHoldActionCanceled(InputAction.CallbackContext context)
-    {
-        holdmaskButtonBreakContainer.fillAmount = 0;
-        holdTween.Stop();
-
-        if (skipHoldButtonBreakContainer.targetGraphic)
-        {
-            skipHoldButtonBreakContainer.targetGraphic.color = skipHoldButtonBreakContainer.colors.normalColor;
-        }
-    }
-
-    private void OnButtonRightQuestionPressed()
+ 
+    private void OnButtonQuestionPressed()
     {
         OnQuestionValidated?.Invoke(QuestionAnswer.Right);
-    }
-
-    private void OnButtonLeftQuestionPressed()
-    {
-        OnQuestionValidated?.Invoke(QuestionAnswer.Left);
-    }
-
-    private void OnCarrouselLeftActionPerformed(InputAction.CallbackContext context)
-    {
-        DisplayNextCarrouselText(-1);
-    }
-
-    private void OnCarrouselRightActionPerformed(InputAction.CallbackContext context)
-    {
-        DisplayNextCarrouselText(1);
-    }
-
-    private void OnValidationCarrouselButtonActionPerformed(InputAction.CallbackContext context)
-    {
-        buttonValidationQuestionMultiContainer.onClick.Invoke();
-    }
-
-    private void OnValidationCarrouselButtonActionStarted(InputAction.CallbackContext context)
-    {
-        if (buttonValidationQuestionMultiContainer.targetGraphic)
-        {
-            buttonValidationQuestionMultiContainer.targetGraphic.color = buttonValidationQuestionMultiContainer.colors.pressedColor;
-        }
-    }
-
-    private void OnValidationCarrouselButtonActionCanceled(InputAction.CallbackContext context)
-    {
-        if (buttonValidationQuestionMultiContainer.targetGraphic)
-        {
-            buttonValidationQuestionMultiContainer.targetGraphic.color = buttonValidationQuestionMultiContainer.colors.normalColor;
-        }
-    }
-
-    private void OnValidationCarrouselButtonPressed()
-    {
-        OnQuestionMultiValidated?.Invoke(currentCarrouselIndex);
     }
 
     private void FadeCanvasGroup(CanvasGroup canvasGroup, float endValue, Action value = null)
@@ -471,11 +210,6 @@ public class WorldUIManager : MonoBehaviour
 
     public void DisplayLikertScale(string question, string labelLeft, string labelRight)
     {
-
-        sliderRightInputActionReference.action.Enable();
-        sliderLeftInputActionReference.action.Enable();
-        validationButtonLikertInputActionReference.action.Enable();
-
         questionTextLikertScaleContainer.text = question;
         labelLeftTextLikertScaleContainer.text = labelLeft;
         labelRightTextLikertScaleContainer.text = labelRight;
@@ -489,11 +223,7 @@ public class WorldUIManager : MonoBehaviour
     }
 
     public void HideLikertScale()
-    {
-
-        sliderRightInputActionReference.action.Disable();
-        sliderLeftInputActionReference.action.Disable();
-        validationButtonLikertInputActionReference.action.Disable();
+    { 
 
         canvasGroupLikertScaleContainer.interactable = false;
         FadeCanvasGroup(canvasGroupLikertScaleContainer, 0);
@@ -502,8 +232,6 @@ public class WorldUIManager : MonoBehaviour
     public void DisplayBreak(string instruction)
     {
         canvasGroupBreakContainer.alpha = 0;
-
-        skipHoldInputActionReference.action.Enable();
 
         instructionTextBreakContainer.text = instruction;
 
@@ -518,7 +246,6 @@ public class WorldUIManager : MonoBehaviour
 
     public void HideBreak()
     {
-        skipHoldInputActionReference.action.Disable();
 
         canvasGroupBreakContainer.interactable = false;
         FadeCanvasGroup(canvasGroupBreakContainer, 0);
@@ -550,84 +277,47 @@ public class WorldUIManager : MonoBehaviour
 
     }
 
-    public void DisplayQuestion(string question, string buttonLeftText, string buttonRightText)
+    public void DisplayQuestion(string question, List<string> responseOptions)
     {
-        buttonLeftInputActionReference.action.Enable();
-        buttonRightInputActionReference.action.Enable();
-
         canvasGroupQuestionContainer.alpha = 0;
 
         questionTextQuestionContainer.text = question;
 
-        buttonLeftTextQuestionContainer.text = buttonLeftText;
-        buttonRightTextQuestionContainer.text = buttonRightText;
+        ClearChildren(reponseButtonsTransform);
+
+        for (int i = 0; i < responseOptions.Count; i++)
+        {
+            var button = GameObject.Instantiate(responceButtonPrefab, reponseButtonsTransform);
+            button.GetComponentInChildren<TMP_Text>().text = responseOptions[i];
+        }
 
         canvasGroupQuestionContainer.interactable = true;
 
         FadeCanvasGroup(canvasGroupQuestionContainer, 1);
     }
 
+    public void ClearChildren(Transform parent)
+    {
+        foreach (Transform child in parent)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
     public void HideQuestion()
     {
-
-        buttonLeftInputActionReference.action.Disable();
-        buttonRightInputActionReference.action.Disable();
 
         canvasGroupQuestionContainer.interactable = false;
 
         FadeCanvasGroup(canvasGroupQuestionContainer, 0, () =>
         {
             questionTextQuestionContainer.text = string.Empty;
-            buttonLeftTextQuestionContainer.text = string.Empty;
-            buttonRightTextQuestionContainer.text = string.Empty;
+            
+            for (int i = 0; i < responseButtonsList.Count; i++)
+            {
+                responseButtonsList[i].GetComponentInChildren<TMP_Text>().text = string.Empty;
+            }
         });
     }
 
-    public void DisplayQuestionMulti(string question, List<string> options)
-    {
-        carrouselLeftInputActionReference.action.Enable();
-        carrouselRightInputActionReference.action.Enable();
-        validationButtonCarrouselInputActionReference.action.Enable();
-
-        canvasGroupQuestionMultiContainer.alpha = 0;
-        questionTextQuestionMultiContainer.text = question;
-
-        carrouselOptionList.Clear();
-        carrouselOptionList = options;
-
-        currentCarrouselIndex = Random.Range(0, carrouselOptionList.Count);
-
-        DisplayNextCarrouselText(0);
-
-        canvasGroupQuestionMultiContainer.interactable = true;
-
-        FadeCanvasGroup(canvasGroupQuestionMultiContainer, 1);
-    }
-
-    public void HideQuestionMulti()
-    {
-        carrouselLeftInputActionReference.action.Disable();
-        carrouselRightInputActionReference.action.Disable();
-        validationButtonCarrouselInputActionReference.action.Disable();
-
-        canvasGroupQuestionMultiContainer.interactable = false;
-
-        FadeCanvasGroup(canvasGroupQuestionMultiContainer, 0, () =>
-        {
-            questionTextQuestionMultiContainer.text = string.Empty;
-            carrouselTextQuestionMultiContainer.text = string.Empty;
-            carrouselOptionList.Clear();
-            currentCarrouselIndex = 0;
-
-        });
-    }
-
-    private void DisplayNextCarrouselText(int Offset)
-    {
-        currentCarrouselIndex += Offset;
-
-        currentCarrouselIndex = (currentCarrouselIndex + carrouselOptionList.Count) % carrouselOptionList.Count;
-
-        carrouselTextQuestionMultiContainer.text = carrouselOptionList[currentCarrouselIndex];
-    }
 }

@@ -27,9 +27,9 @@ public class BreakState : IState
         yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
 
         skipFromUser = false;
-        int currentValue = step.duration;
+        int currentValue = (int)step.duration;
 
-        WorldUIManager.Instance.DisplayBreak(step.instructionText.GetLocalizedString());
+        WorldUIManager.Instance.DisplayBreak(step.instructionText);
 
         yield return new WaitForSeconds(1.0f);
 
