@@ -12,7 +12,6 @@ public class ShortcutManager : MonoBehaviour
     public InputActionReference PreviousStepActionReference;
     public InputActionReference MuteActionReference;
     public InputActionReference ResetXROriginActionReference;
-    public InputActionReference EnablePasstroughAvatarActionReference;
 
     private static ShortcutManager instance;
     public static ShortcutManager Instance { get { return instance; } }
@@ -39,7 +38,6 @@ public class ShortcutManager : MonoBehaviour
         PreviousStepActionReference.action.Enable();
         MuteActionReference.action.Enable();
         ResetXROriginActionReference.action.Enable();
-        EnablePasstroughAvatarActionReference.action.Enable();
     }
 
     public void DisableShortCut()
@@ -51,7 +49,6 @@ public class ShortcutManager : MonoBehaviour
         PreviousStepActionReference.action.Disable();
         MuteActionReference.action.Disable();
         ResetXROriginActionReference.action.Disable();
-        EnablePasstroughAvatarActionReference.action.Disable();
     }
 
 }

@@ -5,15 +5,23 @@ using UnityEngine;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-/// <summary>
-/// Classe pour charger et sauvegarder les séquences au format YAML
-/// </summary>
 public class SequenceYamlLoader
 {
-    private static IDeserializer deserializer;
-    private static ISerializer serializer;
+    private IDeserializer deserializer;
+    private ISerializer serializer;
 
-    static SequenceYamlLoader()
+    private static SequenceYamlLoader instance;
+    public static SequenceYamlLoader Instance
+    {
+        get
+        {
+            if (instance == null)
+                instance = new SequenceYamlLoader();
+            return instance;
+        }
+    }
+
+    private SequenceYamlLoader()
     {
         deserializer = new DeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
@@ -24,10 +32,7 @@ public class SequenceYamlLoader
             .Build();
     }
 
-    /// <summary>
-    /// Charge une séquence depuis un fichier YAML
-    /// </summary>
-    public static Sequence LoadSequenceFromYaml(string filePath)
+    public Sequence LoadSequenceFromYaml(string filePath)
     {
         try
         {
@@ -49,35 +54,8 @@ public class SequenceYamlLoader
         }
     }
 
-    /// <summary>
-    /// Sauvegarde une séquence dans un fichier YAML
-    /// </summary>
-    public static void SaveSequenceToYaml(Sequence sequence, string filePath)
-    {
-        try
-        {
-            var sequenceData = ConvertFromSequence(sequence);
-            string yamlContent = serializer.Serialize(sequenceData);
-
-            string directory = Path.GetDirectoryName(filePath);
-            if (!Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
-
-            File.WriteAllText(filePath, yamlContent);
-            Debug.Log($"Sequence saved to: {filePath}");
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"Error saving YAML sequence: {e.Message}");
-        }
-    }
-
-    /// <summary>
-    /// Convertit les données YAML en objet Sequence
-    /// </summary>
-    private static Sequence ConvertToSequence(SequenceData data)
+ 
+    private Sequence ConvertToSequence(SequenceData data)
     {
         var sequence = ScriptableObject.CreateInstance<Sequence>();
         sequence.steps = new List<SequenceStepWrapper>();
@@ -93,43 +71,23 @@ public class SequenceYamlLoader
         return sequence;
     }
 
-    /// <summary>
-    /// Convertit un objet Sequence en données YAML
-    /// </summary>
-    private static SequenceData ConvertFromSequence(Sequence sequence)
-    {
-        var data = new SequenceData();
-        data.steps = new List<StepData>();
-
-        foreach (var wrapper in sequence.steps)
-        {
-            var stepData = CreateDataFromStep(wrapper);
-            data.steps.Add(stepData);
-        }
-
-        return data;
-    }
-
-    /// <summary>
-    /// Crée une instance de SequenceStep à partir des données YAML
-    /// </summary>
-    private static SequenceStep CreateStepFromData(StepData data)
+    private SequenceStep CreateStepFromData(StepData data)
     {
         switch (data.stepType)
         {
             case SequenceStepWrapper.StepType.DisplayText:
                 return new DisplayTextStep
                 {
-                    text = LoadLocalizedString(data.text),
+                    text = data.text,
                     fadeToBlack = data.fadeToBlack,
                     fadeToClear = data.fadeToClear,
-                    diplayDuration = data.displayDuration
+                    diplayDuration = data.duration
                 };
 
             case SequenceStepWrapper.StepType.Wait:
                 return new WaitStep
                 {
-                    waitTime = data.waitTime
+                    waitTime = data.duration
                 };
 
             case SequenceStepWrapper.StepType.LoadScene:
@@ -143,9 +101,9 @@ public class SequenceYamlLoader
             case SequenceStepWrapper.StepType.DisplayLikertScale:
                 return new DisplayLikertScaleStep
                 {
-                    question = LoadLocalizedString(data.question),
-                    leftLabel = LoadLocalizedString(data.leftLabel),
-                    rightLabel = LoadLocalizedString(data.rightLabel),
+                    question = data.question,
+                    leftLabel = data.leftLabel,
+                    rightLabel = data.rightLabel,
                     fadeToBlack = data.fadeToBlack,
                     fadeToClear = data.fadeToClear
                 };
@@ -153,8 +111,8 @@ public class SequenceYamlLoader
             case SequenceStepWrapper.StepType.Break:
                 return new BreakStep
                 {
-                    instructionText = LoadLocalizedString(data.instructionText),
-                    duration = data.breakDuration,
+                    instructionText = data.text,
+                    duration = data.duration,
                     fadeToBlack = data.fadeToBlack,
                     fadeToClear = data.fadeToClear
                 };
@@ -164,19 +122,16 @@ public class SequenceYamlLoader
                 {
                     image = LoadSprite(data.imagePath),
                     scale = data.scale,
-                    fixationCross = data.fixationCross,
                     fadeToBlack = data.fadeToBlack,
                     fadeToClear = data.fadeToClear,
-                    diplayDuration = data.displayDuration
+                    diplayDuration = data.duration
                 };
 
             case SequenceStepWrapper.StepType.DisplayQuestion:
                 return new DisplayQuestionStep
                 {
-                    question = LoadLocalizedString(data.question),
-                    leftLabel = LoadLocalizedString(data.leftLabel),
-                    rightLabel = LoadLocalizedString(data.rightLabel),
-                    correctResponse = data.correctResponse,
+                    question = data.question,
+                    responseOptions = data.options,
                     fadeToBlack = data.fadeToBlack,
                     fadeToClear = data.fadeToClear
                 };
@@ -193,157 +148,24 @@ public class SequenceYamlLoader
         }
     }
 
-    /// <summary>
-    /// Crée des données YAML à partir d'une instance de SequenceStep
-    /// </summary>
-    private static StepData CreateDataFromStep(SequenceStepWrapper wrapper)
+
+    private Eflatun.SceneReference.SceneReference LoadSceneReference(string path)
     {
-        var data = new StepData { stepType = wrapper.stepType };
-
-        switch (wrapper.stepType)
-        {
-            case SequenceStepWrapper.StepType.DisplayText:
-                var displayText = wrapper.step as DisplayTextStep;
-                data.text = SaveLocalizedString(displayText.text);
-                data.fadeToBlack = displayText.fadeToBlack;
-                data.fadeToClear = displayText.fadeToClear;
-                data.displayDuration = displayText.diplayDuration;
-                break;
-
-            case SequenceStepWrapper.StepType.Wait:
-                var wait = wrapper.step as WaitStep;
-                data.waitTime = wait.waitTime;
-                break;
-
-            case SequenceStepWrapper.StepType.LoadScene:
-                var loadScene = wrapper.step as LoadSceneStep;
-                data.duration = loadScene.duration;
-                data.scenePath = SaveSceneReference(loadScene.Scene);
-                data.fadeToClear = loadScene.fadeToClear;
-                break;
-
-            case SequenceStepWrapper.StepType.DisplayLikertScale:
-                var likert = wrapper.step as DisplayLikertScaleStep;
-                data.question = SaveLocalizedString(likert.question);
-                data.leftLabel = SaveLocalizedString(likert.leftLabel);
-                data.rightLabel = SaveLocalizedString(likert.rightLabel);
-                data.fadeToBlack = likert.fadeToBlack;
-                data.fadeToClear = likert.fadeToClear;
-                break;
-
-            case SequenceStepWrapper.StepType.Break:
-                var breakStep = wrapper.step as BreakStep;
-                data.instructionText = SaveLocalizedString(breakStep.instructionText);
-                data.breakDuration = breakStep.duration;
-                data.fadeToBlack = breakStep.fadeToBlack;
-                data.fadeToClear = breakStep.fadeToClear;
-                break;
-
-            case SequenceStepWrapper.StepType.DisplayImage:
-                var image = wrapper.step as DisplayImageStep;
-                data.imagePath = SaveSprite(image.image);
-                data.scale = image.scale;
-                data.fixationCross = image.fixationCross;
-                data.fadeToBlack = image.fadeToBlack;
-                data.fadeToClear = image.fadeToClear;
-                data.displayDuration = image.diplayDuration;
-                break;
-
-            case SequenceStepWrapper.StepType.DisplayQuestion:
-                var question = wrapper.step as DisplayQuestionStep;
-                data.question = SaveLocalizedString(question.question);
-                data.leftLabel = SaveLocalizedString(question.leftLabel);
-                data.rightLabel = SaveLocalizedString(question.rightLabel);
-                data.correctResponse = question.correctResponse;
-                data.fadeToBlack = question.fadeToBlack;
-                data.fadeToClear = question.fadeToClear;
-                break;
-
-            case SequenceStepWrapper.StepType.PlaySound:
-                var sound = wrapper.step as PlaySoundStep;
-                data.soundPath = SaveAudioClip(sound.sound);
-                break;
-
-        }
-
-        return data;
-    }
-
-    // Helper methods for loading Unity assets
-    private static UnityEngine.Localization.LocalizedString LoadLocalizedString(string reference)
-    {
-        // Implémentation selon votre système de localisation
-        return new UnityEngine.Localization.LocalizedString();
-    }
-
-    private static Eflatun.SceneReference.SceneReference LoadSceneReference(string path)
-    {
-        // Implémentation selon votre système de références de scène
         return new Eflatun.SceneReference.SceneReference();
     }
 
-    private static Sprite LoadSprite(string path)
+    private Sprite LoadSprite(string path)
     {
         return string.IsNullOrEmpty(path) ? null : Resources.Load<Sprite>(path);
     }
 
-    private static AudioClip LoadAudioClip(string path)
+    private AudioClip LoadAudioClip(string path)
     {
         return string.IsNullOrEmpty(path) ? null : Resources.Load<AudioClip>(path);
     }
-
-    private static List<UnityEngine.Localization.LocalizedString> LoadLocalizedStringList(List<string> references)
-    {
-        var list = new List<UnityEngine.Localization.LocalizedString>();
-        if (references != null)
-        {
-            foreach (var reference in references)
-            {
-                list.Add(LoadLocalizedString(reference));
-            }
-        }
-        return list;
-    }
-
-    // Helper methods for saving Unity assets
-    private static string SaveLocalizedString(UnityEngine.Localization.LocalizedString localizedString)
-    {
-        // Retourner la référence de la string localisée
-        return localizedString?.TableReference.ToString() ?? "";
-    }
-
-    private static string SaveSceneReference(Eflatun.SceneReference.SceneReference scene)
-    {
-        return scene.Name ?? "";
-    }
-
-    private static string SaveSprite(Sprite sprite)
-    {
-        return sprite != null ? sprite.name : "";
-    }
-
-    private static string SaveAudioClip(AudioClip clip)
-    {
-        return clip != null ? clip.name : "";
-    }
-
-    private static List<string> SaveLocalizedStringList(List<UnityEngine.Localization.LocalizedString> strings)
-    {
-        var list = new List<string>();
-        if (strings != null)
-        {
-            foreach (var str in strings)
-            {
-                list.Add(SaveLocalizedString(str));
-            }
-        }
-        return list;
-    }
 }
 
-/// <summary>
-/// Structure de données pour la sérialisation YAML
-/// </summary>
+
 [Serializable]
 public class SequenceData
 {
@@ -355,35 +177,23 @@ public class StepData
 {
     public SequenceStepWrapper.StepType stepType;
 
-    // Propriétés communes
-    public float displayDuration;
     public float duration;
-    public float waitTime;
-    public int breakDuration;
     public bool fadeToBlack;
     public bool fadeToClear;
 
-    // Text et localisation
+    // Text
     public string text;
     public string question;
     public string leftLabel;
     public string rightLabel;
-    public string instructionText;
-    public string correctResponse;
     public List<string> options;
 
     // Assets
-    public string objectToSpawnPath;
     public string scenePath;
     public string imagePath;
     public string soundPath;
 
     // Image
     public float scale;
-    public bool fixationCross;
 
-    // Nested steps
-    public StepData displayQuestion6Step;
-    public StepData displayQuestion7MultiStep;
-    public StepData displayLikert8ScaleStep;
 }

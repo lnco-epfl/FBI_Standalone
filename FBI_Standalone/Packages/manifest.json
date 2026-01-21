@@ -4,6 +4,7 @@
     "com.github-glitchenzo.nugetforunity": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
     "com.kyrylokuzyk.primetween": "file:../Assets/Plugins/PrimeTween/internal/com.kyrylokuzyk.primetween.tgz",
     "com.marijnzwemmer.unity-toolbar-extender": "https://github.com/marijnz/unity-toolbar-extender.git",
+    "com.unity.2d.sprite": "1.0.0",
     "com.unity.cinemachine": "3.1.2",
     "com.unity.feature.vr": "1.0.1",
     "com.unity.ide.rider": "3.0.38",

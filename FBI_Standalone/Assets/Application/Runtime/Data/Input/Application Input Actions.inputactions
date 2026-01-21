@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "Application Input Actions",
     "maps": [
         {
@@ -2995,15 +2996,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Enable Passtrough Avatar",
-                    "type": "Button",
-                    "id": "be2cb7d5-3d95-4529-a040-177fdd547f27",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Start Experiment",
                     "type": "Button",
                     "id": "bf360446-8c55-46e0-a57c-cfab2de03bec",
@@ -3056,96 +3048,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Slider Left",
-                    "type": "Button",
-                    "id": "dd657a81-c5a3-4ce4-b41b-7296ddae484e",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Slider Right",
-                    "type": "Button",
-                    "id": "4b0e196a-82e8-49ff-9da1-93f331da7f4a",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Validation Button",
-                    "type": "Button",
-                    "id": "a2127ad6-1a5e-496e-9dcf-ce6b2b422ac0",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Skip Hold Button",
-                    "type": "Button",
-                    "id": "419a5843-9daf-4b29-a497-8540bf0a4478",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Hold(duration=2)",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Question Left",
-                    "type": "Button",
-                    "id": "d91ec7b6-e2b3-4c22-99d7-f9d240e35589",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Question Right",
-                    "type": "Button",
-                    "id": "f722b7e1-e8db-407f-802c-464ea18e00f5",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Carrousel Left",
-                    "type": "Button",
-                    "id": "926ff6ad-5e55-45ac-9e44-1988e8f7d5be",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Carrousel Right",
-                    "type": "Button",
-                    "id": "84cef59d-445a-4e94-9f7a-2c81fa23e5e4",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Carrousel Validation",
-                    "type": "Button",
-                    "id": "abf7a982-3dda-4a60-971d-1206d2a5cb9c",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Trackpad",
-                    "type": "Value",
-                    "id": "9bb0d805-6760-4e92-a9b6-77076699cacf",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -3157,17 +3059,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Reset XR Origin",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "bb19228a-bb6e-4b62-b104-c12687c862dd",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Enable Passtrough Avatar",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -3234,182 +3125,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Mute",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "8bc591cd-faf5-438e-ab96-f66f9107bcad",
-                    "path": "<Keyboard>/numpad4",
-                    "interactions": "PressAndRepeat(holdTime=0.2,repeatTime=0.02,press=true)",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Slider Left",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "890ca8ec-be7a-4ecc-9ffe-26121fd71838",
-                    "path": "<Keyboard>/numpad6",
-                    "interactions": "PressAndRepeat(holdTime=0.2,repeatTime=0.02,press=true)",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Slider Right",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "88114fa0-eacb-4c1b-82e3-bee0ef4c4825",
-                    "path": "<Keyboard>/numpad5",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Validation Button",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0163bbd9-1f48-4a30-a68a-614e6953837a",
-                    "path": "<Keyboard>/numpad5",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Skip Hold Button",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "78f0b829-a4ca-4b96-b885-d2dea1e8eed8",
-                    "path": "<Keyboard>/numpad4",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Question Left",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "6c83e313-2d45-4c87-8e5e-7a441998550e",
-                    "path": "<Keyboard>/4",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Question Left",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "b7299410-499e-4c8d-a3fe-851dbdfcf5c7",
-                    "path": "<XRController>/{PrimaryButton}",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Question Left",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "045d6ae1-8ad5-40ca-a0eb-712ecacb53a6",
-                    "path": "<Keyboard>/numpad6",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Question Right",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e3c34237-6ed1-4e46-8b18-5580d96f4bdd",
-                    "path": "<Keyboard>/6",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Question Right",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "2a7e2fda-b3dd-4d8c-994b-50dad655d047",
-                    "path": "<Keyboard>/numpad4",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Carrousel Left",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c4b6f14e-8d67-4559-b59c-07ad21c783b0",
-                    "path": "<Keyboard>/4",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Carrousel Left",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "91fbfd8f-0592-4859-8c6f-f9552c83b693",
-                    "path": "<Keyboard>/numpad6",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Carrousel Right",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "3729e64e-c556-4d35-95fa-64ae0be85ace",
-                    "path": "<Keyboard>/6",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Carrousel Right",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a7aa7c7f-3fa0-4c60-b621-a5087ae5b428",
-                    "path": "<Keyboard>/numpad5",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Carrousel Validation",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "337843b7-5951-4e51-a795-9327f3972fce",
-                    "path": "<Keyboard>/5",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Carrousel Validation",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "00097ba3-8c20-4874-86b4-ee443fa6abdf",
-                    "path": "<VarjoViveWand>/trackpad",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Trackpad",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -188,6 +188,8 @@ public class UIManager : MonoBehaviour
 
         OnSoundSliderValueChanged(1.0f);
 
+        genderDropdown.SetValueWithoutNotify(0);
+
         var index = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale);
         languageDropdown.SetValueWithoutNotify(index);
 
@@ -224,7 +226,7 @@ public class UIManager : MonoBehaviour
 
         options.Add(new TMP_Dropdown.OptionData("None"));
 
-        foreach (var sequence in Sequences.Instance.sequences)
+        foreach (var sequence in SequencesManager.Instance.Sequences)
         {
             options.Add(new TMP_Dropdown.OptionData(sequence.name));
         }
@@ -368,7 +370,7 @@ public class UIManager : MonoBehaviour
     {
         if (index != 0)
         {
-            ExperimentManager.Instance.InitializeExperiment(Sequences.Instance.sequences[index - 1]);
+            ExperimentManager.Instance.InitializeExperiment(SequencesManager.Instance.Sequences[index - 1]);
         }
         else
         {

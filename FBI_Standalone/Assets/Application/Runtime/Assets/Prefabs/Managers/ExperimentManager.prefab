@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1235116770422454636}
   - component: {fileID: 3462756931790646698}
   - component: {fileID: 4435216387231832679}
+  - component: {fileID: 6203286984980328601}
   m_Layer: 0
   m_Name: ExperimentManager
   m_TagString: Untagged
@@ -72,9 +73,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseText:
     m_TableReference:
-      m_TableCollectionName: GUID:cb6525c3963ee8e429bc43aafaf189e5
+      m_TableCollectionName: GUID:4823a8d02f8d786498601cdb3db61537
     m_TableEntryReference:
-      m_KeyId: 17388759123992576
+      m_KeyId: 12362527317237760
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -82,3 +83,16 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!114 &6203286984980328601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6800758071971934007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d05f92468900084db55497c3cc0d66c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sequencesFolder: Sequences

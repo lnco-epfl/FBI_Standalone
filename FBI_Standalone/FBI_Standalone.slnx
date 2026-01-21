@@ -60,6 +60,7 @@
   <Project Path="Unity.XR.CoreUtils.Editor.csproj" />
   <Project Path="NuGetForUnity.csproj" />
   <Project Path="Application.csproj" />
+  <Project Path="Unity.2D.Sprite.Editor.csproj" />
   <Project Path="Unity.MemoryProfiler.Editor.MemoryProfilerModule.csproj" />
   <Project Path="Unity.Recorder.csproj" />
   <Project Path="Unity.InternalAPIEditorBridge.007.csproj" />

@@ -16,15 +16,14 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 4823a8d02f8d786498601cdb3db61537, type: 2}
   m_Metadata:
-    m_Items:
-    - rid: 6624376756710146187
+    m_Items: []
   m_TableData:
   - m_Id: 18156314402816
     m_Localized: 'Version : '
     m_Metadata:
       m_Items: []
   - m_Id: 24314848714752
-    m_Localized: Breathing and episodic memory
+    m_Localized: Full body illusion standalone
     m_Metadata:
       m_Items: []
   - m_Id: 28716586213376
@@ -52,8 +51,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 34489252945920
-    m_Localized: "Designed by Andreea-Maria Gui, developed by Arnaud Droxler. \nWith
-      the help and advice of Bruno Herbelin, Olaf Blanke."
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 35246383538176
@@ -61,45 +59,14 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 35287714209792
-    m_Localized: " - Use A key to skip the participant response during encoding &
-      recall trials\n - In fullscreen view, you can use your mouse to move the objects.\n"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 41353080446976
-    m_Localized: Breathing devices
+    m_Localized: ' - Use A key to skip the participant response during encoding &
+      recall trials
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 41449100648448
     m_Localized: 'Participant '
-    m_Metadata:
-      m_Items: []
-  - m_Id: 68869698592768
-    m_Localized: 'Breathing belt : {0}'
-    m_Metadata:
-      m_Items:
-      - rid: 6624376756710146187
-  - m_Id: 71772102434816
-    m_Localized: <color=#DB300B>Disconnected</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 71824782893056
-    m_Localized: <color=#0BDB15>Connected</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 75645483458560
-    m_Localized: Use this device
-    m_Metadata:
-      m_Items: []
-  - m_Id: 76478610644992
-    m_Localized: Connection
-    m_Metadata:
-      m_Items: []
-  - m_Id: 76552719802368
-    m_Localized: Disconnection
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79761270087680
-    m_Localized: 'Air flow sensor : {0}'
     m_Metadata:
       m_Items: []
   - m_Id: 80718972297216
@@ -112,106 +79,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 80865462558720
     m_Localized: English
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2557531237621760
-    m_Localized: <color=#00C0FF>Streaming</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2682517822611456
-    m_Localized: 'Parameters : {0}'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2682657119641600
-    m_Localized: Device Name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2682722919882752
-    m_Localized: Device Type
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2682767958319104
-    m_Localized: Refresh Rate (Hz)
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2683144640372736
-    m_Localized: Outlet Source
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2683207848534016
-    m_Localized: File Path
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2683608907882496
-    m_Localized: Arguments
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2683679049228288
-    m_Localized: Name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2683709168525312
-    m_Localized: Value
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10154375685840896
-    m_Localized: Raw data
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10154669144514560
-    m_Localized: EMA
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10154907628445696
-    m_Localized: 'EMA Max '
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10154985592168448
-    m_Localized: EMA Min
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10175768137801728
-    m_Localized: Fixed delay
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10216318194917376
-    m_Localized: 'Data process settings '
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10216913572175872
-    m_Localized: Alpha
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10217194976419840
-    m_Localized: Alphas
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10218163705454592
-    m_Localized: Min Alpha
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10218206038564864
-    m_Localized: Max Alpha
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10218287353536512
-    m_Localized: Delay
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10219069540900864
-    m_Localized: Period Alpha
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10219156623040512
-    m_Localized: 'Etrema Alpha '
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10220973402595328
-    m_Localized: BufferSize  in second
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10221415448682496
-    m_Localized: 'Delay Factor '
     m_Metadata:
       m_Items: []
   - m_Id: 12362254037360640
@@ -231,20 +98,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 12365989253816320
-    m_Localized: "Start : Q\t\t\tNext/Previous : \u2190/\u2192\nStop : W\t\t\tToogle
-      Avatar : A\nPlay/Pause : Space\tReset XR Origin : R\nMute : M"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 14898052821491712
-    m_Localized: Random delay
+    m_Localized: "Start : Q\t\t\tNext/Previous : \u2190/\u2192\nStop : W\t\t\tReset
+      XR Origin : R\nPlay/Pause : Space   \nMute : M"
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds:
-    - rid: 6624376756710146187
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-        m_SharedEntries:
-        - id: 68869698592768
+    RefIds: []

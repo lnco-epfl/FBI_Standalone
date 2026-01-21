@@ -32,9 +32,9 @@ public class DisplayLikertScaleState : IState
         OutputFileManager.Instance.OutputFileData.StepType = "LikertScale";
         OutputFileManager.Instance.OutputFileData.StepCount = ExperimentManager.Instance.SequenceCurrentStep;
 
-        EventFileManager.Log($"DisplayLikertScaleState DisplayLikertScale {step.leftLabel.GetLocalizedString()}  {step.rightLabel.GetLocalizedString()}");
+        EventFileManager.Log($"DisplayLikertScaleState DisplayLikertScale {step.leftLabel}  {step.rightLabel}");
 
-        WorldUIManager.Instance.DisplayLikertScale(step.question.GetLocalizedString(), step.leftLabel.GetLocalizedString(), step.rightLabel.GetLocalizedString());
+        WorldUIManager.Instance.DisplayLikertScale(step.question, step.leftLabel, step.rightLabel);
 
         float startTime = Time.time;
 
@@ -42,16 +42,6 @@ public class DisplayLikertScaleState : IState
 
         float endTime = Time.time;
         float responseTime = endTime - startTime;
-
-        var stringTable = LocalizationSettings.StringDatabase.GetTable(step.question.TableReference);
-        SharedTableData sharedData = stringTable.SharedData;
-
-        var keyName = step.question.TableEntryReference.ResolveKeyName(sharedData);
-
-        OutputFileManager.Instance.OutputFileData.LikertType = keyName;
-
-        OutputFileManager.Instance.OutputFileData.LikertResponse = likertScaleValue;
-        OutputFileManager.Instance.OutputFileData.LikertResponseTime = responseTime;
 
         OutputFileManager.Instance.SaveOutputEntry();
 
