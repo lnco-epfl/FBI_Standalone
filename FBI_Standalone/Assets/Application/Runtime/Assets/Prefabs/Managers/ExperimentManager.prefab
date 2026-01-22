@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3462756931790646698}
   - component: {fileID: 4435216387231832679}
   - component: {fileID: 6203286984980328601}
+  - component: {fileID: 1247548372882112259}
   m_Layer: 0
   m_Name: ExperimentManager
   m_TagString: Untagged
@@ -96,3 +97,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sequencesFolder: Sequences
+--- !u!114 &1247548372882112259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6800758071971934007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32d5a6d65b832cd478d3d32b72f3b4a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

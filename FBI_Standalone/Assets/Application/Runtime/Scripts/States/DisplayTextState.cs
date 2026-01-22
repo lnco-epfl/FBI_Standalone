@@ -13,13 +13,6 @@ public class DisplayTextState : IState
     public IEnumerator Execute()
     {
 
-        if (step.fadeToBlack)
-        {
-            Fader.Instance.FadeToBlack();
-        }
-
-        yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
-
         if(step.text != null)
         {
             EventFileManager.Log($"DisplayTextState DisplayText {step.text} for {step.diplayDuration}s");
@@ -31,24 +24,12 @@ public class DisplayTextState : IState
             WorldUIManager.Instance.HideText();
         }
      
-
-        if (step.fadeToClear)
-        {
-            Fader.Instance.FadeToClear();
-        }
-
-        yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
-
     }
 
     public void Exit()
     {
         WorldUIManager.Instance.HideText();
 
-        if (step.fadeToClear)
-        {
-            Fader.Instance.FadeToClear();
-        }
     }
 
 }

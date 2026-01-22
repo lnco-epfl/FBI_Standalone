@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Application/Runtime/Scenes/Neutral.unity
     guid: efe28fa37fb03e14f8bcb393026d124c
+  - enabled: 1
+    path: Assets/Application/Runtime/Scenes/EmptyRoom.unity
+    guid: 1124e634fc283304d876957226301a9e
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 290a6e6411d135049940bec2237b8938, type: 2}
     com.unity.addressableassets: {fileID: 11400000, guid: 0dc274522aa5367449e62146ad7e5655, type: 2}

@@ -45,5 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DefaultScene:
-    asset: {fileID: 102900000, guid: c52fb6d73837665439c38e668d0994a7, type: 3}
-    guid: c52fb6d73837665439c38e668d0994a7
+    asset: {fileID: 102900000, guid: efe28fa37fb03e14f8bcb393026d124c, type: 3}
+    guid: efe28fa37fb03e14f8bcb393026d124c

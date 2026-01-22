@@ -19,12 +19,6 @@ public class DisplayLikertScaleState : IState
     public IEnumerator Execute()
     {
 
-        if (step.fadeToBlack)
-        {
-            Fader.Instance.FadeToBlack();
-        }
-        yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
-
         likertScaleValue = -1;
 
         OutputFileManager.Instance.OutputFileData.TimeSinceStart = ExperimentManager.Instance.ElaspedTimeSinceStart;
@@ -48,12 +42,6 @@ public class DisplayLikertScaleState : IState
         yield return new WaitForSeconds(0.5f);
 
         WorldUIManager.Instance.HideLikertScale();
-
-        if (step.fadeToClear)
-        {
-            Fader.Instance.FadeToClear();
-        }
-        yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
     }
 
     public void Exit()
@@ -62,10 +50,6 @@ public class DisplayLikertScaleState : IState
 
         WorldUIManager.Instance.HideLikertScale();
 
-        if (step.fadeToClear)
-        {
-            Fader.Instance.FadeToClear();
-        }
     }
 
     private void OnLikertScaleValidated(int value)

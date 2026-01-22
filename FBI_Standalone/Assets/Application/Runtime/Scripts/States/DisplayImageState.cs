@@ -13,12 +13,6 @@ public class DisplayImageState : IState
     public IEnumerator Execute()
     {
 
-        if (step.fadeToBlack)
-        {
-            Fader.Instance.FadeToBlack();
-        }
-        yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
-
         EventFileManager.Log($"DisplayImageState DisplayImage {step.image?.name} for {step.diplayDuration}s");
         
         WorldUIManager.Instance.DisplayImage(step.image, step.scale);
@@ -27,11 +21,6 @@ public class DisplayImageState : IState
 
         WorldUIManager.Instance.HideImage();
 
-        if (step.fadeToClear)
-        {
-            Fader.Instance.FadeToClear();
-        }
-        yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
     }
 
     public void Exit()

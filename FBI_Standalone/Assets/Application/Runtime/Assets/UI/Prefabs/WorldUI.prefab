@@ -1637,21 +1637,11 @@ MonoBehaviour:
   fadeDuration: 0.25
   textContainer: {fileID: 4482949596406425180}
   likertScaleContainer: {fileID: 3542427664892055293}
-  sliderRightInputActionReference: {fileID: -5404116543981491307, guid: 9df9307e5230e5949b946ada28151914, type: 3}
-  sliderLeftInputActionReference: {fileID: -3037668286790859252, guid: 9df9307e5230e5949b946ada28151914, type: 3}
-  validationButtonLikertInputActionReference: {fileID: -4155834730926482867, guid: 9df9307e5230e5949b946ada28151914, type: 3}
   sliderStepValue: 2
   breakContainer: {fileID: 5886680998692533053}
-  skipHoldInputActionReference: {fileID: -5555708757864546692, guid: 9df9307e5230e5949b946ada28151914, type: 3}
   imageContainer: {fileID: 677118317546948898}
   questionContainer: {fileID: 5632546949603677784}
-  buttonLeftInputActionReference: {fileID: -2087138656173021814, guid: 9df9307e5230e5949b946ada28151914, type: 3}
-  buttonRightInputActionReference: {fileID: 1101769986090256255, guid: 9df9307e5230e5949b946ada28151914, type: 3}
-  questionMultiContainer: {fileID: 0}
-  carrouselLeftInputActionReference: {fileID: 6507591516111457778, guid: 9df9307e5230e5949b946ada28151914, type: 3}
-  carrouselRightInputActionReference: {fileID: -6748645158024071971, guid: 9df9307e5230e5949b946ada28151914, type: 3}
-  validationButtonCarrouselInputActionReference: {fileID: 4274287994058127660, guid: 9df9307e5230e5949b946ada28151914, type: 3}
-  trackpadInputActionReference: {fileID: 2046715592872418976, guid: 9df9307e5230e5949b946ada28151914, type: 3}
+  responceButtonPrefab: {fileID: 6010035290771546544, guid: 99489f73968a6c34493f2b84252ed203, type: 3}
 --- !u!1 &5792540533916560932
 GameObject:
   m_ObjectHideFlags: 0

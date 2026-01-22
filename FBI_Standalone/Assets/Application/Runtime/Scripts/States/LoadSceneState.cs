@@ -22,20 +22,13 @@ public class LoadSceneState : IState
 
         OutputFileManager.Instance.OutputFileData.Room = step.Scene.Name;
 
-        if (step.fadeToClear)
-        {
-            Fader.Instance.FadeToClear();
-        }
-
+        Fader.Instance.FadeToClear();
         yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
 
     }
 
     public void Exit()
     {
-        if (step.fadeToClear)
-        {
-            Fader.Instance.FadeToClear();
-        }
+
     }
 }

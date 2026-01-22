@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Eflatun.SceneReference;
 using UnityEngine;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -79,8 +80,6 @@ public class SequenceYamlLoader
                 return new DisplayTextStep
                 {
                     text = data.text,
-                    fadeToBlack = data.fadeToBlack,
-                    fadeToClear = data.fadeToClear,
                     diplayDuration = data.duration
                 };
 
@@ -95,7 +94,6 @@ public class SequenceYamlLoader
                 {
                     duration = data.duration,
                     Scene = LoadSceneReference(data.scenePath),
-                    fadeToClear = data.fadeToClear
                 };
 
             case SequenceStepWrapper.StepType.DisplayLikertScale:
@@ -104,8 +102,6 @@ public class SequenceYamlLoader
                     question = data.question,
                     leftLabel = data.leftLabel,
                     rightLabel = data.rightLabel,
-                    fadeToBlack = data.fadeToBlack,
-                    fadeToClear = data.fadeToClear
                 };
 
             case SequenceStepWrapper.StepType.Break:
@@ -113,8 +109,6 @@ public class SequenceYamlLoader
                 {
                     instructionText = data.text,
                     duration = data.duration,
-                    fadeToBlack = data.fadeToBlack,
-                    fadeToClear = data.fadeToClear
                 };
 
             case SequenceStepWrapper.StepType.DisplayImage:
@@ -122,8 +116,6 @@ public class SequenceYamlLoader
                 {
                     image = LoadSprite(data.imagePath),
                     scale = data.scale,
-                    fadeToBlack = data.fadeToBlack,
-                    fadeToClear = data.fadeToClear,
                     diplayDuration = data.duration
                 };
 
@@ -132,8 +124,6 @@ public class SequenceYamlLoader
                 {
                     question = data.question,
                     responseOptions = data.options,
-                    fadeToBlack = data.fadeToBlack,
-                    fadeToClear = data.fadeToClear
                 };
 
             case SequenceStepWrapper.StepType.PlaySound:
@@ -149,19 +139,25 @@ public class SequenceYamlLoader
     }
 
 
-    private Eflatun.SceneReference.SceneReference LoadSceneReference(string path)
+    private SceneReference LoadSceneReference(string path)
     {
-        return new Eflatun.SceneReference.SceneReference();
+        return SceneReference.FromScenePath("Assets/Application/Runtime/Scenes/" + path + ".unity");
     }
 
     private Sprite LoadSprite(string path)
     {
-        return string.IsNullOrEmpty(path) ? null : Resources.Load<Sprite>(path);
+        if (string.IsNullOrEmpty(path))
+            return null;
+
+        return AssetsManager.Instance.GetSprite(path);
     }
 
     private AudioClip LoadAudioClip(string path)
     {
-        return string.IsNullOrEmpty(path) ? null : Resources.Load<AudioClip>(path);
+        if (string.IsNullOrEmpty(path))
+            return null;
+
+        return AssetsManager.Instance.GetAudioClip(path);
     }
 }
 
@@ -178,8 +174,6 @@ public class StepData
     public SequenceStepWrapper.StepType stepType;
 
     public float duration;
-    public bool fadeToBlack;
-    public bool fadeToClear;
 
     // Text
     public string text;
