@@ -74,10 +74,6 @@ public class DisplayQuestionState : IState
 
         WorldUIManager.Instance.HideQuestion();
 
-        if (step.fadeToClear)
-        {
-            Fader.Instance.FadeToClear();
-        }
     }
 
     private void OnQuestionValidated(QuestionAnswer value)

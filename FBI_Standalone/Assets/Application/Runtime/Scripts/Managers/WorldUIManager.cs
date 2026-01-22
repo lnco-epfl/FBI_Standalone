@@ -289,6 +289,7 @@ public class WorldUIManager : MonoBehaviour
         {
             var button = GameObject.Instantiate(responceButtonPrefab, reponseButtonsTransform);
             button.GetComponentInChildren<TMP_Text>().text = responseOptions[i];
+            button.onClick.AddListener(OnButtonQuestionPressed);
         }
 
         canvasGroupQuestionContainer.interactable = true;

@@ -19,13 +19,6 @@ public class BreakState : IState
     public IEnumerator Execute()
     {
 
-        if (step.fadeToBlack)
-        {
-            Fader.Instance.FadeToBlack();
-        }
-
-        yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
-
         skipFromUser = false;
         int currentValue = (int)step.duration;
 
@@ -44,11 +37,6 @@ public class BreakState : IState
 
         WorldUIManager.Instance.HideBreak();
 
-        if (step.fadeToClear)
-        {
-            Fader.Instance.FadeToClear();
-        }
-        yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
     }
 
     public void Exit()
@@ -56,11 +44,6 @@ public class BreakState : IState
         WorldUIManager.Instance.OnSkipHoldValidated -= OnSkipHoldValidated;
 
         WorldUIManager.Instance.HideBreak();
-
-        if (step.fadeToClear)
-        {
-            Fader.Instance.FadeToClear();
-        }
     }
 
     private void OnSkipHoldValidated()
