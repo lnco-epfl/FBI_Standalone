@@ -76,6 +76,19 @@ public class PointCloudController : MonoBehaviour
 
     private Material copyMaterial;
 
+    private static PointCloudController instance;
+    public static PointCloudController Instance { get { return instance; } }
+    private void Awake()
+    {
+        if (instance != null && instance != this) { Destroy(this.gameObject); }
+        else
+        {
+            instance = this;
+        }
+
+    
+    }
+
     void Start()
     {
         kinectManager = KinectManager.Instance;
