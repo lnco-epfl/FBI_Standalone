@@ -1,69 +1,114 @@
 
+using PrimeTween;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
+using UnityEngine.XR.Interaction.Toolkit.UI;
 
 public class GazeReticle : MonoBehaviour
 {
+    [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Image reticleImage;
     [SerializeField] private Image progressRing;
     [SerializeField] private XRGazeInteractor gazeInteractor;
 
+    [Header("Filter Settings")]
+    [SerializeField] private string interactiveTag = "UIGazeHover";
+
     private float gazeStartTime;
     private bool isGazing;
-    private bool startHover;
+
 
     private void OnEnable()
     {
-        gazeInteractor.hoverEntered.AddListener(OnHoverEnter);
-        gazeInteractor.hoverExited.AddListener(OnHoverExited);
+        gazeInteractor.uiHoverEntered.AddListener(OnHoverEnter);
+        gazeInteractor.uiHoverExited.AddListener(OnHoverExited);
+
+        WorldUIManager.Instance.OnDisplayGazeCursor += OnDisplayGazeCursor;
     }
 
     private void OnDisable()
     {
-        gazeInteractor.hoverEntered.RemoveListener(OnHoverEnter);
-        gazeInteractor.hoverExited.RemoveListener(OnHoverExited);
+        gazeInteractor.uiHoverEntered.RemoveListener(OnHoverEnter);
+        gazeInteractor.uiHoverExited.RemoveListener(OnHoverExited);
+
+        WorldUIManager.Instance.OnDisplayGazeCursor -= OnDisplayGazeCursor;
     }
 
-    private void OnHoverEnter(HoverEnterEventArgs hoverEnterEventArgs)
+    private void Start()
     {
-        startHover = true;
+        HideGazeCursor();
     }
 
-    private void OnHoverExited(HoverExitEventArgs hoverExitEventArgs)
+    private void OnDisplayGazeCursor(bool idDisplay)
     {
-        startHover = false;
-    }
-
-    void Update()
-    {
-        UpdateReticle();
-    }
-
-    void UpdateReticle()
-    {
-
-        if (gazeInteractor.hasHover && startHover)
+        if(idDisplay)
         {
-            if (!isGazing)
-            {
-                isGazing = true;
-                gazeStartTime = Time.time;
-            }
-
-            float progress = (Time.time - gazeStartTime) / gazeInteractor.hoverTimeToSelect;
-            progressRing.fillAmount = Mathf.Clamp01(progress);
-
-            reticleImage.color = Color.yellow;
+            DisplayGazeCursor();
         }
         else
         {
+            HideGazeCursor();
+        }
+    }
+
+    public void DisplayGazeCursor()
+    {
+        FadeCanvasGroup(canvasGroup, 1.0f);
+    }
+
+    public void HideGazeCursor()
+    {
+        FadeCanvasGroup(canvasGroup, 0.0f); 
+    }
+
+
+    private void FadeCanvasGroup(CanvasGroup canvasGroup, float endValue, Action value = null)
+    {
+        Tween.Alpha(canvasGroup, endValue: endValue, duration: 0.25f).OnComplete(value);
+    }
+
+
+    private void OnHoverEnter(UIHoverEventArgs args)
+    {
+     
+        if (!string.IsNullOrEmpty(interactiveTag) && args.uiObject.CompareTag(interactiveTag))
+        {
+            isGazing = true;
+            gazeStartTime = Time.time;
+
+            progressRing.color = Color.yellow;
+        }
+
+    }
+
+    private void OnHoverExited(UIHoverEventArgs args)
+    {
+        if (!string.IsNullOrEmpty(interactiveTag) && args.uiObject.CompareTag(interactiveTag))
+        {
             isGazing = false;
+
+
+            progressRing.color = Color.white;
+        }
+    }
+
+
+
+    void Update()
+    {
+        if (isGazing)
+        {
+            float progress = (Time.time - gazeStartTime) / gazeInteractor.hoverTimeToSelect;
+            progressRing.fillAmount = Mathf.Clamp01(progress);
+        }
+        else
+        {
             progressRing.fillAmount = 0f;
-            reticleImage.color = Color.white;
         }
     }
 }
+

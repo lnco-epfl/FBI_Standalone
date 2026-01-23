@@ -7,7 +7,7 @@ TagManager:
   - MainLight
   - CinemachineTarget
   - ScreenCamera
-  - cockpit_capitalLaser
+  - UIGazeHover
   layers:
   - Default
   - TransparentFX
