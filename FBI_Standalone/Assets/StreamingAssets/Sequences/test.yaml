@@ -16,7 +16,7 @@ steps:
     duration: 5.0
 
   - stepType: PlaySound
-    soundPath: "Audio/Effects/notification"
+    soundPath: "bell-sfx"
 
   - stepType: DisplayQuestion
     question: "question 1"
