@@ -263,9 +263,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 421626866145218879, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3429511973970599970, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
       propertyPath: m_Name
       value: XR Origin
+      objectReference: {fileID: 0}
+    - target: {fileID: 4181518367926720919, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_SortingOrder
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5366232192436624926, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -576,8 +584,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sensorIndex: 0
-  displayMode: 0
-  replayDelaySeconds: 1.76
+  displayMode: 1
+  replayDelaySeconds: 0.65
   captureFrameRate: 30
   enableSystem: 1
   outputVertexTexture: {fileID: 8400000, guid: 95862d4269c396a43b9b32d3a70cde3e, type: 2}
@@ -682,7 +690,7 @@ Transform:
   m_GameObject: {fileID: 571647991}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 2.552}
+  m_LocalPosition: {x: 0, y: 1, z: 0.607}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
