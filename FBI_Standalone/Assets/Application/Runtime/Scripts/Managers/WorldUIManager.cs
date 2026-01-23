@@ -68,6 +68,8 @@ public class WorldUIManager : MonoBehaviour
 
     public event Action<QuestionAnswer> OnQuestionValidated;
 
+    public event Action<bool> OnDisplayGazeCursor;
+
     private static WorldUIManager instance;
 
 
@@ -224,7 +226,10 @@ public class WorldUIManager : MonoBehaviour
         canvasGroupLikertScaleContainer.interactable = true;
         canvasGroupLikertScaleContainer.blocksRaycasts = true;
 
-        FadeCanvasGroup(canvasGroupLikertScaleContainer, 1);
+        FadeCanvasGroup(canvasGroupLikertScaleContainer, 1, () =>
+        {
+            OnDisplayGazeCursor?.Invoke(true);
+        });
     }
 
     public void HideLikertScale()
@@ -232,6 +237,8 @@ public class WorldUIManager : MonoBehaviour
 
         canvasGroupLikertScaleContainer.interactable = false;
         canvasGroupLikertScaleContainer.blocksRaycasts = false;
+
+        OnDisplayGazeCursor?.Invoke(false);
 
         FadeCanvasGroup(canvasGroupLikertScaleContainer, 0);
     }
@@ -245,7 +252,10 @@ public class WorldUIManager : MonoBehaviour
         canvasGroupBreakContainer.interactable = true;
         canvasGroupBreakContainer.blocksRaycasts = true;
 
-        FadeCanvasGroup(canvasGroupBreakContainer, 1);
+        FadeCanvasGroup(canvasGroupBreakContainer, 1, () =>
+        {
+            OnDisplayGazeCursor?.Invoke(true);
+        });
     }
 
     public void UpdateCounter(string counter)
@@ -258,6 +268,8 @@ public class WorldUIManager : MonoBehaviour
 
         canvasGroupBreakContainer.interactable = false;
         canvasGroupBreakContainer.blocksRaycasts = false;
+
+        OnDisplayGazeCursor?.Invoke(false);
 
         FadeCanvasGroup(canvasGroupBreakContainer, 0);
     }
@@ -308,7 +320,10 @@ public class WorldUIManager : MonoBehaviour
         canvasGroupQuestionContainer.interactable = true;
         canvasGroupQuestionContainer.blocksRaycasts = true;
 
-        FadeCanvasGroup(canvasGroupQuestionContainer, 1);
+        FadeCanvasGroup(canvasGroupQuestionContainer, 1,() =>
+        {
+            OnDisplayGazeCursor?.Invoke(true);
+        });
     }
 
     public void ClearChildren(Transform parent)
@@ -324,6 +339,8 @@ public class WorldUIManager : MonoBehaviour
 
         canvasGroupQuestionContainer.interactable = false;
         canvasGroupQuestionContainer.blocksRaycasts = false;
+
+        OnDisplayGazeCursor?.Invoke(false);
 
         FadeCanvasGroup(canvasGroupQuestionContainer, 0, () =>
         {
