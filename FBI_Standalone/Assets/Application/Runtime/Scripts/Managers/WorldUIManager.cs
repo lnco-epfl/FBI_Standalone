@@ -193,6 +193,8 @@ public class WorldUIManager : MonoBehaviour
     {
         canvasGroupTextContainer.alpha = 0;
         canvasGroupTextContainer.interactable = true;
+        canvasGroupTextContainer.blocksRaycasts = true;
+
         tmpTextContainer.text = text;
         FadeCanvasGroup(canvasGroupTextContainer, 1);
     }
@@ -200,6 +202,7 @@ public class WorldUIManager : MonoBehaviour
     public void HideText()
     {
         canvasGroupTextContainer.interactable = false;
+        canvasGroupTextContainer.blocksRaycasts = false;
 
         FadeCanvasGroup(canvasGroupTextContainer, 0, () =>
         {
@@ -219,13 +222,17 @@ public class WorldUIManager : MonoBehaviour
         DisplayValidationButton(false);
 
         canvasGroupLikertScaleContainer.interactable = true;
+        canvasGroupLikertScaleContainer.blocksRaycasts = true;
+
         FadeCanvasGroup(canvasGroupLikertScaleContainer, 1);
     }
 
     public void HideLikertScale()
-    { 
+    {
 
         canvasGroupLikertScaleContainer.interactable = false;
+        canvasGroupLikertScaleContainer.blocksRaycasts = false;
+
         FadeCanvasGroup(canvasGroupLikertScaleContainer, 0);
     }
 
@@ -236,6 +243,8 @@ public class WorldUIManager : MonoBehaviour
         instructionTextBreakContainer.text = instruction;
 
         canvasGroupBreakContainer.interactable = true;
+        canvasGroupBreakContainer.blocksRaycasts = true;
+
         FadeCanvasGroup(canvasGroupBreakContainer, 1);
     }
 
@@ -248,6 +257,8 @@ public class WorldUIManager : MonoBehaviour
     {
 
         canvasGroupBreakContainer.interactable = false;
+        canvasGroupBreakContainer.blocksRaycasts = false;
+
         FadeCanvasGroup(canvasGroupBreakContainer, 0);
     }
 
@@ -259,8 +270,9 @@ public class WorldUIManager : MonoBehaviour
 
         imageImageTransform.localScale = Vector3.one * scale;
 
-
         canvasImageContainer.interactable = true;
+        canvasImageContainer.blocksRaycasts = true;
+
         FadeCanvasGroup(canvasImageContainer, 1);
 
     }
@@ -268,6 +280,7 @@ public class WorldUIManager : MonoBehaviour
     public void HideImage()
     {
         canvasImageContainer.interactable = false;
+        canvasImageContainer.blocksRaycasts = false;
 
         FadeCanvasGroup(canvasImageContainer, 0, () =>
         {
@@ -293,6 +306,7 @@ public class WorldUIManager : MonoBehaviour
         }
 
         canvasGroupQuestionContainer.interactable = true;
+        canvasGroupQuestionContainer.blocksRaycasts = true;
 
         FadeCanvasGroup(canvasGroupQuestionContainer, 1);
     }
@@ -309,6 +323,7 @@ public class WorldUIManager : MonoBehaviour
     {
 
         canvasGroupQuestionContainer.interactable = false;
+        canvasGroupQuestionContainer.blocksRaycasts = false;
 
         FadeCanvasGroup(canvasGroupQuestionContainer, 0, () =>
         {

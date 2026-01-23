@@ -1,0 +1,13 @@
+[17:44:22] [Log] SceneLoaderManager Scene loaded Neutral
+[17:45:37] [Log] ExperimentManager Initialize with sequence test
+[17:45:37] [Log] OutputFileManager initialized: 20260122_174537_test_Output.csv
+[17:45:38] [Log] ExperimentManager Start experiment
+[17:45:38] [Log] LoadSceneState LoadAsyncScene Eflatun.SceneReference.SceneReference
+[17:45:39] [Log] SceneLoaderManager Scene loaded EmptyRoom
+[17:45:39] [Log] DisplayTextState DisplayText welcome to FBI for 3s
+[17:45:42] [Log] WaitState Waiting for 2 s
+[17:45:44] [Log] DisplayImageState DisplayImage plus for 5s
+[17:45:49] [Log] PlaySoundState Play Sound  for 0.5 seconds
+[17:45:50] [Log] DisplayQuestionState DisplayQuestion
+[17:46:09] [Log] OutputFileManager data saved: C:/Users/Arnaud-EPFL/EPFL/Unity/FBI_Standalone/FBI_Standalone\Output\20260122_174537_test_Output.csv
+[17:46:10] [Log] DisplayLikertScaleState DisplayLikertScale not satisfied  very satisfied
