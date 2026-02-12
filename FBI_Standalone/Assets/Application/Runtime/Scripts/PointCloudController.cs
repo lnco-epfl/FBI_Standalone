@@ -7,8 +7,8 @@ public class PointCloudController : MonoBehaviour
 {
     public enum DisplayMode
     {
-        Instantaneous,  
-        Replay        
+        Realtime,
+        Delay
     }
 
     [Header("Configuration")]
@@ -16,7 +16,7 @@ public class PointCloudController : MonoBehaviour
     public int sensorIndex = 0;
 
     [Tooltip("Mode d'affichage du point cloud")]
-    public DisplayMode displayMode = DisplayMode.Instantaneous;
+    public DisplayMode displayMode = DisplayMode.Realtime;
 
     [Tooltip("Délai de replay en secondes (ex: 2.0 pour 2 secondes de délai)")]
     [Range(0.1f, 10f)]
@@ -50,7 +50,7 @@ public class PointCloudController : MonoBehaviour
         {
             vertexTexture = new Texture2D(width, height, TextureFormat.RGBAFloat, false);
             colorTexture = new Texture2D(width, height, TextureFormat.RGBA32, false);
-            timestamp = 0f;
+            timestamp = -1f;
         }
 
         public void Release()
@@ -63,7 +63,7 @@ public class PointCloudController : MonoBehaviour
     private List<PointCloudFrame> frameBuffer;
     private int bufferSize;
     private int writeIndex = 0;
-    private int readIndex = 0;
+    private int currentFrameCount = 0;
 
     private KinectManager kinectManager = null;
     private KinectInterop.SensorData sensorData = null;
@@ -75,19 +75,6 @@ public class PointCloudController : MonoBehaviour
     private int textureHeight = 0;
 
     private Material copyMaterial;
-
-    private static PointCloudController instance;
-    public static PointCloudController Instance { get { return instance; } }
-    private void Awake()
-    {
-        if (instance != null && instance != this) { Destroy(this.gameObject); }
-        else
-        {
-            instance = this;
-        }
-
-    
-    }
 
     void Start()
     {
@@ -119,7 +106,7 @@ public class PointCloudController : MonoBehaviour
     void InitializeBuffer()
     {
         captureInterval = 1f / captureFrameRate;
-        bufferSize = Mathf.CeilToInt(replayDelaySeconds * captureFrameRate) + 2;
+        bufferSize = Mathf.CeilToInt(replayDelaySeconds * captureFrameRate) + 5;
 
         if (sensorInt.pointCloudResolution == DepthSensorBase.PointCloudResolution.ColorCameraResolution)
         {
@@ -132,15 +119,26 @@ public class PointCloudController : MonoBehaviour
             textureHeight = sensorData.depthImageHeight;
         }
 
+        if (frameBuffer != null)
+        {
+            foreach (var frame in frameBuffer)
+            {
+                frame.Release();
+            }
+        }
+
         frameBuffer = new List<PointCloudFrame>(bufferSize);
         for (int i = 0; i < bufferSize; i++)
         {
             frameBuffer.Add(new PointCloudFrame(textureWidth, textureHeight));
         }
 
+        writeIndex = 0;
+        currentFrameCount = 0;
+
         if (showDebugInfo)
         {
-            Debug.Log($"PointCloudReplayBuffer initialized: {bufferSize} frames, {textureWidth}x{textureHeight}, delay: {replayDelaySeconds}s");
+            Debug.Log($"PointCloudController initialized: {bufferSize} frames, {textureWidth}x{textureHeight}, delay: {replayDelaySeconds}s");
         }
 
         if (outputVertexTexture == null)
@@ -173,10 +171,10 @@ public class PointCloudController : MonoBehaviour
 
         switch (displayMode)
         {
-            case DisplayMode.Instantaneous:
-                DisplayInstantaneousFrame();
+            case DisplayMode.Realtime:
+                DisplayRealtimeFrame();
                 break;
-            case DisplayMode.Replay:
+            case DisplayMode.Delay:
                 DisplayDelayedFrame();
                 break;
         }
@@ -197,6 +195,10 @@ public class PointCloudController : MonoBehaviour
         CopyRenderTextureToTexture2D(colorRT, frame.colorTexture);
 
         writeIndex = (writeIndex + 1) % bufferSize;
+        if (currentFrameCount < bufferSize)
+        {
+            currentFrameCount++;
+        }
 
         if (showDebugInfo && writeIndex == 0)
         {
@@ -204,9 +206,8 @@ public class PointCloudController : MonoBehaviour
         }
     }
 
-    void DisplayInstantaneousFrame()
+    void DisplayRealtimeFrame()
     {
-      
         RenderTexture vertexRT = sensorInt.pointCloudVertexTexture;
         RenderTexture colorRT = sensorInt.pointCloudColorTexture;
 
@@ -219,15 +220,21 @@ public class PointCloudController : MonoBehaviour
 
     void DisplayDelayedFrame()
     {
+        if (currentFrameCount == 0)
+            return;
+
         float targetTime = Time.time - replayDelaySeconds;
 
         int bestIndex = -1;
         float bestTimeDiff = float.MaxValue;
 
-        for (int i = 0; i < bufferSize; i++)
+        for (int i = 0; i < currentFrameCount; i++)
         {
+            if (frameBuffer[i].timestamp < 0)
+                continue;
+
             float timeDiff = Mathf.Abs(frameBuffer[i].timestamp - targetTime);
-            if (timeDiff < bestTimeDiff && frameBuffer[i].timestamp > 0)
+            if (timeDiff < bestTimeDiff)
             {
                 bestTimeDiff = timeDiff;
                 bestIndex = i;
@@ -236,11 +243,18 @@ public class PointCloudController : MonoBehaviour
 
         if (bestIndex >= 0)
         {
-            readIndex = bestIndex;
-            PointCloudFrame frame = frameBuffer[readIndex];
+            PointCloudFrame frame = frameBuffer[bestIndex];
 
-            Graphics.Blit(frame.vertexTexture, outputVertexTexture);
-            Graphics.Blit(frame.colorTexture, outputColorTexture);
+            if (frame.vertexTexture != null && frame.colorTexture != null)
+            {
+                Graphics.Blit(frame.vertexTexture, outputVertexTexture);
+                Graphics.Blit(frame.colorTexture, outputColorTexture);
+
+                if (showDebugInfo && Random.value < 0.01f)
+                {
+                    Debug.Log($"Displaying frame {bestIndex}, timestamp: {frame.timestamp:F2}, target: {targetTime:F2}, diff: {bestTimeDiff:F3}s");
+                }
+            }
         }
     }
 
@@ -277,13 +291,13 @@ public class PointCloudController : MonoBehaviour
         if (!showDebugInfo)
             return;
 
-        GUILayout.BeginArea(new Rect(10, 10, 300, 180));
+        GUILayout.BeginArea(new Rect(10, 10, 300, 200));
         GUILayout.Box("Point Cloud Display System");
         GUILayout.Label($"Mode: {displayMode}");
         GUILayout.Label($"Delay: {replayDelaySeconds:F2}s");
         GUILayout.Label($"Buffer Size: {bufferSize} frames");
+        GUILayout.Label($"Frames Captured: {currentFrameCount}");
         GUILayout.Label($"Write Index: {writeIndex}");
-        GUILayout.Label($"Read Index: {readIndex}");
         GUILayout.Label($"FPS: {captureFrameRate}");
         GUILayout.Label($"Resolution: {textureWidth}x{textureHeight}");
 
@@ -303,10 +317,11 @@ public class PointCloudController : MonoBehaviour
         }
     }
 
+    [ContextMenu("ToggleDisplayMode")]
     public void ToggleDisplayMode()
     {
-        displayMode = (displayMode == DisplayMode.Instantaneous) ?
-            DisplayMode.Replay : DisplayMode.Instantaneous;
+        displayMode = (displayMode == DisplayMode.Realtime) ?
+            DisplayMode.Delay : DisplayMode.Realtime;
 
         if (showDebugInfo)
         {
@@ -318,14 +333,9 @@ public class PointCloudController : MonoBehaviour
     {
         replayDelaySeconds = Mathf.Clamp(delaySeconds, 0.1f, 10f);
 
-        int newBufferSize = Mathf.CeilToInt(replayDelaySeconds * captureFrameRate) + 2;
+        int newBufferSize = Mathf.CeilToInt(replayDelaySeconds * captureFrameRate) + 5;
         if (newBufferSize != bufferSize)
         {
-            foreach (var frame in frameBuffer)
-            {
-                frame.Release();
-            }
-
             InitializeBuffer();
         }
     }
@@ -338,11 +348,11 @@ public class PointCloudController : MonoBehaviour
     public void ClearBuffer()
     {
         writeIndex = 0;
-        readIndex = 0;
+        currentFrameCount = 0;
 
         foreach (var frame in frameBuffer)
         {
-            frame.timestamp = 0f;
+            frame.timestamp = -1f;
         }
     }
 
@@ -351,13 +361,23 @@ public class PointCloudController : MonoBehaviour
         return displayMode;
     }
 
-    public bool IsInstantaneous()
+    public bool IsRealtime()
     {
-        return displayMode == DisplayMode.Instantaneous;
+        return displayMode == DisplayMode.Realtime;
     }
 
-    public bool IsReplay()
+    public bool IsDelay()
     {
-        return displayMode == DisplayMode.Replay;
+        return displayMode == DisplayMode.Delay;
+    }
+
+    public int GetCurrentFrameCount()
+    {
+        return currentFrameCount;
+    }
+
+    public float GetCurrentDelay()
+    {
+        return replayDelaySeconds;
     }
 }
