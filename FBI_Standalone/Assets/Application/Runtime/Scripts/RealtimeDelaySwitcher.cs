@@ -1,14 +1,15 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.VFX;
+using System.Collections.Generic;
 
 public class RealtimeDelaySwitcher : MonoBehaviour
 {
-    [SerializeField] private Texture2D ColorMain;
-    [SerializeField] private Texture2D VertexMain;
+    [SerializeField] private RenderTexture ColorMain;
+    [SerializeField] private RenderTexture VertexMain;
 
-    [SerializeField] private Texture2D ColorDelay;
-    [SerializeField] private Texture2D VertexDelay;
+    [SerializeField] private RenderTexture ColorDelay;
+    [SerializeField] private RenderTexture VertexDelay;
 
     public enum DisplayMode
     {
@@ -31,9 +32,20 @@ public class RealtimeDelaySwitcher : MonoBehaviour
         SetTexture(ColorMain, VertexMain);
     }
 
+    private void Update()
+    {
+        switch (displayMode)
+        {
+            case DisplayMode.Realtime:
+                SetTexture(ColorMain, VertexMain);
+                break;
+            case DisplayMode.Delay:
+                SetTexture(ColorDelay, VertexDelay);
+                break;
+        }
+    }
 
-
-    private void SetTexture(Texture2D colorTexture, Texture2D vertexTexture)
+    private void SetTexture(RenderTexture colorTexture, RenderTexture vertexTexture)
     {
         visualEffect.SetTexture("Color", colorTexture);
         visualEffect.SetTexture("Vertex", vertexTexture);
