@@ -44,10 +44,11 @@ public class SequenceStateMachine : MonoBehaviour
         states.Add("DisplayImage", new DisplayImageState());
         states.Add("DisplayQuestion", new DisplayQuestionState());
         states.Add("PlaySound", new PlaySoundState());
+        states.Add("DisplayCamera", new DisplayCameraState());
     }
 
     /// <summary>
-    /// Charge et initialise une séquence depuis un fichier YAML par son nom
+    /// Charge et initialise une sï¿½quence depuis un fichier YAML par son nom
     /// </summary>
     public void LoadSequenceByName(string sequenceName)
     {
@@ -66,7 +67,7 @@ public class SequenceStateMachine : MonoBehaviour
     }
 
     /// <summary>
-    /// Recharge la séquence actuelle depuis le fichier YAML
+    /// Recharge la sï¿½quence actuelle depuis le fichier YAML
     /// </summary>
     public void ReloadCurrentSequence()
     {

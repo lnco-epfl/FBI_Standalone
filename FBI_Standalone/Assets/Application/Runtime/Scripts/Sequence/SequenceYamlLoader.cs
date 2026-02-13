@@ -131,7 +131,13 @@ public class SequenceYamlLoader
                 {
                     sound = LoadAudioClip(data.soundPath)
                 };
-
+            case SequenceStepWrapper.StepType.DisplayCamera:
+                return new DisplayCameraStep
+                {
+                    displayTime = data.duration,
+                    cameraID = data.cameraID,
+                    displayMode = data.displayMode
+                };
 
             default:
                 return new WaitStep();
@@ -181,6 +187,8 @@ public class StepData
     public string leftLabel;
     public string rightLabel;
     public List<string> options;
+    public string cameraID;
+    public string displayMode;
 
     // Assets
     public string scenePath;

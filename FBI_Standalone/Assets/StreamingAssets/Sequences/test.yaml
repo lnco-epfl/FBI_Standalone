@@ -10,6 +10,38 @@ steps:
   - stepType: Wait
     duration: 2.0
 
+  - stepType: DisplayCamera
+    duration: 20.0
+    cameraID: "1"
+    displayMode: "realtime"
+
+  - stepType: Wait
+    duration: 2.0
+
+  - stepType: DisplayCamera
+    duration: 20.0
+    cameraID: "1"
+    displayMode: "delay"
+
+  - stepType: Wait
+    duration: 2.0
+
+  - stepType: DisplayCamera
+    duration: 20.0
+    cameraID: "2"
+    displayMode: "realtime"
+
+  - stepType: Wait
+    duration: 2.0
+
+  - stepType: DisplayCamera
+    duration: 20.0
+    cameraID: "2"
+    displayMode: "delay"
+
+  - stepType: Wait
+    duration: 2.0
+
   - stepType: DisplayImage
     imagePath: "plus"
     scale: 1.0

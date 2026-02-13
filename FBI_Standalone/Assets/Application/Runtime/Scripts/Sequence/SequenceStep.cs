@@ -188,7 +188,19 @@ public class PlaySoundStep : SequenceStep
 }
 
 
+[System.Serializable]
+public class DisplayCameraStep : SequenceStep
+{
+    public float displayTime = 1f;
+    public string cameraID = "1";
+    public string displayMode = "realtime";
 
+
+    public override float GetDuration() => displayTime;
+    public override string GetStateName() => "DisplayCamera";
+    public override string GetDisplayName() => "No Text";
+    public override Color GetColor() => Color.grey;
+}
 
 [Serializable]
 public class SequenceStepWrapper
@@ -201,7 +213,7 @@ public class SequenceStepWrapper
 
     public enum StepType
     {
-        DisplayText, Wait, SpawnObject, LoadScene, DisplayLikertScale, Break, DisplayImage, DisplayQuestion, PlaySound,
+        DisplayText, Wait, SpawnObject, LoadScene, DisplayLikertScale, Break, DisplayImage, DisplayQuestion, PlaySound, DisplayCamera
     }
 
     public SequenceStepWrapper()
@@ -222,6 +234,7 @@ public class SequenceStepWrapper
             case StepType.DisplayImage: step = new DisplayImageStep(); break;
             case StepType.DisplayQuestion: step = new DisplayQuestionStep(); break;
             case StepType.PlaySound: step = new PlaySoundStep(); break;
+            case StepType.DisplayCamera: step = new DisplayCameraStep(); break;
         }
     }
 }
