@@ -95,6 +95,42 @@ MonoBehaviour:
     m_Key: shortcut
     m_Metadata:
       m_Items: []
+  - m_Id: 85565398626050048
+    m_Key: new-config
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85565494642057216
+    m_Key: load-condif
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85565541215608832
+    m_Key: create
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85565794111168512
+    m_Key: load
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85565825794940928
+    m_Key: name-config
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85567556557709312
+    m_Key: point-cloud
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85568901624864768
+    m_Key: point-cloud-position
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85568959674032128
+    m_Key: point-cloud-rotation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85592542299267072
+    m_Key: status
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

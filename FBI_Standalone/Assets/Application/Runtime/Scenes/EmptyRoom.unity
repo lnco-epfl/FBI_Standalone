@@ -185,6 +185,55 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5989293555303714507, guid: 1ef0a974757cd064b99e2f4cf6011cf6, type: 3}
   m_PrefabInstance: {fileID: 3952797}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &33850053
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 33850055}
+  - component: {fileID: 33850054}
+  m_Layer: 0
+  m_Name: PointCloudManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &33850054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33850053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6131c50a720f72e41878fcb8e1627312, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointClouds:
+  - {fileID: 1326478084}
+  - {fileID: 428067816}
+--- !u!4 &33850055
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33850053}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1326478084}
+  - {fileID: 428067816}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &71468688
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -340,7 +389,7 @@ GameObject:
   - component: {fileID: 123665021}
   - component: {fileID: 123665022}
   m_Layer: 0
-  m_Name: Kinect4Azure
+  m_Name: Kinect4Azure_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -379,8 +428,8 @@ MonoBehaviour:
   minDepthDistance: 0
   maxDepthDistance: 3.47
   pointCloudResolution: 0
-  pointCloudVertexTexture: {fileID: 8400000, guid: 95862d4269c396a43b9b32d3a70cde3e, type: 2}
-  pointCloudColorTexture: {fileID: 8400000, guid: d76eb5eb5c81be247a6dc7c19e3a88d6, type: 2}
+  pointCloudVertexTexture: {fileID: 0}
+  pointCloudColorTexture: {fileID: 0}
   pointCloudPlayerList: 
   frameSourceFlags: 0
   isSyncDepthAndColor: 0
@@ -556,6 +605,39 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 769641841619698899, guid: 3fdcd1bcbed6a154db6a6ba56a665a7b, type: 3}
   m_PrefabInstance: {fileID: 316612698}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &428067815
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 428067816}
+  m_Layer: 0
+  m_Name: PointCloud_2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &428067816
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 428067815}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1180291219}
+  - {fileID: 2131012647}
+  m_Father: {fileID: 33850055}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &571647991
 GameObject:
   m_ObjectHideFlags: 0
@@ -567,7 +649,6 @@ GameObject:
   - component: {fileID: 571647996}
   - component: {fileID: 571647995}
   - component: {fileID: 571647994}
-  - component: {fileID: 571647992}
   - component: {fileID: 571647997}
   - component: {fileID: 571647998}
   m_Layer: 0
@@ -577,26 +658,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &571647992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 571647991}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7fcaae472dc7b44e86a3d819b0f6a69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sensorIndex: 0
-  displayMode: 0
-  replayDelaySeconds: 3
-  captureFrameRate: 30
-  enableSystem: 1
-  outputVertexTexture: {fileID: 8400000, guid: 95862d4269c396a43b9b32d3a70cde3e, type: 2}
-  outputColorTexture: {fileID: 8400000, guid: d76eb5eb5c81be247a6dc7c19e3a88d6, type: 2}
-  showDebugInfo: 0
 --- !u!73398921 &571647994
 VFXRenderer:
   serializedVersion: 1
@@ -706,7 +767,7 @@ Transform:
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1326478084}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &571647997
 MonoBehaviour:
@@ -972,7 +1033,7 @@ GameObject:
   - component: {fileID: 692511286}
   - component: {fileID: 692511287}
   m_Layer: 0
-  m_Name: Kinect4Azure (1)
+  m_Name: Kinect4Azure_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1011,8 +1072,8 @@ MonoBehaviour:
   minDepthDistance: 0
   maxDepthDistance: 3.47
   pointCloudResolution: 0
-  pointCloudVertexTexture: {fileID: 8400000, guid: bf4b2e07efd9b2a4ab70404c989be853, type: 2}
-  pointCloudColorTexture: {fileID: 8400000, guid: fcd806223dba5aa42943fe5f0628b368, type: 2}
+  pointCloudVertexTexture: {fileID: 0}
+  pointCloudColorTexture: {fileID: 0}
   pointCloudPlayerList: 
   frameSourceFlags: 0
   isSyncDepthAndColor: 0
@@ -1513,7 +1574,7 @@ GameObject:
   - component: {fileID: 1098050839}
   - component: {fileID: 1098050838}
   m_Layer: 0
-  m_Name: PointCloudTarget_1
+  m_Name: PointCloudRealtime_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1533,8 +1594,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensorIndex: 0
   pointCloudResolution: 0
-  pointCloudVertexTexture: {fileID: 8400000, guid: d8e773d5bbad0c05c965e6b888e86b55, type: 2}
-  pointCloudColorTexture: {fileID: 8400000, guid: e96cdc3b37ad79be39d14ce547fe0da1, type: 2}
+  pointCloudVertexTexture: {fileID: 8400000, guid: ea74259af53a37e42b78d52b0170f1c8, type: 2}
+  pointCloudColorTexture: {fileID: 8400000, guid: 76a33ecc1429053428801d9b57237b96, type: 2}
   pointCloudPlayerList: 
 --- !u!4 &1098050839
 Transform:
@@ -1544,12 +1605,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1098050837}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1326478084}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1145221220
 PrefabInstance:
@@ -1632,7 +1693,6 @@ GameObject:
   - component: {fileID: 1180291219}
   - component: {fileID: 1180291218}
   - component: {fileID: 1180291217}
-  - component: {fileID: 1180291216}
   - component: {fileID: 1180291215}
   - component: {fileID: 1180291220}
   m_Layer: 0
@@ -1661,26 +1721,6 @@ MonoBehaviour:
   replayVertexTexture: {fileID: 8400000, guid: bf4b2e07efd9b2a4ab70404c989be853, type: 2}
   replayColorTexture: {fileID: 8400000, guid: fcd806223dba5aa42943fe5f0628b368, type: 2}
   showDebugInfo: 1
---- !u!114 &1180291216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1180291214}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7fcaae472dc7b44e86a3d819b0f6a69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sensorIndex: 1
-  displayMode: 1
-  replayDelaySeconds: 3
-  captureFrameRate: 30
-  enableSystem: 1
-  outputVertexTexture: {fileID: 8400000, guid: bf4b2e07efd9b2a4ab70404c989be853, type: 2}
-  outputColorTexture: {fileID: 8400000, guid: fcd806223dba5aa42943fe5f0628b368, type: 2}
-  showDebugInfo: 0
 --- !u!73398921 &1180291217
 VFXRenderer:
   serializedVersion: 1
@@ -1790,7 +1830,7 @@ Transform:
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 428067816}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1180291220
 MonoBehaviour:
@@ -1875,6 +1915,39 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5989293555303714507, guid: 1ef0a974757cd064b99e2f4cf6011cf6, type: 3}
   m_PrefabInstance: {fileID: 1272251236}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1326478083
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1326478084}
+  m_Layer: 0
+  m_Name: PointCloud_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1326478084
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1326478083}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 571647996}
+  - {fileID: 1098050839}
+  m_Father: {fileID: 33850055}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1330613300
 GameObject:
   m_ObjectHideFlags: 0
@@ -2175,7 +2248,7 @@ GameObject:
   - component: {fileID: 2131012647}
   - component: {fileID: 2131012646}
   m_Layer: 0
-  m_Name: PointCloudTarget_2
+  m_Name: PointCloudRealtime_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2195,8 +2268,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensorIndex: 1
   pointCloudResolution: 0
-  pointCloudVertexTexture: {fileID: 8400000, guid: ef191758cfd0c234dacd6ac2d295e65c, type: 2}
-  pointCloudColorTexture: {fileID: 8400000, guid: eee513a3061bb2045a99107fcd1e277d, type: 2}
+  pointCloudVertexTexture: {fileID: 8400000, guid: 8e437a7816d60164ba157537dc368480, type: 2}
+  pointCloudColorTexture: {fileID: 8400000, guid: 1c93e00328946264cab7377aadfa8fc1, type: 2}
   pointCloudPlayerList: 
 --- !u!4 &2131012647
 Transform:
@@ -2206,12 +2279,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2131012645}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 428067816}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -2221,7 +2294,4 @@ SceneRoots:
   - {fileID: 956175610}
   - {fileID: 647952695}
   - {fileID: 1330613302}
-  - {fileID: 571647996}
-  - {fileID: 1180291219}
-  - {fileID: 1098050839}
-  - {fileID: 2131012647}
+  - {fileID: 33850055}

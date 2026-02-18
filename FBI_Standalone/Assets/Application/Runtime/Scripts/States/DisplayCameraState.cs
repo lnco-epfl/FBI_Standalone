@@ -15,10 +15,11 @@ public class DisplayCameraState : IState
 
     public IEnumerator Execute()
     {
-        GameObject cameraVFX = GameObject.Find("VfxPointCloud_" + step.cameraID);
-        VisualEffect vfxEffect = cameraVFX.GetComponent<VisualEffect>();
-        PointCloudReplayBuffer pointCloudReplayBuffer = cameraVFX.GetComponent<PointCloudReplayBuffer>();
-        RealtimeDelaySwitcher realtimeDelaySwitcher = cameraVFX.GetComponent<RealtimeDelaySwitcher>();
+        var pointCloudContainer =  PointCloudManager.Instance.GetPointCloudContainer(int.Parse(step.cameraID));
+
+        VisualEffect vfxEffect = pointCloudContainer.vfx;
+        PointCloudReplayBuffer pointCloudReplayBuffer = pointCloudContainer.replayBuffer;
+        RealtimeDelaySwitcher realtimeDelaySwitcher = pointCloudContainer.realtimeDelaySwitcher;
 
 
         if (step.displayMode == "realtime")
