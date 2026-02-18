@@ -13,6 +13,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private CanvasGroup canvasDesktopGroup;
     [SerializeField] private CanvasGroup canvasFullScreenGroup;
 
+    [Header("Canvas Prefabs")]
+    [SerializeField] private CanvasSetupPointCloudUI canvasSetupPointCloudUIPrefab;
+
     [Header("Sound")]
     [SerializeField] private Slider soundSlider;
     [SerializeField] private Button muteButton;
@@ -24,7 +27,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Dropdown genderDropdown;
     [SerializeField] private TMP_Dropdown languageDropdown;
 
+
+
     [SerializeField] private TMP_Dropdown sequenceDropdown;
+
+    [SerializeField] private TMP_Dropdown configDropdown;
+    [SerializeField] private Button startSetupButton;
 
     [Header("Status")]
     [SerializeField] private TMP_Text startTime;
@@ -60,6 +68,8 @@ public class UIManager : MonoBehaviour
 
     private static UIManager instance;
     public static UIManager Instance { get { return instance; } }
+
+    private List<CanvasSetupPointCloudUI> currentCanvasGraphUIs = new List<CanvasSetupPointCloudUI>();
 
     public string SelectedGender
     {
@@ -106,6 +116,9 @@ public class UIManager : MonoBehaviour
 
         sequenceDropdown.onValueChanged.AddListener(OnInputFileDropDownChanged);
 
+        configDropdown.onValueChanged.AddListener(OnConfigDropDownChanged);
+        startSetupButton.onClick.AddListener(OnStartSetupButtonPress);
+
         fullscreenInButton.onClick.AddListener(OnFullscreenInButtonPress);
         fullscreenOutButton.onClick.AddListener(OnFullscreenOutButtonPress);
 
@@ -143,6 +156,9 @@ public class UIManager : MonoBehaviour
     private void OnDisable()
     {
         sequenceDropdown.onValueChanged.RemoveListener(OnInputFileDropDownChanged);
+
+        configDropdown.onValueChanged.RemoveListener(OnConfigDropDownChanged);
+        startSetupButton.onClick.RemoveListener(OnStartSetupButtonPress);
 
         fullscreenInButton.onClick.RemoveListener(OnFullscreenInButtonPress);
         fullscreenOutButton.onClick.RemoveListener(OnFullscreenOutButtonPress);
@@ -256,6 +272,15 @@ public class UIManager : MonoBehaviour
 
     }
 
+    private void OnStartSetupButtonPress()
+    {
+        CreateSetupPointCloudUI();
+    }
+
+    private void OnConfigDropDownChanged(int index)
+    {
+        
+    }
 
     private void OnExperimentStarted()
     {
@@ -502,5 +527,21 @@ public class UIManager : MonoBehaviour
         canvasGroup.interactable = state;
     }
 
-  
+    public void CreateSetupPointCloudUI()
+    {
+
+        var canvasUI = Instantiate(canvasSetupPointCloudUIPrefab, canvasDesktopGroup.transform);
+        currentCanvasGraphUIs.Add(canvasUI);
+
+        canvasUI.OnCanvasSetupPointCloudUIDestroy += OnCanvasSetupPointCloudUIDestroy;
+
+    }
+
+    private void OnCanvasSetupPointCloudUIDestroy(CanvasSetupPointCloudUI canvasSetupPointCloudUI)
+    {
+        currentCanvasGraphUIs.Remove(canvasSetupPointCloudUI);
+        Destroy(canvasSetupPointCloudUI.gameObject);
+    }
+
+
 }
