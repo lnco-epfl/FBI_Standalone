@@ -102,6 +102,42 @@ MonoBehaviour:
       XR Origin : R\nPlay/Pause : Space   \nMute : M"
     m_Metadata:
       m_Items: []
+  - m_Id: 85565398626050048
+    m_Localized: New config
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85565494642057216
+    m_Localized: Load config
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85565541215608832
+    m_Localized: Create
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85565794111168512
+    m_Localized: Load
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85565825794940928
+    m_Localized: name of the config...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85567556557709312
+    m_Localized: Point cloud
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85568901624864768
+    m_Localized: Position
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85568959674032128
+    m_Localized: Rotation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85592542299267072
+    m_Localized: 'Status :  {0}'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
