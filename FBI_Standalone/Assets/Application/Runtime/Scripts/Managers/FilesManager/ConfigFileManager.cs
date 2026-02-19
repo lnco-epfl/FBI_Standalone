@@ -24,6 +24,11 @@ public class ConfigFileManager : MonoBehaviour
 
     private void Awake()
     {
+
+        System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+        System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
+
+
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
@@ -81,7 +86,7 @@ public class ConfigFileManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError($"[ConfigFileManager] Load error: {e.Message}");
+            Debug.LogError($"[ConfigFileManager] Load error: {e.Message}\n{e.StackTrace}\n{e.InnerException?.Message}");
             return null;
         }
     }
@@ -121,7 +126,7 @@ public class ConfigFileManager : MonoBehaviour
     {
         if (CurrentConfig == null) { Debug.LogError("[ConfigFileManager] No active config."); return; }
 
-        var existing = CurrentConfig.pointClouds.Find(o => o.cameraID == cameraID);
+        var existing = CurrentConfig.pointClouds.Find(o => o.ID == cameraID);
         if (existing != null)
         {
             existing.position = new SerializableVector3(t.position);

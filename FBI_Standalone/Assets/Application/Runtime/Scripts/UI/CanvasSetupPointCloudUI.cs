@@ -39,6 +39,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     private TMP_InputField pointCloudRotationYInputField;
     private TMP_InputField pointCloudRotationZInputField;
     [SerializeField] private CanvasGroup pointCloudCanvasGroup;
+    [SerializeField] private Button saveButton;
 
     [Header("Scene")]
     [SerializeField] private SceneReference scene;
@@ -68,6 +69,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         configNameInputField.onDeselect.AddListener(OnConfigNameInputFiledSubmit);
         createConfigButton.onClick.AddListener(OnCreateConfigButtonClick);
 
+        saveButton.onClick.AddListener(OnSaveButtonClick);
+
         loadConfigDropdown.onValueChanged.AddListener(OnLoadConfigDropdownValueChanged);
         loadConfigButton.onClick.AddListener(OnLoadConfigButtonClick);
 
@@ -89,6 +92,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     }
 
 
+
     private void OnDisable()
     {
         closeButton.onClick.RemoveListener(OnButtonCloseClick);
@@ -96,6 +100,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         configNameInputField.onSubmit.RemoveListener(OnConfigNameInputFiledSubmit);
         configNameInputField.onDeselect.RemoveListener(OnConfigNameInputFiledSubmit);
         createConfigButton.onClick.RemoveListener(OnCreateConfigButtonClick);
+
+        saveButton.onClick.RemoveListener(OnSaveButtonClick);
 
         loadConfigDropdown.onValueChanged.RemoveListener(OnLoadConfigDropdownValueChanged);
         loadConfigButton.onClick.RemoveListener(OnLoadConfigButtonClick);
@@ -117,7 +123,20 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void OnButtonCloseClick()
     {
+
+        SceneLoaderManager.Instance.LoadDefaultScene();
+
         OnCanvasSetupPointCloudUIDestroy.Invoke(this);
+    }
+
+    private void OnSaveButtonClick()
+    {
+
+        OnPointCloudPositionChanged(string.Empty);
+        OnPointCloudRotationChanged(string.Empty);
+
+        SetStatus($"Saved {selectedConfig}");   
+        ConfigFileManager.Instance.Save();
     }
 
     private void OnPointCloudPositionChanged(string value)
@@ -157,6 +176,9 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     {
         ConfigFileManager.Instance.Load(selectedConfig);
         SetStatus($"Load Config {selectedConfig}");
+
+
+        pointCloudCanvasGroup.interactable = true;
     }
 
     private void OnLoadConfigDropdownValueChanged(int value)
@@ -180,6 +202,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         RefreshList();
         SetStatus($"Created {newConfigName}");
+
+        pointCloudCanvasGroup.interactable = true;
     }
 
     private void InitTransformInputField()
@@ -191,9 +215,9 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         pointCloudPositionYInputField.SetTextWithoutNotify(transform.position.y.ToString());
         pointCloudPositionZInputField.SetTextWithoutNotify(transform.position.z.ToString());
                                                                                          
-        pointCloudRotationXInputField.SetTextWithoutNotify(transform.rotation.x.ToString());
-        pointCloudRotationYInputField.SetTextWithoutNotify(transform.rotation.y.ToString());
-        pointCloudRotationZInputField.SetTextWithoutNotify(transform.rotation.z.ToString());
+        pointCloudRotationXInputField.SetTextWithoutNotify(transform.eulerAngles.x.ToString());
+        pointCloudRotationYInputField.SetTextWithoutNotify(transform.eulerAngles.y.ToString());
+        pointCloudRotationZInputField.SetTextWithoutNotify(transform.eulerAngles.z.ToString());
     }
 
     private void OnConfigNameInputFiledSubmit(string value)
@@ -206,10 +230,20 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
       
         configs = ConfigFileManager.Instance.GetAvailableConfigs();
 
-        loadConfigDropdown.ClearOptions();
-        loadConfigDropdown.AddOptions(configs);
+        if(configs.Count > 0)
+        {
 
-        loadConfigDropdown.value = configs.IndexOf(selectedConfig);
+            loadConfigDropdown.ClearOptions();
+            loadConfigDropdown.AddOptions(configs);
+
+            loadConfigDropdown.value = configs.IndexOf(selectedConfig);
+
+            loadConfigCanvasGroup.interactable = true;
+        }
+        else
+        {
+            loadConfigCanvasGroup.interactable = false;
+        }
 
     }
 
@@ -222,13 +256,13 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     {
         var transformData = file.pointClouds[0];
 
-        pointCloudPositionXInputField.text = transformData.position.x.ToString();
-        pointCloudPositionYInputField.text = transformData.position.y.ToString();
-        pointCloudPositionZInputField.text = transformData.position.z.ToString();
+        pointCloudPositionXInputField.SetTextWithoutNotify(transformData.position.x.ToString());
+        pointCloudPositionYInputField.SetTextWithoutNotify(transformData.position.y.ToString());
+        pointCloudPositionZInputField.SetTextWithoutNotify(transformData.position.z.ToString());
 
-        pointCloudRotationXInputField.text = transformData.rotation.x.ToString();
-        pointCloudRotationYInputField.text = transformData.rotation.y.ToString();
-        pointCloudRotationZInputField.text = transformData.rotation.z.ToString();
+        pointCloudRotationXInputField.SetTextWithoutNotify(transformData.rotation.x.ToString());
+        pointCloudRotationYInputField.SetTextWithoutNotify(transformData.rotation.y.ToString());
+        pointCloudRotationZInputField.SetTextWithoutNotify(transformData.rotation.z.ToString());
     }
 
     private void OnFileListRefreshed(List<string> list)
@@ -242,6 +276,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         StartCoroutine("LoadScene");
 
         RefreshList();
+
+        pointCloudCanvasGroup.interactable = false;
     }
 
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene)
