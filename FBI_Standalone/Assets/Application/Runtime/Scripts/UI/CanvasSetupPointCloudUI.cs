@@ -31,15 +31,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     [SerializeField] private CanvasGroup loadConfigCanvasGroup;
 
     [Header("Point cloud")]
-    [SerializeField] private Transform pointCloudPosition;
-    private TMP_InputField pointCloudPositionXInputField;
-    private TMP_InputField pointCloudPositionYInputField;
-    private TMP_InputField pointCloudPositionZInputField;
-    [SerializeField] private Transform pointCloudRotation;
-    private TMP_InputField pointCloudRotationXInputField;
-    private TMP_InputField pointCloudRotationYInputField;
-    private TMP_InputField pointCloudRotationZInputField;
-    [SerializeField] private CanvasGroup pointCloudCanvasGroup;
+    [SerializeField] private GameObject pointCloudEntryPrefab;
+    [SerializeField] private Transform pointCloudContainer;
     [SerializeField] private Button saveButton;
 
     [Header("Scene")]
@@ -51,45 +44,28 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     private List<string> configs;
     private string newConfigName;
 
-    private void Awake()
-    {
-        pointCloudPositionXInputField = pointCloudPosition.Find("Values/PositionX/PositionXInputField").GetComponent<TMP_InputField>();
-        pointCloudPositionYInputField = pointCloudPosition.Find("Values/PositionY/PositionYInputField").GetComponent<TMP_InputField>();
-        pointCloudPositionZInputField = pointCloudPosition.Find("Values/PositionZ/PositionZInputField").GetComponent<TMP_InputField>();
+    private List<PointCloudUIEntry> pointCloudEntries = new List<PointCloudUIEntry>();
 
-        pointCloudRotationXInputField = pointCloudRotation.Find("Values/RotationX/RotationXInputField").GetComponent<TMP_InputField>();
-        pointCloudRotationYInputField = pointCloudRotation.Find("Values/RotationY/RotationYInputField").GetComponent<TMP_InputField>();
-        pointCloudRotationZInputField = pointCloudRotation.Find("Values/RotationZ/RotationZInputField").GetComponent<TMP_InputField>();
+    private void Start()
+    {
+        StartCoroutine(LoadScene());
+        RefreshList();
     }
 
     private void OnEnable()
     {
         closeButton.onClick.AddListener(OnButtonCloseClick);
-
-        configNameInputField.onSubmit.AddListener(OnConfigNameInputFiledSubmit);
-        configNameInputField.onDeselect.AddListener(OnConfigNameInputFiledSubmit);
         createConfigButton.onClick.AddListener(OnCreateConfigButtonClick);
-
         saveButton.onClick.AddListener(OnSaveButtonClick);
-
         loadConfigDropdown.onValueChanged.AddListener(OnLoadConfigDropdownValueChanged);
         loadConfigButton.onClick.AddListener(OnLoadConfigButtonClick);
+        configNameInputField.onSubmit.AddListener(OnConfigNameInputFieldSubmit);
+        configNameInputField.onDeselect.AddListener(OnConfigNameInputFieldSubmit);
 
-        pointCloudPositionXInputField.onValueChanged.AddListener(OnPointCloudPositionChanged);
-        pointCloudPositionYInputField.onValueChanged.AddListener(OnPointCloudPositionChanged);
-        pointCloudPositionZInputField.onValueChanged.AddListener(OnPointCloudPositionChanged);
-
-        pointCloudRotationXInputField.onValueChanged.AddListener(OnPointCloudRotationChanged);
-        pointCloudRotationYInputField.onValueChanged.AddListener(OnPointCloudRotationChanged);
-        pointCloudRotationZInputField.onValueChanged.AddListener(OnPointCloudRotationChanged);
-
-        ConfigFileManager.Instance.OnFileListRefreshed += OnFileListRefreshed;
         ConfigFileManager.Instance.OnConfigLoaded += OnConfigLoaded;
         ConfigFileManager.Instance.OnConfigSaved += OnConfigSaved;
-
+        ConfigFileManager.Instance.OnFileListRefreshed += OnFileListRefreshed;
         SceneLoaderManager.Instance.OnSceneLoaded += OnSceneLoaded;
-
-        SetStatus(string.Empty);
     }
 
 
@@ -97,29 +73,45 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     private void OnDisable()
     {
         closeButton.onClick.RemoveListener(OnButtonCloseClick);
-
-        configNameInputField.onSubmit.RemoveListener(OnConfigNameInputFiledSubmit);
-        configNameInputField.onDeselect.RemoveListener(OnConfigNameInputFiledSubmit);
         createConfigButton.onClick.RemoveListener(OnCreateConfigButtonClick);
-
         saveButton.onClick.RemoveListener(OnSaveButtonClick);
-
         loadConfigDropdown.onValueChanged.RemoveListener(OnLoadConfigDropdownValueChanged);
         loadConfigButton.onClick.RemoveListener(OnLoadConfigButtonClick);
+        configNameInputField.onSubmit.RemoveListener(OnConfigNameInputFieldSubmit);
+        configNameInputField.onDeselect.RemoveListener(OnConfigNameInputFieldSubmit);
 
-        pointCloudPositionXInputField.onValueChanged.RemoveListener(OnPointCloudPositionChanged);
-        pointCloudPositionYInputField.onValueChanged.RemoveListener(OnPointCloudPositionChanged);
-        pointCloudPositionZInputField.onValueChanged.RemoveListener(OnPointCloudPositionChanged);
-
-        pointCloudRotationXInputField.onValueChanged.RemoveListener(OnPointCloudRotationChanged);
-        pointCloudRotationYInputField.onValueChanged.RemoveListener(OnPointCloudRotationChanged);
-        pointCloudRotationZInputField.onValueChanged.RemoveListener(OnPointCloudRotationChanged);
-
-        ConfigFileManager.Instance.OnFileListRefreshed -= OnFileListRefreshed;
         ConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
         ConfigFileManager.Instance.OnConfigSaved -= OnConfigSaved;
-
+        ConfigFileManager.Instance.OnFileListRefreshed -= OnFileListRefreshed;
         SceneLoaderManager.Instance.OnSceneLoaded -= OnSceneLoaded;
+
+        foreach (var entry in pointCloudEntries)
+        {
+            entry.OnPositionChanged -= OnPointCloudPositionChanged;
+            entry.OnRotationChanged -= OnPointCloudRotationChanged;
+        }
+    }
+
+    private void SpawnPointCloudEntries()
+    {
+        var cameraIds = PointCloudManager.Instance.GetAvailableCameraIds();
+
+        foreach (var id in cameraIds)
+        {
+            var go = Instantiate(pointCloudEntryPrefab, pointCloudContainer);
+            go.name = $"PointCloudEntry_Camera{id}";
+
+            var entry = go.GetComponent<PointCloudUIEntry>();
+            entry.Init(id);
+            entry.SetInteractable(false);
+
+            entry.SetDisplayToggle(false);
+
+            entry.OnPositionChanged += OnPointCloudPositionChanged;
+            entry.OnRotationChanged += OnPointCloudRotationChanged;
+
+            pointCloudEntries.Add(entry);
+        }
     }
 
     private void OnButtonCloseClick()
@@ -132,54 +124,39 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void OnSaveButtonClick()
     {
-
-        OnPointCloudPositionChanged(string.Empty);
-        OnPointCloudRotationChanged(string.Empty);
-
-        SetStatus($"Saved {selectedConfig}");   
+        foreach (var entry in pointCloudEntries)
+        {
+            OnPointCloudPositionChanged(entry);
+            OnPointCloudRotationChanged(entry);
+        }
         ConfigFileManager.Instance.Save();
+        SetStatus($"Saved {selectedConfig}");
     }
 
-    private void OnPointCloudPositionChanged(string value)
+    private void OnPointCloudPositionChanged(PointCloudUIEntry entry)
     {
-
-        var transform = PointCloudManager.Instance.GetVisualEffectTransform(1);
-
-        transform.position = new Vector3(
-            float.Parse(pointCloudPositionXInputField.text),
-            float.Parse(pointCloudPositionYInputField.text),
-            float.Parse(pointCloudPositionZInputField.text)
-        );
-
-        ConfigFileManager.Instance.SaveObjectTransform(1, transform);
-
-        PointCloudManager.Instance.SetVisualEffectTransform(transform, 1);
+        var t = PointCloudManager.Instance.GetVisualEffectTransform(entry.CameraId);
+        t.position = entry.Position;
+        ConfigFileManager.Instance.SaveObjectTransform(entry.CameraId, t);
+        PointCloudManager.Instance.SetVisualEffectTransform(t, entry.CameraId);
     }
 
-    private void OnPointCloudRotationChanged(string value)
+    private void OnPointCloudRotationChanged(PointCloudUIEntry entry)
     {
-
-        var transform = PointCloudManager.Instance.GetVisualEffectTransform(1);
-
-        transform.rotation = Quaternion.Euler(
-            float.Parse(pointCloudRotationXInputField.text),
-            float.Parse(pointCloudRotationYInputField.text),
-            float.Parse(pointCloudRotationZInputField.text)
-        );
-
-        ConfigFileManager.Instance.SaveObjectTransform(1, transform);
-
-        PointCloudManager.Instance.SetVisualEffectTransform(transform, 1);
-
+        var t = PointCloudManager.Instance.GetVisualEffectTransform(entry.CameraId);
+        t.rotation = Quaternion.Euler(entry.Rotation);
+        ConfigFileManager.Instance.SaveObjectTransform(entry.CameraId, t);
+        PointCloudManager.Instance.SetVisualEffectTransform(t, entry.CameraId);
     }
+
 
     private void OnLoadConfigButtonClick()
     {
         ConfigFileManager.Instance.Load(selectedConfig);
-        SetStatus($"Load Config {selectedConfig}");
+        SetStatus($"Loaded {selectedConfig}");
 
-
-        pointCloudCanvasGroup.interactable = true;
+        foreach (var entry in pointCloudEntries)
+            entry.SetInteractable(true);
     }
 
     private void OnLoadConfigDropdownValueChanged(int value)
@@ -199,29 +176,19 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         ConfigFileManager.Instance.Save();
         selectedConfig = newConfigName;
 
-        InitTransformInputField();
+        foreach (var entry in pointCloudEntries)
+        {
+            var t = PointCloudManager.Instance.GetVisualEffectTransform(entry.CameraId);
+            entry.SetPositionFields(t.position);
+            entry.SetRotationFields(t.eulerAngles);
+            entry.SetInteractable(true);
+        }
 
         RefreshList();
         SetStatus($"Created {newConfigName}");
-
-        pointCloudCanvasGroup.interactable = true;
     }
 
-    private void InitTransformInputField()
-    {
-
-        var transform =  PointCloudManager.Instance.GetVisualEffectTransform(1);
-
-        pointCloudPositionXInputField.SetTextWithoutNotify(transform.position.x.ToString());
-        pointCloudPositionYInputField.SetTextWithoutNotify(transform.position.y.ToString());
-        pointCloudPositionZInputField.SetTextWithoutNotify(transform.position.z.ToString());
-                                                                                         
-        pointCloudRotationXInputField.SetTextWithoutNotify(transform.eulerAngles.x.ToString());
-        pointCloudRotationYInputField.SetTextWithoutNotify(transform.eulerAngles.y.ToString());
-        pointCloudRotationZInputField.SetTextWithoutNotify(transform.eulerAngles.z.ToString());
-    }
-
-    private void OnConfigNameInputFiledSubmit(string value)
+    private void OnConfigNameInputFieldSubmit(string value)
     {
         newConfigName = value.Trim();
     }
@@ -255,15 +222,14 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void OnConfigLoaded(ConfigFile file)
     {
-        var transformData = file.pointClouds[0];
+        for (int i = 0; i < pointCloudEntries.Count; i++)
+        {
+            if (i >= file.pointClouds.Count) break;
 
-        pointCloudPositionXInputField.SetTextWithoutNotify(transformData.position.x.ToString());
-        pointCloudPositionYInputField.SetTextWithoutNotify(transformData.position.y.ToString());
-        pointCloudPositionZInputField.SetTextWithoutNotify(transformData.position.z.ToString());
-
-        pointCloudRotationXInputField.SetTextWithoutNotify(transformData.rotation.x.ToString());
-        pointCloudRotationYInputField.SetTextWithoutNotify(transformData.rotation.y.ToString());
-        pointCloudRotationZInputField.SetTextWithoutNotify(transformData.rotation.z.ToString());
+            var data = file.pointClouds[i];
+            pointCloudEntries[i].SetPositionFields(data.position.ToVector3());
+            pointCloudEntries[i].SetRotationFields(data.rotation.ToVector3());
+        }
     }
 
     private void OnFileListRefreshed(List<string> list)
@@ -272,33 +238,11 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     }
 
 
-    private void Start()
-    {
-        StartCoroutine("LoadScene");
-
-        RefreshList();
-
-        pointCloudCanvasGroup.interactable = false;
-    }
-
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene)
     {
 
-        var pointCloudContainer = PointCloudManager.Instance.GetPointCloudContainer(1);
+        SpawnPointCloudEntries();
 
-        if(pointCloudContainer != null)
-        {
-            VisualEffect vfxEffect = pointCloudContainer.vfx;
-            PointCloudReplayBuffer pointCloudReplayBuffer = pointCloudContainer.replayBuffer;
-            RealtimeDelaySwitcher realtimeDelaySwitcher = pointCloudContainer.realtimeDelaySwitcher;
-
-            realtimeDelaySwitcher.displayMode = RealtimeDelaySwitcher.DisplayMode.Realtime;
-
-            realtimeDelaySwitcher.enabled = true;
-            pointCloudReplayBuffer.enabled = false;
-            vfxEffect.enabled = true;
-        }
-       
     }
 
     public IEnumerator LoadScene()

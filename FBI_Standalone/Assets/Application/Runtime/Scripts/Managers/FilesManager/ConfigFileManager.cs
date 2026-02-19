@@ -141,6 +141,44 @@ public class ConfigFileManager : MonoBehaviour
         if (saveImmediately) Save();
     }
 
+    public void SaveDepthMax(int cameraID, float value, bool saveImmediately = true)
+    {
+        if (CurrentConfig == null) { Debug.LogError("[ConfigFileManager] No active config."); return; }
+
+        var existing = CurrentConfig.pointClouds.Find(o => o.ID == cameraID);
+        if (existing != null)
+        {
+            existing.depthMax = value;
+        }
+        else
+        {
+            var data = new ObjectTransformData(cameraID);
+            data.depthMax = value;
+            CurrentConfig.pointClouds.Add(data);
+        }
+
+        if (saveImmediately) Save();
+    }
+
+    public void SaveDepthMin(int cameraID, float value, bool saveImmediately = true)
+    {
+        if (CurrentConfig == null) { Debug.LogError("[ConfigFileManager] No active config."); return; }
+
+        var existing = CurrentConfig.pointClouds.Find(o => o.ID == cameraID);
+        if (existing != null)
+        {
+            existing.depthMin = value;
+        }
+        else
+        {
+            var data = new ObjectTransformData(cameraID);
+            data.depthMin = value;
+            CurrentConfig.pointClouds.Add(data);
+        }
+
+        if (saveImmediately) Save();
+    }
+
     private string GetPath(string configName) =>
         Path.Combine(RootPath, $"{configName}.yaml");
 }
