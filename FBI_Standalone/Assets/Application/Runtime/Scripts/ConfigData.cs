@@ -15,7 +15,7 @@ public class SerializableVector3
 [Serializable]
 public class ObjectTransformData
 {
-    public int cameraID;
+    public int ID;
     public SerializableVector3 position;
     public SerializableVector3 rotation; // eulerAngles
     public SerializableVector3 scale;
@@ -24,7 +24,7 @@ public class ObjectTransformData
 
     public ObjectTransformData(int cameraID, Transform t)
     {
-        cameraID = cameraID;
+        this.ID = cameraID;
         position = new SerializableVector3(t.position);
         rotation = new SerializableVector3(t.eulerAngles);
         scale = new SerializableVector3(t.localScale);

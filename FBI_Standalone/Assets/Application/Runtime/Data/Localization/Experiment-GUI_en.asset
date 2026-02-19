@@ -138,6 +138,14 @@ MonoBehaviour:
     m_Localized: 'Status :  {0}'
     m_Metadata:
       m_Items: []
+  - m_Id: 85883634625961984
+    m_Localized: Save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85899228595249152
+    m_Localized: Setup point cloud configuration file
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

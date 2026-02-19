@@ -70,6 +70,8 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance { get { return instance; } }
 
     private List<CanvasSetupPointCloudUI> currentCanvasGraphUIs = new List<CanvasSetupPointCloudUI>();
+    private List<string> configs;
+    private string selectedConfig;
 
     public string SelectedGender
     {
@@ -211,6 +213,8 @@ public class UIManager : MonoBehaviour
 
         InitSequenceDropDown();
 
+        InitConfigDropDown();
+
     }
 
     private void Update()
@@ -251,6 +255,19 @@ public class UIManager : MonoBehaviour
         sequenceDropdown.SetValueWithoutNotify(0);
     }
 
+    private void InitConfigDropDown()
+    {
+        configs = ConfigFileManager.Instance.GetAvailableConfigs();
+
+        if (configs.Count > 0)
+        {
+
+            configDropdown.ClearOptions();
+            configDropdown.AddOptions(configs);
+
+            configDropdown.value = configs.IndexOf(selectedConfig);
+        }
+    }
 
     private void OnExperimentInitialized(bool isInitialized, Sequence sequence)
     {
@@ -279,7 +296,7 @@ public class UIManager : MonoBehaviour
 
     private void OnConfigDropDownChanged(int index)
     {
-        
+        selectedConfig = configs[index];
     }
 
     private void OnExperimentStarted()
@@ -541,6 +558,8 @@ public class UIManager : MonoBehaviour
     {
         currentCanvasGraphUIs.Remove(canvasSetupPointCloudUI);
         Destroy(canvasSetupPointCloudUI.gameObject);
+
+        InitConfigDropDown();
     }
 
 
