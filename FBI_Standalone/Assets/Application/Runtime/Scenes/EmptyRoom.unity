@@ -800,8 +800,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9b3dd3fb6964ca42b8cf69c688affe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ColorMain: {fileID: 8400000, guid: e96cdc3b37ad79be39d14ce547fe0da1, type: 2}
-  VertexMain: {fileID: 8400000, guid: d8e773d5bbad0c05c965e6b888e86b55, type: 2}
+  ColorMain: {fileID: 8400000, guid: 76a33ecc1429053428801d9b57237b96, type: 2}
+  VertexMain: {fileID: 8400000, guid: ea74259af53a37e42b78d52b0170f1c8, type: 2}
   ColorDelay: {fileID: 8400000, guid: d76eb5eb5c81be247a6dc7c19e3a88d6, type: 2}
   VertexDelay: {fileID: 8400000, guid: 95862d4269c396a43b9b32d3a70cde3e, type: 2}
   displayMode: 0
@@ -1844,8 +1844,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9b3dd3fb6964ca42b8cf69c688affe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ColorMain: {fileID: 8400000, guid: eee513a3061bb2045a99107fcd1e277d, type: 2}
-  VertexMain: {fileID: 8400000, guid: ef191758cfd0c234dacd6ac2d295e65c, type: 2}
+  ColorMain: {fileID: 8400000, guid: 1c93e00328946264cab7377aadfa8fc1, type: 2}
+  VertexMain: {fileID: 8400000, guid: 8e437a7816d60164ba157537dc368480, type: 2}
   ColorDelay: {fileID: 8400000, guid: fcd806223dba5aa42943fe5f0628b368, type: 2}
   VertexDelay: {fileID: 8400000, guid: bf4b2e07efd9b2a4ab70404c989be853, type: 2}
   displayMode: 0

@@ -259,13 +259,22 @@ public class UIManager : MonoBehaviour
     {
         configs = ConfigFileManager.Instance.GetAvailableConfigs();
 
+
+        configDropdown.ClearOptions();
+
         if (configs.Count > 0)
         {
 
-            configDropdown.ClearOptions();
+    
             configDropdown.AddOptions(configs);
 
             configDropdown.value = configs.IndexOf(selectedConfig);
+
+            EnableStartButtonInteraction();
+        }
+        else
+        {
+            DisableStartButtonInteraction();
         }
     }
 

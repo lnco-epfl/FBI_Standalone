@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+using UnityEngine.VFX;
 
 public class CanvasSetupPointCloudUI : MonoBehaviour
 {
@@ -283,6 +284,21 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene)
     {
 
+        var pointCloudContainer = PointCloudManager.Instance.GetPointCloudContainer(1);
+
+        if(pointCloudContainer != null)
+        {
+            VisualEffect vfxEffect = pointCloudContainer.vfx;
+            PointCloudReplayBuffer pointCloudReplayBuffer = pointCloudContainer.replayBuffer;
+            RealtimeDelaySwitcher realtimeDelaySwitcher = pointCloudContainer.realtimeDelaySwitcher;
+
+            realtimeDelaySwitcher.displayMode = RealtimeDelaySwitcher.DisplayMode.Realtime;
+
+            realtimeDelaySwitcher.enabled = true;
+            pointCloudReplayBuffer.enabled = false;
+            vfxEffect.enabled = true;
+        }
+       
     }
 
     public IEnumerator LoadScene()

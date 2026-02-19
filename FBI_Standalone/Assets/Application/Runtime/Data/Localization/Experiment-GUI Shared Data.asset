@@ -116,7 +116,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 85567556557709312
-    m_Key: point-cloud
+    m_Key: camera-id
     m_Metadata:
       m_Items: []
   - m_Id: 85568901624864768
@@ -141,6 +141,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 85899228595249152
     m_Key: setuppointcloud-title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85926823851122688
+    m_Key: camera-depth-max
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85927290337419264
+    m_Key: camera-depth-min
     m_Metadata:
       m_Items: []
   m_Metadata:
