@@ -123,7 +123,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 85567556557709312
-    m_Localized: Camera {0}
+    m_Localized: 'Camera id : {0}'
     m_Metadata:
       m_Items: []
   - m_Id: 85568901624864768

@@ -1,6 +1,8 @@
 using Intel.RealSense;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -94,4 +96,8 @@ public class PointCloudManager : MonoBehaviour
         return container != null ? container.realtimeDelaySwitcher : null;
     }
 
+    public List<int> GetAvailableCameraIds()
+    {
+        return pointCloudContainers.Keys.ToList();
+    }
 }
