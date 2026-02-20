@@ -1,3 +1,4 @@
+using com.rfilkov.kinect;
 using Eflatun.SceneReference;
 using Intel.RealSense;
 using System;
@@ -35,6 +36,10 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     [SerializeField] private Transform pointCloudContainer;
     [SerializeField] private Button saveButton;
 
+    [Header("Point Cloud Switch")]
+    [Tooltip("Delay in seconds between disabling the previous point cloud and enabling the next one, to allow textures to initialize.")]
+    [SerializeField] private float switchDelay = 1.5f;
+
     [Header("Scene")]
     [SerializeField] private SceneReference scene;
 
@@ -45,6 +50,16 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     private string newConfigName;
 
     private List<PointCloudUIEntry> pointCloudEntries = new List<PointCloudUIEntry>();
+
+    /// <summary>
+    /// The entry whose point cloud is currently active (visible). Null if none.
+    /// </summary>
+    private PointCloudUIEntry activeEntry;
+
+    /// <summary>
+    /// Prevents the user from switching while a switch transition is already in progress.
+    /// </summary>
+    private bool isSwitching;
 
     private void Start()
     {
@@ -68,8 +83,6 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         SceneLoaderManager.Instance.OnSceneLoaded += OnSceneLoaded;
     }
 
-
-
     private void OnDisable()
     {
         closeButton.onClick.RemoveListener(OnButtonCloseClick);
@@ -89,6 +102,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         {
             entry.OnPositionChanged -= OnPointCloudPositionChanged;
             entry.OnRotationChanged -= OnPointCloudRotationChanged;
+            entry.OnDisplayToggleRequested -= OnDisplayToggleRequested;
         }
     }
 
@@ -104,21 +118,72 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             var entry = go.GetComponent<PointCloudUIEntry>();
             entry.Init(id);
             entry.SetInteractable(false);
-
             entry.SetDisplayToggle(false);
 
             entry.OnPositionChanged += OnPointCloudPositionChanged;
             entry.OnRotationChanged += OnPointCloudRotationChanged;
+            entry.OnDisplayToggleRequested += OnDisplayToggleRequested;
 
             pointCloudEntries.Add(entry);
         }
     }
 
+    /// <summary>
+    /// Handles exclusive toggle switching with a delay to allow texture initialization.
+    /// </summary>
+    private void OnDisplayToggleRequested(PointCloudUIEntry requestingEntry, bool desiredState)
+    {
+        if (isSwitching)
+        {
+            Debug.Log("[CanvasSetupPointCloudUI] Switch already in progress, ignoring request.");
+            return;
+        }
+
+        // Turning off the currently active entry.
+        if (!desiredState && requestingEntry == activeEntry)
+        {
+            StartCoroutine(SwitchPointCloudCoroutine(activeEntry, null));
+            return;
+        }
+
+        // Turning on a new entry (exclusive: deactivate the current one first).
+        if (desiredState && requestingEntry != activeEntry)
+        {
+            StartCoroutine(SwitchPointCloudCoroutine(activeEntry, requestingEntry));
+        }
+    }
+
+    /// <summary>
+    /// Coroutine that disables the previous point cloud, waits for the switch delay,
+    /// then enables the next one.
+    /// </summary>
+    private IEnumerator SwitchPointCloudCoroutine(PointCloudUIEntry previous, PointCloudUIEntry next)
+    {
+        isSwitching = true;
+
+        // Disable the previously active point cloud.
+        if (previous != null)
+        {
+            previous.ApplyDisplayState(false);
+        }
+
+        activeEntry = null;
+
+        if (next != null)
+        {
+            // Wait for textures / VFX to properly reset before activating the new camera.
+            yield return new WaitForSeconds(switchDelay);
+
+            next.ApplyDisplayState(true);
+            activeEntry = next;
+        }
+
+        isSwitching = false;
+    }
+
     private void OnButtonCloseClick()
     {
-
         SceneLoaderManager.Instance.LoadDefaultScene();
-
         OnCanvasSetupPointCloudUIDestroy.Invoke(this);
     }
 
@@ -148,7 +213,6 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         ConfigFileManager.Instance.SaveObjectTransform(entry.CameraId, t);
         PointCloudManager.Instance.SetVisualEffectTransform(t, entry.CameraId);
     }
-
 
     private void OnLoadConfigButtonClick()
     {
@@ -195,12 +259,10 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void RefreshList()
     {
-      
         configs = ConfigFileManager.Instance.GetAvailableConfigs();
 
-        if(configs.Count > 0)
+        if (configs.Count > 0)
         {
-
             loadConfigDropdown.ClearOptions();
             loadConfigDropdown.AddOptions(configs);
 
@@ -212,12 +274,10 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         {
             loadConfigCanvasGroup.interactable = false;
         }
-
     }
 
     private void OnConfigSaved(ConfigFile file)
     {
-        
     }
 
     private void OnConfigLoaded(ConfigFile file)
@@ -234,20 +294,21 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void OnFileListRefreshed(List<string> list)
     {
-
     }
-
 
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene)
     {
+        StartCoroutine(WaitForKinectManagerInitialization());
+    }
 
+    public IEnumerator WaitForKinectManagerInitialization()
+    {
+        yield return new WaitUntil(() => KinectManager.Instance.IsInitialized());
         SpawnPointCloudEntries();
-
     }
 
     public IEnumerator LoadScene()
     {
-
         Fader.Instance.FadeToBlack();
         yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
 
@@ -255,7 +316,6 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         Fader.Instance.FadeToClear();
         yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
-
     }
 
     private void SetStatus(string message)
