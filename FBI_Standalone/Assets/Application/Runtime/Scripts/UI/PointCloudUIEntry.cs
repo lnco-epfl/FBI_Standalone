@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.UI;
+using YamlDotNet.Core.Tokens;
 using static com.rfilkov.kinect.KinectInterop;
 
 public class PointCloudUIEntry : MonoBehaviour
@@ -168,5 +169,17 @@ public class PointCloudUIEntry : MonoBehaviour
     {
         kinectInerface.minDepthDistance = value;
         ConfigFileManager.Instance.SaveDepthMin(CameraId, value);
+    }
+
+    public void SetMinDepth(float depthMin)
+    {
+        kinectInerface.minDepthDistance = depthMin;
+        cameraDepthMinSlider.SetValueWithoutNotify(depthMin);
+    }
+
+    public void SetMaxDepth(float depthMax)
+    {
+        kinectInerface.maxDepthDistance = depthMax;
+        cameraDepthMaxSlider.SetValueWithoutNotify(depthMax);
     }
 }

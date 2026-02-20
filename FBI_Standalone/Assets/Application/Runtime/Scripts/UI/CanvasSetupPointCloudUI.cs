@@ -10,6 +10,7 @@ using UnityEngine.Localization;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 using UnityEngine.VFX;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class CanvasSetupPointCloudUI : MonoBehaviour
 {
@@ -289,6 +290,12 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             var data = file.pointClouds[i];
             pointCloudEntries[i].SetPositionFields(data.position.ToVector3());
             pointCloudEntries[i].SetRotationFields(data.rotation.ToVector3());
+
+            OnPointCloudPositionChanged(pointCloudEntries[i]);
+            OnPointCloudRotationChanged(pointCloudEntries[i]);
+
+            pointCloudEntries[i].SetMinDepth(data.depthMin);
+            pointCloudEntries[i].SetMaxDepth(data.depthMax);
         }
     }
 
