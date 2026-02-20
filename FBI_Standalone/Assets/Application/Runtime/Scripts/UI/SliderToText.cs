@@ -6,12 +6,11 @@ public class SliderToText : MonoBehaviour
 {
     private Slider slider;
 
-    [SerializeField] private TextMeshProUGUI tmpText;
+    [SerializeField] private TMP_Text tmpText;
 
     void Start()
     {
         slider = GetComponent<Slider>();
-        tmpText = GetComponent<TextMeshProUGUI>();
 
         slider.onValueChanged.AddListener(UpdateText);
         UpdateText(slider.value);

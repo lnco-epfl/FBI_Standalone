@@ -1,8 +1,10 @@
 using System;
+using com.rfilkov.kinect;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.UI;
+using static com.rfilkov.kinect.KinectInterop;
 
 public class PointCloudUIEntry : MonoBehaviour
 {
@@ -23,9 +25,17 @@ public class PointCloudUIEntry : MonoBehaviour
     [Header("Camera Settings")]
     [SerializeField] private Slider cameraDepthMaxSlider;
     [SerializeField] private Slider cameraDepthMinSlider;
+    private SensorData sensorData;
+    private Kinect4AzureInterface kinectInerface;
 
     public event Action<PointCloudUIEntry> OnPositionChanged;
     public event Action<PointCloudUIEntry> OnRotationChanged;
+
+    /// <summary>
+    /// Fired when the user clicks the display toggle. The bool indicates the desired state.
+    /// The parent (CanvasSetupPointCloudUI) handles exclusivity and the switch delay.
+    /// </summary>
+    public event Action<PointCloudUIEntry, bool> OnDisplayToggleRequested;
 
     public int CameraId { get; private set; }
 
@@ -46,6 +56,21 @@ public class PointCloudUIEntry : MonoBehaviour
         CameraId = cameraId;
 
         titleText.text = titleLocalizedString.GetLocalizedString(CameraId);
+
+        sensorData = KinectManager.Instance != null && KinectManager.Instance.IsInitialized() ? KinectManager.Instance.GetSensorData(cameraId - 1) : null;
+
+        if (sensorData != null && sensorData.sensorInterface != null)
+        {
+            kinectInerface = (Kinect4AzureInterface)sensorData.sensorInterface;
+
+            cameraDepthMaxSlider.minValue = 0.0f;
+            cameraDepthMaxSlider.maxValue = 10.0f;
+            cameraDepthMaxSlider.value = kinectInerface.maxDepthDistance;
+
+            cameraDepthMinSlider.minValue = 0.0f;
+            cameraDepthMinSlider.maxValue = 10.0f;
+            cameraDepthMinSlider.value = kinectInerface.minDepthDistance;
+        }
     }
 
     private void OnEnable()
@@ -96,6 +121,16 @@ public class PointCloudUIEntry : MonoBehaviour
 
     private void OnDisplayToggleChanged(bool isOn)
     {
+        displayPointCloudToggle.SetIsOnWithoutNotify(!isOn);
+
+        OnDisplayToggleRequested?.Invoke(this, isOn);
+    }
+
+    public void ApplyDisplayState(bool isOn)
+    {
+
+        displayPointCloudToggle.SetIsOnWithoutNotify(isOn);
+
         var container = PointCloudManager.Instance.GetPointCloudContainer(CameraId);
         if (container == null) return;
 
@@ -125,11 +160,13 @@ public class PointCloudUIEntry : MonoBehaviour
 
     private void OnDepthMaxChanged(float value)
     {
+        kinectInerface.maxDepthDistance = value;
         ConfigFileManager.Instance.SaveDepthMax(CameraId, value);
     }
 
     private void OnDepthMinChanged(float value)
     {
+        kinectInerface.minDepthDistance = value;
         ConfigFileManager.Instance.SaveDepthMin(CameraId, value);
     }
 }
