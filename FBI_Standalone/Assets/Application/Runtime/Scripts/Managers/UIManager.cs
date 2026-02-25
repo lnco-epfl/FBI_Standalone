@@ -27,8 +27,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Dropdown genderDropdown;
     [SerializeField] private TMP_Dropdown languageDropdown;
 
-
-
     [SerializeField] private TMP_Dropdown sequenceDropdown;
 
     [SerializeField] private TMP_Dropdown configDropdown;
@@ -306,6 +304,7 @@ public class UIManager : MonoBehaviour
     private void OnConfigDropDownChanged(int index)
     {
         selectedConfig = configs[index];
+        ConfigFileManager.Instance.Load(selectedConfig);
     }
 
     private void OnExperimentStarted()
