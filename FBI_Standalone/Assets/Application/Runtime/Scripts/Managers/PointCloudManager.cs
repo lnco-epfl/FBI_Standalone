@@ -1,10 +1,13 @@
+using com.rfilkov.kinect;
 using Intel.RealSense;
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.VFX;
+using static com.rfilkov.kinect.KinectInterop;
 
 
 public class PointCloudContainer
@@ -48,6 +51,30 @@ public class PointCloudManager : MonoBehaviour
             pointCloudContainers[cameraID] = new PointCloudContainer(pointCloudVFX, pointCloud1ReplayBuffer, realtimeDelaySwitcher);
         }
 
+        StartCoroutine(WaitForKinectManagerInitialization());
+
+    }
+
+    private IEnumerator WaitForKinectManagerInitialization()
+    {
+        yield return new WaitUntil(() => KinectManager.Instance.IsInitialized());
+
+         var currentConfig = ConfigFileManager.Instance.CurrentConfig;
+
+        if (currentConfig != null)
+        {
+            for (int i = 0; i < currentConfig.pointClouds.Count; i++)
+            {
+                var id = currentConfig.pointClouds[i].ID;
+                var position = currentConfig.pointClouds[i].position.ToVector3();
+                var rotation = currentConfig.pointClouds[i].rotation.ToVector3();
+                var depthMin = currentConfig.pointClouds[i].depthMin;
+                var depthMax = currentConfig.pointClouds[i].depthMax;
+
+                SetVisualEffectPositionAndRotation(position, rotation, id);
+                SetCameraDepthValues(depthMin, depthMax, id);
+            }
+        }
     }
 
     public PointCloudContainer GetPointCloudContainer(int cameraID)
@@ -69,6 +96,16 @@ public class PointCloudManager : MonoBehaviour
         return GetVisualEffect(cameraID).transform;
     }
 
+    public void SetVisualEffectPositionAndRotation(Vector3 postion, Vector3 rotation, int cameraID)
+    {
+        var vfx = GetVisualEffect(cameraID);
+        if (vfx != null)
+        {
+            vfx.transform.position = postion;
+            vfx.transform.rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z);
+        }
+    }
+
     public void SetVisualEffectTransform(Transform transform, int cameraID)
     {
         var vfx = GetVisualEffect(cameraID);
@@ -79,6 +116,18 @@ public class PointCloudManager : MonoBehaviour
         }
     }
 
+    private void SetCameraDepthValues(float depthMin, float depthMax, int id)
+    {
+        var sensorData = KinectManager.Instance != null && KinectManager.Instance.IsInitialized() ? KinectManager.Instance.GetSensorData(id - 1) : null;
+
+        if (sensorData != null && sensorData.sensorInterface != null)
+        {
+            var kinectInerface = (Kinect4AzureInterface)sensorData.sensorInterface;
+
+            kinectInerface.maxDepthDistance = depthMax;
+            kinectInerface.minDepthDistance = depthMin;
+        }
+    }
 
     public VisualEffect GetVisualEffect(int cameraID)
     {
