@@ -6087,7 +6087,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasDesktopGroup: {fileID: 5373904648914660424}
   canvasFullScreenGroup: {fileID: 5638559376805721462}
-  canvasSetupPointCloudUIPrefab: {fileID: 5873584698709706999, guid: a77bbbd3d907e0747bf909166bd20ab3, type: 3}
+  canvasSetupPointCloudUIPrefab: {fileID: 5612394145731988506, guid: a77bbbd3d907e0747bf909166bd20ab3, type: 3}
   soundSlider: {fileID: 14473389652402395}
   muteButton: {fileID: 5461496108532169787}
   onSpeakerSprite: {fileID: 21300626, guid: 7f186a9ac091755489927d745be0185a, type: 3}

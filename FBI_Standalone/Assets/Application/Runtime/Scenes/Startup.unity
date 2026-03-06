@@ -944,7 +944,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fb6dd460299dbf4383d893bc19c606e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  configFolder: Configs
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
