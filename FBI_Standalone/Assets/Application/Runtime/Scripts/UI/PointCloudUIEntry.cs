@@ -13,7 +13,7 @@ public class PointCloudUIEntry : MonoBehaviour
     [Header("Title")]
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private LocalizedString titleLocalizedString;
-    [SerializeField] private Toggle displayPointCloudToggle;
+    [SerializeField] private UISwitcher.UISwitcher displayPointCloudToggle;
 
     [Header("Transform")]
     [SerializeField] private TMP_InputField positionXInputField;
@@ -122,7 +122,7 @@ public class PointCloudUIEntry : MonoBehaviour
 
     private void OnDisplayToggleChanged(bool isOn)
     {
-        displayPointCloudToggle.SetIsOnWithoutNotify(!isOn);
+        displayPointCloudToggle.SetWithoutNotify(!isOn);
 
         OnDisplayToggleRequested?.Invoke(this, isOn);
     }
@@ -130,7 +130,7 @@ public class PointCloudUIEntry : MonoBehaviour
     public void ApplyDisplayState(bool isOn)
     {
 
-        displayPointCloudToggle.SetIsOnWithoutNotify(isOn);
+        displayPointCloudToggle.SetWithoutNotify(isOn);
 
         var container = PointCloudManager.Instance.GetPointCloudContainer(CameraId);
         if (container == null) return;
@@ -151,7 +151,7 @@ public class PointCloudUIEntry : MonoBehaviour
 
     public void SetDisplayToggle(bool isOn)
     {
-        displayPointCloudToggle.SetIsOnWithoutNotify(isOn);
+        displayPointCloudToggle.SetWithoutNotify(isOn);
     }
 
     public void SetInteractable(bool interactable)
