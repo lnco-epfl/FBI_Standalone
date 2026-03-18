@@ -52,6 +52,11 @@ public class PointCloudUIEntry : MonoBehaviour
         float.Parse(rotationZInputField.text)
     );
 
+    private void Awake()
+    {
+        displayPointCloudToggle = GetComponentInChildren<UISwitcher.UISwitcher>();
+    }
+
     public void Init(int cameraId)
     {
         CameraId = cameraId;
@@ -122,7 +127,7 @@ public class PointCloudUIEntry : MonoBehaviour
 
     private void OnDisplayToggleChanged(bool isOn)
     {
-        displayPointCloudToggle.SetWithoutNotify(!isOn);
+        //displayPointCloudToggle.SetWithoutNotify(!isOn);
 
         OnDisplayToggleRequested?.Invoke(this, isOn);
     }

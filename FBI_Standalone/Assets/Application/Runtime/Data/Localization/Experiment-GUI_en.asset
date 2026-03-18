@@ -119,11 +119,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 85565825794940928
-    m_Localized: name of the config...
+    m_Localized: name...
     m_Metadata:
       m_Items: []
   - m_Id: 85567556557709312
-    m_Localized: 'Camera id : {0}'
+    m_Localized: Camera i{0}
     m_Metadata:
       m_Items: []
   - m_Id: 85568901624864768
@@ -135,7 +135,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 85592542299267072
-    m_Localized: 'Status :  {0}'
+    m_Localized: '{0}'
     m_Metadata:
       m_Items: []
   - m_Id: 85883634625961984
@@ -147,11 +147,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 85926823851122688
-    m_Localized: Camera Depth Max
+    m_Localized: Max
     m_Metadata:
       m_Items: []
   - m_Id: 85927290337419264
-    m_Localized: Camera Depth Min
+    m_Localized: Min
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95784471483617280
+    m_Localized: "\u2194 Horizontal"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95784474528681984
+    m_Localized: "\u2195 Vertical"
     m_Metadata:
       m_Items: []
   references:
