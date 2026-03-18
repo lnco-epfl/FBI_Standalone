@@ -147,6 +147,14 @@ MonoBehaviour:
     m_Key: camera-depth-min
     m_Metadata:
       m_Items: []
+  - m_Id: 95784471483617280
+    m_Key: horizontal-flip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95784474528681984
+    m_Key: vertical-flip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

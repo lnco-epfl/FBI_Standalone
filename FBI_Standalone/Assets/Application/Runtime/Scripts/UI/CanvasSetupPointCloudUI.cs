@@ -25,6 +25,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     [Header("Status")]
     [SerializeField] private TMP_Text statusText;
+    [SerializeField] private Image dotImage;
     [SerializeField] private LocalizedString statusLocalizedText;
 
     [Header("Load Config")]
