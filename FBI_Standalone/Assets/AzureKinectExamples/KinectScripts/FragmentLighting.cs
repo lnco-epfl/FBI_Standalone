@@ -12,7 +12,6 @@ namespace com.rfilkov.components
 
         private Vector4[] dirLightData = new Vector4[2];
 
-        [SerializeField]
         public struct PointLight
         {
             public Vector4 color;
@@ -28,7 +27,6 @@ namespace com.rfilkov.components
         private ComputeBuffer pointLightsBuffer = null;
         private int pointLightsNumber = 0;
 
-        [SerializeField]
         public struct SpotLight
         {
             public Vector4 color;

@@ -50,7 +50,6 @@ public class WaitStep : SequenceStep
     public override Color GetColor() => Color.cyan;
 }
 
-[SerializeField]
 public enum Condition
 {
     Control,
