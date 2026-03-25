@@ -60,7 +60,7 @@ public class EventFileManager : MonoBehaviour
         DateTime now = DateTime.Now;
         timestamp = now.ToString("yyyyMMdd_HHmmss");
 
-        outputFolderPath = Path.Combine(Application.dataPath.Substring(0, Application.dataPath.LastIndexOf('/')), "Output");
+        outputFolderPath = Path.Combine(Application.dataPath, "..", "Output");
 
         if (!Directory.Exists(outputFolderPath))
         {

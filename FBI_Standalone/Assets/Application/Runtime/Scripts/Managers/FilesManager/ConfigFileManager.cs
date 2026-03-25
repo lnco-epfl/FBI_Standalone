@@ -11,7 +11,7 @@ public class ConfigFileManager : MonoBehaviour
 
     private string configFolder = "Configs";
 
-    private string RootPath => Path.Combine(Application.dataPath.Substring(0, Application.dataPath.LastIndexOf('/')), configFolder); 
+    private string RootPath => Path.Combine(Application.dataPath, "..", "Input", configFolder);
 
     private ISerializer serializer;
     private IDeserializer deserializer;

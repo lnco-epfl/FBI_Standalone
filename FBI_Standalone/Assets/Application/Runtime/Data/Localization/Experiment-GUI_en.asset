@@ -123,7 +123,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 85567556557709312
-    m_Localized: Camera i{0}
+    m_Localized: Camera {0}
     m_Metadata:
       m_Items: []
   - m_Id: 85568901624864768
@@ -160,6 +160,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 95784474528681984
     m_Localized: "\u2195 Vertical"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98314666549944320
+    m_Localized: Mirror
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98315110630268928
+    m_Localized: Depth
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98316787789832192
+    m_Localized: Display
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98316710673358848
+    m_Localized: Transform
     m_Metadata:
       m_Items: []
   references:

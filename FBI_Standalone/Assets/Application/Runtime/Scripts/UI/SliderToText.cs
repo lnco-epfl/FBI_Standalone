@@ -23,6 +23,9 @@ public class SliderToText : MonoBehaviour
 
     void OnDestroy()
     {
-        slider.onValueChanged.RemoveListener(UpdateText);
+        if(slider!= null)
+        {
+            slider.onValueChanged.RemoveListener(UpdateText);
+        } 
     }
 }

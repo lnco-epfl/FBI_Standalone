@@ -50,15 +50,6 @@ public class WaitStep : SequenceStep
     public override Color GetColor() => Color.cyan;
 }
 
-public enum Condition
-{
-    Control,
-    Sync,
-    FixedAsync,
-    RandomAsync
-}
-
-
 [System.Serializable]
 public class LoadSceneStep : SequenceStep
 {
@@ -78,6 +69,21 @@ public class LoadSceneStep : SequenceStep
 
     }
     public override Color GetColor() => Color.green;
+}
+
+[System.Serializable]
+public class LoadConfigStep : SequenceStep
+{
+
+    public string fileName;
+
+    public override float GetDuration() => 1.0f;
+    public override string GetStateName() => "LoadConfig";
+    public override string GetDisplayName()
+    {
+        return $"Load Scene {fileName}";
+    }
+    public override Color GetColor() => Color.brown;
 }
 
 [System.Serializable]
@@ -183,7 +189,7 @@ public class PlaySoundStep : SequenceStep
         var text = sound == null ? "No Text" : sound.name;
         return $"Play sound {text}";
     }
-    public override Color GetColor() => new Color(1f, 0.6470588f, 0f, 1f); // orange
+    public override Color GetColor() => Color.orange;
 }
 
 
@@ -192,12 +198,11 @@ public class DisplayCameraStep : SequenceStep
 {
     public float displayTime = 1f;
     public string cameraID = "1";
-    public string displayMode = "realtime";
-
+    public float delay = 0.0f;
 
     public override float GetDuration() => displayTime;
     public override string GetStateName() => "DisplayCamera";
-    public override string GetDisplayName() => "No Text";
+    public override string GetDisplayName() => $"Display Camera {cameraID} for {displayTime} with {delay} of delay";
     public override Color GetColor() => Color.grey;
 }
 
@@ -212,7 +217,7 @@ public class SequenceStepWrapper
 
     public enum StepType
     {
-        DisplayText, Wait, SpawnObject, LoadScene, DisplayLikertScale, Break, DisplayImage, DisplayQuestion, PlaySound, DisplayCamera
+        DisplayText, Wait, SpawnObject, LoadScene, LoadConfig, DisplayLikertScale, Break, DisplayImage, DisplayQuestion, PlaySound, DisplayCamera
     }
 
     public SequenceStepWrapper()
@@ -228,6 +233,7 @@ public class SequenceStepWrapper
             case StepType.DisplayText: step = new DisplayTextStep(); break;
             case StepType.Wait: step = new WaitStep(); break;
             case StepType.LoadScene: step = new LoadSceneStep(); break;
+            case StepType.LoadConfig: step = new LoadConfigStep(); break;
             case StepType.DisplayLikertScale: step = new DisplayLikertScaleStep(); break;
             case StepType.Break: step = new BreakStep(); break;
             case StepType.DisplayImage: step = new DisplayImageStep(); break;

@@ -66,7 +66,7 @@ public class SceneLoaderManager : MonoBehaviour
 
             OnSceneLoaded?.Invoke(currentScene);
 
-            EventFileManager.Log($"SceneLoaderManager Scene loaded {currentScene.name}");
+            EventFileManager.Log($"[SceneLoaderManager] Scene loaded {currentScene.name}");
 
         }
     }

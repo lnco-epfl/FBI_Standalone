@@ -1,0 +1,19 @@
+configName: NewConfig
+createdAt: ''
+lastModified: 2026-03-25 14:42:52
+pointClouds:
+- iD: 0
+  position:
+    x: 0
+    y: 0
+    z: 0
+  rotation:
+    x: 0
+    y: 0
+    z: 0
+  scale:
+    x: 1
+    y: 1
+    z: 1
+  depthMax: 0.9673764
+  depthMin: 0.5717719

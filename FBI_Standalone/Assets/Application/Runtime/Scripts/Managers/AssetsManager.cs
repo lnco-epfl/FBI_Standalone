@@ -39,19 +39,12 @@ public class AssetsManager : MonoBehaviour
 
     private void SetupPaths()
     {
-#if UNITY_EDITOR
-        string basePath = Path.Combine(Application.dataPath, "..");
-#else
-        string basePath = Directory.GetParent(Application.dataPath).FullName;
-#endif
+
+        string basePath = Path.Combine(Application.dataPath, "..", "Input");
 
         ImagesPath = Path.Combine(basePath, imagesFolderName);
         AudioPath = Path.Combine(basePath, audioFolderName);
         VideosPath = Path.Combine(basePath, videoFolderName);
-
-        Debug.Log($"Images path: {ImagesPath}");
-        Debug.Log($"Audio path: {AudioPath}");
-        Debug.Log($"Videos path: {VideosPath}");
     }
 
     private void CreateFoldersIfNeeded()
@@ -80,7 +73,7 @@ public class AssetsManager : MonoBehaviour
 
         if (!Directory.Exists(ImagesPath))
         {
-            Debug.LogWarning($"Images folder not found: {ImagesPath}");
+            Debug.LogWarning($"[AssetsManager] Images folder not found: {ImagesPath}");
             return;
         }
 
@@ -97,7 +90,7 @@ public class AssetsManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"Loaded {loadedSprites.Count} images");
+        Debug.Log($"[AssetsManager] Loaded {loadedSprites.Count} images");
     }
 
     private void LoadImage(string filePath)
@@ -127,16 +120,16 @@ public class AssetsManager : MonoBehaviour
 
                 loadedSprites[key] = sprite;
 
-                Debug.Log($"Loaded image: {key}");
+                Debug.Log($"[AssetsManager] Loaded image: {key}");
             }
             else
             {
-                Debug.LogError($"Failed to load image: {filePath}");
+                Debug.LogError($"[AssetsManager] Failed to load image: {filePath}");
             }
         }
         catch (Exception e)
         {
-            Debug.LogError($"Error loading image {filePath}: {e.Message}");
+            Debug.LogError($"[AssetsManager] Error loading image {filePath}: {e.Message}");
         }
     }
 
@@ -150,7 +143,7 @@ public class AssetsManager : MonoBehaviour
             return sprite;
         }
 
-        Debug.LogWarning($"Sprite not found: {spriteName}");
+        Debug.LogWarning($"[AssetsManager] Sprite not found: {spriteName}");
         return null;
     }
 
@@ -159,7 +152,7 @@ public class AssetsManager : MonoBehaviour
         if (string.IsNullOrEmpty(textureName))
             return null;
 
-        Debug.LogWarning($"Texture not found: {textureName}");
+        Debug.LogWarning($"[AssetsManager] Texture not found: {textureName}");
         return null;
     }
 
@@ -173,7 +166,7 @@ public class AssetsManager : MonoBehaviour
 
         if (!Directory.Exists(AudioPath))
         {
-            Debug.LogWarning($"Audio folder not found: {AudioPath}");
+            Debug.LogWarning($"[AssetsManager] Audio folder not found: {AudioPath}");
             return;
         }
 
@@ -190,7 +183,7 @@ public class AssetsManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"Loaded {loadedAudioClips.Count} audio clips");
+        Debug.Log($"[AssetsManager] Loaded {loadedAudioClips.Count} audio clips");
     }
 
     private void LoadAudioFile(string filePath)
@@ -222,11 +215,11 @@ public class AssetsManager : MonoBehaviour
                 AudioClip clip = UnityEngine.Networking.DownloadHandlerAudioClip.GetContent(www);
                 clip.name = key;
                 loadedAudioClips[key] = clip;
-                Debug.Log($"Loaded audio: {key}");
+                Debug.Log($"[AssetsManager] Loaded audio: {key}");
             }
             else
             {
-                Debug.LogError($"Failed to load audio {filePath}: {www.error}");
+                Debug.LogError($"[AssetsManager] Failed to load audio {filePath}: {www.error}");
             }
         }
     }
@@ -245,11 +238,11 @@ public class AssetsManager : MonoBehaviour
                 AudioClip clip = UnityEngine.Networking.DownloadHandlerAudioClip.GetContent(www);
                 clip.name = key;
                 loadedAudioClips[key] = clip;
-                Debug.Log($"Loaded audio: {key}");
+                Debug.Log($"[AssetsManager] Loaded audio: {key}");
             }
             else
             {
-                Debug.LogError($"Failed to load audio {filePath}: {www.error}");
+                Debug.LogError($"[AssetsManager] Failed to load audio {filePath}: {www.error}");
             }
         }
     }
@@ -264,7 +257,7 @@ public class AssetsManager : MonoBehaviour
             return clip;
         }
 
-        Debug.LogWarning($"Audio clip not found: {clipName}");
+        Debug.LogWarning($"[AssetsManager] Audio clip not found: {clipName}");
         return null;
     }
 

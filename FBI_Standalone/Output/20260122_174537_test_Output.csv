@@ -1,2 +1,0 @@
-Gender,Age,Language,SequenceFile,BreathingDevice,TimeSinceStart,StepType,StepCount,Room,ObjectName,SpawnPosition,Condition,Status,ObjectSpawnTime,ObjectDespawnTime,FixingCrossDuration,LikertType,LikertResponse,LikertResponseTime,QuestionType,QuestionResponse,QuestionCorrectResponse,QuestionResponseTime,QuestionMultiResponse,QuestionMultiResponseTime
-Female,0,,test,,11.819215098395944,Question,5,EmptyRoom,,,,,0,0,0,,0,0,,,,0,,0
