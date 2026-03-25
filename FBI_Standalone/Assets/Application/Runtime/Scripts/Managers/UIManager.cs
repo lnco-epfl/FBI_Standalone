@@ -268,7 +268,6 @@ public class UIManager : MonoBehaviour
 
             configDropdown.value = configs.IndexOf(selectedConfig);
 
-            EnableStartButtonInteraction();
         }
         else
         {

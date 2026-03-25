@@ -149,10 +149,13 @@ public class OutputFileManager : MonoBehaviour
 
     private void OnExperiementInitialize(bool isInitialize, Sequence sequence)
     {
-        Initialize(sequence.name);
-        OutputFileData.SequenceFile = sequence != null ? sequence.name : string.Empty;
-        OutputFileData.Gender = UIManager.Instance.SelectedGender;
-        OutputFileData.Age = UIManager.Instance.SelectedAge;
+        if(isInitialize)
+        {
+            Initialize(sequence.name);
+            OutputFileData.SequenceFile = sequence != null ? sequence.name : string.Empty;
+            OutputFileData.Gender = UIManager.Instance.SelectedGender;
+            OutputFileData.Age = UIManager.Instance.SelectedAge;
+        }
     }
 
 
@@ -165,7 +168,7 @@ public class OutputFileManager : MonoBehaviour
 
         var newOutputFilePath = timestamp + "_" + uniqueIdentifier + outputFileName;
 
-        outputFolderPath = Path.Combine(Application.dataPath.Substring(0, Application.dataPath.LastIndexOf('/')), "Output");
+        outputFolderPath = Path.Combine(Application.dataPath, "..", "Output");
         outputFilePath = Path.Combine(outputFolderPath, newOutputFilePath);
 
         if (!Directory.Exists(outputFolderPath))

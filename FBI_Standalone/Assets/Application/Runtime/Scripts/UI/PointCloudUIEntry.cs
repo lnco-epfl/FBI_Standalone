@@ -166,25 +166,37 @@ public class PointCloudUIEntry : MonoBehaviour
 
     private void OnDepthMaxChanged(float value)
     {
-        kinectInerface.maxDepthDistance = value;
+        if(kinectInerface != null)
+        {
+            kinectInerface.maxDepthDistance = value;
+        }
         ConfigFileManager.Instance.SaveDepthMax(CameraId, value);
     }
 
     private void OnDepthMinChanged(float value)
     {
-        kinectInerface.minDepthDistance = value;
+        if (kinectInerface != null)
+        {
+            kinectInerface.minDepthDistance = value;
+        }
         ConfigFileManager.Instance.SaveDepthMin(CameraId, value);
     }
 
     public void SetMinDepth(float depthMin)
     {
-        kinectInerface.minDepthDistance = depthMin;
+        if (kinectInerface != null)
+        {
+            kinectInerface.minDepthDistance = depthMin;
+        }
         cameraDepthMinSlider.SetValueWithoutNotify(depthMin);
     }
 
     public void SetMaxDepth(float depthMax)
     {
-        kinectInerface.maxDepthDistance = depthMax;
+        if (kinectInerface != null)
+        {
+            kinectInerface.maxDepthDistance = depthMax;
+        }
         cameraDepthMaxSlider.SetValueWithoutNotify(depthMax);
     }
 }

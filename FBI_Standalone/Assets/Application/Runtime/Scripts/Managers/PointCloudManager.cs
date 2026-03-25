@@ -51,12 +51,17 @@ public class PointCloudManager : MonoBehaviour
             pointCloudContainers[cameraID] = new PointCloudContainer(pointCloudVFX, pointCloud1ReplayBuffer, realtimeDelaySwitcher);
         }
 
-        StartCoroutine(WaitForKinectManagerInitialization());
+    }
 
+    private void Start()
+    {
+        StartCoroutine(WaitForKinectManagerInitialization());
     }
 
     private IEnumerator WaitForKinectManagerInitialization()
     {
+     
+
         yield return new WaitUntil(() => KinectManager.Instance.IsInitialized());
 
          var currentConfig = ConfigFileManager.Instance.CurrentConfig;

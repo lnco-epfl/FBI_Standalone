@@ -1,1 +1,0 @@
-[14:26:32] [Log] SceneLoaderManager Scene loaded EmptyScene

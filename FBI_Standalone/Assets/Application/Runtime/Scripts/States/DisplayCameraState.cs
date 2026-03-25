@@ -15,17 +15,15 @@ public class DisplayCameraState : IState
 
     public IEnumerator Execute()
     {
-        var pointCloudContainer =  PointCloudManager.Instance.GetPointCloudContainer(int.Parse(step.cameraID));
+        var pointCloudContainer = PointCloudManager.Instance.GetPointCloudContainer(int.Parse(step.cameraID));
 
         VisualEffect vfxEffect = pointCloudContainer.vfx;
         PointCloudReplayBuffer pointCloudReplayBuffer = pointCloudContainer.replayBuffer;
         RealtimeDelaySwitcher realtimeDelaySwitcher = pointCloudContainer.realtimeDelaySwitcher;
 
 
-        if (step.displayMode == "realtime")
-            realtimeDelaySwitcher.displayMode = RealtimeDelaySwitcher.DisplayMode.Realtime;
-        else if (step.displayMode == "delay")
-            realtimeDelaySwitcher.displayMode = RealtimeDelaySwitcher.DisplayMode.Delay;
+        realtimeDelaySwitcher.displayMode = step.delay > 0.0f ? RealtimeDelaySwitcher.DisplayMode.Delay : RealtimeDelaySwitcher.DisplayMode.Realtime;
+        pointCloudReplayBuffer.replayDelaySeconds = step.delay;
 
         realtimeDelaySwitcher.enabled = true;
         pointCloudReplayBuffer.enabled = true;

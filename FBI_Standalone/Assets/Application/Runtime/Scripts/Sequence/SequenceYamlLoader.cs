@@ -92,6 +92,12 @@ public class SequenceYamlLoader
                     Scene = LoadSceneReference(data.scenePath),
                 };
 
+            case SequenceStepWrapper.StepType.LoadConfig:
+                return new LoadConfigStep
+                {
+                    fileName = data.fileName,
+                };
+
             case SequenceStepWrapper.StepType.DisplayLikertScale:
                 return new DisplayLikertScaleStep
                 {
@@ -132,7 +138,7 @@ public class SequenceYamlLoader
                 {
                     displayTime = data.duration,
                     cameraID = data.cameraID,
-                    displayMode = data.displayMode
+                    delay = data.delay
                 };
 
             default:
@@ -183,13 +189,16 @@ public class StepData
     public string leftLabel;
     public string rightLabel;
     public List<string> options;
+
+    //camera
     public string cameraID;
-    public string displayMode;
+    public float delay;
 
     // Assets
     public string scenePath;
     public string imagePath;
     public string soundPath;
+    public string fileName;
 
     // Image
     public float scale;

@@ -39,6 +39,7 @@ public class SequenceStateMachine : MonoBehaviour
         states.Add("Wait", new WaitState());
         states.Add("DisplayText", new DisplayTextState());
         states.Add("LoadScene", new LoadSceneState());
+        states.Add("LoadConfig", new LoadConfigState());
         states.Add("DisplayLikertScale", new DisplayLikertScaleState());
         states.Add("Break", new BreakState());
         states.Add("DisplayImage", new DisplayImageState());

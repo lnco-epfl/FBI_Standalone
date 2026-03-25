@@ -67,7 +67,10 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     {
         StartCoroutine(LoadScene());
         RefreshList();
+        ClearPointCloudEntry();
     }
+
+
 
     private void OnEnable()
     {
@@ -106,6 +109,16 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             entry.OnRotationChanged -= OnPointCloudRotationChanged;
             entry.OnDisplayToggleRequested -= OnDisplayToggleRequested;
         }
+    }
+
+    private void ClearPointCloudEntry()
+    {
+
+        while (pointCloudContainer.childCount > 0)
+        {
+            DestroyImmediate(pointCloudContainer.GetChild(0).gameObject);
+        }
+      
     }
 
     private void SpawnPointCloudEntries()

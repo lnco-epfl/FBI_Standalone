@@ -1,0 +1,77 @@
+steps:
+  - stepType: LoadScene
+    scenePath: "EmptyRoom"
+
+  - stepType: LoadConfig
+    fileName: test
+
+  - stepType: DisplayText
+    text: "welcome to FBI"
+    duration: 3.0
+
+  - stepType: Wait
+    duration: 2.0
+
+  - stepType: DisplayCamera
+    duration: 20.0
+    cameraID: "1"
+    delay: 0.0
+
+  - stepType: Wait
+    duration: 2.0
+
+  - stepType: DisplayCamera
+    duration: 20.0
+    cameraID: "1"
+    delay: 0.5
+
+  - stepType: Wait
+    duration: 2.0
+
+  - stepType: DisplayCamera
+    duration: 20.0
+    cameraID: "2"
+    delay: 0.0
+
+  - stepType: Wait
+    duration: 2.0
+
+  - stepType: DisplayCamera
+    duration: 20.0
+    cameraID: "2"
+    delay: 0.5
+
+  - stepType: Wait
+    duration: 2.0
+
+  - stepType: DisplayImage
+    imagePath: "plus"
+    scale: 1.0
+    duration: 5.0
+
+  - stepType: PlaySound
+    soundPath: "bell-sfx"
+
+  - stepType: DisplayQuestion
+    question: "question 1"
+    options: 
+      - "option 1"
+      - "option 2"
+      - "option 3"
+      - "option 4"
+
+  - stepType: DisplayLikertScale
+    question: "satisfaction question"
+    leftLabel: "not satisfied"
+    rightLabel: "very satisfied"
+
+  - stepType: Break
+    text: "break instructions"
+    duration: 90
+
+  - stepType: Wait
+    duration: 1.0
+
+  - stepType: DisplayText
+    text: "thank you"
+    duration: 4.0

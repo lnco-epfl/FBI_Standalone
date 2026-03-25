@@ -1,3 +1,0 @@
-[14:56:06] [Log] SceneLoaderManager Scene loaded EmptyScene
-[14:56:29] [Log] ExperimentManager Initialize with sequence test
-[14:56:29] [Log] OutputFileManager initialized: 20260121_145629_test_Output.csv

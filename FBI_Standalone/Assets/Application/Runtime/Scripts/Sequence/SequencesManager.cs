@@ -36,7 +36,7 @@ public class SequencesManager : MonoBehaviour
         loadedSequences.Clear();
         sequences.Clear();
 
-        string folderPath = Path.Combine(Application.streamingAssetsPath, sequencesFolder);
+        string folderPath = Path.Combine(Application.dataPath, "..", "Input", sequencesFolder);
 
         if (!Directory.Exists(folderPath))
         {
@@ -57,7 +57,7 @@ public class SequencesManager : MonoBehaviour
             LoadSequence(file);
         }
 
-        Debug.Log($"Loaded {sequences.Count} sequences from YAML files");
+        Debug.Log($"[SequencesManager] Loaded {sequences.Count} sequences from YAML files");
     }
 
     public Sequence LoadSequence(string filePath)
@@ -66,7 +66,7 @@ public class SequencesManager : MonoBehaviour
 
         if (loadedSequences.ContainsKey(fileName))
         {
-            Debug.LogWarning($"Sequence '{fileName}' already loaded");
+            Debug.LogWarning($"[SequencesManager] Sequence '{fileName}' already loaded");
             return loadedSequences[fileName];
         }
 
@@ -77,7 +77,7 @@ public class SequencesManager : MonoBehaviour
             sequence.name = fileName;
             loadedSequences[fileName] = sequence;
             sequences.Add(sequence);
-            Debug.Log($"Loaded sequence: {fileName}");
+            Debug.Log($"[SequencesManager] Loaded sequence: {fileName}");
         }
 
         return sequence;
@@ -90,7 +90,7 @@ public class SequencesManager : MonoBehaviour
             return sequence;
         }
 
-        Debug.LogWarning($"Sequence '{sequenceName}' not found");
+        Debug.LogWarning($"[SequencesManager] Sequence '{sequenceName}' not found");
         return null;
     }
 
