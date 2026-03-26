@@ -23,6 +23,7 @@ public class ObjectTransformData
 
     public float depthMax = 3.0f;
     public float depthMin = 0.1f;
+
     public ObjectTransformData() { }
 
     public ObjectTransformData(int cameraID)

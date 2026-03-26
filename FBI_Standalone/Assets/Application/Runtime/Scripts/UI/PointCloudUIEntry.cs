@@ -26,11 +26,10 @@ public class PointCloudUIEntry : MonoBehaviour
     [Header("Camera Settings")]
     [SerializeField] private Slider cameraDepthMaxSlider;
     [SerializeField] private Slider cameraDepthMinSlider;
+    [SerializeField] private Toggle flipXToggle;
+    [SerializeField] private Toggle flipYToggle;
     private SensorData sensorData;
     private Kinect4AzureInterface kinectInerface;
-
-    public event Action<PointCloudUIEntry> OnPositionChanged;
-    public event Action<PointCloudUIEntry> OnRotationChanged;
 
     /// <summary>
     /// Fired when the user clicks the display toggle. The bool indicates the desired state.
@@ -40,16 +39,22 @@ public class PointCloudUIEntry : MonoBehaviour
 
     public int CameraId { get; private set; }
 
+    private static float ParseField(TMP_InputField field, float fallback = 0f)
+    {
+        if (field == null) return fallback;
+        return float.TryParse(field.text, out float result) ? result : fallback;
+    }
+
     public Vector3 Position => new Vector3(
-        float.Parse(positionXInputField.text),
-        float.Parse(positionYInputField.text),
-        float.Parse(positionZInputField.text)
+        ParseField(positionXInputField),
+        ParseField(positionYInputField),
+        ParseField(positionZInputField)
     );
 
     public Vector3 Rotation => new Vector3(
-        float.Parse(rotationXInputField.text),
-        float.Parse(rotationYInputField.text),
-        float.Parse(rotationZInputField.text)
+        ParseField(rotationXInputField),
+        ParseField(rotationYInputField),
+        ParseField(rotationZInputField)
     );
 
     private void Awake()
@@ -77,20 +82,25 @@ public class PointCloudUIEntry : MonoBehaviour
             cameraDepthMinSlider.maxValue = 10.0f;
             cameraDepthMinSlider.value = kinectInerface.minDepthDistance;
         }
+
+        CaptureDefaults();
     }
 
     private void OnEnable()
     {
-        positionXInputField.onValueChanged.AddListener((str) => OnPositionChanged?.Invoke(this));
-        positionYInputField.onValueChanged.AddListener((str) => OnPositionChanged?.Invoke(this));
-        positionZInputField.onValueChanged.AddListener((str) => OnPositionChanged?.Invoke(this));
+        positionXInputField.onValueChanged.AddListener((str) => { OnPositionOrRotationChanged(); });
+        positionYInputField.onValueChanged.AddListener((str) => { OnPositionOrRotationChanged(); });
+        positionZInputField.onValueChanged.AddListener((str) => { OnPositionOrRotationChanged(); });
 
-        rotationXInputField.onValueChanged.AddListener((str) => OnRotationChanged?.Invoke(this));
-        rotationYInputField.onValueChanged.AddListener((str) => OnRotationChanged?.Invoke(this));
-        rotationZInputField.onValueChanged.AddListener((str) => OnRotationChanged?.Invoke(this));
+        rotationXInputField.onValueChanged.AddListener((str) => { OnPositionOrRotationChanged(); });
+        rotationYInputField.onValueChanged.AddListener((str) => { OnPositionOrRotationChanged(); });
+        rotationZInputField.onValueChanged.AddListener((str) => { OnPositionOrRotationChanged(); });
 
         cameraDepthMaxSlider.onValueChanged.AddListener(OnDepthMaxChanged);
         cameraDepthMinSlider.onValueChanged.AddListener(OnDepthMinChanged);
+
+        flipXToggle.onValueChanged.AddListener(OnFlipXChanged);
+        flipYToggle.onValueChanged.AddListener(OnFlipYChanged);
 
         displayPointCloudToggle.onValueChanged.AddListener(OnDisplayToggleChanged);
     }
@@ -108,7 +118,33 @@ public class PointCloudUIEntry : MonoBehaviour
         cameraDepthMaxSlider.onValueChanged.RemoveAllListeners();
         cameraDepthMinSlider.onValueChanged.RemoveAllListeners();
 
+        flipXToggle.onValueChanged.RemoveListener(OnFlipXChanged);
+        flipYToggle.onValueChanged.RemoveListener(OnFlipYChanged);
+
         displayPointCloudToggle.onValueChanged.RemoveListener(OnDisplayToggleChanged);
+    }
+
+    public void ForceApplyAndSave()
+    {
+        OnPositionOrRotationChanged();
+
+        if (kinectInerface != null)
+        {
+            ConfigFileManager.Instance.SaveDepthMax(CameraId, kinectInerface.maxDepthDistance, saveImmediately: false);
+            ConfigFileManager.Instance.SaveDepthMin(CameraId, kinectInerface.minDepthDistance, saveImmediately: false);
+        }
+
+        var t = PointCloudManager.Instance.GetVisualEffectTransform(CameraId);
+        ConfigFileManager.Instance.SaveFlip(CameraId, t.localScale.x < 0, t.localScale.y < 0, saveImmediately: false);
+    }
+
+    private void OnPositionOrRotationChanged()
+    {
+        var t = PointCloudManager.Instance.GetVisualEffectTransform(CameraId);
+        t.position = Position;
+        t.rotation = Quaternion.Euler(Rotation);
+        PointCloudManager.Instance.SetVisualEffectTransform(t, CameraId);
+        ConfigFileManager.Instance.SaveObjectTransform(CameraId, t);
     }
 
     public void SetPositionFields(Vector3 position)
@@ -162,6 +198,7 @@ public class PointCloudUIEntry : MonoBehaviour
     public void SetInteractable(bool interactable)
     {
         GetComponent<CanvasGroup>().interactable = interactable;
+        GetComponent<CanvasGroup>().blocksRaycasts = interactable;
     }
 
     private void OnDepthMaxChanged(float value)
@@ -189,6 +226,7 @@ public class PointCloudUIEntry : MonoBehaviour
             kinectInerface.minDepthDistance = depthMin;
         }
         cameraDepthMinSlider.SetValueWithoutNotify(depthMin);
+        cameraDepthMinSlider.GetComponent<SliderToText>().UpdateText(depthMin);
     }
 
     public void SetMaxDepth(float depthMax)
@@ -198,5 +236,66 @@ public class PointCloudUIEntry : MonoBehaviour
             kinectInerface.maxDepthDistance = depthMax;
         }
         cameraDepthMaxSlider.SetValueWithoutNotify(depthMax);
+        cameraDepthMaxSlider.GetComponent<SliderToText>().UpdateText(depthMax);
+    }
+
+    private void OnFlipXChanged(bool isOn)
+    {
+        ApplyFlip(isOn, flipYToggle.isOn);
+        ConfigFileManager.Instance.SaveFlip(CameraId, isOn, flipYToggle.isOn);
+    }
+
+    private void OnFlipYChanged(bool isOn)
+    {
+        ApplyFlip(flipXToggle.isOn, isOn);
+        ConfigFileManager.Instance.SaveFlip(CameraId, flipXToggle.isOn, isOn);
+    }
+
+    private void ApplyFlip(bool flipX, bool flipY)
+    {
+        var container = PointCloudManager.Instance.GetPointCloudContainer(CameraId);
+        if (container == null) return;
+
+        Transform t = container.vfx.transform;
+        Vector3 scale = t.localScale;
+        scale.x = Mathf.Abs(scale.x) * (flipX ? -1f : 1f);
+        scale.y = Mathf.Abs(scale.y) * (flipY ? -1f : 1f);
+        t.localScale = scale;
+    }
+
+    public void SetFlip(bool flipX, bool flipY)
+    {
+        flipXToggle.SetIsOnWithoutNotify(flipX);
+        flipXToggle.GetComponent<ToggleButton>().OnValueChanged(flipX);
+        flipYToggle.SetIsOnWithoutNotify(flipY);
+        flipYToggle.GetComponent<ToggleButton>().OnValueChanged(flipY);
+        ApplyFlip(flipX, flipY);
+    }
+
+    private (Vector3 position, Vector3 rotation, float depthMin, float depthMax, bool flipX, bool flipY) initialDefaults;
+
+    public void CaptureDefaults()
+    {
+        var t = PointCloudManager.Instance.GetVisualEffectTransform(CameraId);
+        float depthMin = kinectInerface != null ? kinectInerface.minDepthDistance : 0f;
+        float depthMax = kinectInerface != null ? kinectInerface.maxDepthDistance : 10f;
+
+        initialDefaults = (
+            t.position,
+            t.eulerAngles,
+            depthMin,
+            depthMax,
+            t.localScale.x < 0,
+            t.localScale.y < 0
+        );
+    }
+
+    public void ResetToDefaults()
+    {
+        SetPositionFields(initialDefaults.position);
+        SetRotationFields(initialDefaults.rotation);
+        SetMinDepth(initialDefaults.depthMin);
+        SetMaxDepth(initialDefaults.depthMax);
+        SetFlip(initialDefaults.flipX, initialDefaults.flipY);
     }
 }

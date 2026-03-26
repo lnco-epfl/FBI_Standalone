@@ -53,7 +53,17 @@ public class PointCloudManager : MonoBehaviour
 
     }
 
-    private void Start()
+    private void OnEnable()
+    {
+        ConfigFileManager.Instance.OnConfigLoaded += OnConfigLoaded;
+    }
+
+    private void OnDisable()
+    {
+        ConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
+    }
+
+    private void OnConfigLoaded(ConfigFile obj)
     {
         StartCoroutine(WaitForKinectManagerInitialization());
     }
@@ -61,10 +71,9 @@ public class PointCloudManager : MonoBehaviour
     private IEnumerator WaitForKinectManagerInitialization()
     {
      
-
         yield return new WaitUntil(() => KinectManager.Instance.IsInitialized());
 
-         var currentConfig = ConfigFileManager.Instance.CurrentConfig;
+        var currentConfig = ConfigFileManager.Instance.CurrentConfig;
 
         if (currentConfig != null)
         {
@@ -73,10 +82,12 @@ public class PointCloudManager : MonoBehaviour
                 var id = currentConfig.pointClouds[i].ID;
                 var position = currentConfig.pointClouds[i].position.ToVector3();
                 var rotation = currentConfig.pointClouds[i].rotation.ToVector3();
+                var scale = currentConfig.pointClouds[i].scale.ToVector3();
                 var depthMin = currentConfig.pointClouds[i].depthMin;
                 var depthMax = currentConfig.pointClouds[i].depthMax;
 
-                SetVisualEffectPositionAndRotation(position, rotation, id);
+                SetVisualEffectPositionRotationScale(position, rotation, scale, id);
+                
                 SetCameraDepthValues(depthMin, depthMax, id);
             }
         }
@@ -101,13 +112,14 @@ public class PointCloudManager : MonoBehaviour
         return GetVisualEffect(cameraID).transform;
     }
 
-    public void SetVisualEffectPositionAndRotation(Vector3 postion, Vector3 rotation, int cameraID)
+    public void SetVisualEffectPositionRotationScale(Vector3 postion, Vector3 rotation, Vector3 scale, int cameraID)
     {
         var vfx = GetVisualEffect(cameraID);
         if (vfx != null)
         {
             vfx.transform.position = postion;
             vfx.transform.rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z);
+            vfx.transform.localScale = scale;
         }
     }
 
@@ -123,15 +135,25 @@ public class PointCloudManager : MonoBehaviour
 
     private void SetCameraDepthValues(float depthMin, float depthMax, int id)
     {
-        var sensorData = KinectManager.Instance != null && KinectManager.Instance.IsInitialized() ? KinectManager.Instance.GetSensorData(id - 1) : null;
+        var kinectInerface = GetKinectInterface(id);
 
-        if (sensorData != null && sensorData.sensorInterface != null)
+        if(kinectInerface)
         {
-            var kinectInerface = (Kinect4AzureInterface)sensorData.sensorInterface;
-
             kinectInerface.maxDepthDistance = depthMax;
             kinectInerface.minDepthDistance = depthMin;
         }
+    }
+
+    public Kinect4AzureInterface GetKinectInterface(int cameraID)
+    {
+        var sensorData = KinectManager.Instance != null && KinectManager.Instance.IsInitialized() ? KinectManager.Instance.GetSensorData(cameraID - 1) : null;
+
+        if (sensorData != null && sensorData.sensorInterface != null)
+        {
+            return (Kinect4AzureInterface)sensorData.sensorInterface;
+        }
+
+        return null;
     }
 
     public VisualEffect GetVisualEffect(int cameraID)

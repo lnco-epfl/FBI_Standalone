@@ -288,7 +288,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 70}
+  m_SizeDelta: {x: 300, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6452087380997798747
 CanvasRenderer:
@@ -1298,7 +1298,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Option A
+  m_text: None
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8149c187c3b1234489b2c09bf8b26706, type: 2}
   m_sharedMaterial: {fileID: 3574250900331247300, guid: 8149c187c3b1234489b2c09bf8b26706, type: 2}
@@ -2880,7 +2880,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 0
+  m_Spacing: 2.5
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -3590,7 +3590,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Option A
+  m_text: None
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8149c187c3b1234489b2c09bf8b26706, type: 2}
   m_sharedMaterial: {fileID: 3574250900331247300, guid: 8149c187c3b1234489b2c09bf8b26706, type: 2}
@@ -3872,9 +3872,9 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 0
   m_Spacing: 0
-  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
@@ -4604,13 +4604,7 @@ MonoBehaviour:
   m_MultiSelect: 0
   m_Options:
     m_Options:
-    - m_Text: Option A
-      m_Image: {fileID: 0}
-      m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: Option B
-      m_Image: {fileID: 0}
-      m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: Option C
+    - m_Text: None
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_OnValueChanged:
@@ -5078,7 +5072,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5285805685909988069, guid: 35d1e95f5581e1e41a38f374577629d9, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 500
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5285805685909988069, guid: 35d1e95f5581e1e41a38f374577629d9, type: 3}
       propertyPath: m_SizeDelta.y
@@ -5135,6 +5129,10 @@ PrefabInstance:
     - target: {fileID: 5440307548543105364, guid: 35d1e95f5581e1e41a38f374577629d9, type: 3}
       propertyPath: m_Name
       value: PointCloudNewUIEntry (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5440307548543105364, guid: 35d1e95f5581e1e41a38f374577629d9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5461444299385596786, guid: 35d1e95f5581e1e41a38f374577629d9, type: 3}
       propertyPath: m_AnchorMax.y
@@ -6199,7 +6197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5285805685909988069, guid: 35d1e95f5581e1e41a38f374577629d9, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 500
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5285805685909988069, guid: 35d1e95f5581e1e41a38f374577629d9, type: 3}
       propertyPath: m_SizeDelta.y
@@ -6336,7 +6334,7 @@ PrefabInstance:
     - target: {fileID: 6994567264358027162, guid: 35d1e95f5581e1e41a38f374577629d9, type: 3}
       propertyPath: displayPointCloudToggle
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6595872438592182656}
     - target: {fileID: 7568621854695199675, guid: 35d1e95f5581e1e41a38f374577629d9, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -6771,6 +6769,17 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!114 &6595872438592182656 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3303823032582797812, guid: 35d1e95f5581e1e41a38f374577629d9, type: 3}
+  m_PrefabInstance: {fileID: 8525514765815668852}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50a84f1134d1a47469f7fb589a27a77c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7144722409243401597 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1546865178408369417, guid: 35d1e95f5581e1e41a38f374577629d9, type: 3}
