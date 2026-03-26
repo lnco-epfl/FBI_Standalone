@@ -10,6 +10,7 @@ using UnityEngine.Localization;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 using UnityEngine.VFX;
+using static UnityEngine.Analytics.IAnalytic;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class CanvasSetupPointCloudUI : MonoBehaviour
@@ -68,6 +69,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         StartCoroutine(LoadScene());
         RefreshList();
         ClearPointCloudEntry();
+        
+        ShortcutManager.Instance.DisableShortCut();
     }
 
 
@@ -105,8 +108,6 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         foreach (var entry in pointCloudEntries)
         {
-            entry.OnPositionChanged -= OnPointCloudPositionChanged;
-            entry.OnRotationChanged -= OnPointCloudRotationChanged;
             entry.OnDisplayToggleRequested -= OnDisplayToggleRequested;
         }
     }
@@ -135,8 +136,6 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             entry.SetInteractable(false);
             entry.SetDisplayToggle(false);
 
-            entry.OnPositionChanged += OnPointCloudPositionChanged;
-            entry.OnRotationChanged += OnPointCloudRotationChanged;
             entry.OnDisplayToggleRequested += OnDisplayToggleRequested;
 
             pointCloudEntries.Add(entry);
@@ -198,41 +197,21 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void OnButtonCloseClick()
     {
+        ShortcutManager.Instance.EnableShortCut();
         SceneLoaderManager.Instance.LoadDefaultScene();
         OnCanvasSetupPointCloudUIDestroy.Invoke(this);
     }
 
     private void OnSaveButtonClick()
     {
-        foreach (var entry in pointCloudEntries)
-        {
-            OnPointCloudPositionChanged(entry);
-            OnPointCloudRotationChanged(entry);
-        }
         ConfigFileManager.Instance.Save();
-        SetStatus($"Saved {selectedConfig}");
-    }
-
-    private void OnPointCloudPositionChanged(PointCloudUIEntry entry)
-    {
-        var t = PointCloudManager.Instance.GetVisualEffectTransform(entry.CameraId);
-        t.position = entry.Position;
-        ConfigFileManager.Instance.SaveObjectTransform(entry.CameraId, t);
-        PointCloudManager.Instance.SetVisualEffectTransform(t, entry.CameraId);
-    }
-
-    private void OnPointCloudRotationChanged(PointCloudUIEntry entry)
-    {
-        var t = PointCloudManager.Instance.GetVisualEffectTransform(entry.CameraId);
-        t.rotation = Quaternion.Euler(entry.Rotation);
-        ConfigFileManager.Instance.SaveObjectTransform(entry.CameraId, t);
-        PointCloudManager.Instance.SetVisualEffectTransform(t, entry.CameraId);
+        SetStatus($"Saved {selectedConfig}", Color.green);
     }
 
     private void OnLoadConfigButtonClick()
     {
         ConfigFileManager.Instance.Load(selectedConfig);
-        SetStatus($"Loaded {selectedConfig}");
+        SetStatus($"Loaded {selectedConfig}", Color.green);
 
         foreach (var entry in pointCloudEntries)
             entry.SetInteractable(true);
@@ -247,24 +226,28 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     {
         if (string.IsNullOrEmpty(newConfigName))
         {
-            SetStatus("Please enter a config name.");
+            SetStatus("Please enter a config name.", Color.red);
             return;
         }
 
         ConfigFileManager.Instance.CreateNew(newConfigName);
-        ConfigFileManager.Instance.Save();
+
         selectedConfig = newConfigName;
+
 
         foreach (var entry in pointCloudEntries)
         {
-            var t = PointCloudManager.Instance.GetVisualEffectTransform(entry.CameraId);
-            entry.SetPositionFields(t.position);
-            entry.SetRotationFields(t.eulerAngles);
+            entry.ResetToDefaults();    
             entry.SetInteractable(true);
         }
 
+        foreach (var entry in pointCloudEntries)
+            entry.ForceApplyAndSave();
+
+        ConfigFileManager.Instance.Save();
+
         RefreshList();
-        SetStatus($"Created {newConfigName}");
+        SetStatus($"Created {newConfigName}", Color.green);
     }
 
     private void OnConfigNameInputFieldSubmit(string value)
@@ -305,11 +288,9 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             pointCloudEntries[i].SetPositionFields(data.position.ToVector3());
             pointCloudEntries[i].SetRotationFields(data.rotation.ToVector3());
 
-            OnPointCloudPositionChanged(pointCloudEntries[i]);
-            OnPointCloudRotationChanged(pointCloudEntries[i]);
-
             pointCloudEntries[i].SetMinDepth(data.depthMin);
             pointCloudEntries[i].SetMaxDepth(data.depthMax);
+            pointCloudEntries[i].SetFlip(data.scale.x == -1, data.scale.y == -1);
         }
     }
 
@@ -330,6 +311,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     public IEnumerator LoadScene()
     {
+        SetStatus("Loading config scene", Color.yellow);
+
         Fader.Instance.FadeToBlack();
         yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
 
@@ -337,14 +320,21 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         Fader.Instance.FadeToClear();
         yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
+
+        SetStatus("Config scene loaded", Color.green);
     }
 
-    private void SetStatus(string message)
+    private void SetStatus(string message, Color color)
     {
         Debug.Log($"[CanvasSetupPointCloudUI] {message}");
         if (statusText)
         {
             statusText.text = statusLocalizedText.GetLocalizedString(message);
+        }
+
+        if(dotImage)
+        {
+            dotImage.color = color;
         }
     }
 }

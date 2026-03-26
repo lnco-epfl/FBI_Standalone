@@ -16,7 +16,7 @@ public class SliderToText : MonoBehaviour
         UpdateText(slider.value);
     }
 
-    void UpdateText(float value)
+    public void UpdateText(float value)
     {
         tmpText.text = value.ToString("F2");
     }

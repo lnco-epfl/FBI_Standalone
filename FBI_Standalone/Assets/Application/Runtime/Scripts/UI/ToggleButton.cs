@@ -24,8 +24,10 @@ public class ToggleButton : MonoBehaviour
         toggle.onValueChanged.RemoveListener(OnValueChanged);
     }
 
-    private void OnValueChanged(bool value)
+    public void OnValueChanged(bool value)
     {
         animator.SetBool("IsOn", value);
     }
+
+    
 }

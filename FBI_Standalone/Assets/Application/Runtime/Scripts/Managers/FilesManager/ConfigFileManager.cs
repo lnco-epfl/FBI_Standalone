@@ -15,8 +15,9 @@ public class ConfigFileManager : MonoBehaviour
 
     private ISerializer serializer;
     private IDeserializer deserializer;
+    private ConfigFile currentConfig;
 
-    public ConfigFile CurrentConfig { get; private set; }
+    public ConfigFile CurrentConfig { get => currentConfig; private set => currentConfig = value; }
 
     public event Action<ConfigFile> OnConfigLoaded;
     public event Action<ConfigFile> OnConfigSaved;
@@ -29,6 +30,8 @@ public class ConfigFileManager : MonoBehaviour
         System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
 
 
+
+
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
@@ -37,11 +40,13 @@ public class ConfigFileManager : MonoBehaviour
 
         deserializer = new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).IgnoreUnmatchedProperties().Build();
 
+        currentConfig = null;
+
         if (!Directory.Exists(RootPath))
         {
             Directory.CreateDirectory(RootPath);
         }
-            
+
     }
 
     public List<string> GetAvailableConfigs()
@@ -102,7 +107,7 @@ public class ConfigFileManager : MonoBehaviour
         {
             string yaml = serializer.Serialize(config);
             File.WriteAllText(GetPath(config.configName), yaml);
-            Debug.Log($"[ConfigFileManager] Saved: {GetPath(config.configName)}");
+            //Debug.Log($"[ConfigFileManager] Saved: {GetPath(config.configName)}");
             OnConfigSaved?.Invoke(config);
             return true;
         }
@@ -173,6 +178,27 @@ public class ConfigFileManager : MonoBehaviour
         {
             var data = new ObjectTransformData(cameraID);
             data.depthMin = value;
+            CurrentConfig.pointClouds.Add(data);
+        }
+
+        if (saveImmediately) Save();
+    }
+
+    public void SaveFlip(int cameraID, bool flipX, bool flipY, bool saveImmediately = true)
+    {
+        if (CurrentConfig == null) { Debug.LogError("[ConfigFileManager] No active config."); return; }
+
+        var existing = CurrentConfig.pointClouds.Find(o => o.ID == cameraID);
+        if (existing != null)
+        {
+            existing.scale.x = flipX ? -1 : 1;
+            existing.scale.y = flipY ? -1 : 1;
+        }
+        else
+        {
+            var data = new ObjectTransformData(cameraID);
+            data.scale.x = flipX ? -1 : 1;
+            data.scale.y = flipY ? -1 : 1;
             CurrentConfig.pointClouds.Add(data);
         }
 

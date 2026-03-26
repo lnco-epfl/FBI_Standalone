@@ -31,6 +31,9 @@ public class DragToScroll : MonoBehaviour, IPointerDownHandler, IDragHandler, IP
 
         if (targetInput != null)
             SyncValueFromInput();
+
+        currentValue = 0f;
+        targetInput.SetTextWithoutNotify("0.00");
     }
 
 

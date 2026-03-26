@@ -1,4 +1,38 @@
 configName: test2
-createdAt: 2026-03-25 15:13:57
-lastModified: 2026-03-25 15:14:14
-pointClouds: []
+createdAt: 2026-03-26 14:16:33
+lastModified: 2026-03-26 14:16:43
+pointClouds:
+- iD: 1
+  position:
+    x: 0
+    y: 1
+    z: 0.607
+  rotation:
+    x: 0
+    y: 0
+    z: 0
+  scale:
+    x: -1
+    y: 1
+    z: 1
+  depthMax: 3
+  depthMin: 0.1
+  flipX: false
+  flipY: false
+- iD: 2
+  position:
+    x: 0
+    y: 1
+    z: 0.607
+  rotation:
+    x: 0
+    y: 0
+    z: 0
+  scale:
+    x: -1
+    y: 1
+    z: 1
+  depthMax: 3
+  depthMin: 0.1
+  flipX: false
+  flipY: false
