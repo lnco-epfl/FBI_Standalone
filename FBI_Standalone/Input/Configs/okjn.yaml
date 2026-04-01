@@ -1,6 +1,6 @@
 configName: okjn
 createdAt: 2026-03-26 15:20:07
-lastModified: 2026-04-01 15:20:34
+lastModified: 2026-04-01 16:33:21
 pointClouds:
 - iD: 1
   position:
@@ -27,8 +27,8 @@ pointClouds:
     y: 0
     z: 0
   scale:
-    x: -1
+    x: 1
     y: 1
     z: 1
   depthMax: 3.47
-  depthMin: 0.09768524
+  depthMin: 0

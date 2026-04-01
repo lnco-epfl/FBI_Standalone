@@ -43,8 +43,12 @@ public class PointCloudManager : MonoBehaviour
         foreach (var pointCloud in pointClouds)
         {
             var pointCloudVFX = pointCloud.GetComponentInChildren<VisualEffect>();
+            pointCloudVFX.enabled = false;
             var pointCloud1ReplayBuffer = pointCloudVFX.GetComponent<PointCloudReplayBuffer>();
+            pointCloud1ReplayBuffer.enabled = true;
+            pointCloud1ReplayBuffer.enableReplay = false;
             var realtimeDelaySwitcher = pointCloudVFX.GetComponent<RealtimeDelaySwitcher>();
+            realtimeDelaySwitcher.enabled = true;
 
             int cameraID = int.Parse(pointCloud.name.Split('_')[1]);
 

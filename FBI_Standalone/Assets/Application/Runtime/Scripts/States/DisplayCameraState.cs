@@ -25,14 +25,13 @@ public class DisplayCameraState : IState
         realtimeDelaySwitcher.displayMode = step.delay > 0.0f ? RealtimeDelaySwitcher.DisplayMode.Delay : RealtimeDelaySwitcher.DisplayMode.Realtime;
         pointCloudReplayBuffer.replayDelaySeconds = step.delay;
 
-        realtimeDelaySwitcher.enabled = true;
-        pointCloudReplayBuffer.enabled = true;
+        pointCloudReplayBuffer.enableReplay = step.delay > 0.0f ? true : false;
+
         vfxEffect.enabled = true;
 
         yield return new WaitForSeconds(step.displayTime);
 
-        realtimeDelaySwitcher.enabled = false;
-        pointCloudReplayBuffer.enabled = false;
+        pointCloudReplayBuffer.enableReplay = false;
         vfxEffect.enabled = false;
 
         // wait for the memory properly allocated
