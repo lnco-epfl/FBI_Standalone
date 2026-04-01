@@ -1,53 +1,26 @@
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEditor.Toolbars;
 using UnityEngine;
-using UnityToolbarExtender;
 
 namespace Application.Editor
 {
-
-    static class ToolbarStyles
+    public class SceneSwitcherToolbar
     {
+        const string k_ElementId = "SceneSwitcher/StartupScene";
 
-        public static readonly GUIStyle commandButtonStyle;
-
-        static ToolbarStyles()
+        [MainToolbarElement(k_ElementId, defaultDockPosition = MainToolbarDockPosition.Left)]
+        static MainToolbarElement CreateStartupSceneButton()
         {
-            commandButtonStyle = new GUIStyle("Command")
-            {
-                fontSize = 16,
-                alignment = TextAnchor.MiddleCenter,
-                imagePosition = ImagePosition.ImageAbove,
-                fontStyle = FontStyle.Bold
-            };
+            return new MainToolbarButton(
+                new MainToolbarContent("S", "Start Startup Scene"),
+                () => SceneHelper.StartScene("Startup")
+            );
         }
-    }
-
-    [InitializeOnLoad]
-    public class SceneSwitchLeftButton
-    {
-
-        static SceneSwitchLeftButton()
-        {
-            ToolbarExtender.LeftToolbarGUI.Add(OnToolbarGUI);
-        }
-
-        static void OnToolbarGUI()
-        {
-            GUILayout.FlexibleSpace();
-
-            if (GUILayout.Button(new GUIContent("S", "Start Startup Scene"), ToolbarStyles.commandButtonStyle))
-            {
-                SceneHelper.StartScene("Startup");
-            }
-        }
-
     }
 
     static class SceneHelper
     {
-
-
         static string sceneToOpen;
 
         public static void StartScene(string sceneName)
@@ -74,8 +47,6 @@ namespace Application.Editor
 
             if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             {
-                // need to get scene via search because the path to the scene
-                // file contains the package version so it'll change over time
                 string[] guids = AssetDatabase.FindAssets("t:scene " + sceneToOpen, null);
                 if (guids.Length == 0)
                 {
@@ -88,9 +59,8 @@ namespace Application.Editor
                     EditorApplication.isPlaying = true;
                 }
             }
+
             sceneToOpen = null;
         }
-
     }
-
 }

@@ -67,7 +67,7 @@ namespace com.rfilkov.kinect
 
 
         // whether or not to sort the list of available sensors by serial number
-        private static readonly bool sortSensorListBySerialNum = true;
+        private static readonly bool SORT_SENSORS_BY_SERIAL_NUMBER = false;  // set to 'true', if you experience sensor index change after app or machine restart
 
         // cached sensor info and update time
         private static List<KinectInterop.SensorDeviceInfo> alSensorInfo = null;
@@ -146,13 +146,17 @@ namespace com.rfilkov.kinect
         private k4abt_skeleton_t bodySkeletonData;
         private int btQueueCount = 0;
         private int btQueueWaitTime = 0;
-        private ulong btQueueTime = 0;
+        //private ulong btQueueTime = 0;
 
         private System.Threading.Thread bodyTrackerThread = null;
         private System.Threading.AutoResetEvent bodyTrackerStopEvent = null;
         //private Capture bodyInputCapture = null;
-        private Capture bodyOutputCapture = null;
+        //private Capture bodyOutputCapture = null;
         private object bodyCaptureLock = new object();
+
+        // body output captures
+        private const int MAX_QUEUED_CAPTURES = 10;
+        private Queue<Capture> bodyOutputCaptures = new Queue<Capture>(MAX_QUEUED_CAPTURES);
 
         protected float leftHandFingerAngle = 0f;
         protected float rightHandFingerAngle = 0f;
@@ -279,7 +283,7 @@ namespace com.rfilkov.kinect
                 }
             }
 
-            if(sortSensorListBySerialNum)
+            if(SORT_SENSORS_BY_SERIAL_NUMBER)
             {
                 // sort list by sensorId, to keep it consistent
                 alSensorInfo.Sort((x, y) => x.sensorId.CompareTo(y.sensorId));
@@ -1935,6 +1939,13 @@ namespace com.rfilkov.kinect
                     btQueueWaitTime = 0;  // MAX_BODY_QUEUE_LENGTH <= 1 ? 0 : -1;
                     //Debug.Log("MaxQueueLen: " + MAX_BODY_QUEUE_LENGTH  + ", WaitTime: " + btQueueWaitTime);
 
+                    // clear body-captures queue
+                    while (bodyOutputCaptures.Count > 0)
+                    {
+                        Capture btCapture = bodyOutputCaptures.Dequeue();
+                        btCapture.Dispose();
+                    }
+
                     if (bCreateTracker)
                     {
                         k4abt_tracker_configuration_t btConfig = new k4abt_tracker_configuration_t();
@@ -2041,6 +2052,12 @@ namespace com.rfilkov.kinect
                     btQueueWaitTime = 0;
                 }
 
+                while(bodyOutputCaptures.Count > 0)
+                {
+                    Capture btCapture = bodyOutputCaptures.Dequeue();
+                    btCapture.Dispose();
+                }
+
                 //Debug.Log("Body tracker shut down.");
             }
 
@@ -2068,15 +2085,15 @@ namespace com.rfilkov.kinect
         {
             Capture bodyCapture = null;
 
-            if (bodyOutputCapture != null)
+            if (bodyOutputCaptures.Count > 0)
             {
                 lock (bodyCaptureLock)
                 {
-                    bodyCapture = bodyOutputCapture;
-                    bodyOutputCapture = null;
+                    bodyCapture = bodyOutputCaptures.Dequeue();
+                    //bodyOutputCapture = null;
                 }
 
-                //Debug.Log("D" + deviceIndex + " PollBodyCapture Time: " + bodyCapture.Depth.DeviceTimestamp.Ticks + ", Now: " + DateTime.Now.ToString("HH:mm:ss.fff"));
+                //Debug.Log($"D{deviceIndex} PollBodyCapture dequeued. Count: {bodyOutputCaptures.Count}\nTime: {bodyCapture.Depth.DeviceTimestamp.Ticks}, Now: " + DateTime.Now.ToString("HH:mm:ss.fff"));
             }
 
             // push the new capture
@@ -2132,7 +2149,7 @@ namespace com.rfilkov.kinect
                     {
                         // queued
                         btQueueCount++;
-                        btQueueTime = (ulong)DateTime.Now.Ticks;
+                        //btQueueTime = (ulong)DateTime.Now.Ticks;
                         //Debug.Log("Push btQueueCount: " + btQueueCount);
 
                         //if (btQueueWaitTime > 0)
@@ -2506,16 +2523,21 @@ namespace com.rfilkov.kinect
                     // save the body-frame capture
                     lock (bodyCaptureLock)
                     {
-                        if (bodyOutputCapture != null)
+                        //if (bodyOutputCapture != null)
+                        //{
+                        //    //Debug.LogWarning("D" + deviceIndex + " Disposing bt-frame capture. Time: " + bodyOutputCapture.Depth.DeviceTimestamp.Ticks);
+
+                        //    bodyOutputCapture.Dispose();
+                        //    bodyOutputCapture = null;
+                        //}
+
+                        //bodyOutputCapture = btCapture;
+
+                        if(bodyOutputCaptures.Count < MAX_QUEUED_CAPTURES)
                         {
-                            //Debug.LogWarning("D" + deviceIndex + " Disposing bt-frame capture. Time: " + bodyOutputCapture.Depth.DeviceTimestamp.Ticks);
-
-                            bodyOutputCapture.Dispose();
-                            bodyOutputCapture = null;
+                            bodyOutputCaptures.Enqueue(btCapture);
+                            //Debug.Log($"D{deviceIndex} Bt-frame capture enqueued. Count: {bodyOutputCaptures.Count}\nTimes: {btCapture.Depth.DeviceTimestamp.Ticks}, Now: " + DateTime.Now.ToString("HH:mm:ss.fff"));
                         }
-
-                        bodyOutputCapture = btCapture;
-                        //Debug.Log("D" + deviceIndex + " Bt-frame capture set. Timestamp: " + btCapture.Depth.DeviceTimestamp.Ticks + ", Now: " + DateTime.Now.ToString("HH:mm:ss.fff"));
                     }
                 }
             }

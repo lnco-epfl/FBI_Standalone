@@ -24,7 +24,7 @@
 
 			#pragma vertex vert
 			#pragma fragment frag
-			//#pragma geometry geom
+			#pragma geometry geom
 
 			#pragma target 5.0
 			#include "UnityCG.cginc"
@@ -53,6 +53,9 @@
 			float2 _TexRes;
 			uint _UserBodyIndex;
 			uint _BodyIndexAll;
+
+			float4x4 _WorldTransform;
+			float4x4 _LocalTransform;
 
 
 			struct v2f
@@ -149,7 +152,10 @@
 				float fDepth = (float)depth * 0.001;
 
 				float4 vPos = getSpacePos(idx, fDepth);
-				bool mask = _BodyIndexAll != 0 ? (bi != 255) : (bi == _UserBodyIndex && _UserBodyIndex != 255);
+				vPos = mul(_WorldTransform, vPos);
+				vPos = mul(_LocalTransform, vPos);
+
+				bool mask = depth != 0 && (_BodyIndexAll != 0 ? (bi != 255) : (bi == _UserBodyIndex && _UserBodyIndex != 255));
 
 				v.vertex = vPos;
 				o.pos = UnityObjectToClipPos(v.vertex);
@@ -168,16 +174,16 @@
 
 			fixed4 frag(v2f i) : SV_Target
 			{
+				if (!i.mask)
+				{
+					discard;
+				}
+
 				fixed4 color = tex2D(_ColorTex, i.uv_ColorTex);
 
 				float4 localPos = i.vertexPos;
 				float fDepth = localPos.z;
 				//color.rgb = float3(3.0 - fDepth, 3.0 - fDepth, 3.0 - fDepth);
-
-				if (!i.mask)
-				{
-					discard;
-				}
 
 				localPos.xy = localPos.xy / localPos.z;
 				float3 dx = ddx(localPos);
@@ -215,6 +221,7 @@
 				}
 		
 				return color;
+				//return fixed4(i.mask, i.mask, i.mask, 1);
 			}
 
 
