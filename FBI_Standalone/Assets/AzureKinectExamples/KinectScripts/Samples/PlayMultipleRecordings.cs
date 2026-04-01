@@ -32,7 +32,7 @@ namespace com.rfilkov.components
             // find the KinectManager-component in the scene
             if(kinectManager == null)
             {
-                kinectManager = FindObjectOfType<KinectManager>();
+                kinectManager = FindFirstObjectByType<KinectManager>();
 
                 if(kinectManager == null)
                 {
@@ -43,7 +43,7 @@ namespace com.rfilkov.components
             // find the sensor-interface component in the scene
             if(sensorInterface == null)
             {
-                DepthSensorBase[] sensorInterfaces = FindObjectsOfType<DepthSensorBase>();
+                DepthSensorBase[] sensorInterfaces = FindObjectsByType<DepthSensorBase>(FindObjectsSortMode.None);
 
                 for(int i = 0; i < sensorInterfaces.Length; i++)
                 {

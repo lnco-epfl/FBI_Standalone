@@ -112,7 +112,7 @@ namespace com.rfilkov.components
             }
 
             // find scene lights
-            Light[] sceneLights = GameObject.FindObjectsOfType<Light>();
+            Light[] sceneLights = GameObject.FindObjectsByType<Light>(FindObjectsSortMode.None);
             lighting.SetLightsAndBounds(sceneLights, transform.position, new Vector3(20f, 20f, 20f));
         }
 
@@ -553,7 +553,9 @@ namespace com.rfilkov.components
                 meshShaderMat.SetInt("_BodyIndexAll", playerIndex < 0 ? 1 : 0);
                 meshShaderMat.SetInt("_UserBodyIndex", userBodyIndex);
                 meshShaderMat.SetVector("_UserBodyPos", userBodyPos);
-                meshShaderMat.SetMatrix("_Transform", sensorInt.GetSensorToWorldMatrix());
+
+                meshShaderMat.SetMatrix("_WorldTransform", sensorInt.GetSensorToWorldMatrix());
+                meshShaderMat.SetMatrix("_LocalTransform", transform.worldToLocalMatrix);
 
                 // mesh bounds
                 if (kinectManager.GetUserBoundingBox(userId, null, sensorIndex, Rect.zero, out Vector3 posMin, out Vector3 posMax))

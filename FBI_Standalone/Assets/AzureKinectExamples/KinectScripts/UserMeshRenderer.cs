@@ -73,11 +73,12 @@ namespace com.rfilkov.components
         private byte[] meshVertUsed = null;
         private bool bMeshInited = false;
 
-        // thread parameters
-        private System.Threading.Thread buildMeshThread = null;
-        private bool bStopThread = false;
+        //// thread parameters
+        //private System.Threading.Thread buildMeshThread = null;
+        //private System.Threading.AutoResetEvent buildMeshFlag = null;
+        //private bool bStopThread = false;
 
-        private bool bBuildMesh = false;
+        //private bool bBuildMesh = false;
         private bool bUpdateMesh = false;
 
 
@@ -87,21 +88,26 @@ namespace com.rfilkov.components
             kinectManager = KinectManager.Instance;
             sensorData = (kinectManager != null && kinectManager.IsInitialized()) ? kinectManager.GetSensorData(sensorIndex) : null;
 
-            buildMeshThread = new System.Threading.Thread(new System.Threading.ThreadStart(BuildMesh));
-            buildMeshThread.IsBackground = true;
-            buildMeshThread.Start();
+            //buildMeshFlag = new System.Threading.AutoResetEvent(false);
+            //buildMeshThread = new System.Threading.Thread(new System.Threading.ThreadStart(BuildMesh));
+            //buildMeshThread.IsBackground = true;
+            //buildMeshThread.Start();
         }
 
 
         void OnDestroy()
         {
-            if (buildMeshThread != null)
-            {
-                // stop the thread
-                bStopThread = true;
-                buildMeshThread.Join();
-                buildMeshThread = null;
-            }
+            //if (buildMeshThread != null)
+            //{
+            //    // stop the thread
+            //    bStopThread = true;
+            //    buildMeshFlag.Set();
+            //    buildMeshThread.Join();
+            //    buildMeshThread = null;
+
+            //    buildMeshFlag.Dispose();
+            //    buildMeshFlag = null;
+            //}
 
             if (bMeshInited)
             {
@@ -111,7 +117,7 @@ namespace com.rfilkov.components
         }
 
 
-        void LateUpdate()
+        void Update()
         {
             if (mesh == null && sensorData != null && sensorData.depthCamIntr != null)
             {
@@ -126,8 +132,9 @@ namespace com.rfilkov.components
                 userBodyIndex = (byte)(userId != 0 ? kinectManager.GetBodyIndexByUserId(userId) : 255);
                 userBodyPos = userId != 0 ? kinectManager.GetUserKinectPosition(userId, true) : Vector3.zero;
 
-                // update the mesh
+                // build and update the mesh as needed
                 UpdateMesh();
+                //Debug.Log($"userId: {userId}, bi: {userBodyIndex}, update: {bUpdateMesh}");
             }
         }
 
@@ -292,7 +299,7 @@ namespace com.rfilkov.components
         // updates the mesh according to current depth frame
         private void UpdateMesh()
         {
-            if (!bBuildMesh && (Time.time - lastMeshUpdateTime) >= updateMeshInterval)
+            if (/**!bBuildMesh &&*/ (Time.time - lastMeshUpdateTime) >= updateMeshInterval)
             {
                 lastMeshUpdateTime = Time.time;
 
@@ -317,7 +324,9 @@ namespace com.rfilkov.components
                     //Debug.Log("UpdateMesh - tcolor time: " + sensorData.lastDepthCamColorFrameTime + ", depth time: " + sensorData.lastDepthFrameTime + ", bi time: " + sensorData.lastBodyIndexFrameTime);
                 }
 
-                bBuildMesh = true;
+                //bBuildMesh = true;
+                //buildMeshFlag.Set();
+                BuildMesh();
             }
 
             if (bUpdateMesh)
@@ -334,6 +343,7 @@ namespace com.rfilkov.components
                 //prevUserId = userId;
 
                 bUpdateMesh = false;
+                //bBuildMesh = false;
                 //Debug.Log("Mesh updated.");
 
                 if (updateColliderInterval > 0 && (Time.time - lastColliderUpdateTime) >= updateColliderInterval)
@@ -355,13 +365,15 @@ namespace com.rfilkov.components
         // builds the mesh according to the current 
         private void BuildMesh()
         {
-            while(!bStopThread)
+            //while(buildMeshFlag.WaitOne())
             {
-                if(!bUpdateMesh)
+                //if (bStopThread)
+                //    break;
+                //if(!bUpdateMesh)
                 {
                     if (bMeshInited && sensorData.depthImage != null && lastSpaceCoordsTime != sensorData.lastDepthFrameTime)
                     {
-                        if (bBuildMesh)
+                        //if (bBuildMesh)
                         {
                             lastSpaceCoordsTime = sensorData.lastDepthFrameTime;
 
@@ -385,7 +397,7 @@ namespace com.rfilkov.components
                                     {
                                         ushort depth = tDepthImage != null ? tDepthImage[di] : (ushort)0;
                                         byte bodyIndex = tBodyIndexImage != null ? tBodyIndexImage[di] : (byte)0;
-                                        bool isValidBodyPixel = userId != 0 && bodyIndex == userBodyIndex && Mathf.Abs(depth - userPosDepth) <= maxPosDistMm;
+                                        bool isValidBodyPixel = userId != 0 && bodyIndex == userBodyIndex && depth != 0 && Mathf.Abs(depth - userPosDepth) <= maxPosDistMm;
 
                                         bool bVertexSet = false;
                                         if (isValidBodyPixel)
@@ -417,7 +429,7 @@ namespace com.rfilkov.components
                                                         byte brbi = tBodyIndexImage != null ? tBodyIndexImage[br] : (byte)0;
 
                                                         // 1st triangle
-                                                        bool isValidBodyQuad =
+                                                        bool isValidBodyQuad = trd != 0 && bld != 0 && brd != 0 &&
                                                             trbi == userBodyIndex && Mathf.Abs(trd - userPosDepth) <= maxPosDistMm &&
                                                             blbi == userBodyIndex && Mathf.Abs(bld - userPosDepth) <= maxPosDistMm &&
                                                             brbi == userBodyIndex && Mathf.Abs(brd - userPosDepth) <= maxPosDistMm;
@@ -465,7 +477,7 @@ namespace com.rfilkov.components
                                     }
                                 }
 
-                                bBuildMesh = false;
+                                //bBuildMesh = false;
                                 bUpdateMesh = true;
                                 //Debug.Log("Mesh built.");
                             }
@@ -476,7 +488,7 @@ namespace com.rfilkov.components
                         }
                     }
 
-                    System.Threading.Thread.Sleep(KinectInterop.THREAD_SLEEP_TIME_MS);
+                    //System.Threading.Thread.Sleep(KinectInterop.THREAD_SLEEP_TIME_MS);
                 }
             }
         }

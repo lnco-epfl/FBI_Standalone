@@ -538,7 +538,7 @@ namespace com.rfilkov.kinect
         {
             gestureListeners.Clear();
 
-            MonoBehaviour[] monoScripts = FindObjectsOfType<MonoBehaviour>() as MonoBehaviour[];
+            MonoBehaviour[] monoScripts = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None) as MonoBehaviour[];
             foreach (MonoBehaviour monoScript in monoScripts)
             {
                 if ((monoScript is GestureListenerInterface) && monoScript.enabled)

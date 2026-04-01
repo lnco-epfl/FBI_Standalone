@@ -24,7 +24,7 @@ namespace com.rfilkov.components
         void Start()
         {
             // look for the KinectManager-component in the scene
-            kinectManager = FindObjectOfType<KinectManager>();
+            kinectManager = FindFirstObjectByType<KinectManager>();
 
             if (kinectManager != null)
             {

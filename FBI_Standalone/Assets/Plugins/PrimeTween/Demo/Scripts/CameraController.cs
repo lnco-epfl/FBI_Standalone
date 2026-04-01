@@ -25,7 +25,7 @@ namespace PrimeTweenDemo {
                 currentAngle += curRotationSpeed * Time.deltaTime;
                 transform.localEulerAngles = new Vector3(0f, currentAngle);
             }
-            if (highlightedElementController.current == null && InputController.GetDown() && !EventSystem.current.IsPointerOverGameObject()) {
+            if (highlightedElementController?.current == null && InputController.GetDown() && !EventSystem.current.IsPointerOverGameObject()) {
                 inputBeginPos = InputController.screenPosition;
             }
             if (InputController.GetUp()) {

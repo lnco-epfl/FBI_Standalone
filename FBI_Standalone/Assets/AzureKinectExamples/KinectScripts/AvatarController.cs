@@ -76,6 +76,9 @@ namespace com.rfilkov.components
         [Tooltip("Whether to keep the avatar's last position and rotation, when the user gets lost.")]
         public bool keepLastPose = false;
 
+        [Tooltip("Whether to hide the avatar, when the user gets lost, or not.")]
+        public bool hideWhenUserLost = false;
+
 
         [Tooltip("Horizontal offset of the avatar with respect to the position of user's spine-base.")]
         [Range(-0.5f, 0.5f)]
@@ -134,7 +137,9 @@ namespace com.rfilkov.components
         //protected Vector3 offsetNodePos;
         //protected Quaternion offsetNodeRot;
         protected Vector3 bodyRootPosition;
-        protected Vector3 bodyRootOffsetPos;
+        //protected Vector3 bodyRootOffsetPos;
+
+        protected Matrix4x4 bodyOfsMat;
 
         // Calibration Offset Variables for Character Position.
         [NonSerialized]
@@ -220,16 +225,16 @@ namespace com.rfilkov.components
         /// </summary>
         /// <param name="index">Bone index.</param>
         /// <param name="resetBone">If set to <c>true</c> resets bone orientation.</param>
-        public void DisableBone(int index, bool resetBone)
+        public void DisableBone(int index/**, bool resetBone*/)
         {
             if (index >= 0 && index < bones.Length)
             {
                 isBoneDisabled[index] = true;
 
-                if (resetBone && bones[index] != null)
-                {
-                    bones[index].rotation = localRotations[index];
-                }
+                //if (resetBone && bones[index] != null)
+                //{
+                //    bones[index].rotation = localRotations[index];
+                //}
             }
         }
 
@@ -398,6 +403,12 @@ namespace com.rfilkov.components
 
             // create bone and joint colliders, if needed
             CreateBoneColliders();
+
+            if (hideWhenUserLost && Camera.main != null)
+            {
+                // hide the avatar
+                transform.position = Camera.main.transform.position - Camera.main.transform.forward * 2f;
+            }
         }
 
 
@@ -621,7 +632,13 @@ namespace com.rfilkov.components
             if (bones == null)
                 return;
 
-            if(keepLastPose)
+            if (hideWhenUserLost && Camera.main != null)
+            {
+                transform.position = Camera.main.transform.position - Camera.main.transform.forward * 2f;
+                return;
+            }
+
+            if (keepLastPose)
             {
                 //Vector3 lastPos = new Vector3(transform.position.x, 
                 //    posRelativeToCamera != null || posRelOverlayColor ? transform.position.y : initialPosition.y, transform.position.z);
@@ -809,7 +826,10 @@ namespace com.rfilkov.components
 
             int iJoint = (int)joint;
             if (iJoint < 0 || !kinectManager.IsJointTracked(userId, iJoint))
+            {
+                boneTransform.localRotation = localRotations[boneIndex];
                 return;
+            }
 
             // Get Kinect joint orientation
             Quaternion jointRotation = kinectManager.GetJointOrientation(userId, iJoint, flip);
@@ -840,6 +860,7 @@ namespace com.rfilkov.components
             else
                 boneTransform.rotation = newRotation;
 
+            localRotations[boneIndex] = boneTransform.localRotation;
             //if(boneIndex == 5 || boneIndex == 6)  // clavicles
             //{
             //    Debug.Log(boneIndex + " rot - joint: " + jointRotation.eulerAngles + ", k2a: " + newRotation.eulerAngles + ", trans: " + boneTransform.rotation.eulerAngles);
@@ -1405,7 +1426,19 @@ namespace com.rfilkov.components
 
             if (offsetNode != null)
             {
-                bodyRootOffsetPos = bodyRootPosition - offsetNode.position;
+                Matrix4x4 offsetNodeMat = Matrix4x4.identity;
+                offsetNodeMat.SetTRS(offsetNode.position, offsetNode.rotation, Vector3.one);
+                //Debug.Log($"offsetNodeMat pos: {offsetNodeMat.GetColumn(3)}, rot: {offsetNodeMat.rotation.eulerAngles}, scale: {offsetNodeMat.lossyScale}");
+
+                Matrix4x4 bodyRootMat = Matrix4x4.identity;
+                Transform bodyTrans = bodyRoot != null ? bodyRoot : transform;
+                bodyRootMat.SetTRS(bodyTrans.position, bodyTrans.rotation, Vector3.one);
+                //Debug.Log($"bodyRootMat pos: {bodyRootMat.GetColumn(3)}, rot: {bodyRootMat.rotation.eulerAngles}, scale: {bodyRootMat.lossyScale}");
+
+                bodyOfsMat = Matrix4x4.Inverse(offsetNodeMat) * bodyRootMat;
+                //Debug.Log($"bodyOfsMat pos: {bodyOfsMat.GetColumn(3)}, rot: {bodyOfsMat.rotation.eulerAngles}, scale: {bodyOfsMat.lossyScale}");
+
+                //bodyRootOffsetPos = bodyRootPosition - offsetNode.position;
                 bodyRootPosition = Vector3.zero;
                 //Debug.Log($"bodyRootOffsetPos: {bodyRootOffsetPos}");
             }
@@ -1471,12 +1504,13 @@ namespace com.rfilkov.components
 
             if (offsetNode != null)
             {
-                //newRotation = offsetNode.rotation * newRotation;
-
                 Matrix4x4 matAvatar = Matrix4x4.identity;
-                matAvatar.SetTRS(transform.position - offsetNode.position, newRotation, Vector3.one);
+                matAvatar.SetTRS(transform.position, transform.rotation, Vector3.one);
                 Matrix4x4 matOffsetNode = Matrix4x4.identity;
                 matOffsetNode.SetTRS(offsetNode.position, offsetNode.rotation, Vector3.one);
+
+                Matrix4x4 avatarOfsMat = Matrix4x4.Inverse(matOffsetNode) * matAvatar;
+                matAvatar.SetTRS((Vector3)avatarOfsMat.GetColumn(3), bodyOfsMat.rotation * newRotation, Vector3.one);
 
                 Matrix4x4 matOffset = matOffsetNode * matAvatar;
                 newRotation = matOffset.rotation;
@@ -1496,19 +1530,17 @@ namespace com.rfilkov.components
 
             Quaternion posRotation = mirroredMovement ? Quaternion.Euler(0f, 180f, 0f) * initialRotation : initialRotation;
             newPosition = posRotation * newPosition;
+            //Debug.Log($"user pos: ({xPos:F2}, {yPos:F2}, {zPos:F2}), avatarPos: {newPosition:F2}, initialRot: {initialRotation.eulerAngles:F0}\njointPos: {jointPosition:F2}, ofsPos: {offsetPos:F2}");
 
             if (offsetNode != null)
             {
-                //newPosition += offsetNode.position;
-                ////newPosition = offsetNode.position;
-
                 Matrix4x4 matAvatar = Matrix4x4.identity;
-                matAvatar.SetTRS(bodyRootOffsetPos + newPosition, Quaternion.Inverse(offsetNode.rotation) * transform.rotation, Vector3.one);
+                matAvatar.SetTRS(newPosition, transform.rotation, Vector3.one);
                 Matrix4x4 matOffsetNode = Matrix4x4.identity;
                 matOffsetNode.SetTRS(offsetNode.position, offsetNode.rotation, Vector3.one);
 
-                Matrix4x4 matOffset = matOffsetNode * matAvatar;
-                newPosition = matOffset.GetPosition();
+                Matrix4x4 matOffset = matOffsetNode * bodyOfsMat * matAvatar;
+                newPosition = (Vector3)matOffset.GetColumn(3);
             }
 
             return newPosition;

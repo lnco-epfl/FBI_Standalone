@@ -17,7 +17,7 @@ namespace com.rfilkov.components
         public int playerIndex = 0;
 
         [Tooltip("The sensor's joint we want to follow.")]
-        public KinectInterop.JointType followJoint = KinectInterop.JointType.Head;
+        public KinectInterop.JointType followJoint = KinectInterop.JointType.Pelvis;
 
         [Tooltip("Whether the joint view is mirrored or not.")]
         public bool mirroredView = false;
@@ -41,7 +41,7 @@ namespace com.rfilkov.components
         private Vector3 rotationFactor = Vector3.zero;
 
         [Tooltip("Smooth factor used for object's position and rotation smoothing.")]
-        public float smoothFactor = 10f;
+        public float smoothFactor = 20f;
 
 
         private KinectManager kinectManager = null;
