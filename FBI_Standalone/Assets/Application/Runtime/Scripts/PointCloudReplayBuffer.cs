@@ -5,7 +5,7 @@ using com.rfilkov.kinect;
 
 
 /// <summary>
-/// Buffer circulaire pour enregistrer et rejouer le point cloud avec un délai configurable
+/// Circular buffer to record and replay the point cloud with a configurable delay
 /// </summary>
 public class PointCloudReplayBuffer : MonoBehaviour
 {
@@ -13,29 +13,29 @@ public class PointCloudReplayBuffer : MonoBehaviour
     [Tooltip("Depth sensor index - 0 is the 1st one, 1 - the 2nd one, etc.")]
     public int sensorIndex = 0;
 
-    [Tooltip("Délai de replay en secondes (ex: 2.0 pour 2 secondes de délai)")]
+    [Tooltip("Replay delay in seconds (e.g. 2.0 for a 2-second delay)")]
     [Range(0.1f, 10f)]
     public float replayDelaySeconds = 2.0f;
 
-    [Tooltip("Nombre de frames par seconde à capturer (influence la taille du buffer)")]
+    [Tooltip("Number of frames per second to capture (affects buffer size)")]
     [Range(15, 60)]
     public int captureFrameRate = 30;
 
-    [Tooltip("Activer/désactiver le mode replay")]
+    [Tooltip("Enable/disable replay mode")]
     public bool enableReplay = true;
 
-    [Header("Textures de sortie")]
-    [Tooltip("Render texture pour les vertices du point cloud en replay")]
+    [Header("Output Textures")]
+    [Tooltip("Render texture for replayed point cloud vertices")]
     public RenderTexture replayVertexTexture = null;
 
-    [Tooltip("Render texture pour les couleurs du point cloud en replay")]
+    [Tooltip("Render texture for replayed point cloud colors")]
     public RenderTexture replayColorTexture = null;
 
     [Header("Debug")]
-    [Tooltip("Afficher les informations de debug")]
+    [Tooltip("Show debug information")]
     public bool showDebugInfo = false;
 
-    // Classe pour stocker une frame du point cloud
+    // Class to store a single point cloud frame
     private class PointCloudFrame
     {
         public Texture2D vertexTexture;
@@ -44,8 +44,8 @@ public class PointCloudReplayBuffer : MonoBehaviour
 
         public PointCloudFrame(int width, int height)
         {
-            vertexTexture = new Texture2D(width, height, TextureFormat.RGBAFloat, false);
-            colorTexture = new Texture2D(width, height, TextureFormat.RGBA32, false);
+            vertexTexture = new Texture2D(width, height, TextureFormat.RGBAHalf, false, linear: true);
+            colorTexture = new Texture2D(width, height, TextureFormat.RGBA32, false, linear: true);
             timestamp = 0f;
         }
 
@@ -56,13 +56,13 @@ public class PointCloudReplayBuffer : MonoBehaviour
         }
     }
 
-    // Buffer circulaire
+    // Circular buffer
     private List<PointCloudFrame> frameBuffer;
     private int bufferSize;
     private int writeIndex = 0;
     private int readIndex = 0;
 
-    // Références
+    // References
     private KinectManager kinectManager = null;
     private KinectInterop.SensorData sensorData = null;
     private DepthSensorBase sensorInt = null;
@@ -73,7 +73,7 @@ public class PointCloudReplayBuffer : MonoBehaviour
     private int textureWidth = 0;
     private int textureHeight = 0;
 
-    // Matériau pour copier les textures
+    // Material used to copy textures
     private Material copyMaterial;
 
     void Start()
@@ -98,20 +98,20 @@ public class PointCloudReplayBuffer : MonoBehaviour
 
         sensorInt = (DepthSensorBase)sensorData.sensorInterface;
 
-        // Initialiser le buffer
+        // Initialize the buffer
         InitializeBuffer();
 
-        // Créer un matériau pour copier les textures
+        // Create a material to copy textures
         copyMaterial = new Material(Shader.Find("Hidden/BlitCopy"));
     }
 
     void InitializeBuffer()
     {
-        // Calculer la taille du buffer nécessaire
+        // Calculate the required buffer size
         captureInterval = 1f / captureFrameRate;
         bufferSize = Mathf.CeilToInt(replayDelaySeconds * captureFrameRate) + 2;
 
-        // Déterminer la résolution des textures
+        // Determine texture resolution
         if (sensorInt.pointCloudResolution == DepthSensorBase.PointCloudResolution.ColorCameraResolution)
         {
             textureWidth = sensorData.colorImageWidth;
@@ -123,7 +123,7 @@ public class PointCloudReplayBuffer : MonoBehaviour
             textureHeight = sensorData.depthImageHeight;
         }
 
-        // Créer le buffer
+        // Create the buffer
         frameBuffer = new List<PointCloudFrame>(bufferSize);
         for (int i = 0; i < bufferSize; i++)
         {
@@ -135,10 +135,10 @@ public class PointCloudReplayBuffer : MonoBehaviour
             Debug.Log($"PointCloudReplayBuffer initialized: {bufferSize} frames, {textureWidth}x{textureHeight}, delay: {replayDelaySeconds}s");
         }
 
-        // Créer les render textures si elles n'existent pas
+        // Create render textures if they don't exist
         if (replayVertexTexture == null)
         {
-            replayVertexTexture = new RenderTexture(textureWidth, textureHeight, 0, RenderTextureFormat.ARGBFloat);
+            replayVertexTexture = new RenderTexture(textureWidth, textureHeight, 0, RenderTextureFormat.ARGBHalf);
             replayVertexTexture.name = "ReplayVertexTexture";
             replayVertexTexture.Create();
         }
@@ -158,35 +158,35 @@ public class PointCloudReplayBuffer : MonoBehaviour
 
         float currentTime = Time.time;
 
-        // Capturer une nouvelle frame si nécessaire
+        // Capture a new frame if needed
         if (currentTime - lastCaptureTime >= captureInterval)
         {
             CaptureFrame();
             lastCaptureTime = currentTime;
         }
 
-        // Lire et afficher la frame avec le délai approprié
+        // Read and display the frame with the appropriate delay
         DisplayDelayedFrame();
     }
 
     void CaptureFrame()
     {
-        // Obtenir les textures du point cloud actuelles
+        // Get the current point cloud textures
         RenderTexture vertexRT = sensorInt.pointCloudVertexTexture;
         RenderTexture colorRT = sensorInt.pointCloudColorTexture;
 
         if (vertexRT == null || colorRT == null)
             return;
 
-        // Obtenir la frame du buffer à l'index d'écriture
+        // Get the frame at the current write index
         PointCloudFrame frame = frameBuffer[writeIndex];
         frame.timestamp = Time.time;
 
-        // Copier les textures
+        // Copy the textures
         CopyRenderTextureToTexture2D(vertexRT, frame.vertexTexture);
         CopyRenderTextureToTexture2D(colorRT, frame.colorTexture);
 
-        // Avancer l'index d'écriture (buffer circulaire)
+        // Advance the write index (circular buffer)
         writeIndex = (writeIndex + 1) % bufferSize;
 
         if (showDebugInfo && writeIndex == 0)
@@ -197,10 +197,10 @@ public class PointCloudReplayBuffer : MonoBehaviour
 
     void DisplayDelayedFrame()
     {
-        // Calculer quel frame afficher basé sur le délai
+        // Calculate which frame to display based on the delay
         float targetTime = Time.time - replayDelaySeconds;
 
-        // Trouver la frame la plus proche du temps cible
+        // Find the frame closest to the target time
         int bestIndex = -1;
         float bestTimeDiff = float.MaxValue;
 
@@ -219,7 +219,7 @@ public class PointCloudReplayBuffer : MonoBehaviour
             readIndex = bestIndex;
             PointCloudFrame frame = frameBuffer[readIndex];
 
-            // Copier vers les render textures de sortie
+            // Copy to the output render textures
             Graphics.Blit(frame.vertexTexture, replayVertexTexture);
             Graphics.Blit(frame.colorTexture, replayColorTexture);
         }
@@ -238,7 +238,7 @@ public class PointCloudReplayBuffer : MonoBehaviour
 
     void OnDestroy()
     {
-        // Nettoyer le buffer
+        // Clean up the buffer
         if (frameBuffer != null)
         {
             foreach (var frame in frameBuffer)
@@ -270,20 +270,20 @@ public class PointCloudReplayBuffer : MonoBehaviour
         GUILayout.EndArea();
     }
 
-    // Méthodes publiques pour contrôler le replay
+    // Public methods to control replay
 
     /// <summary>
-    /// Change le délai de replay en temps réel
+    /// Changes the replay delay at runtime
     /// </summary>
     public void SetReplayDelay(float delaySeconds)
     {
         replayDelaySeconds = Mathf.Clamp(delaySeconds, 0.1f, 10f);
 
-        // Réinitialiser le buffer si nécessaire
+        // Reinitialize the buffer if needed
         int newBufferSize = Mathf.CeilToInt(replayDelaySeconds * captureFrameRate) + 2;
         if (newBufferSize != bufferSize)
         {
-            // Nettoyer l'ancien buffer
+            // Clean up the old buffer
             foreach (var frame in frameBuffer)
             {
                 frame.Release();
@@ -294,7 +294,7 @@ public class PointCloudReplayBuffer : MonoBehaviour
     }
 
     /// <summary>
-    /// Active ou désactive le mode replay
+    /// Enables or disables replay mode
     /// </summary>
     public void ToggleReplay(bool enabled)
     {
@@ -302,7 +302,7 @@ public class PointCloudReplayBuffer : MonoBehaviour
     }
 
     /// <summary>
-    /// Vide le buffer
+    /// Clears the buffer
     /// </summary>
     public void ClearBuffer()
     {
