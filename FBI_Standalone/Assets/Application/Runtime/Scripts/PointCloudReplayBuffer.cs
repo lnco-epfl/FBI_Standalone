@@ -14,8 +14,8 @@ public class PointCloudReplayBuffer : MonoBehaviour
     public int sensorIndex = 0;
 
     [Tooltip("Replay delay in seconds (e.g. 2.0 for a 2-second delay)")]
-    [Range(0.1f, 10f)]
-    public float replayDelaySeconds = 2.0f;
+    [Range(0.001f, 3f)]
+    public float replayDelaySeconds = 1.0f;
 
     [Tooltip("Number of frames per second to capture (affects buffer size)")]
     [Range(15, 60)]

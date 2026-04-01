@@ -3,7 +3,7 @@ steps:
     scenePath: "EmptyRoom"
 
   - stepType: LoadConfig
-    fileName: test
+    fileName: okjn
 
   - stepType: DisplayText
     text: "welcome to FBI"
@@ -23,7 +23,7 @@ steps:
   - stepType: DisplayCamera
     duration: 20.0
     cameraID: "1"
-    delay: 0.5
+    delay: 1.0
 
   - stepType: Wait
     duration: 2.0
@@ -46,7 +46,7 @@ steps:
 
   - stepType: DisplayImage
     imagePath: "plus"
-    scale: 1.0
+    scale: 0.3
     duration: 5.0
 
   - stepType: PlaySound
