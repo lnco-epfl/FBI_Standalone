@@ -3,7 +3,7 @@ steps:
     scenePath: "EmptyRoom"
 
   - stepType: LoadConfig
-    fileName: okjn
+    fileName: Bruno
 
   - stepType: DisplayText
     text: "welcome to FBI"
