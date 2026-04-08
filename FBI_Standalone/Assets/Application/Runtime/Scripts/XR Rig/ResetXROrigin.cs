@@ -18,7 +18,7 @@ public class ResetXROrigin : MonoBehaviour
     }
     private void OnDisable()
     {
-        ShortcutManager.Instance.ResetXROriginActionReference.action.performed += OnResetXROriginActionPerformed;
+        ShortcutManager.Instance.ResetXROriginActionReference.action.performed -= OnResetXROriginActionPerformed;
 
         SceneLoaderManager.Instance.OnSceneLoaded -= OnSceneLoaded;
     }
