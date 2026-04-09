@@ -58,6 +58,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private LocalizedString playText;
     [SerializeField] private LocalizedString pauseText;
 
+    [SerializeField] private Button resetXROriginButton;
+
+
     private bool isPause = false;
 
     private bool isMute = false;
@@ -127,6 +130,8 @@ public class UIManager : MonoBehaviour
         soundSlider.onValueChanged.AddListener(OnSoundSliderValueChanged);
         muteButton.onClick.AddListener(OnMuteButtonPress);
 
+        resetXROriginButton.onClick.AddListener(OnResetXROriginButtonPress);
+
         ShortcutManager.Instance.MuteActionReference.action.performed += MuteActionPerformed;
 
         ageInputField.onSubmit.AddListener(OnAgeInputFieldSubmit);
@@ -164,6 +169,8 @@ public class UIManager : MonoBehaviour
         fullscreenOutButton.onClick.RemoveListener(OnFullscreenOutButtonPress);
 
         quitButton.onClick.RemoveListener(OnQuitButtonPress);
+
+        resetXROriginButton.onClick.RemoveListener(OnResetXROriginButtonPress);
 
         ageInputField.onSubmit.RemoveListener(OnAgeInputFieldSubmit);
         ageInputField.onSelect.RemoveListener(OnInputFieldSelect);
@@ -439,6 +446,11 @@ public class UIManager : MonoBehaviour
     private static void OnQuitButtonPress()
     {
         Application.Quit();
+    }
+
+    private void OnResetXROriginButtonPress()
+    {
+        ResetXROrigin.Instance.ResetOrigin();
     }
 
     private void OnPlayPauseButtonPress()

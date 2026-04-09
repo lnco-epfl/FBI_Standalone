@@ -10,6 +10,20 @@ public class ResetXROrigin : MonoBehaviour
     public Transform origin;
     public Transform target;
 
+
+    private static ResetXROrigin instance;
+    public static ResetXROrigin Instance { get { return instance; } }
+
+    private void Awake()
+    {
+        if (instance != null && instance != this) { Destroy(this.gameObject); }
+        else
+        {
+            instance = this;
+        }
+    }
+
+
     private void OnEnable()
     {
         ShortcutManager.Instance.ResetXROriginActionReference.action.performed += OnResetXROriginActionPerformed;
