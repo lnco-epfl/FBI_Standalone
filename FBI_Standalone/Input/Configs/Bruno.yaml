@@ -1,15 +1,15 @@
 configName: Bruno
 createdAt: 2026-04-02 15:20:45
-lastModified: 2026-04-02 15:30:03
+lastModified: 2026-04-09 17:26:25
 pointClouds:
 - iD: 1
   position:
     x: 0
-    y: 1
-    z: 0.36
+    y: 0
+    z: 3.47
   rotation:
     x: 0
-    y: 0
+    y: 356.18
     z: 0
   scale:
     x: -1

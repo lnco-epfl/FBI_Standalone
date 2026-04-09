@@ -122,6 +122,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
       
     }
 
+    [ContextMenu("SpawnPointCloudEntries")]
     private void SpawnPointCloudEntries()
     {
         var cameraIds = PointCloudManager.Instance.GetAvailableCameraIds();
@@ -133,8 +134,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
             var entry = go.GetComponent<PointCloudUIEntry>();
             entry.Init(id);
-            entry.SetInteractable(false);
-            entry.SetDisplayToggle(false);
+            entry.SetInteractable(true);
+            entry.SetDisplayToggle(true);
 
             entry.OnDisplayToggleRequested += OnDisplayToggleRequested;
 
