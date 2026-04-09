@@ -532,6 +532,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -777,6 +778,7 @@ MonoBehaviour:
   createConfigButton: {fileID: 0}
   newConfigCanvasGroup: {fileID: 0}
   statusText: {fileID: 0}
+  dotImage: {fileID: 0}
   statusLocalizedText:
     m_TableReference:
       m_TableCollectionName: GUID:4823a8d02f8d786498601cdb3db61537
