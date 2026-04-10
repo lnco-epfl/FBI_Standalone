@@ -2564,13 +2564,13 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  displayPointCloudToggle: {fileID: 0}
+  displayPointCloudToggle: {fileID: 3303823032582797812}
   positionXInputField: {fileID: 3135143818195729780}
-  positionYInputField: {fileID: 0}
-  positionZInputField: {fileID: 0}
-  rotationXInputField: {fileID: 0}
-  rotationYInputField: {fileID: 0}
-  rotationZInputField: {fileID: 0}
+  positionYInputField: {fileID: 2719935828520528623}
+  positionZInputField: {fileID: 2294201079536884213}
+  rotationXInputField: {fileID: 3454617537142419745}
+  rotationYInputField: {fileID: 6895165556506819820}
+  rotationZInputField: {fileID: 145861639652964763}
   cameraDepthMaxSlider: {fileID: 1529255189254020804}
   cameraDepthMinSlider: {fileID: 3336551184947054573}
   flipXToggle: {fileID: 7294901925586436752}
