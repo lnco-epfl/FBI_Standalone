@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "settings": [
+        "{\"deviceStreamingMode\":1,\"deviceIndex\":0,\"recordingFile\":\"\",\"minDistance\":0.5,\"maxDistance\":10.0,\"colorCameraMode\":2,\"depthCameraMode\":2,\"cameraFPS\":2,\"deviceSyncMode\":0,\"subDeviceDelayUsec\":0,\"flipImuRotation\":false,\"bodyTemporalSmoothing\":0.0,\"playbackPosSeconds\":-1.0,\"loopPlayback\":false,\"bodyTrackingSensorOrientation\":0,\"bodyTrackingProcessingMode\":2,\"detectFloorForPoseEstimation\":true}",
+        "{\"deviceStreamingMode\":1,\"deviceIndex\":1,\"recordingFile\":\"\",\"minDistance\":0.5,\"maxDistance\":10.0,\"colorCameraMode\":2,\"depthCameraMode\":2,\"cameraFPS\":2,\"deviceSyncMode\":0,\"subDeviceDelayUsec\":0,\"flipImuRotation\":false,\"bodyTemporalSmoothing\":0.0,\"playbackPosSeconds\":-1.0,\"loopPlayback\":false,\"bodyTrackingSensorOrientation\":0,\"bodyTrackingProcessingMode\":2,\"detectFloorForPoseEstimation\":true}"
+    ],
+    "camPose": [
+        {
+            "sensorType": 4,
+            "sensorIndex": 0,
+            "sensorId": "CL8RC5301KG",
+            "position": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "sensorType": 4,
+            "sensorIndex": 1,
+            "sensorId": "CL8RC53009C",
+            "position": {
+                "x": 0.16075927019119264,
+                "y": 2.302042245864868,
+                "z": 1.853368878364563
+            },
+            "rotation": {
+                "x": 61.399391174316409,
+                "y": 168.29098510742188,
+                "z": 345.8173522949219
+            }
+        }
+    ],
+    "estimatedAtTime": 639114113994173583,
+    "estimatedDateTime": "10.04.2026 09:49"
+}

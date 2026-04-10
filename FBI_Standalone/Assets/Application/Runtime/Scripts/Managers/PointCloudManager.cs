@@ -44,18 +44,28 @@ public class PointCloudManager : MonoBehaviour
         {
             var pointCloudVFX = pointCloud.GetComponentInChildren<VisualEffect>();
             pointCloudVFX.enabled = false;
-            var pointCloud1ReplayBuffer = pointCloudVFX.GetComponent<PointCloudReplayBuffer>();
-            pointCloud1ReplayBuffer.enabled = true;
-            pointCloud1ReplayBuffer.enableReplay = false;
+
+            var pointCloudReplayBuffer = pointCloudVFX.GetComponent<PointCloudReplayBuffer>();
+            pointCloudReplayBuffer.enabled = true;
+            pointCloudReplayBuffer.enableReplay = false;
+
+            //var pointCloudRealtime = pointCloudVFX.GetComponent<PointCloudRealtime>();
+            //pointCloudRealtime.enabled = true;
+
             var realtimeDelaySwitcher = pointCloudVFX.GetComponent<RealtimeDelaySwitcher>();
             realtimeDelaySwitcher.enabled = true;
 
             int cameraID = int.Parse(pointCloud.name.Split('_')[1]);
 
-            pointCloudContainers[cameraID] = new PointCloudContainer(pointCloudVFX, pointCloud1ReplayBuffer, realtimeDelaySwitcher);
+            pointCloudContainers[cameraID] = new PointCloudContainer(pointCloudVFX, pointCloudReplayBuffer, realtimeDelaySwitcher);
         }
 
+
+        //StartCoroutine(WaitForKinectManagerInitialization(InitializePointCloud));
+
     }
+
+
 
     private void OnEnable()
     {
@@ -67,16 +77,36 @@ public class PointCloudManager : MonoBehaviour
         ConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
     }
 
+
+
     private void OnConfigLoaded(ConfigFile obj)
     {
-        StartCoroutine(WaitForKinectManagerInitialization());
+        StartCoroutine(WaitForKinectManagerInitialization(LoadConfigSettings));
     }
 
-    private IEnumerator WaitForKinectManagerInitialization()
+    private IEnumerator WaitForKinectManagerInitialization(Action callback)
     {
-     
+
         yield return new WaitUntil(() => KinectManager.Instance.IsInitialized());
 
+        callback.Invoke();
+    }
+
+    private void InitializePointCloud()
+    {
+
+        foreach (var kvp in pointCloudContainers)
+        {
+            var pointCloudContainer = kvp.Value;
+
+            pointCloudContainer.replayBuffer.Initialize();
+
+        }
+
+    }
+
+    private void LoadConfigSettings()
+    {
         var currentConfig = ConfigFileManager.Instance.CurrentConfig;
 
         if (currentConfig != null)
@@ -91,7 +121,7 @@ public class PointCloudManager : MonoBehaviour
                 var depthMax = currentConfig.pointClouds[i].depthMax;
 
                 SetVisualEffectPositionRotationScale(position, rotation, scale, id);
-                
+
                 SetCameraDepthValues(depthMin, depthMax, id);
             }
         }

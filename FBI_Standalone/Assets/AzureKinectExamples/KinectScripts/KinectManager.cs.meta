@@ -1,14 +1,5 @@
 fileFormatVersion: 2
 guid: 6b531f336dfee5f438f94ed501caefc7
-MonoImporter:
-  externalObjects: {}
-  serializedVersion: 2
-  defaultReferences: []
-  executionOrder: 0
-  icon: {instanceID: 0}
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 
 AssetOrigin:
   serializedVersion: 1
   productId: 149700
@@ -16,3 +7,12 @@ AssetOrigin:
   packageVersion: 1.21
   assetPath: Assets/AzureKinectExamples/KinectScripts/KinectManager.cs
   uploadId: 843984
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: -81
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
