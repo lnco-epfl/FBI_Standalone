@@ -2566,10 +2566,10 @@ MonoBehaviour:
     m_LocalVariables: []
   displayPointCloudToggle: {fileID: 3303823032582797812}
   positionXInputField: {fileID: 3135143818195729780}
-  positionYInputField: {fileID: 2719935828520528623}
-  positionZInputField: {fileID: 2294201079536884213}
+  positionYInputField: {fileID: 3454617537142419745}
+  positionZInputField: {fileID: 2719935828520528623}
   rotationXInputField: {fileID: 3454617537142419745}
-  rotationYInputField: {fileID: 6895165556506819820}
+  rotationYInputField: {fileID: 2294201079536884213}
   rotationZInputField: {fileID: 145861639652964763}
   cameraDepthMaxSlider: {fileID: 1529255189254020804}
   cameraDepthMinSlider: {fileID: 3336551184947054573}
@@ -3810,6 +3810,10 @@ MonoBehaviour:
   plusButton: {fileID: 5870613419237240711}
   minusButton: {fileID: 4288113875138892661}
   step: 0.01
+  minValue: -3.4028235e+38
+  maxValue: 3.4028235e+38
+  holdDelay: 0.5
+  holdInterval: 0.08
 --- !u!114 &4288113875138892661 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4301429289551141098, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
@@ -4264,6 +4268,10 @@ MonoBehaviour:
   plusButton: {fileID: 5523678225148219369}
   minusButton: {fileID: 2761523512623510299}
   step: 0.01
+  minValue: -3.4028235e+38
+  maxValue: 3.4028235e+38
+  holdDelay: 0.5
+  holdInterval: 0.08
 --- !u!114 &5523678225148219369 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5857868316357239832, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
@@ -4509,6 +4517,10 @@ MonoBehaviour:
   plusButton: {fileID: 8557270952797994227}
   minusButton: {fileID: 2034329072240148481}
   step: 0.01
+  minValue: -3.4028235e+38
+  maxValue: 3.4028235e+38
+  holdDelay: 0.5
+  holdInterval: 0.08
 --- !u!114 &2034329072240148481 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4301429289551141098, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
@@ -4576,14 +4588,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5133963727334236362, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5133963727334236362, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5133963727334236362, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
@@ -4621,14 +4625,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5711745012739576413, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7605403996238558594, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7605403996238558594, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
-      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7605403996238558594, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
@@ -4783,6 +4779,10 @@ MonoBehaviour:
   plusButton: {fileID: 8718101498565323624}
   minusButton: {fileID: 1298725593253959578}
   step: 0.01
+  minValue: -3.4028235e+38
+  maxValue: 3.4028235e+38
+  holdDelay: 0.5
+  holdInterval: 0.08
 --- !u!114 &3135143818195729780 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 159310013366874628, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
@@ -5046,6 +5046,10 @@ MonoBehaviour:
   plusButton: {fileID: 8975652027299096381}
   minusButton: {fileID: 1618200612543421391}
   step: 0.01
+  minValue: -3.4028235e+38
+  maxValue: 3.4028235e+38
+  holdDelay: 0.5
+  holdInterval: 0.08
 --- !u!114 &3454617537142419745 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 159310013366874628, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
@@ -5512,3 +5516,7 @@ MonoBehaviour:
   plusButton: {fileID: 922713615033756400}
   minusButton: {fileID: 7364731401068205570}
   step: 0.01
+  minValue: -3.4028235e+38
+  maxValue: 3.4028235e+38
+  holdDelay: 0.5
+  holdInterval: 0.08
