@@ -171,6 +171,10 @@ MonoBehaviour:
     m_Key: display-toggle
     m_Metadata:
       m_Items: []
+  - m_Id: 104126562561941504
+    m_Key: reset-headset-or
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
