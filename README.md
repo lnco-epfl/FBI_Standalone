@@ -23,6 +23,7 @@ For running the application, you need a PC connected to one or more Femto Bolt c
 To run the application:
 
 * Connect all Femto Bolt cameras to the PC and ensure they are recognized by the system.
+* Connect the Quest 3S to the laptop with the usb-C cable, and start Meta Horizon link on the laptop. 
 * Run `FBI Standalone.exe`
 * Enter the participant data (age, gender) and select a sequence file.
 * Create or edit a config file (which defines camera positions, depth values, etc.)
