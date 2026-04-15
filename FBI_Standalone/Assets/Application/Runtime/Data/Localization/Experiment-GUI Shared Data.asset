@@ -175,6 +175,10 @@ MonoBehaviour:
     m_Key: reset-headset-or
     m_Metadata:
       m_Items: []
+  - m_Id: 105900683188477952
+    m_Key: sequence-file
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
