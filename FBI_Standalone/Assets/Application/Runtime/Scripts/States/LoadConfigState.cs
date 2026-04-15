@@ -13,7 +13,7 @@ public class LoadConfigState : IState
     public IEnumerator Execute()
     {
 
-        EventFileManager.Log($"LoadConfigState Load condig file{step.fileName}");
+        EventFileManager.Log($"[LoadConfigState] Load condig file{step.fileName}");
 
         var configs = ConfigFileManager.Instance.GetAvailableConfigs();
 
@@ -23,7 +23,7 @@ public class LoadConfigState : IState
         }
         else
         {
-            EventFileManager.Error($"LoadConfigState Config file {step.fileName} not found");
+            EventFileManager.Error($"[LoadConfigState] Config file {step.fileName} not found");
         }
 
         yield return new WaitForSeconds(0.5f);

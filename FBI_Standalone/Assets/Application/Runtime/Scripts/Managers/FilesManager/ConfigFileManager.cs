@@ -77,7 +77,7 @@ public class ConfigFileManager : MonoBehaviour
         string path = GetPath(configName);
         if (!File.Exists(path))
         {
-            Debug.LogError($"[ConfigFileManager] File not found: {path}");
+            EventFileManager.Log($"[ConfigFileManager] File not found: {path}");
             return null;
         }
 
@@ -85,13 +85,13 @@ public class ConfigFileManager : MonoBehaviour
         {
             string yaml = File.ReadAllText(path);
             CurrentConfig = deserializer.Deserialize<ConfigFile>(yaml);
-            Debug.Log($"[ConfigFileManager] Loaded: {path}");
+            EventFileManager.Log($"[ConfigFileManager] Loaded: {path}");
             OnConfigLoaded?.Invoke(CurrentConfig);
             return CurrentConfig;
         }
         catch (Exception e)
         {
-            Debug.LogError($"[ConfigFileManager] Load error: {e.Message}\n{e.StackTrace}\n{e.InnerException?.Message}");
+            EventFileManager.Log($"[ConfigFileManager] Load error: {e.Message}\n{e.StackTrace}\n{e.InnerException?.Message}");
             return null;
         }
     }
@@ -99,7 +99,7 @@ public class ConfigFileManager : MonoBehaviour
     public bool Save(ConfigFile config = null)
     {
         config ??= CurrentConfig;
-        if (config == null) { Debug.LogError("[ConfigFileManager] No config to save."); return false; }
+        if (config == null) { EventFileManager.Log("[ConfigFileManager] No config to save."); return false; }
 
         config.lastModified = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
@@ -113,7 +113,7 @@ public class ConfigFileManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError($"[ConfigFileManager] Save error: {e.Message}");
+            EventFileManager.Log($"[ConfigFileManager] Save error: {e.Message}");
             return false;
         }
     }
@@ -129,7 +129,7 @@ public class ConfigFileManager : MonoBehaviour
 
     public void SaveObjectTransform(int cameraID, Transform t, bool saveImmediately = true)
     {
-        if (CurrentConfig == null) { Debug.LogError("[ConfigFileManager] No active config."); return; }
+        if (CurrentConfig == null) { EventFileManager.Log("[ConfigFileManager] No active config."); return; }
 
         var existing = CurrentConfig.pointClouds.Find(o => o.ID == cameraID);
         if (existing != null)
@@ -148,7 +148,7 @@ public class ConfigFileManager : MonoBehaviour
 
     public void SaveDepthMax(int cameraID, float value, bool saveImmediately = true)
     {
-        if (CurrentConfig == null) { Debug.LogError("[ConfigFileManager] No active config."); return; }
+        if (CurrentConfig == null) { EventFileManager.Log("[ConfigFileManager] No active config."); return; }
 
         var existing = CurrentConfig.pointClouds.Find(o => o.ID == cameraID);
         if (existing != null)
@@ -167,7 +167,7 @@ public class ConfigFileManager : MonoBehaviour
 
     public void SaveDepthMin(int cameraID, float value, bool saveImmediately = true)
     {
-        if (CurrentConfig == null) { Debug.LogError("[ConfigFileManager] No active config."); return; }
+        if (CurrentConfig == null) { EventFileManager.Log("[ConfigFileManager] No active config."); return; }
 
         var existing = CurrentConfig.pointClouds.Find(o => o.ID == cameraID);
         if (existing != null)
@@ -186,7 +186,7 @@ public class ConfigFileManager : MonoBehaviour
 
     public void SaveFlip(int cameraID, bool flipX, bool flipY, bool saveImmediately = true)
     {
-        if (CurrentConfig == null) { Debug.LogError("[ConfigFileManager] No active config."); return; }
+        if (CurrentConfig == null) { EventFileManager.Log("[ConfigFileManager] No active config."); return; }
 
         var existing = CurrentConfig.pointClouds.Find(o => o.ID == cameraID);
         if (existing != null)
