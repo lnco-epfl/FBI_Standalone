@@ -12,35 +12,25 @@ public class OutputFileData
 
     public string SequenceFile { get; set; }
 
-    public string BreathingDevice { get; set; }
+    public string ConfigFile { get; set; }
+    public float CameraDelay { get; set; }
+    public float CameraDisplayDuration { get; set; }
+    public int CameraID { get; set; }
 
     public double TimeSinceStart { get; set; }
     public string StepType { get; set; }
     public int StepCount { get; set; }
 
-    public string Room {  get; set; }
-
-    public string ObjectName { get; set; }
-    public string SpawnPosition { get; set; }
-    public string Condition { get; set; }
-    public string Status { get; set; }
-    public double ObjectSpawnTime { get; set; }
-    public double ObjectDespawnTime { get; set; }
+    public string Scene {  get; set; }
 
     public float FixingCrossDuration { get; set; }
-
-    public string LikertType { get; set; }
 
     public int LikertResponse { get; set; }
     public double LikertResponseTime { get; set; }
 
-    public string QuestionType { get; set; }
     public string QuestionResponse { get; set; }
-    public string QuestionCorrectResponse { get; set; }
     public double QuestionResponseTime { get; set; }
 
-    public string QuestionMultiResponse { get; set; }
-    public double QuestionMultiResponseTime { get; set; }
 
     public void ResetAll()
     {
@@ -50,36 +40,25 @@ public class OutputFileData
 
         SequenceFile = string.Empty;
 
-        BreathingDevice = string.Empty;
+        ConfigFile = string.Empty;
 
-        Room = string.Empty;
+        CameraDelay = 0f;
+        CameraDisplayDuration = 0f;
+        CameraID = 0;
+
+        Scene = string.Empty;
 
         TimeSinceStart = 0f;
         StepType = string.Empty;
         StepCount = 0;
 
-        ObjectName = string.Empty;
-        SpawnPosition = string.Empty;
-        Condition = string.Empty;
-        Status = string.Empty;
-        ObjectSpawnTime = 0f;
-        ObjectDespawnTime = 0f;
-
         FixingCrossDuration = 0f;
-
-        LikertType = string.Empty;
 
         LikertResponse = 0;
         LikertResponseTime = 0f;
 
-        QuestionType = string.Empty;
-
         QuestionResponse = string.Empty;
-        QuestionCorrectResponse = string.Empty;
         QuestionResponseTime = 0f;
-
-        QuestionMultiResponse = string.Empty;
-        QuestionMultiResponseTime = 0f;
     }
 
     public void Reset()
@@ -89,28 +68,13 @@ public class OutputFileData
         StepType = string.Empty;
         StepCount = 0;
 
-        ObjectName = string.Empty;
-        SpawnPosition = string.Empty;
-        Condition = string.Empty;
-        Status = string.Empty;
-        ObjectSpawnTime = 0f;
-        ObjectDespawnTime = 0f;
-
         FixingCrossDuration = 0f;
-
-        LikertType = string.Empty;
 
         LikertResponse = 0;
         LikertResponseTime = 0f;
 
-        QuestionType = string.Empty;
-
         QuestionResponse = string.Empty;
-        QuestionCorrectResponse = string.Empty;
         QuestionResponseTime = 0f;
-
-        QuestionMultiResponse = string.Empty;
-        QuestionMultiResponseTime = 0f;
     }
 }
 
@@ -183,7 +147,7 @@ public class OutputFileManager : MonoBehaviour
             csv.NextRecord();
         }
 
-        EventFileManager.Log("OutputFileManager initialized: " + newOutputFilePath);
+        EventFileManager.Log("$[OutputFileManager] initialized: { newOutputFilePath}");
         OutputFileData.ResetAll();
     }
 
@@ -196,7 +160,7 @@ public class OutputFileManager : MonoBehaviour
             csv.NextRecord();
         }
 
-        EventFileManager.Log($"OutputFileManager data saved: {outputFilePath}");
+        EventFileManager.Log($"[OutputFileManager] data saved: {outputFilePath}");
 
         OutputFileData.Reset();
     }

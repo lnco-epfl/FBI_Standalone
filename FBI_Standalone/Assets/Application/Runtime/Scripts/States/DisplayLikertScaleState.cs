@@ -26,7 +26,7 @@ public class DisplayLikertScaleState : IState
         OutputFileManager.Instance.OutputFileData.StepType = "LikertScale";
         OutputFileManager.Instance.OutputFileData.StepCount = ExperimentManager.Instance.SequenceCurrentStep;
 
-        EventFileManager.Log($"DisplayLikertScaleState DisplayLikertScale {step.leftLabel}  {step.rightLabel}");
+        EventFileManager.Log($"[DisplayLikertScaleState] DisplayLikertScale {step.leftLabel}  {step.rightLabel}");
 
         WorldUIManager.Instance.DisplayLikertScale(step.question, step.leftLabel, step.rightLabel);
 
@@ -36,6 +36,8 @@ public class DisplayLikertScaleState : IState
 
         float endTime = Time.time;
         float responseTime = endTime - startTime;
+
+        EventFileManager.Log($"[DisplayLikertScaleState] Likert Scale rating {likertScaleValue} in {responseTime}");
 
         OutputFileManager.Instance.SaveOutputEntry();
 

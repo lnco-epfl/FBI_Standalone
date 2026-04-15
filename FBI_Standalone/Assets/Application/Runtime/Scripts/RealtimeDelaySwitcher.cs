@@ -17,7 +17,7 @@ public class RealtimeDelaySwitcher : MonoBehaviour
         Delay
     }
 
-    [Tooltip("Mode d'affichage du point cloud")]
+    [Tooltip("Point cloud display mode")]
     public DisplayMode displayMode = DisplayMode.Realtime;
 
     private VisualEffect visualEffect;
@@ -37,9 +37,11 @@ public class RealtimeDelaySwitcher : MonoBehaviour
         switch (displayMode)
         {
             case DisplayMode.Realtime:
+                EventFileManager.Log($"[RealtimeDelaySwitcher] DisplayMode.Realtime");
                 SetTexture(ColorMain, VertexMain);
                 break;
             case DisplayMode.Delay:
+                EventFileManager.Log($"[RealtimeDelaySwitcher] DisplayMode.Delay");
                 SetTexture(ColorDelay, VertexDelay);
                 break;
         }

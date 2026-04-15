@@ -29,6 +29,8 @@ public class DisplayCameraState : IState
 
         vfxEffect.enabled = true;
 
+        EventFileManager.Log($"[DisplayCameraState] Display Camera {step.cameraID} for {step.GetDuration()} seconds with {step.delay}");
+
         yield return new WaitForSeconds(step.displayTime);
 
         pointCloudReplayBuffer.enableReplay = false;

@@ -43,7 +43,7 @@ public class DisplayQuestionState : IState
         OutputFileManager.Instance.OutputFileData.StepType = "Question";
         OutputFileManager.Instance.OutputFileData.StepCount = ExperimentManager.Instance.SequenceCurrentStep;
 
-        EventFileManager.Log($"DisplayQuestionState DisplayQuestion");
+        EventFileManager.Log($"[DisplayQuestionState] DisplayQuestion");
 
         WorldUIManager.Instance.DisplayQuestion(step.question, step.responseOptions);
 
@@ -53,6 +53,8 @@ public class DisplayQuestionState : IState
 
         float endTime = Time.time;
         float responseTime = endTime - startTime;
+
+        EventFileManager.Log($"[DisplayQuestionState] Question Answer {questionValue} in {responseTime}");
 
         OutputFileManager.Instance.SaveOutputEntry();
 

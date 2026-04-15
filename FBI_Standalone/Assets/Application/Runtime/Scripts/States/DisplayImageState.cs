@@ -13,7 +13,7 @@ public class DisplayImageState : IState
     public IEnumerator Execute()
     {
 
-        EventFileManager.Log($"DisplayImageState DisplayImage {step.image?.name} for {step.diplayDuration}s");
+        EventFileManager.Log($"[DisplayImageState] DisplayImage {step.image?.name} for {step.diplayDuration}s");
         
         WorldUIManager.Instance.DisplayImage(step.image, step.scale);
 

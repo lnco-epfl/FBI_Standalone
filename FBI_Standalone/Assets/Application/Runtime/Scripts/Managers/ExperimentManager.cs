@@ -93,13 +93,13 @@ public class ExperimentManager : MonoBehaviour
 
             isInitialized = true;
 
-            EventFileManager.Log($"ExperimentManager Initialize with sequence {sequence.name}");
+            EventFileManager.Log($"[ExperimentManager] Initialize with sequence {sequence.name}");
         }
         else
         {
 
             sequenceStateMachine.SetSequence(null);
-            EventFileManager.Error($"ExperimentManager Initialize error with null sequence");
+            EventFileManager.Error($"[ExperimentManager] Initialize error with null sequence");
             isInitialized = false;
         }
 
@@ -118,7 +118,7 @@ public class ExperimentManager : MonoBehaviour
 
         sequenceStateMachine.Play(true);
 
-        EventFileManager.Log($"ExperimentManager Start experiment");
+        EventFileManager.Log($"[ExperimentManager] Start experiment");
 
         OnStarted?.Invoke();
     }
@@ -138,7 +138,7 @@ public class ExperimentManager : MonoBehaviour
             isRunning = true;
         }
 
-        EventFileManager.Log($"ExperimentManager Pause experiment {isPause}");
+        EventFileManager.Log($"[ExperimentManager] Pause experiment {isPause}");
 
         OnPause?.Invoke(isPause);
     }
@@ -149,7 +149,7 @@ public class ExperimentManager : MonoBehaviour
 
         isRunning = false;
 
-        EventFileManager.Log($"ExperimentManager Stop experiment");
+        EventFileManager.Log($"[ExperimentManager] Stop experiment");
 
         OnStop?.Invoke();
 

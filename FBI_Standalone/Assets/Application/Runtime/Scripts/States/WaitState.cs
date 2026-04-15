@@ -12,7 +12,7 @@ public class WaitState : IState
 
     public IEnumerator Execute()
     {
-        EventFileManager.Log($"WaitState Waiting for {step.waitTime} s");
+        EventFileManager.Log($"[WaitState] Waiting for {step.waitTime} s");
 
         yield return new WaitForSeconds(step.waitTime);
     }
