@@ -41,20 +41,14 @@ public class EventFileManager : MonoBehaviour
 
     private void OnEnable()
     {
-        ExperimentManager.Instance.OnInitialized += OnExperiementInitialize;
 
     }
 
     private void OnDisable()
     {
-        ExperimentManager.Instance.OnInitialized -= OnExperiementInitialize;
-    }
-
-    private void OnExperiementInitialize(bool isInitialize, Sequence sequence)
-    {
-        uniqueIdentifier = sequence != null ? sequence.name : string.Empty;
 
     }
+
     public void Initialize()
     {
         DateTime now = DateTime.Now;
@@ -76,7 +70,7 @@ public class EventFileManager : MonoBehaviour
     private void WriteEventFile()
     {
 
-        var newEventFileName = timestamp + "_" + uniqueIdentifier + eventFileName;
+        var newEventFileName = timestamp + eventFileName;
 
         byte[] bytes = eventMemoryStream.ToArray();
 

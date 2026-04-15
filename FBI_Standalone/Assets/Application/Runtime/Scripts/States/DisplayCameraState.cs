@@ -22,6 +22,15 @@ public class DisplayCameraState : IState
         RealtimeDelaySwitcher realtimeDelaySwitcher = pointCloudContainer.realtimeDelaySwitcher;
 
 
+        OutputFileManager.Instance.OutputFileData.TimeSinceStart = ExperimentManager.Instance.ElaspedTimeSinceStart;
+
+        OutputFileManager.Instance.OutputFileData.StepType = "DisplayCamera";
+        OutputFileManager.Instance.OutputFileData.StepCount = ExperimentManager.Instance.SequenceCurrentStep;
+
+        OutputFileManager.Instance.OutputFileData.CameraDelay = step.delay;
+        OutputFileManager.Instance.OutputFileData.CameraDisplayDuration = step.displayTime;
+        OutputFileManager.Instance.OutputFileData.CameraID = step.cameraID;
+
         realtimeDelaySwitcher.displayMode = step.delay > 0.0f ? RealtimeDelaySwitcher.DisplayMode.Delay : RealtimeDelaySwitcher.DisplayMode.Realtime;
         pointCloudReplayBuffer.replayDelaySeconds = step.delay;
 
@@ -35,6 +44,8 @@ public class DisplayCameraState : IState
 
         pointCloudReplayBuffer.enableReplay = false;
         vfxEffect.enabled = false;
+
+        OutputFileManager.Instance.SaveOutputEntry();
 
         // wait for the memory properly allocated
         yield return new WaitForSeconds(5f);

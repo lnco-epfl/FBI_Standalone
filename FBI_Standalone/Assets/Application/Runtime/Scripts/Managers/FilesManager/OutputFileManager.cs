@@ -15,15 +15,13 @@ public class OutputFileData
     public string ConfigFile { get; set; }
     public float CameraDelay { get; set; }
     public float CameraDisplayDuration { get; set; }
-    public int CameraID { get; set; }
+    public string CameraID { get; set; }
 
     public double TimeSinceStart { get; set; }
     public string StepType { get; set; }
     public int StepCount { get; set; }
 
     public string Scene {  get; set; }
-
-    public float FixingCrossDuration { get; set; }
 
     public int LikertResponse { get; set; }
     public double LikertResponseTime { get; set; }
@@ -42,17 +40,15 @@ public class OutputFileData
 
         ConfigFile = string.Empty;
 
-        CameraDelay = 0f;
-        CameraDisplayDuration = 0f;
-        CameraID = 0;
-
         Scene = string.Empty;
 
         TimeSinceStart = 0f;
         StepType = string.Empty;
         StepCount = 0;
 
-        FixingCrossDuration = 0f;
+        CameraDelay = 0f;
+        CameraDisplayDuration = 0f;
+        CameraID = string.Empty;
 
         LikertResponse = 0;
         LikertResponseTime = 0f;
@@ -67,8 +63,6 @@ public class OutputFileData
         TimeSinceStart = 0f;
         StepType = string.Empty;
         StepCount = 0;
-
-        FixingCrossDuration = 0f;
 
         LikertResponse = 0;
         LikertResponseTime = 0f;
@@ -104,11 +98,15 @@ public class OutputFileManager : MonoBehaviour
     private void OnEnable()
     {
         ExperimentManager.Instance.OnInitialized += OnExperiementInitialize;
+        ConfigFileManager.Instance.OnConfigLoaded += OnConfigLoaded;
     }
+
+
 
     private void OnDisable()
     {
         ExperimentManager.Instance.OnInitialized -= OnExperiementInitialize;
+        ConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
     }
 
     private void OnExperiementInitialize(bool isInitialize, Sequence sequence)
@@ -121,7 +119,10 @@ public class OutputFileManager : MonoBehaviour
             OutputFileData.Age = UIManager.Instance.SelectedAge;
         }
     }
-
+    private void OnConfigLoaded(ConfigFile file)
+    {
+        OutputFileData.ConfigFile = file.configName;
+    }
 
     public void Initialize(string name)
     {

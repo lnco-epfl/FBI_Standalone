@@ -54,6 +54,9 @@ public class DisplayQuestionState : IState
         float endTime = Time.time;
         float responseTime = endTime - startTime;
 
+        OutputFileManager.Instance.OutputFileData.QuestionResponseTime = responseTime;
+        OutputFileManager.Instance.OutputFileData.QuestionResponse = questionValue.ToString();
+
         EventFileManager.Log($"[DisplayQuestionState] Question Answer {questionValue} in {responseTime}");
 
         OutputFileManager.Instance.SaveOutputEntry();

@@ -37,6 +37,9 @@ public class DisplayLikertScaleState : IState
         float endTime = Time.time;
         float responseTime = endTime - startTime;
 
+        OutputFileManager.Instance.OutputFileData.LikertResponseTime = responseTime;
+        OutputFileManager.Instance.OutputFileData.LikertResponse = likertScaleValue;
+
         EventFileManager.Log($"[DisplayLikertScaleState] Likert Scale rating {likertScaleValue} in {responseTime}");
 
         OutputFileManager.Instance.SaveOutputEntry();
