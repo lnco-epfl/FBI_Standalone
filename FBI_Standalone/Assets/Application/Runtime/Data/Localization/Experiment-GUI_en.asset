@@ -31,11 +31,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 29346939772928
-    m_Localized: 'Age : '
+    m_Localized: Age
     m_Metadata:
       m_Items: []
   - m_Id: 29375876276224
-    m_Localized: 'Gender : '
+    m_Localized: Gender
     m_Metadata:
       m_Items: []
   - m_Id: 29623403126784
@@ -70,7 +70,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 80718972297216
-    m_Localized: 'Language : '
+    m_Localized: Language
     m_Metadata:
       m_Items: []
   - m_Id: 80823074922496
@@ -180,6 +180,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 104126562561941504
     m_Localized: Reset Headset Orientation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105900683188477952
+    m_Localized: Sequence File
     m_Metadata:
       m_Items: []
   references:
