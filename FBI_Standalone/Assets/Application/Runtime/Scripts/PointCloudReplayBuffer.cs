@@ -19,7 +19,7 @@ public class PointCloudReplayBuffer : MonoBehaviour
     public int captureFrameRate = 30;
 
     [Tooltip("Enable/disable replay mode")]
-    public bool enableReplay = true;
+    public bool enableReplay = false;
 
     [Header("Output Textures")]
     [Tooltip("Render texture for replayed point cloud vertices")]
@@ -74,7 +74,7 @@ public class PointCloudReplayBuffer : MonoBehaviour
 
     private void Awake()
     {
-        Initialize();
+        //Initialize();
     }
 
     public void Initialize()

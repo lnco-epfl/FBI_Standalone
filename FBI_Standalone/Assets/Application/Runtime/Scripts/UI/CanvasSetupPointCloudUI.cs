@@ -10,8 +10,7 @@ using UnityEngine.Localization;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 using UnityEngine.VFX;
-using static UnityEngine.Analytics.IAnalytic;
-using static UnityEngine.EventSystems.EventTrigger;
+
 
 public class CanvasSetupPointCloudUI : MonoBehaviour
 {
@@ -134,8 +133,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
             var entry = go.GetComponent<PointCloudUIEntry>();
             entry.Init(id);
-            entry.SetInteractable(true);
-            entry.SetDisplayToggle(true);
+            entry.SetInteractable(false);
+            entry.SetDisplayToggle(false);
 
             entry.OnDisplayToggleRequested += OnDisplayToggleRequested;
 

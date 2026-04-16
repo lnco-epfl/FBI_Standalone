@@ -34,6 +34,7 @@ public class DisplayCameraState : IState
         realtimeDelaySwitcher.displayMode = step.delay > 0.0f ? RealtimeDelaySwitcher.DisplayMode.Delay : RealtimeDelaySwitcher.DisplayMode.Realtime;
         pointCloudReplayBuffer.replayDelaySeconds = step.delay;
 
+        //pointCloudReplayBuffer.enabled = step.delay > 0.0f ? true : false;
         pointCloudReplayBuffer.enableReplay = step.delay > 0.0f ? true : false;
 
         vfxEffect.enabled = true;
@@ -42,13 +43,14 @@ public class DisplayCameraState : IState
 
         yield return new WaitForSeconds(step.displayTime);
 
+        //pointCloudReplayBuffer.enabled = false;
         pointCloudReplayBuffer.enableReplay = false;
         vfxEffect.enabled = false;
 
         OutputFileManager.Instance.SaveOutputEntry();
 
         // wait for the memory properly allocated
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(0.5f);
 
     }
 

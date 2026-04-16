@@ -179,13 +179,10 @@ public class PointCloudUIEntry : MonoBehaviour
         if (isOn)
         {
             container.realtimeDelaySwitcher.displayMode = RealtimeDelaySwitcher.DisplayMode.Realtime;
-            container.realtimeDelaySwitcher.enabled = true;
-            container.replayBuffer.enabled = false;
             container.vfx.enabled = true;
         }
         else
         {
-            container.realtimeDelaySwitcher.enabled = false;
             container.vfx.enabled = false;
         }
     }
