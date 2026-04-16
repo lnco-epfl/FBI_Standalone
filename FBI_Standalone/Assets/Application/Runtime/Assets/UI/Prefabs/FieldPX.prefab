@@ -33,8 +33,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 7850899546960293909}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0, y: 0.5}
@@ -151,14 +151,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetInput: {fileID: 159310013366874628}
-  sensitivity: 0.05
-  minValue: -10
-  maxValue: 10
+  sensitivity: 0.1
+  minValue: -360
+  maxValue: 360
   decimalPlaces: 2
   wholeNumbersOnly: 0
   changeCursorOnHover: 1
-  dragColor: {r: 0.4, g: 0.8, b: 1, a: 1}
-  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  dragColor: {r: 0.30980393, g: 0.6117647, b: 0.97647065, a: 1}
+  defaultColor: {r: 0.85, g: 0.85, b: 0.85, a: 0.5}
 --- !u!1 &2002333414471059809
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,8 +330,8 @@ RectTransform:
   - {fileID: 7754565918333207163}
   m_Father: {fileID: 7850899546960293909}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -552,6 +552,7 @@ GameObject:
   - component: {fileID: 120175076694297974}
   - component: {fileID: 637372981450597289}
   - component: {fileID: 6735014498803402041}
+  - component: {fileID: 3724027489673680334}
   - component: {fileID: 159310013366874628}
   m_Layer: 0
   m_Name: InputField (TMP)
@@ -618,6 +619,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3724027489673680334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3659194330526202238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e7ea4e07b71fea4c851f513c02c7d7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Application::InputFieldStepper
+  inputField: {fileID: 159310013366874628}
+  plusButton: {fileID: 5857868316357239832}
+  minusButton: {fileID: 4301429289551141098}
+  step: 0.01
+  minValue: -360
+  maxValue: 360
+  holdDelay: 0.5
+  holdInterval: 0.08
 --- !u!114 &159310013366874628
 MonoBehaviour:
   m_ObjectHideFlags: 0

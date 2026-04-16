@@ -374,8 +374,8 @@ MonoBehaviour:
   sensorRotValueY: 0
   bIgnoreZCoordinates: 0
   bIgnoreInferredJoints: 0
-  colorCameraMode: 2
-  depthCameraMode: 2
+  colorCameraMode: 1
+  depthCameraMode: 1
   cameraFPS: 2
   deviceSyncMode: 0
   subDeviceDelayUsec: 0
@@ -722,7 +722,7 @@ MonoBehaviour:
   VertexMain: {fileID: 8400000, guid: ea74259af53a37e42b78d52b0170f1c8, type: 2}
   ColorDelay: {fileID: 8400000, guid: d76eb5eb5c81be247a6dc7c19e3a88d6, type: 2}
   VertexDelay: {fileID: 8400000, guid: 95862d4269c396a43b9b32d3a70cde3e, type: 2}
-  displayMode: 0
+  _displayMode: 0
 --- !u!114 &571647998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -995,8 +995,8 @@ MonoBehaviour:
   sensorRotValueY: 0
   bIgnoreZCoordinates: 0
   bIgnoreInferredJoints: 0
-  colorCameraMode: 2
-  depthCameraMode: 2
+  colorCameraMode: 1
+  depthCameraMode: 1
   cameraFPS: 2
   deviceSyncMode: 0
   subDeviceDelayUsec: 0
@@ -1737,7 +1737,7 @@ MonoBehaviour:
   VertexMain: {fileID: 8400000, guid: 8e437a7816d60164ba157537dc368480, type: 2}
   ColorDelay: {fileID: 8400000, guid: fcd806223dba5aa42943fe5f0628b368, type: 2}
   VertexDelay: {fileID: 8400000, guid: bf4b2e07efd9b2a4ab70404c989be853, type: 2}
-  displayMode: 0
+  _displayMode: 0
 --- !u!1001 &1272251236
 PrefabInstance:
   m_ObjectHideFlags: 0

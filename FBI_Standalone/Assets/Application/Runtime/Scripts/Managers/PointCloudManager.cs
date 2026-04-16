@@ -61,7 +61,7 @@ public class PointCloudManager : MonoBehaviour
         }
 
 
-        //StartCoroutine(WaitForKinectManagerInitialization(InitializePointCloud));
+        StartCoroutine(WaitForKinectManagerInitialization(InitializePointCloud));
 
     }
 
@@ -87,7 +87,8 @@ public class PointCloudManager : MonoBehaviour
     private IEnumerator WaitForKinectManagerInitialization(Action callback)
     {
 
-        yield return new WaitUntil(() => KinectManager.Instance.IsInitialized());
+
+        yield return new WaitUntil(() => KinectManager.Instance != null && KinectManager.Instance.IsInitialized());
 
         callback.Invoke();
     }

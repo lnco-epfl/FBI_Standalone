@@ -326,6 +326,7 @@ GameObject:
   - component: {fileID: 7043859215901577519}
   - component: {fileID: 4643874461214436429}
   - component: {fileID: 6890193292071384246}
+  - component: {fileID: 215422258529931735}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -452,6 +453,46 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &215422258529931735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546865178408369417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:4823a8d02f8d786498601cdb3db61537
+    m_TableEntryReference:
+      m_KeyId: 98316787789832192
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6890193292071384246}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &2082208963853920530
 GameObject:
   m_ObjectHideFlags: 0
@@ -564,6 +605,7 @@ GameObject:
   - component: {fileID: 3592735549463062564}
   - component: {fileID: 2183864598974511962}
   - component: {fileID: 3997707228534489600}
+  - component: {fileID: 2355233548488367400}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -690,6 +732,46 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2355233548488367400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2496516786158489691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:4823a8d02f8d786498601cdb3db61537
+    m_TableEntryReference:
+      m_KeyId: 98314666549944320
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3997707228534489600}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &2598673463256588880
 GameObject:
   m_ObjectHideFlags: 0
@@ -701,6 +783,7 @@ GameObject:
   - component: {fileID: 7568621854695199675}
   - component: {fileID: 4925541113767875834}
   - component: {fileID: 2213520077321619815}
+  - component: {fileID: 5640701872968974667}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -827,6 +910,46 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &5640701872968974667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2598673463256588880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:4823a8d02f8d786498601cdb3db61537
+    m_TableEntryReference:
+      m_KeyId: 85568959674032128
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2213520077321619815}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &2976088791770152431
 GameObject:
   m_ObjectHideFlags: 0
@@ -2195,6 +2318,7 @@ GameObject:
   - component: {fileID: 1855701221022010567}
   - component: {fileID: 5611806873995539330}
   - component: {fileID: 8500728438489082941}
+  - component: {fileID: 2603356772589549925}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -2321,6 +2445,46 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2603356772589549925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4857865437846282440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:4823a8d02f8d786498601cdb3db61537
+    m_TableEntryReference:
+      m_KeyId: 98316710673358848
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8500728438489082941}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &5190225890209929312
 GameObject:
   m_ObjectHideFlags: 0
@@ -2487,8 +2651,8 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 1
-  m_CellSize: {x: 125, y: 40}
-  m_Spacing: {x: 0, y: 0}
+  m_CellSize: {x: 115, y: 40}
+  m_Spacing: {x: 2.5, y: 0}
   m_Constraint: 2
   m_ConstraintCount: 2
 --- !u!1 &5440307548543105364
@@ -2566,10 +2730,10 @@ MonoBehaviour:
     m_LocalVariables: []
   displayPointCloudToggle: {fileID: 3303823032582797812}
   positionXInputField: {fileID: 3135143818195729780}
-  positionYInputField: {fileID: 3454617537142419745}
-  positionZInputField: {fileID: 2719935828520528623}
+  positionYInputField: {fileID: 2719935828520528623}
+  positionZInputField: {fileID: 2294201079536884213}
   rotationXInputField: {fileID: 3454617537142419745}
-  rotationYInputField: {fileID: 2294201079536884213}
+  rotationYInputField: {fileID: 6895165556506819820}
   rotationZInputField: {fileID: 145861639652964763}
   cameraDepthMaxSlider: {fileID: 1529255189254020804}
   cameraDepthMinSlider: {fileID: 3336551184947054573}
@@ -2654,6 +2818,7 @@ GameObject:
   - component: {fileID: 4593263379949039735}
   - component: {fileID: 7877328614963740352}
   - component: {fileID: 1761909418185976382}
+  - component: {fileID: 7885946807146863494}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -2780,6 +2945,46 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7885946807146863494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6011378919710447526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:4823a8d02f8d786498601cdb3db61537
+    m_TableEntryReference:
+      m_KeyId: 85568901624864768
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1761909418185976382}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &6132061797550008134
 GameObject:
   m_ObjectHideFlags: 0
@@ -3051,6 +3256,7 @@ GameObject:
   - component: {fileID: 5978248876315444145}
   - component: {fileID: 6264136800034656919}
   - component: {fileID: 2168935844504237785}
+  - component: {fileID: 6286183308371636835}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -3177,6 +3383,46 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6286183308371636835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7274290641186531047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:4823a8d02f8d786498601cdb3db61537
+    m_TableEntryReference:
+      m_KeyId: 98315110630268928
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2168935844504237785}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &7606171802466243430
 GameObject:
   m_ObjectHideFlags: 0
@@ -3598,6 +3844,34 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: dragColor.b
+      value: 0.97647065
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: dragColor.g
+      value: 0.6117647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: dragColor.r
+      value: 0.30980393
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.a
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.b
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.g
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.r
+      value: 0.85
+      objectReference: {fileID: 0}
     - target: {fileID: 5133963727334236362, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3810,8 +4084,8 @@ MonoBehaviour:
   plusButton: {fileID: 5870613419237240711}
   minusButton: {fileID: 4288113875138892661}
   step: 0.01
-  minValue: -3.4028235e+38
-  maxValue: 3.4028235e+38
+  minValue: -360
+  maxValue: 360
   holdDelay: 0.5
   holdInterval: 0.08
 --- !u!114 &4288113875138892661 stripped
@@ -4045,6 +4319,34 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: dragColor.b
+      value: 0.97647065
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: dragColor.g
+      value: 0.6117647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: dragColor.r
+      value: 0.30980393
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.a
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.b
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.g
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.r
+      value: 0.85
+      objectReference: {fileID: 0}
     - target: {fileID: 5133963727334236362, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4268,8 +4570,8 @@ MonoBehaviour:
   plusButton: {fileID: 5523678225148219369}
   minusButton: {fileID: 2761523512623510299}
   step: 0.01
-  minValue: -3.4028235e+38
-  maxValue: 3.4028235e+38
+  minValue: -10
+  maxValue: 10
   holdDelay: 0.5
   holdInterval: 0.08
 --- !u!114 &5523678225148219369 stripped
@@ -4315,6 +4617,42 @@ PrefabInstance:
     - target: {fileID: 120175076694297974, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: maxValue
+      value: 360
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: minValue
+      value: -360
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: dragColor.b
+      value: 0.97647065
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: dragColor.g
+      value: 0.6117647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: dragColor.r
+      value: 0.30980393
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.a
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.b
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.g
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.r
+      value: 0.85
       objectReference: {fileID: 0}
     - target: {fileID: 5133963727334236362, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4366,7 +4704,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7003013932501481295, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
       propertyPath: m_text
-      value: 
+      value: Y
       objectReference: {fileID: 0}
     - target: {fileID: 7605403996238558594, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4517,8 +4855,8 @@ MonoBehaviour:
   plusButton: {fileID: 8557270952797994227}
   minusButton: {fileID: 2034329072240148481}
   step: 0.01
-  minValue: -3.4028235e+38
-  maxValue: 3.4028235e+38
+  minValue: -10
+  maxValue: 10
   holdDelay: 0.5
   holdInterval: 0.08
 --- !u!114 &2034329072240148481 stripped
@@ -4588,6 +4926,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5133963727334236362, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5133963727334236362, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5133963727334236362, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
@@ -4625,6 +4971,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5711745012739576413, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7605403996238558594, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7605403996238558594, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7605403996238558594, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
@@ -4742,53 +5096,14 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3659194330526202238, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 893946442930714126}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
---- !u!114 &1298725593253959578 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4301429289551141098, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
-  m_PrefabInstance: {fileID: 3006081479789006704}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
---- !u!1 &1981494736604067342 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3659194330526202238, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
-  m_PrefabInstance: {fileID: 3006081479789006704}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &893946442930714126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1981494736604067342}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e7ea4e07b71fea4c851f513c02c7d7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Application::InputFieldStepper
-  inputField: {fileID: 3135143818195729780}
-  plusButton: {fileID: 8718101498565323624}
-  minusButton: {fileID: 1298725593253959578}
-  step: 0.01
-  minValue: -3.4028235e+38
-  maxValue: 3.4028235e+38
-  holdDelay: 0.5
-  holdInterval: 0.08
 --- !u!114 &3135143818195729780 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 159310013366874628, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
   m_PrefabInstance: {fileID: 3006081479789006704}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1981494736604067342}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
@@ -4799,17 +5114,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7850899546960293909, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
   m_PrefabInstance: {fileID: 3006081479789006704}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8718101498565323624 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5857868316357239832, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
-  m_PrefabInstance: {fileID: 3006081479789006704}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1001 &3297971676545827621
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4837,6 +5141,42 @@ PrefabInstance:
     - target: {fileID: 120175076694297974, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: maxValue
+      value: 360
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: minValue
+      value: -360
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: dragColor.b
+      value: 0.97647065
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: dragColor.g
+      value: 0.6117647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: dragColor.r
+      value: 0.30980393
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.a
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.b
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.g
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.r
+      value: 0.85
       objectReference: {fileID: 0}
     - target: {fileID: 5133963727334236362, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
       propertyPath: m_AnchorMax.y
@@ -5046,8 +5386,8 @@ MonoBehaviour:
   plusButton: {fileID: 8975652027299096381}
   minusButton: {fileID: 1618200612543421391}
   step: 0.01
-  minValue: -3.4028235e+38
-  maxValue: 3.4028235e+38
+  minValue: -360
+  maxValue: 360
   holdDelay: 0.5
   holdInterval: 0.08
 --- !u!114 &3454617537142419745 stripped
@@ -5277,6 +5617,34 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: dragColor.b
+      value: 0.97647065
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: dragColor.g
+      value: 0.6117647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: dragColor.r
+      value: 0.30980393
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.a
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.b
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.g
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 3527036471755099994, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
+      propertyPath: defaultColor.r
+      value: 0.85
+      objectReference: {fileID: 0}
     - target: {fileID: 5133963727334236362, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5327,7 +5695,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7003013932501481295, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
       propertyPath: m_text
-      value: 
+      value: Y
       objectReference: {fileID: 0}
     - target: {fileID: 7605403996238558594, guid: 8fa2ba415638aeb449a9708fd5849658, type: 3}
       propertyPath: m_AnchorMax.y
@@ -5516,7 +5884,7 @@ MonoBehaviour:
   plusButton: {fileID: 922713615033756400}
   minusButton: {fileID: 7364731401068205570}
   step: 0.01
-  minValue: -3.4028235e+38
-  maxValue: 3.4028235e+38
+  minValue: -360
+  maxValue: 360
   holdDelay: 0.5
   holdInterval: 0.08
