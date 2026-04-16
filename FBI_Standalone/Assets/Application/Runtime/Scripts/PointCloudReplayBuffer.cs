@@ -34,21 +34,35 @@ public class PointCloudReplayBuffer : MonoBehaviour
 
     private class PointCloudFrame
     {
-        public Texture2D vertexTexture;
-        public Texture2D colorTexture;
+        public RenderTexture vertexTexture;
+        public RenderTexture colorTexture;
         public float timestamp;
 
         public PointCloudFrame(int width, int height)
         {
-            vertexTexture = new Texture2D(width, height, TextureFormat.RGBAHalf, false, linear: true);
-            colorTexture = new Texture2D(width, height, TextureFormat.RGBA32, false, linear: true);
+            // ✅ CHANGEMENT 1: Utiliser RenderTexture au lieu de Texture2D
+            // Évite les copies CPU coûteuses et reste sur GPU
+            vertexTexture = new RenderTexture(width, height, 0, RenderTextureFormat.ARGBHalf);
+            vertexTexture.Create();
+
+            colorTexture = new RenderTexture(width, height, 0, RenderTextureFormat.ARGB32);
+            colorTexture.Create();
+
             timestamp = 0f;
         }
 
         public void Release()
         {
-            if (vertexTexture != null) Destroy(vertexTexture);
-            if (colorTexture != null) Destroy(colorTexture);
+            if (vertexTexture != null)
+            {
+                vertexTexture.Release();
+                Destroy(vertexTexture);
+            }
+            if (colorTexture != null)
+            {
+                colorTexture.Release();
+                Destroy(colorTexture);
+            }
         }
     }
 
@@ -83,15 +97,25 @@ public class PointCloudReplayBuffer : MonoBehaviour
 
         sensorData = kinectManager.GetSensorData(sensorIndex);
 
-        if (sensorData != null || sensorData.sensorInterface != null)
+        // ✅ CHANGEMENT 2: Correction du bug logique || -> &&
+        if (sensorData != null && sensorData.sensorInterface != null)
         {
-
             sensorInt = (DepthSensorBase)sensorData.sensorInterface;
 
-            if (sensorInt.pointCloudVertexTexture != null || sensorInt.pointCloudColorTexture != null || sensorInt.pointCloudVertexTexture.width > 0 || sensorInt.pointCloudVertexTexture.height > 0)
+            // ✅ CHANGEMENT 3: Simplification de la condition
+            if (sensorInt.pointCloudVertexTexture != null &&
+                sensorInt.pointCloudColorTexture != null)
             {
                 InitializeBuffer();
             }
+            else
+            {
+                Debug.LogWarning($"[ReplayBuffer] Point cloud textures not ready for sensor {sensorIndex}");
+            }
+        }
+        else
+        {
+            Debug.LogError($"[ReplayBuffer] Sensor data not available for index {sensorIndex}");
         }
     }
 
@@ -140,6 +164,14 @@ public class PointCloudReplayBuffer : MonoBehaviour
             return;
         }
 
+        // ✅ CHANGEMENT 4: Libérer l'ancien buffer avant d'en créer un nouveau
+        if (frameBuffer != null)
+        {
+            foreach (var frame in frameBuffer)
+                frame.Release();
+            frameBuffer.Clear();
+        }
+
         // Allocate frame buffer
         frameBuffer = new List<PointCloudFrame>(bufferSize);
         for (int i = 0; i < bufferSize; i++)
@@ -164,8 +196,15 @@ public class PointCloudReplayBuffer : MonoBehaviour
         readIndex = 0;
         isBufferReady = true;
 
+        // ✅ CHANGEMENT 5: Calcul de l'utilisation mémoire estimée
+        float estimatedMemoryMB = (bufferSize * textureWidth * textureHeight * 12) / (1024f * 1024f);
+        // 12 bytes = 8 bytes (ARGBHalf) + 4 bytes (ARGB32)
+
         if (showDebugInfo)
-            Debug.Log($"[ReplayBuffer] Initialized: {bufferSize} frames @ {textureWidth}x{textureHeight}, delay: {replayDelaySeconds}s");
+        {
+            Debug.Log($"[ReplayBuffer] Initialized: {bufferSize} frames @ {textureWidth}x{textureHeight}, " +
+                      $"delay: {replayDelaySeconds}s, estimated memory: {estimatedMemoryMB:F2} MB");
+        }
     }
 
 
@@ -180,8 +219,10 @@ public class PointCloudReplayBuffer : MonoBehaviour
         PointCloudFrame frame = frameBuffer[writeIndex];
         frame.timestamp = Time.time;
 
-        CopyRenderTextureToTexture2D(vertexRT, frame.vertexTexture);
-        CopyRenderTextureToTexture2D(colorRT, frame.colorTexture);
+        // ✅ CHANGEMENT 6: Graphics.Blit au lieu de ReadPixels
+        // Reste entièrement sur GPU, pas de transfert CPU coûteux
+        Graphics.Blit(vertexRT, frame.vertexTexture);
+        Graphics.Blit(colorRT, frame.colorTexture);
 
         writeIndex = (writeIndex + 1) % bufferSize;
 
@@ -216,6 +257,8 @@ public class PointCloudReplayBuffer : MonoBehaviour
         Graphics.Blit(frame.colorTexture, replayColorTexture);
     }
 
+    // ✅ CHANGEMENT 7: Cette méthode n'est plus nécessaire
+    // (gardée pour compatibilité si utilisée ailleurs)
     private void CopyRenderTextureToTexture2D(RenderTexture source, Texture2D destination)
     {
         RenderTexture previous = RenderTexture.active;
@@ -233,6 +276,19 @@ public class PointCloudReplayBuffer : MonoBehaviour
             foreach (var frame in frameBuffer)
                 frame.Release();
             frameBuffer.Clear();
+        }
+
+        // ✅ CHANGEMENT 8: Libérer les RenderTextures de sortie si créées dynamiquement
+        if (replayVertexTexture != null && replayVertexTexture.name == "ReplayVertexTexture")
+        {
+            replayVertexTexture.Release();
+            Destroy(replayVertexTexture);
+        }
+
+        if (replayColorTexture != null && replayColorTexture.name == "ReplayColorTexture")
+        {
+            replayColorTexture.Release();
+            Destroy(replayColorTexture);
         }
     }
 
@@ -276,5 +332,25 @@ public class PointCloudReplayBuffer : MonoBehaviour
 
         foreach (var frame in frameBuffer)
             frame.timestamp = 0f;
+    }
+
+    // ✅ AJOUT: Méthode pour vider le buffer et libérer la mémoire temporairement
+    /// <summary>
+    /// Releases all buffer memory. Call this when replay is not needed temporarily.
+    /// </summary>
+    public void ReleaseBuffer()
+    {
+        if (frameBuffer != null)
+        {
+            foreach (var frame in frameBuffer)
+                frame.Release();
+            frameBuffer.Clear();
+            frameBuffer = null;
+        }
+
+        isBufferReady = false;
+
+        if (showDebugInfo)
+            Debug.Log("[ReplayBuffer] Buffer released to free memory");
     }
 }
