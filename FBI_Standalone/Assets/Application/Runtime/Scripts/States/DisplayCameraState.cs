@@ -1,5 +1,7 @@
+using PrimeTween;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 using UnityEngine.VFX;
 
 public class DisplayCameraState : IState
@@ -21,6 +23,14 @@ public class DisplayCameraState : IState
         PointCloudReplayBuffer pointCloudReplayBuffer = pointCloudContainer.replayBuffer;
         RealtimeDelaySwitcher realtimeDelaySwitcher = pointCloudContainer.realtimeDelaySwitcher;
 
+        //if interpolatte is true 
+        // save old position 
+
+        //if config no empty 
+        //load config 
+
+        //interpolat true
+        //Tween.Position(, Vector3.one, 1.0f, ease: Ease.Linear);
 
         OutputFileManager.Instance.OutputFileData.TimeSinceStart = ExperimentManager.Instance.ElaspedTimeSinceStart;
 
@@ -56,6 +66,14 @@ public class DisplayCameraState : IState
 
     public void Exit()
     {
+        var pointCloudContainer = PointCloudManager.Instance.GetPointCloudContainer(int.Parse(step.cameraID));
+
+        VisualEffect vfxEffect = pointCloudContainer.vfx;
+        PointCloudReplayBuffer pointCloudReplayBuffer = pointCloudContainer.replayBuffer;
+        RealtimeDelaySwitcher realtimeDelaySwitcher = pointCloudContainer.realtimeDelaySwitcher;
+
+        pointCloudReplayBuffer.enableReplay = false;
+        vfxEffect.enabled = false;
 
     }
 }
