@@ -138,7 +138,9 @@ public class SequenceYamlLoader
                 {
                     displayTime = data.duration,
                     cameraID = data.cameraID,
-                    delay = data.delay
+                    delay = data.delay,
+                    configFileName = data.fileName, //optional, can be empty
+                    interpolation = data.interpolation //optional, can be null
                 };
 
             default:
@@ -198,7 +200,12 @@ public class StepData
     public string scenePath;
     public string imagePath;
     public string soundPath;
+
+    //config
     public string fileName;
+
+    // Interpolation
+    public InterpolationData interpolation;
 
     // Image
     public float scale;
