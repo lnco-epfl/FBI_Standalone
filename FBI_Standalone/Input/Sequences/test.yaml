@@ -24,6 +24,12 @@ steps:
     duration: 20.0
     cameraID: "1"
     delay: 1.0
+    config: Bruno
+    interpolation: {
+        Duration: 1.0f,
+        Delay: 2.0f,
+        Ease: Linear
+    }
 
   - stepType: Wait
     duration: 2.0
