@@ -1,5 +1,6 @@
 
 using Eflatun.SceneReference;
+using PrimeTween;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -192,6 +193,14 @@ public class PlaySoundStep : SequenceStep
     public override Color GetColor() => Color.orange;
 }
 
+[Serializable]
+public class InterpolationData
+{
+    public float duration = 0;
+    public float delay = 0;
+    public Ease ease = Ease.Default;
+}
+
 
 [System.Serializable]
 public class DisplayCameraStep : SequenceStep
@@ -200,6 +209,9 @@ public class DisplayCameraStep : SequenceStep
     public string cameraID = "1";
     public float delay = 0.0f;
 
+    public string configFileName = string.Empty;
+
+    public InterpolationData interpolation;
     public override float GetDuration() => displayTime;
     public override string GetStateName() => "DisplayCamera";
     public override string GetDisplayName() => $"Display Camera {cameraID} for {displayTime} with {delay} of delay";

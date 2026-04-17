@@ -1,6 +1,7 @@
 using PrimeTween;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 using UnityEngine.VFX;
 
@@ -8,7 +9,7 @@ public class DisplayCameraState : IState
 {
     private DisplayCameraStep step;
 
-
+    private ConfigFile previousConfig;
 
     public void Enter(SequenceStep sequenceStep)
     {
@@ -17,20 +18,32 @@ public class DisplayCameraState : IState
 
     public IEnumerator Execute()
     {
-        var pointCloudContainer = PointCloudManager.Instance.GetPointCloudContainer(int.Parse(step.cameraID));
+
+        var pointCloudID = int.Parse(step.cameraID);
+        var pointCloudContainer = PointCloudManager.Instance.GetPointCloudContainer(pointCloudID);
 
         VisualEffect vfxEffect = pointCloudContainer.vfx;
         PointCloudReplayBuffer pointCloudReplayBuffer = pointCloudContainer.replayBuffer;
         RealtimeDelaySwitcher realtimeDelaySwitcher = pointCloudContainer.realtimeDelaySwitcher;
 
-        //if interpolatte is true 
-        // save old position 
+        if(step.interpolation != null )
+        {
+            previousConfig = ConfigFileManager.Instance.CurrentConfig;
+        }
 
-        //if config no empty 
-        //load config 
+        if(!string.IsNullOrEmpty(step.configFileName))
+        {
+            var configs = ConfigFileManager.Instance.GetAvailableConfigs();
 
-        //interpolat true
-        //Tween.Position(, Vector3.one, 1.0f, ease: Ease.Linear);
+            if (configs.Contains(step.configFileName) && ConfigFileManager.Instance.CurrentConfig.configName != step.configFileName)
+            {
+                ConfigFileManager.Instance.Load(step.configFileName);
+            }
+            else
+            {
+                EventFileManager.Error($"[DisplayCameraState] Config file {step.configFileName} not found");
+            }
+        }
 
         OutputFileManager.Instance.OutputFileData.TimeSinceStart = ExperimentManager.Instance.ElaspedTimeSinceStart;
 
@@ -49,9 +62,24 @@ public class DisplayCameraState : IState
 
         vfxEffect.enabled = true;
 
-        EventFileManager.Log($"[DisplayCameraState] Display Camera {step.cameraID} for {step.GetDuration()} seconds with {step.delay}");
+        EventFileManager.Log($"[DisplayCameraState] Display Camera {step.cameraID} for {step.GetDuration()} seconds with {step.delay} of delay");
 
-        yield return new WaitForSeconds(step.displayTime);
+        if (step.interpolation != null)
+        {
+            var currentConfig = ConfigFileManager.Instance.CurrentConfig;
+
+            yield return new WaitForSeconds(step.interpolation.delay);
+
+            yield return Tween.Position(target: vfxEffect.transform, startValue: previousConfig.pointClouds[pointCloudID].position.ToVector3(), endValue: currentConfig.pointClouds[pointCloudID].position.ToVector3(), duration: step.interpolation.duration, ease: step.interpolation.ease)
+                .Group(Tween.Rotation(target: vfxEffect.transform, startValue: previousConfig.pointClouds[pointCloudID].rotation.ToVector3(), endValue: currentConfig.pointClouds[pointCloudID].rotation.ToVector3(), duration: step.interpolation.duration, ease: step.interpolation.ease))
+                .Group(Tween.Scale(target: vfxEffect.transform, startValue: previousConfig.pointClouds[pointCloudID].scale.ToVector3(), endValue: currentConfig.pointClouds[pointCloudID].scale.ToVector3(), duration: step.interpolation.duration, ease: step.interpolation.ease)).ToYieldInstruction();
+
+            yield return new WaitForSeconds(step.displayTime - step.interpolation.duration - step.interpolation.delay);
+        }
+        else
+        {
+            yield return new WaitForSeconds(step.displayTime);
+        }
 
         //pointCloudReplayBuffer.enabled = false;
         pointCloudReplayBuffer.enableReplay = false;
@@ -74,6 +102,8 @@ public class DisplayCameraState : IState
 
         pointCloudReplayBuffer.enableReplay = false;
         vfxEffect.enabled = false;
+
+        Tween.StopAll(onTarget: vfxEffect.transform);
 
     }
 }
