@@ -33,6 +33,8 @@ public class PointCloudManager : MonoBehaviour
 
 
     private static PointCloudManager instance;
+    private bool loadConfigTransform;
+
     public static PointCloudManager Instance { get { return instance; } }
 
     private void Awake()
@@ -81,10 +83,8 @@ public class PointCloudManager : MonoBehaviour
 
     private void OnConfigLoaded(ConfigFile obj, bool loadConfigIntoPointCloud)
     {
-        if(loadConfigIntoPointCloud)
-        {
-            StartCoroutine(WaitForKinectManagerInitialization(LoadConfigSettings));
-        }
+        loadConfigTransform = loadConfigIntoPointCloud;
+        StartCoroutine(WaitForKinectManagerInitialization(LoadConfigSettings));
     }
 
     private IEnumerator WaitForKinectManagerInitialization(Action callback)
@@ -123,8 +123,11 @@ public class PointCloudManager : MonoBehaviour
                 var depthMin = currentConfig.pointClouds[i].depthMin;
                 var depthMax = currentConfig.pointClouds[i].depthMax;
 
-                SetVisualEffectPositionRotationScale(position, rotation, scale, id);
-
+                if(loadConfigTransform)
+                {
+                    SetVisualEffectPositionRotationScale(position, rotation, scale, id);
+                }
+          
                 SetCameraDepthValues(depthMin, depthMax, id);
             }
         }

@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Localization;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -42,8 +43,24 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     [Tooltip("Delay in seconds between disabling the previous point cloud and enabling the next one, to allow textures to initialize.")]
     [SerializeField] private float switchDelay = 1.5f;
 
+    [Header("VRView")]
+    [SerializeField] private Button resetXROriginButton;
+
+    [Header("Static View")]
+    [SerializeField] private TMP_InputField positionXInputField;
+    [SerializeField] private TMP_InputField positionYInputField;
+    [SerializeField] private TMP_InputField positionZInputField;
+    [SerializeField] private TMP_InputField rotationXInputField;
+    [SerializeField] private TMP_InputField rotationYInputField;
+    [SerializeField] private TMP_InputField rotationZInputField;
+
+    [SerializeField] private GameObject staticCameraPrefab;
+    private Transform staticCamera;
+
     [Header("Scene")]
     [SerializeField] private SceneReference scene;
+
+
 
     public event Action<CanvasSetupPointCloudUI> OnCanvasSetupPointCloudUIDestroy;
 
@@ -84,6 +101,16 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         configNameInputField.onSubmit.AddListener(OnConfigNameInputFieldSubmit);
         configNameInputField.onDeselect.AddListener(OnConfigNameInputFieldSubmit);
 
+        resetXROriginButton.onClick.AddListener(OnResetXROriginButtonPress);
+
+        positionXInputField.onValueChanged.AddListener((str) => SetStaticCameraPosition());
+        positionYInputField.onValueChanged.AddListener((str) => SetStaticCameraPosition());
+        positionZInputField.onValueChanged.AddListener((str) => SetStaticCameraPosition());
+
+        rotationXInputField.onValueChanged.AddListener((str) => SetStaticCameraRotation());
+        rotationYInputField.onValueChanged.AddListener((str) => SetStaticCameraRotation());
+        rotationZInputField.onValueChanged.AddListener((str) => SetStaticCameraRotation());
+
         ConfigFileManager.Instance.OnConfigLoaded += OnConfigLoaded;
         ConfigFileManager.Instance.OnConfigSaved += OnConfigSaved;
         ConfigFileManager.Instance.OnFileListRefreshed += OnFileListRefreshed;
@@ -99,6 +126,16 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         loadConfigButton.onClick.RemoveListener(OnLoadConfigButtonClick);
         configNameInputField.onSubmit.RemoveListener(OnConfigNameInputFieldSubmit);
         configNameInputField.onDeselect.RemoveListener(OnConfigNameInputFieldSubmit);
+
+        resetXROriginButton.onClick.RemoveListener(OnResetXROriginButtonPress);
+
+        positionXInputField.onValueChanged.RemoveAllListeners();
+        positionYInputField.onValueChanged.RemoveAllListeners();
+        positionZInputField.onValueChanged.RemoveAllListeners();
+                                           
+        rotationXInputField.onValueChanged.RemoveAllListeners();
+        rotationYInputField.onValueChanged.RemoveAllListeners();
+        rotationZInputField.onValueChanged.RemoveAllListeners();
 
         ConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
         ConfigFileManager.Instance.OnConfigSaved -= OnConfigSaved;
@@ -298,6 +335,11 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     {
     }
 
+    private void OnResetXROriginButtonPress()
+    {
+        ResetXROrigin.Instance.ResetOrigin();
+    }
+
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene)
     {
         StartCoroutine(WaitForKinectManagerInitialization());
@@ -322,6 +364,32 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
 
         SetStatus("Config scene loaded", Color.green);
+
+        staticCamera = Instantiate(staticCameraPrefab).transform;
+
+        SetStaticCameraInputField();
+
+    }
+
+    private void SetStaticCameraInputField()
+    {
+        positionXInputField.SetTextWithoutNotify(staticCamera.position.x.ToString());
+        positionYInputField.SetTextWithoutNotify(staticCamera.position.y.ToString());
+        positionZInputField.SetTextWithoutNotify(staticCamera.position.z.ToString());
+
+        rotationXInputField.SetTextWithoutNotify(staticCamera.rotation.eulerAngles.x.ToString());
+        rotationYInputField.SetTextWithoutNotify(staticCamera.rotation.eulerAngles.y.ToString());
+        rotationZInputField.SetTextWithoutNotify(staticCamera.rotation.eulerAngles.z.ToString());
+    }
+
+    private void SetStaticCameraPosition()
+    {
+        staticCamera.position = new Vector3(float.Parse(positionXInputField.text), float.Parse(positionYInputField.text), float.Parse(positionZInputField.text));
+    }
+
+    private void SetStaticCameraRotation()
+    {
+        staticCamera.rotation = Quaternion.Euler(float.Parse(rotationXInputField.text), float.Parse(rotationYInputField.text), float.Parse(rotationZInputField.text));
     }
 
     private void SetStatus(string message, Color color)
