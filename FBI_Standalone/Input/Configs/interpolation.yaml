@@ -1,6 +1,6 @@
 configName: interpolation
 createdAt: 2026-04-23 09:03:32
-lastModified: 2026-04-23 09:43:49
+lastModified: 2026-04-23 13:43:03
 pointClouds:
 - iD: 1
   position:
@@ -15,8 +15,8 @@ pointClouds:
     x: -1
     y: 1
     z: 1
-  depthMax: 3.122509
-  depthMin: 1.129344
+  depthMax: 10
+  depthMin: 5.020004
 - iD: 2
   position:
     x: 0

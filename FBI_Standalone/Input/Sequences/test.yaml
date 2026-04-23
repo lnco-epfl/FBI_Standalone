@@ -23,12 +23,10 @@ steps:
   - stepType: DisplayCamera
     duration: 20.0
     cameraID: "1"
-    delay: 0.0
+    delay: 0.5
+
+  - stepType: LoadConfig
     fileName: interpolation2
-    interpolation:
-      duration: 2.0
-      delay: 1.0
-      ease: InOutSine
 
   - stepType: Wait
     duration: 2.0
