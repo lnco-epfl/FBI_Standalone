@@ -2,6 +2,7 @@
 
 # Summary
   * [Description](#description)
+  * [Requirements](#requirements)
   * [How to use](#how-to-use)
   * [Input Files](#input-files)
   * [Sequence Files](#sequence-files)
@@ -16,14 +17,49 @@ This application has been created with Unity (version 6000.3.11f1). The project 
 
 The application is designed for research experiments involving point cloud visualizations. It allows researchers to display live or delayed point cloud feeds from multiple cameras as part of a configurable experiment sequence. The experiment flow is defined through YAML sequence files and supports a variety of step types including camera display, text, images, questions, and Likert scales.
 
-# How to use
+# Requirements
 
-For running the application, you need a PC connected to one or more Femto Bolt cameras.
+## Hardware
+
+* **Laptop:** High-end GPU gaming laptop, 32 GB RAM minimum recommended
+* **VR Headset:** [Meta Quest 3 / 3S](https://www.meta.com/quest/quest-3s/), connected to the laptop via USB-C cable
+* **RGBD Cameras:** [ORBBEC Femto Bolt](https://www.orbbec.com/products/tof-camera/femto-bolt/), one or more, each connected via USB-C data cable + external power supply
+* **Tripod(s):** One per camera
+
+## Software
+
+The following software must be installed on the laptop before running the application.
+
+### Meta Horizon Link
+
+[Meta Horizon Link](https://www.meta.com/en-gb/help/quest/articles/headsets-and-accessories/oculus-link/meta-quest-link-compatibility/) is required to use the Meta Quest 3 / 3S as a PCVR headset. It must be installed and running on the laptop before connecting the headset. When the Quest 3 / 3S is connected via USB-C and turned on, it automatically launches Quest Link, this behaviour is configured directly on the headset in the Quest settings.
+
+### Orbbec SDK & Drivers (for Femto Bolt cameras)
+
+The Femto Bolt cameras are the recommended replacement for Azure Kinect cameras. They are developed by Orbbec in partnership with Microsoft and are compatible with the Azure Kinect SDK via an Orbbec wrapper.
+
+> ℹ️ The Unity project uses the [Azure Kinect and Femto Bolt Examples for Unity](https://assetstore.unity.com/packages/tools/integration/azure-kinect-and-femto-bolt-examples-for-unity-149700) asset with the OrbbecFemtoWrapper already imported, no additional Unity-side camera setup is required.
+>
+> For the full setup guide, refer to the [official plugin documentation](https://rfilkov.com/2019/08/26/azure-kinect-tips-tricks/#t19).
+
+
+Before first use, follow these steps:
+ 
+1. **Connect** each Femto Bolt camera to its power supply and to the laptop via USB-C.
+2. **Download and install [Azure Kinect Sensor SDK](https://github.com/microsoft/Azure-Kinect-Sensor-SDK/blob/develop/docs/usage.md)** (v1.4.1). This is required as a base dependency even when using Femto Bolt cameras.
+3. **Download and install [Azure Kinect Body Tracking SDK](https://learn.microsoft.com/en-us/azure/kinect-dk/body-tracking-sdk-download)** (v1.1.2). It is required even when using Femto Bolt cameras, as the plugin relies on it for body tracking. Follow the [official installation instructions](https://learn.microsoft.com/en-us/azure/kinect-dk/body-sdk-setup). The SDK must be installed in its default location: `C:\Program Files\Azure Kinect Body Tracking SDK`.
+3. **Download and unzip [Orbbec Viewer](https://www.orbbec.com/developers/orbbec-sdk/)** (v1.8.1 or later). Open it, select the connected camera, and verify that the color, depth, IR and IMU streams are visible and that device timestamps are rolling. Then close Orbbec Viewer.
+4. **Check the firmware version** of the device against [Orbbec's firmware repository](https://github.com/orbbec/OrbbecFirmware). Upgrade if needed via Orbbec Viewer.
+5. **Download and unzip [Orbbec's K4A-Wrapper](https://github.com/orbbec/OrbbecSDK-K4A-Wrapper)** (v1.8.1 or later). Run the `k4aviewer` app from its `bin` folder, open the device, start the cameras, and verify all streams are working. Then close the app.
+6. **On Windows**, go to the `script` subfolder of the K4A-Wrapper folder and follow the instructions in `obsensor_metadata_win10.md` to enable device timestamps over the UVC protocol.
+
+
+# How to use
 
 To run the application:
 
 * Connect all Femto Bolt cameras to the PC and ensure they are recognized by the system.
-* Connect the Quest 3S to the laptop with the usb-C cable, and start Meta Horizon link on the laptop. 
+* Connect the Quest 3 / 3S to the laptop with the usb-C cable, and start Meta Horizon link on the laptop. 
 * Run `FBI Standalone.exe`
 * Enter the participant data (age, gender) and select a sequence file.
 * Create or edit a config file (which defines camera positions, depth values, etc.)
