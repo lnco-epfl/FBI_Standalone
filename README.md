@@ -58,7 +58,12 @@ Loads a Unity scene by name.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `scenePath` | string | Name of the scene to load (without extension) |
+| `scenePath` | string | Name of the scene to load |
+
+List of the avialable scene : 
+* `BlackScene`
+* `GrayScene`
+* `EmptyRoom`
 
 ```yaml
 - stepType: LoadScene
