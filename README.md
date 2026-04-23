@@ -150,27 +150,51 @@ Pauses the sequence for a given duration.
   duration: 2.0
 ```
 
----
 
 ### DisplayCamera
-Displays the point cloud from a specific Azure Kinect camera, with an optional temporal delay.
-
+Displays the point cloud from a specific Femto Bolt camera, with an optional temporal delay. Optionally, a different config file can be loaded for this step, and a smooth interpolation can be applied to transition the point cloud from its previous transform to the new one.
+ 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `duration` | float | Display duration in seconds (followed by a 5s cleanup wait) |
+| `duration` | float | Display duration in seconds |
 | `cameraID` | string | ID of the camera to display (`"1"`, `"2"`, etc.) |
 | `delay` | float | Temporal delay in seconds. `0.0` = real-time display |
-
+| `fileName` | string | *(Optional)* Name of a config file to load for this step (without extension). If omitted, the currently loaded config is used |
+| `interpolation` | object | *(Optional)* If defined, smoothly animates the point cloud transform from the previous config position to the new one |
+| `interpolation.duration` | float | Duration of the interpolation animation in seconds |
+| `interpolation.delay` | float | Delay before the interpolation starts, in seconds |
+| `interpolation.ease` | string | Easing function from [PrimeTween](https://github.com/KyryloKuzyk/PrimeTween#support). Recommended values: `Default`, `Linear`, `InOutSine`, `InOutQuad`, `InOutCubic`, `InOutQuart`, `InOutExpo`. For a full list of available values, see the PrimeTween documentation |
+ 
 ```yaml
+# Basic usage - real-time display
+- stepType: DisplayCamera
+  duration: 20.0
+  cameraID: "1"
+  delay: 0.0
+ 
+# With temporal delay
 - stepType: DisplayCamera
   duration: 20.0
   cameraID: "1"
   delay: 1.5
+ 
+# With config switch and interpolation
+- stepType: DisplayCamera
+  duration: 20.0
+  cameraID: "1"
+  delay: 0.0
+  fileName: AnotherConfig
+  interpolation:
+    duration: 3.0
+    delay: 1.0
+    ease: InOutQuad
 ```
-
-> ⚠️ Note: After each `DisplayCamera` step, the application waits an additional 5 seconds to allow memory to be properly released.
-
+ 
+> ⚠️ When using `interpolation`, the `fileName` parameter must also be set. The interpolation animates the point cloud transform from the position defined in the previously loaded config to the position defined in the new config file.
+ 
+ 
 ---
+
 
 ### DisplayImage
 Displays an image from the `Input/Images/` folder.
