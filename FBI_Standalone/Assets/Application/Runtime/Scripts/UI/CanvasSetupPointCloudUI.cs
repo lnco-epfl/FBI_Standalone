@@ -278,7 +278,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     {
     }
 
-    private void OnConfigLoaded(ConfigFile file)
+    private void OnConfigLoaded(ConfigFile file, bool loadConfigIntoPointCloud)
     {
         for (int i = 0; i < pointCloudEntries.Count; i++)
         {

@@ -37,7 +37,7 @@ public class DisplayCameraState : IState
 
             if (configs.Contains(step.configFileName) && ConfigFileManager.Instance.CurrentConfig.configName != step.configFileName)
             {
-                ConfigFileManager.Instance.Load(step.configFileName);
+                ConfigFileManager.Instance.Load(step.configFileName, step.interpolation == null);
             }
             else
             {
@@ -70,9 +70,9 @@ public class DisplayCameraState : IState
 
             yield return new WaitForSeconds(step.interpolation.delay);
 
-            yield return Tween.Position(target: vfxEffect.transform, startValue: previousConfig.pointClouds[pointCloudID].position.ToVector3(), endValue: currentConfig.pointClouds[pointCloudID].position.ToVector3(), duration: step.interpolation.duration, ease: step.interpolation.ease)
-                .Group(Tween.Rotation(target: vfxEffect.transform, startValue: previousConfig.pointClouds[pointCloudID].rotation.ToVector3(), endValue: currentConfig.pointClouds[pointCloudID].rotation.ToVector3(), duration: step.interpolation.duration, ease: step.interpolation.ease))
-                .Group(Tween.Scale(target: vfxEffect.transform, startValue: previousConfig.pointClouds[pointCloudID].scale.ToVector3(), endValue: currentConfig.pointClouds[pointCloudID].scale.ToVector3(), duration: step.interpolation.duration, ease: step.interpolation.ease)).ToYieldInstruction();
+            yield return Tween.Position(target: vfxEffect.transform, startValue: previousConfig.pointClouds[pointCloudID - 1].position.ToVector3(), endValue: currentConfig.pointClouds[pointCloudID - 1].position.ToVector3(), duration: step.interpolation.duration, ease: step.interpolation.ease)
+                .Group(Tween.Rotation(target: vfxEffect.transform, startValue: previousConfig.pointClouds[pointCloudID - 1].rotation.ToVector3(), endValue: currentConfig.pointClouds[pointCloudID - 1].rotation.ToVector3(), duration: step.interpolation.duration, ease: step.interpolation.ease)).ToYieldInstruction();
+            //.Group(Tween.Scale(target: vfxEffect.transform, startValue: previousConfig.pointClouds[pointCloudID].scale.ToVector3(), endValue: currentConfig.pointClouds[pointCloudID].scale.ToVector3(), duration: step.interpolation.duration, ease: step.interpolation.ease)).ToYieldInstruction();
 
             yield return new WaitForSeconds(step.displayTime - step.interpolation.duration - step.interpolation.delay);
         }

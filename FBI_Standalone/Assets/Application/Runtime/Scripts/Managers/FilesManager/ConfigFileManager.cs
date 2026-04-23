@@ -19,7 +19,7 @@ public class ConfigFileManager : MonoBehaviour
 
     public ConfigFile CurrentConfig { get => currentConfig; private set => currentConfig = value; }
 
-    public event Action<ConfigFile> OnConfigLoaded;
+    public event Action<ConfigFile, bool> OnConfigLoaded;
     public event Action<ConfigFile> OnConfigSaved;
     public event Action<List<string>> OnFileListRefreshed;
 
@@ -72,7 +72,7 @@ public class ConfigFileManager : MonoBehaviour
         return cfg;
     }
 
-    public ConfigFile Load(string configName)
+    public ConfigFile Load(string configName, bool loadConfigIntoPointCloud = true)
     {
         string path = GetPath(configName);
         if (!File.Exists(path))
@@ -86,7 +86,7 @@ public class ConfigFileManager : MonoBehaviour
             string yaml = File.ReadAllText(path);
             CurrentConfig = deserializer.Deserialize<ConfigFile>(yaml);
             EventFileManager.Log($"[ConfigFileManager] Loaded: {path}");
-            OnConfigLoaded?.Invoke(CurrentConfig);
+            OnConfigLoaded?.Invoke(CurrentConfig, loadConfigIntoPointCloud);
             return CurrentConfig;
         }
         catch (Exception e)
