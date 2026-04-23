@@ -72,17 +72,17 @@ MonoBehaviour:
   m_EnableXRInput: 1
   m_EnableMouseInput: 1
   m_EnableTouchInput: 1
+  m_EnableGamepadInput: 1
+  m_EnableJoystickInput: 1
   m_PointAction: {fileID: -7551289566469701729, guid: 9df9307e5230e5949b946ada28151914, type: 3}
   m_LeftClickAction: {fileID: 9184975581777610568, guid: 9df9307e5230e5949b946ada28151914, type: 3}
   m_MiddleClickAction: {fileID: -7765134652466008204, guid: 9df9307e5230e5949b946ada28151914, type: 3}
   m_RightClickAction: {fileID: 5746132046144958740, guid: 9df9307e5230e5949b946ada28151914, type: 3}
-  m_ScrollWheelAction: {fileID: 5746132046144958740, guid: 9df9307e5230e5949b946ada28151914, type: 3}
+  m_ScrollWheelAction: {fileID: 8841714307507485029, guid: 9df9307e5230e5949b946ada28151914, type: 3}
   m_NavigateAction: {fileID: -8956318351249328658, guid: 9df9307e5230e5949b946ada28151914, type: 3}
   m_SubmitAction: {fileID: 8635077495265596727, guid: 9df9307e5230e5949b946ada28151914, type: 3}
   m_CancelAction: {fileID: -2988374692462039962, guid: 9df9307e5230e5949b946ada28151914, type: 3}
   m_EnableBuiltinActionsAsFallback: 1
-  m_EnableGamepadInput: 1
-  m_EnableJoystickInput: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit

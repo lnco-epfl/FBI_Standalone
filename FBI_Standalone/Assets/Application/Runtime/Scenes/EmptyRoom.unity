@@ -604,6 +604,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1b6d4856bc356e4895bda6dca2be206, type: 3}
+--- !u!4 &684706854 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3176835552422503746, guid: 60ebf16a373448c4f9dc9ce72aceea7a, type: 3}
+  m_PrefabInstance: {fileID: 6873485300634881259}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &767526232
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1447,9 +1452,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2182852029504367266, guid: 60ebf16a373448c4f9dc9ce72aceea7a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3203940703185837726, guid: 60ebf16a373448c4f9dc9ce72aceea7a, type: 3}
       propertyPath: m_Name
       value: PointCloudManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6977702656950209257, guid: 60ebf16a373448c4f9dc9ce72aceea7a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7304271281485899027, guid: 60ebf16a373448c4f9dc9ce72aceea7a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1491,6 +1504,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9050714511273804710, guid: 60ebf16a373448c4f9dc9ce72aceea7a, type: 3}
+      propertyPath: pointClouds.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9050714511273804710, guid: 60ebf16a373448c4f9dc9ce72aceea7a, type: 3}
+      propertyPath: 'pointClouds.Array.data[1]'
+      value: 
+      objectReference: {fileID: 684706854}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1603,6 +1624,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5357310357031832919, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5832613452178571215, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6474066014606128782, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
+      propertyPath: depthCameraMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6474066014606128782, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
+      propertyPath: pointCloudResolution
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6867206271747297554, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
+      propertyPath: depthCameraMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6867206271747297554, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
+      propertyPath: pointCloudResolution
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -132,7 +132,7 @@ MonoBehaviour:
   recordingFile: 
   minDepthDistance: 0
   maxDepthDistance: 3.47
-  pointCloudResolution: 1
+  pointCloudResolution: 0
   pointCloudVertexTexture: {fileID: 8400000, guid: 8e437a7816d60164ba157537dc368480, type: 2}
   pointCloudColorTexture: {fileID: 8400000, guid: 1c93e00328946264cab7377aadfa8fc1, type: 2}
   pointCloudPlayerList: 
@@ -147,8 +147,8 @@ MonoBehaviour:
   sensorRotValueY: 0
   bIgnoreZCoordinates: 0
   bIgnoreInferredJoints: 0
-  colorCameraMode: 1
-  depthCameraMode: 1
+  colorCameraMode: 2
+  depthCameraMode: 2
   cameraFPS: 2
   deviceSyncMode: 0
   subDeviceDelayUsec: 0
@@ -207,7 +207,7 @@ MonoBehaviour:
   recordingFile: 
   minDepthDistance: 0
   maxDepthDistance: 3.47
-  pointCloudResolution: 1
+  pointCloudResolution: 0
   pointCloudVertexTexture: {fileID: 8400000, guid: ea74259af53a37e42b78d52b0170f1c8, type: 2}
   pointCloudColorTexture: {fileID: 8400000, guid: 76a33ecc1429053428801d9b57237b96, type: 2}
   pointCloudPlayerList: 
@@ -222,8 +222,8 @@ MonoBehaviour:
   sensorRotValueY: 0
   bIgnoreZCoordinates: 0
   bIgnoreInferredJoints: 0
-  colorCameraMode: 1
-  depthCameraMode: 1
+  colorCameraMode: 2
+  depthCameraMode: 2
   cameraFPS: 2
   deviceSyncMode: 0
   subDeviceDelayUsec: 0
