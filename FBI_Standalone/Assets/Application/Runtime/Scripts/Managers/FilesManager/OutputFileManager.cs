@@ -119,7 +119,7 @@ public class OutputFileManager : MonoBehaviour
             OutputFileData.Age = UIManager.Instance.SelectedAge;
         }
     }
-    private void OnConfigLoaded(ConfigFile file)
+    private void OnConfigLoaded(ConfigFile file, bool loadConfigIntoPointCloud)
     {
         OutputFileData.ConfigFile = file.configName;
     }

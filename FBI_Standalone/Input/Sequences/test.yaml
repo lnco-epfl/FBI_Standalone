@@ -3,7 +3,7 @@ steps:
     scenePath: "EmptyRoom"
 
   - stepType: LoadConfig
-    fileName: Bruno
+    fileName: interpolation
 
   - stepType: DisplayText
     text: "welcome to FBI"
@@ -13,7 +13,7 @@ steps:
     duration: 2.0
 
   - stepType: DisplayCamera
-    duration: 20.0
+    duration: 2
     cameraID: "1"
     delay: 0.0
 
@@ -23,13 +23,12 @@ steps:
   - stepType: DisplayCamera
     duration: 20.0
     cameraID: "1"
-    delay: 1.0
-    fileName: Bruno
-    interpolation: {
-        duration: 1.0,
-        delay: 2.0,
-        ease: Linear
-    }
+    delay: 0.0
+    fileName: interpolation2
+    interpolation:
+      duration: 2.0
+      delay: 1.0
+      ease: InOutSine
 
   - stepType: Wait
     duration: 2.0

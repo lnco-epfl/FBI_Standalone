@@ -116,3 +116,4 @@ logs
 
 FBI_Standalone/Output/
 FBI_Standalone/Configs/
+*.bin

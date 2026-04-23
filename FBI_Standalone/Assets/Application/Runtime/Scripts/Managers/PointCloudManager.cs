@@ -79,9 +79,12 @@ public class PointCloudManager : MonoBehaviour
 
 
 
-    private void OnConfigLoaded(ConfigFile obj)
+    private void OnConfigLoaded(ConfigFile obj, bool loadConfigIntoPointCloud)
     {
-        StartCoroutine(WaitForKinectManagerInitialization(LoadConfigSettings));
+        if(loadConfigIntoPointCloud)
+        {
+            StartCoroutine(WaitForKinectManagerInitialization(LoadConfigSettings));
+        }
     }
 
     private IEnumerator WaitForKinectManagerInitialization(Action callback)
