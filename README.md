@@ -400,7 +400,7 @@ There are two types of output files:
 
 # GUI
 
-<!-- Add a screenshot here: ![screenshot](path/to/screenshot.png) -->
+<img width="1607" height="912" alt="1" src="https://github.com/user-attachments/assets/df034183-59e6-41f2-a367-58aca8f5fc43" />
 
 ### Participant form
 - **Age:** Enter the participant's age.
@@ -432,6 +432,14 @@ There are two types of output files:
 | W | Stop the experiment |
 | Space | Play / Pause |
 | ← / → | Previous / Next step |
+
+
+<img width="1607" height="912" alt="1294" src="https://github.com/user-attachments/assets/a671e382-7cb6-4912-83de-cecffbcbfcc7" />
+
+## Config file GUI
+
+<img width="1607" height="912" alt="708" src="https://github.com/user-attachments/assets/071ecd7a-3c6a-4c21-b2e7-4a3235ef9db1" />
+
 
 # Authors
 
