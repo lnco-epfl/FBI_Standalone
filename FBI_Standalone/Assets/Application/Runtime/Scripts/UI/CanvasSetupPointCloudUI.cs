@@ -47,6 +47,9 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     [SerializeField] private Button resetXROriginButton;
 
     [Header("Static View")]
+    [SerializeField] private GameObject avatarToggleGameObject;
+    private UISwitcher.UISwitcher avatarToggle; 
+
     [SerializeField] private TMP_InputField positionXInputField;
     [SerializeField] private TMP_InputField positionYInputField;
     [SerializeField] private TMP_InputField positionZInputField;
@@ -80,6 +83,12 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     /// </summary>
     private bool isSwitching;
 
+    private void Awake()
+    {
+        avatarToggle = avatarToggleGameObject.GetComponent<UISwitcher.UISwitcher>();
+    }
+
+
     private void Start()
     {
         StartCoroutine(LoadScene());
@@ -87,6 +96,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         ClearPointCloudEntry();
         
         ShortcutManager.Instance.DisableShortCut();
+
+        
     }
 
 
@@ -110,6 +121,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         rotationXInputField.onValueChanged.AddListener((str) => SetStaticCameraRotation());
         rotationYInputField.onValueChanged.AddListener((str) => SetStaticCameraRotation());
         rotationZInputField.onValueChanged.AddListener((str) => SetStaticCameraRotation());
+
+        avatarToggle.onValueChanged.AddListener(OnAvatarToggleValueChanged);
 
         ConfigFileManager.Instance.OnConfigLoaded += OnConfigLoaded;
         ConfigFileManager.Instance.OnConfigSaved += OnConfigSaved;
@@ -136,6 +149,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         rotationXInputField.onValueChanged.RemoveAllListeners();
         rotationYInputField.onValueChanged.RemoveAllListeners();
         rotationZInputField.onValueChanged.RemoveAllListeners();
+
+        avatarToggle.onValueChanged.RemoveListener(OnAvatarToggleValueChanged);
 
         ConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
         ConfigFileManager.Instance.OnConfigSaved -= OnConfigSaved;
@@ -368,6 +383,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         staticCamera = Instantiate(staticCameraPrefab).transform;
 
         SetStaticCameraInputField();
+        avatarToggle.SetWithoutNotify(false);
+
 
     }
 
@@ -390,6 +407,11 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     private void SetStaticCameraRotation()
     {
         staticCamera.rotation = Quaternion.Euler(float.Parse(rotationXInputField.text), float.Parse(rotationYInputField.text), float.Parse(rotationZInputField.text));
+    }
+
+    private void OnAvatarToggleValueChanged(bool value)
+    {
+        PlayerManager.Instance.DisplayAvatar(value);
     }
 
     private void SetStatus(string message, Color color)
