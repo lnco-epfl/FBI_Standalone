@@ -1,31 +1,31 @@
 configName: Bruno
 createdAt: 2026-04-02 15:20:45
-lastModified: 2026-04-23 14:29:36
+lastModified: 2026-04-30 15:17:42
 pointClouds:
 - iD: 1
   position:
-    x: 0
-    y: 0.14
-    z: 0
+    x: 0.09
+    y: 1.8
+    z: 1.67
   rotation:
-    x: 0.14
-    y: 359.15
+    x: 53.17001
+    y: -8.901742E-08
     z: 1.42
   scale:
-    x: -1
+    x: 1
     y: 1
     z: 1
   depthMax: 3.47
-  depthMin: 1.607143
+  depthMin: 0.6081063
 - iD: 2
   position:
-    x: -0.16
-    y: 1.21
-    z: 0.44
+    x: -0.12
+    y: 1.07
+    z: 0.93
   rotation:
-    x: 0.17
-    y: 12.9
-    z: 0.43
+    x: 10.99
+    y: 0
+    z: -1.085851E-07
   scale:
     x: -1
     y: 1
