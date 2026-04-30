@@ -98,7 +98,8 @@ Loads a Unity scene by name.
 
 List of the avialable scene : 
 * `BlackScene`
-* `GrayScene`
+* `EmptyGrayRoom`
+* `GrayInfinityScene`
 * `EmptyRoom`
 
 ```yaml
