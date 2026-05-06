@@ -147,7 +147,7 @@ MonoBehaviour:
   sensorRotValueY: 0
   bIgnoreZCoordinates: 0
   bIgnoreInferredJoints: 0
-  colorCameraMode: 1
+  colorCameraMode: 2
   depthCameraMode: 3
   cameraFPS: 2
   deviceSyncMode: 0
@@ -222,8 +222,8 @@ MonoBehaviour:
   sensorRotValueY: 0
   bIgnoreZCoordinates: 0
   bIgnoreInferredJoints: 0
-  colorCameraMode: 1
-  depthCameraMode: 1
+  colorCameraMode: 2
+  depthCameraMode: 3
   cameraFPS: 2
   deviceSyncMode: 0
   subDeviceDelayUsec: 0

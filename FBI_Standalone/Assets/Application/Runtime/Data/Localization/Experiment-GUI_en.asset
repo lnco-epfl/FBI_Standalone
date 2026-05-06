@@ -186,6 +186,10 @@ MonoBehaviour:
     m_Localized: Sequence File
     m_Metadata:
       m_Items: []
+  - m_Id: 113146566436950016
+    m_Localized: Static view
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

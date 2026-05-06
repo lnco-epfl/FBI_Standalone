@@ -179,6 +179,10 @@ MonoBehaviour:
     m_Key: sequence-file
     m_Metadata:
       m_Items: []
+  - m_Id: 113146566436950016
+    m_Key: static view
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

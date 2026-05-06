@@ -18,10 +18,49 @@ public class SerializableVector3
     }
 }
 
+
+[Serializable]
+public class UITransformData
+{
+    public SerializableVector3 position;
+    public SerializableVector3 rotation;
+    public SerializableVector3 scale;
+
+    public UITransformData()
+    {
+        position = new SerializableVector3(0f, 0f, 0f);
+        rotation = new SerializableVector3(0f, 0f, 0f);
+        scale = new SerializableVector3(1f, 1f, 1f);
+    }
+
+    public UITransformData(Transform t)
+    {
+        position = new SerializableVector3(t.position);
+        rotation = new SerializableVector3(t.eulerAngles);
+        scale = new SerializableVector3(t.localScale);
+    }
+
+    public void ApplyTo(Transform t)
+    {
+        t.position = position.ToVector3();
+        t.eulerAngles = rotation.ToVector3();
+        t.localScale = scale.ToVector3();
+    }
+
+    public override string ToString()
+    {
+        return $"UITransformData(position={position}, rotation={rotation}, scale={scale})";
+    }
+}
+
 [Serializable]
 public class ObjectTransformData
 {
     public int ID;
+
+    public SerializableVector3 cameraPosition;
+    public SerializableVector3 cameraRotation;
+
     public SerializableVector3 position;
     public SerializableVector3 rotation; 
     public SerializableVector3 scale;
@@ -65,10 +104,12 @@ public class ConfigFile
     public string configName = "NewConfig";
     public string createdAt = "";
     public string lastModified = "";
+
+    public UITransformData UICanvas; 
     public List<ObjectTransformData> pointClouds = new List<ObjectTransformData>();
 
     public override string ToString()
     {
-        return $"ConfigFile(configName={configName}, createdAt={createdAt}, lastModified={lastModified}, pointClouds=[{string.Join(", ", pointClouds)}])";
+        return $"ConfigFile(configName={configName}, createdAt={createdAt}, lastModified={lastModified}, UICanvas=[{UICanvas}], pointClouds=[{string.Join(", ", pointClouds)}])";
     }
 }
