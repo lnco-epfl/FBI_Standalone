@@ -21,12 +21,15 @@ public class WorldUIManager : MonoBehaviour
 
     [Header("Text")]
     [SerializeField] private Transform textContainer;
+    private Image textContainerBackground;
     private TMP_Text tmpTextContainer;
     private CanvasGroup canvasGroupTextContainer;
 
 
     [Header("Likert Scale")]
     [SerializeField] private Transform likertScaleContainer;
+
+    private Image likertScaleContainerBackground;
 
     private TMP_Text questionTextLikertScaleContainer;
     private TMP_Text labelLeftTextLikertScaleContainer;
@@ -43,6 +46,7 @@ public class WorldUIManager : MonoBehaviour
 
     [Header("Break")]
     [SerializeField] private Transform breakContainer;
+    private Image breakContainerBackground;
     private CanvasGroup canvasGroupBreakContainer;
     private TMP_Text instructionTextBreakContainer;
     private TMP_Text counterTextBreakContainer;
@@ -52,6 +56,7 @@ public class WorldUIManager : MonoBehaviour
 
     [Header("Image")]
     [SerializeField] private Transform imageContainer;
+    private Image imageContainerBackground;
     private CanvasGroup canvasImageContainer;
     private Image imageImageContainer;
     private Transform imageImageTransform;
@@ -61,6 +66,7 @@ public class WorldUIManager : MonoBehaviour
     [Header("Question")]
     [SerializeField] private Transform questionContainer;
     [SerializeField] private Button responceButtonPrefab;
+    private Image questionContainerBackground;
     private CanvasGroup canvasGroupQuestionContainer;
     private TMP_Text questionTextQuestionContainer;
     private Transform reponseButtonsTransform; 
@@ -72,8 +78,25 @@ public class WorldUIManager : MonoBehaviour
 
     private static WorldUIManager instance;
 
+    public Vector3 Position
+    {
+        get => transform.position;
+        set => transform.position = value;
+    }
+
+    public Vector3 Rotation
+    {
+        get => transform.eulerAngles;
+        set => transform.eulerAngles = value;
+    }
+
+    private Color backgroundColor = Color.black;
+    private Image currentBackground;
+
+    public Color BackgroundColor { get => backgroundColor; set => backgroundColor = value; }
 
     public static WorldUIManager Instance { get { return instance; } }
+
 
 
     private void Awake()
@@ -87,6 +110,7 @@ public class WorldUIManager : MonoBehaviour
 
         tmpTextContainer = textContainer.GetComponentInChildren<TMP_Text>();
         canvasGroupTextContainer = textContainer.GetComponent<CanvasGroup>();
+        textContainerBackground = textContainer.GetComponentInChildren<Image>();
 
         canvasGroupLikertScaleContainer = likertScaleContainer.GetComponent<CanvasGroup>();
         questionTextLikertScaleContainer = likertScaleContainer.GetComponentInChildren<TMP_Text>();
@@ -94,29 +118,32 @@ public class WorldUIManager : MonoBehaviour
         labelLeftTextLikertScaleContainer = sliderLikertScaleContainer.transform.Find("Label Left").GetComponent<TMP_Text>();
         labelRightTextLikertScaleContainer = sliderLikertScaleContainer.transform.Find("Label Right").GetComponent<TMP_Text>();
         validationButtonLikertScaleContrainer = likertScaleContainer.GetComponentInChildren<Button>();
-
+        likertScaleContainerBackground = sliderLikertScaleContainer.transform.Find("Background").GetComponent<Image>();
 
         canvasGroupBreakContainer = breakContainer.GetComponent<CanvasGroup>();
         instructionTextBreakContainer = breakContainer.Find("Instruction").GetComponent<TMP_Text>();
         counterTextBreakContainer = breakContainer.Find("Counter").GetComponent<TMP_Text>();
         skipHoldButtonBreakContainer = breakContainer.GetComponentInChildren<Button>();
         holdmaskButtonBreakContainer = skipHoldButtonBreakContainer.transform.Find("Hold Mask").GetComponent<Image>();
+        breakContainerBackground = breakContainer.transform.Find("Background").GetComponent<Image>();
 
         canvasImageContainer = imageContainer.GetComponent<CanvasGroup>();
         imageImageContainer = imageContainer.Find("Image").GetComponent<Image>();
         imageImageTransform = imageImageContainer.GetComponent<Transform>();
+        imageContainerBackground = imageContainer.transform.Find("Background").GetComponent<Image>();
 
         canvasGroupQuestionContainer = questionContainer.GetComponent<CanvasGroup>();
         questionTextQuestionContainer = questionContainer.Find("Question").GetComponent<TMP_Text>();
         reponseButtonsTransform = questionContainer.Find("ResponseButtons");
-
+        questionContainerBackground = questionContainer.transform.Find("Background").GetComponent<Image>();
     }
 
     private void Start()
     {
+        currentBackground = null;
+
         canvasGroupTextContainer.alpha = 0;
         tmpTextContainer.text = string.Empty;
-
 
         canvasGroupLikertScaleContainer.alpha = 0;
         questionTextLikertScaleContainer.text = string.Empty;
@@ -197,6 +224,9 @@ public class WorldUIManager : MonoBehaviour
         canvasGroupTextContainer.interactable = true;
         canvasGroupTextContainer.blocksRaycasts = true;
 
+        textContainerBackground.color = backgroundColor;
+        currentBackground = textContainerBackground;
+
         tmpTextContainer.text = text;
         FadeCanvasGroup(canvasGroupTextContainer, 1);
     }
@@ -205,6 +235,8 @@ public class WorldUIManager : MonoBehaviour
     {
         canvasGroupTextContainer.interactable = false;
         canvasGroupTextContainer.blocksRaycasts = false;
+
+        currentBackground = null;
 
         FadeCanvasGroup(canvasGroupTextContainer, 0, () =>
         {
@@ -218,6 +250,9 @@ public class WorldUIManager : MonoBehaviour
         questionTextLikertScaleContainer.text = question;
         labelLeftTextLikertScaleContainer.text = labelLeft;
         labelRightTextLikertScaleContainer.text = labelRight;
+
+        questionContainerBackground.color = backgroundColor;
+        currentBackground = questionContainerBackground;
 
         sliderLikertScaleContainer.SetValueWithoutNotify(UnityEngine.Random.Range(sliderLikertScaleContainer.minValue + 10, sliderLikertScaleContainer.maxValue - 10));
 
@@ -238,6 +273,8 @@ public class WorldUIManager : MonoBehaviour
         canvasGroupLikertScaleContainer.interactable = false;
         canvasGroupLikertScaleContainer.blocksRaycasts = false;
 
+        currentBackground = null;
+
         OnDisplayGazeCursor?.Invoke(false);
 
         FadeCanvasGroup(canvasGroupLikertScaleContainer, 0);
@@ -246,6 +283,9 @@ public class WorldUIManager : MonoBehaviour
     public void DisplayBreak(string instruction)
     {
         canvasGroupBreakContainer.alpha = 0;
+
+        breakContainerBackground.color = backgroundColor;
+        currentBackground = breakContainerBackground;
 
         instructionTextBreakContainer.text = instruction;
 
@@ -269,6 +309,8 @@ public class WorldUIManager : MonoBehaviour
         canvasGroupBreakContainer.interactable = false;
         canvasGroupBreakContainer.blocksRaycasts = false;
 
+        currentBackground = null;
+
         OnDisplayGazeCursor?.Invoke(false);
 
         FadeCanvasGroup(canvasGroupBreakContainer, 0);
@@ -277,6 +319,9 @@ public class WorldUIManager : MonoBehaviour
     public void DisplayImage(Sprite image, float scale)
     {
         canvasImageContainer.alpha = 0;
+
+        imageContainerBackground.color = backgroundColor;
+        currentBackground = imageContainerBackground;
 
         imageImageContainer.sprite = image;
 
@@ -294,6 +339,8 @@ public class WorldUIManager : MonoBehaviour
         canvasImageContainer.interactable = false;
         canvasImageContainer.blocksRaycasts = false;
 
+        currentBackground = null;
+
         FadeCanvasGroup(canvasImageContainer, 0, () =>
         {
             imageImageContainer.sprite = null;
@@ -305,6 +352,9 @@ public class WorldUIManager : MonoBehaviour
     public void DisplayQuestion(string question, List<string> responseOptions)
     {
         canvasGroupQuestionContainer.alpha = 0;
+
+        questionContainerBackground.color = backgroundColor;
+        currentBackground = questionContainerBackground;
 
         questionTextQuestionContainer.text = question;
 
@@ -340,6 +390,8 @@ public class WorldUIManager : MonoBehaviour
         canvasGroupQuestionContainer.interactable = false;
         canvasGroupQuestionContainer.blocksRaycasts = false;
 
+        currentBackground = null;
+
         OnDisplayGazeCursor?.Invoke(false);
 
         FadeCanvasGroup(canvasGroupQuestionContainer, 0, () =>
@@ -353,4 +405,13 @@ public class WorldUIManager : MonoBehaviour
         });
     }
 
+    public void SetCurrentBackgoundColor(Color color)
+    {
+        backgroundColor = color;
+
+        if(currentBackground != null)
+        {
+            currentBackground.color = backgroundColor;
+        }
+    }
 }
