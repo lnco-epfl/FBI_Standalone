@@ -183,6 +183,18 @@ MonoBehaviour:
     m_Key: static view
     m_Metadata:
       m_Items: []
+  - m_Id: 113525653288755200
+    m_Key: camera-position
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113525667855572992
+    m_Key: camera-rotation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113526093879418880
+    m_Key: canva-UI
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

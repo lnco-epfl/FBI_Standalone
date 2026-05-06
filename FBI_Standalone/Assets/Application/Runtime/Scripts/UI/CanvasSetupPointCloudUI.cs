@@ -60,6 +60,23 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     [SerializeField] private GameObject staticCameraPrefab;
     private Transform staticCamera;
 
+
+    [Header("Canva UI")]
+    [SerializeField] private UISwitcher.UISwitcher displayCanvaUIToggle;
+
+    [SerializeField] private Button canvaUIColorPickerButton;
+    [SerializeField] private Image canvaUIAlphaPreview;
+
+    [SerializeField] private TMP_InputField canvaUIPositionXInputField;
+    [SerializeField] private TMP_InputField canvaUIPositionYInputField;
+    [SerializeField] private TMP_InputField canvaUIPositionZInputField;
+    [SerializeField] private TMP_InputField canvaUIRotationXInputField;
+    [SerializeField] private TMP_InputField canvaUIRotationYInputField;
+    [SerializeField] private TMP_InputField canvaUIRotationZInputField;
+
+    [SerializeField] private GameObject flexibleColorPickerPrefab;
+    private FlexibleColorPicker flexibleColorPicker;
+
     [Header("Scene")]
     [SerializeField] private SceneReference scene;
 
@@ -124,11 +141,24 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         avatarToggle.onValueChanged.AddListener(OnAvatarToggleValueChanged);
 
+        displayCanvaUIToggle.onValueChanged.AddListener(OnDisplayCanvaUIValueChanged);
+
+        canvaUIColorPickerButton.onClick.AddListener(OnCanvasUIColorPickerButtonPress);
+
+        canvaUIPositionXInputField.onValueChanged.AddListener((str) => SetWorldUIPosition());
+        canvaUIPositionYInputField.onValueChanged.AddListener((str) => SetWorldUIPosition());
+        canvaUIPositionZInputField.onValueChanged.AddListener((str) => SetWorldUIPosition());
+        canvaUIRotationXInputField.onValueChanged.AddListener((str) => SetWorldUIRotation());
+        canvaUIRotationYInputField.onValueChanged.AddListener((str) => SetWorldUIRotation());
+        canvaUIRotationZInputField.onValueChanged.AddListener((str) => SetWorldUIRotation());
+
         ConfigFileManager.Instance.OnConfigLoaded += OnConfigLoaded;
         ConfigFileManager.Instance.OnConfigSaved += OnConfigSaved;
         ConfigFileManager.Instance.OnFileListRefreshed += OnFileListRefreshed;
         SceneLoaderManager.Instance.OnSceneLoaded += OnSceneLoaded;
     }
+
+
 
     private void OnDisable()
     {
@@ -151,6 +181,10 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         rotationZInputField.onValueChanged.RemoveAllListeners();
 
         avatarToggle.onValueChanged.RemoveListener(OnAvatarToggleValueChanged);
+
+        displayCanvaUIToggle.onValueChanged.AddListener(OnDisplayCanvaUIValueChanged);
+
+        canvaUIColorPickerButton.onClick.AddListener(OnCanvasUIColorPickerButtonPress);
 
         ConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
         ConfigFileManager.Instance.OnConfigSaved -= OnConfigSaved;
@@ -383,8 +417,12 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         staticCamera = Instantiate(staticCameraPrefab).transform;
 
         SetStaticCameraInputField();
-        avatarToggle.SetWithoutNotify(false);
+        SetWorldUIInputField();
 
+        canvaUIAlphaPreview.color = WorldUIManager.Instance.BackgroundColor;
+
+        avatarToggle.SetWithoutNotify(false);
+        displayCanvaUIToggle.SetWithoutNotify(false);
 
     }
 
@@ -412,6 +450,69 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     private void OnAvatarToggleValueChanged(bool value)
     {
         PlayerManager.Instance.DisplayAvatar(value);
+    }
+
+    private void SetWorldUIInputField()
+    {
+        canvaUIPositionXInputField.SetTextWithoutNotify(WorldUIManager.Instance.Position.x.ToString());
+        canvaUIPositionYInputField.SetTextWithoutNotify(WorldUIManager.Instance.Position.y.ToString());
+        canvaUIPositionZInputField.SetTextWithoutNotify(WorldUIManager.Instance.Position.z.ToString());
+
+        canvaUIRotationXInputField.SetTextWithoutNotify(WorldUIManager.Instance.Rotation.x.ToString());
+        canvaUIRotationYInputField.SetTextWithoutNotify(WorldUIManager.Instance.Rotation.y.ToString());
+        canvaUIRotationZInputField.SetTextWithoutNotify(WorldUIManager.Instance.Rotation.z.ToString());
+    }
+
+    private void SetWorldUIPosition()
+    {
+        WorldUIManager.Instance.Position = new Vector3(float.Parse(canvaUIPositionXInputField.text), float.Parse(canvaUIPositionYInputField.text), float.Parse(canvaUIPositionZInputField.text));
+    }
+
+    private void SetWorldUIRotation()
+    {
+        WorldUIManager.Instance.Rotation = new Vector3(float.Parse(canvaUIRotationXInputField.text), float.Parse(canvaUIRotationYInputField.text), float.Parse(canvaUIRotationZInputField.text));
+    }
+    private void OnDisplayCanvaUIValueChanged(bool value)
+    {
+        if(value)
+        {
+            WorldUIManager.Instance.DisplayText("Canva UI");
+        }
+        else
+        {
+            WorldUIManager.Instance.HideText();
+        }
+        
+    }
+
+    private void OnCanvasUIColorPickerButtonPress()
+    {
+
+        if(flexibleColorPicker == null)
+        {
+            var gameObject = GameObject.Instantiate(flexibleColorPickerPrefab, this.transform);
+
+            flexibleColorPicker = gameObject.GetComponent<FlexibleColorPicker>();
+            flexibleColorPicker.color = WorldUIManager.Instance.BackgroundColor;
+
+            DestroyOnButtonClick destroyer = gameObject.GetComponent<DestroyOnButtonClick>();
+            destroyer.OnBeforeDestroy += HandleBeforeDestroy;
+
+            flexibleColorPicker.onColorChange.AddListener(OnCanvasUIColorChanged);
+        }
+
+    }
+
+    private void HandleBeforeDestroy()
+    {
+        flexibleColorPicker = null;
+    }
+
+    private void OnCanvasUIColorChanged(Color color)
+    {
+        canvaUIAlphaPreview.color = color;
+
+        WorldUIManager.Instance.SetCurrentBackgoundColor(color);
     }
 
     private void SetStatus(string message, Color color)

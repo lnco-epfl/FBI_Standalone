@@ -190,6 +190,18 @@ MonoBehaviour:
     m_Localized: Static view
     m_Metadata:
       m_Items: []
+  - m_Id: 113525653288755200
+    m_Localized: Camera Position
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113525667855572992
+    m_Localized: Camera Rotation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113526093879418880
+    m_Localized: Canva UI
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
