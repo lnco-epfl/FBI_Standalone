@@ -7,6 +7,7 @@
   <Project Path="Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor.csproj" />
   <Project Path="NewAssembly.csproj" />
   <Project Path="UISwitcher.csproj" />
+  <Project Path="FlexibleColorPicker.csproj" />
   <Project Path="PrimeTween.Debug.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Config.Editor.Tests.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
