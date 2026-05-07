@@ -137,6 +137,18 @@ VisualEffect:
       - m_Value: 0.007
         m_Name: Size
         m_Overridden: 1
+      - m_Value: 0
+        m_Name: Clamp X Min
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: Clamp X Max
+        m_Overridden: 1
+      - m_Value: 0
+        m_Name: Clamp Y Min
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: Clamp Y Max
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -307,6 +319,18 @@ VisualEffect:
       m_Array:
       - m_Value: 0.007
         m_Name: Size
+        m_Overridden: 1
+      - m_Value: 0
+        m_Name: Clamp X Min
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: Clamp X Max
+        m_Overridden: 1
+      - m_Value: 0
+        m_Name: Clamp Y Min
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: Clamp Y Max
         m_Overridden: 1
     m_Vector2f:
       m_Array: []
