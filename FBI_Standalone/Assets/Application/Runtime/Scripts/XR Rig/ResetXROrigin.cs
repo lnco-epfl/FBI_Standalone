@@ -58,8 +58,9 @@ public class ResetXROrigin : MonoBehaviour
         EventFileManager.Log("[ResetXROrigin] Reset Origin");
         float offsetTargetAngle = target.rotation.eulerAngles.y - head.rotation.eulerAngles.y;
         origin.Rotate(Vector3.up, offsetTargetAngle);
-        //Vector3 offsetTargetMotion = target.position - head.position;
-        //origin.position += offsetTargetMotion;
+        Vector3 offsetTargetMotion = target.position - head.position;
+        offsetTargetMotion.y = 0f;
+        origin.position += offsetTargetMotion;
 
     }
 
