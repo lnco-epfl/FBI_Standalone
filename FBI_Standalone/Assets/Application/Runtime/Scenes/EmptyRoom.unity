@@ -1710,6 +1710,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: KinectController
       objectReference: {fileID: 0}
+    - target: {fileID: 3543407572914118649, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
+      propertyPath: getPoseFrames
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543407572914118649, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
+      propertyPath: consoleLogMessages
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5357310357031832919, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
