@@ -12033,7 +12033,7 @@ PrefabInstance:
       objectReference: {fileID: 7796580588247725918}
     - target: {fileID: 1907364733944234094, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: scene.guid
-      value: 1124e634fc283304d876957226301a9e
+      value: e30a298b2ab0e6d44aefc2f4816bec7e
       objectReference: {fileID: 0}
     - target: {fileID: 1907364733944234094, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: statusText
@@ -12042,7 +12042,7 @@ PrefabInstance:
     - target: {fileID: 1907364733944234094, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: scene.asset
       value: 
-      objectReference: {fileID: 102900000, guid: 1124e634fc283304d876957226301a9e, type: 3}
+      objectReference: {fileID: 102900000, guid: e30a298b2ab0e6d44aefc2f4816bec7e, type: 3}
     - target: {fileID: 1907364733944234094, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: avatarToggle
       value: 
@@ -12249,7 +12249,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4726481016543159768, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: m_PresetInfoIsWorld
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5122322001564028188, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: m_SizeDelta.x
