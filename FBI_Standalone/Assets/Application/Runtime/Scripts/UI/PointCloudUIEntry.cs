@@ -76,11 +76,11 @@ public class PointCloudUIEntry : MonoBehaviour
 
             cameraDepthMaxSlider.minValue = 0.0f;
             cameraDepthMaxSlider.maxValue = 10.0f;
-            cameraDepthMaxSlider.value = kinectInerface.maxDepthDistance;
+            cameraDepthMaxSlider.SetValueWithoutNotify(kinectInerface.maxDepthDistance);
 
             cameraDepthMinSlider.minValue = 0.0f;
             cameraDepthMinSlider.maxValue = 10.0f;
-            cameraDepthMinSlider.value = kinectInerface.minDepthDistance;
+            cameraDepthMinSlider.SetValueWithoutNotify(kinectInerface.minDepthDistance);
         }
 
         CaptureDefaults();
