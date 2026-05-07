@@ -1,8 +1,28 @@
 configName: Bruno
 createdAt: 2026-04-02 15:20:45
-lastModified: 2026-04-30 15:17:42
+lastModified: 2026-05-07 08:01:36
+uICanvas:
+  position:
+    x: 0
+    y: 1
+    z: 2
+  rotation:
+    x: 0
+    y: 0
+    z: 0
+  scale:
+    x: 1
+    y: 1
+    z: 1
+  backgroundColor:
+    r: 0
+    g: 0
+    b: 0
+    a: 1
 pointClouds:
 - iD: 1
+  cameraPosition: 
+  cameraRotation: 
   position:
     x: 0.09
     y: 1.8
@@ -18,6 +38,8 @@ pointClouds:
   depthMax: 3.47
   depthMin: 0.6081063
 - iD: 2
+  cameraPosition: 
+  cameraRotation: 
   position:
     x: -0.12
     y: 1.07

@@ -378,6 +378,18 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             pointCloudEntries[i].SetMaxDepth(data.depthMax);
             pointCloudEntries[i].SetFlip(data.scale.x == -1, data.scale.y == -1);
         }
+
+        if (file.UICanvas != null)
+        {
+            file.UICanvas.ApplyTo(WorldUIManager.Instance.transform);
+
+            var color = file.UICanvas.backgroundColor?.ToColor() ?? Color.black;
+            WorldUIManager.Instance.SetCurrentBackgoundColor(color);
+            WorldUIManager.Instance.BackgroundColor = color;
+            canvaUIAlphaPreview.color = color;
+
+            SetWorldUIInputField(); 
+        }
     }
 
     private void OnFileListRefreshed(List<string> list)
@@ -465,13 +477,24 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void SetWorldUIPosition()
     {
-        WorldUIManager.Instance.Position = new Vector3(float.Parse(canvaUIPositionXInputField.text), float.Parse(canvaUIPositionYInputField.text), float.Parse(canvaUIPositionZInputField.text));
+        WorldUIManager.Instance.Position = new Vector3(
+            float.Parse(canvaUIPositionXInputField.text),
+            float.Parse(canvaUIPositionYInputField.text),
+            float.Parse(canvaUIPositionZInputField.text)
+        );
+        ConfigFileManager.Instance.SaveUICanvas(WorldUIManager.Instance.transform, WorldUIManager.Instance.BackgroundColor);
     }
 
     private void SetWorldUIRotation()
     {
-        WorldUIManager.Instance.Rotation = new Vector3(float.Parse(canvaUIRotationXInputField.text), float.Parse(canvaUIRotationYInputField.text), float.Parse(canvaUIRotationZInputField.text));
+        WorldUIManager.Instance.Rotation = new Vector3(
+            float.Parse(canvaUIRotationXInputField.text),
+            float.Parse(canvaUIRotationYInputField.text),
+            float.Parse(canvaUIRotationZInputField.text)
+        );
+        ConfigFileManager.Instance.SaveUICanvas(WorldUIManager.Instance.transform, WorldUIManager.Instance.BackgroundColor);
     }
+
     private void OnDisplayCanvaUIValueChanged(bool value)
     {
         if(value)
@@ -511,8 +534,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     private void OnCanvasUIColorChanged(Color color)
     {
         canvaUIAlphaPreview.color = color;
-
         WorldUIManager.Instance.SetCurrentBackgoundColor(color);
+        ConfigFileManager.Instance.SaveUICanvas(WorldUIManager.Instance.transform, WorldUIManager.Instance.BackgroundColor);
     }
 
     private void SetStatus(string message, Color color)

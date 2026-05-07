@@ -11,7 +11,7 @@ public class ConfigFileManager : MonoBehaviour
 
     private string configFolder = "Configs";
 
-    private string RootPath => Path.Combine(Application.dataPath, "..", "Input", configFolder);
+    private string RootPath => Path.Combine( Application.dataPath, "..", "Input", configFolder);
 
     private ISerializer serializer;
     private IDeserializer deserializer;
@@ -198,6 +198,16 @@ public class ConfigFileManager : MonoBehaviour
             data.scale.y = flipY ? -1 : 1;
             CurrentConfig.pointClouds.Add(data);
         }
+
+        if (saveImmediately) Save();
+    }
+
+    public void SaveUICanvas(Transform t, Color backgroundColor, bool saveImmediately = true)
+    {
+        if (CurrentConfig == null) { EventFileManager.Log("[ConfigFileManager] No active config."); return; }
+
+        CurrentConfig.UICanvas = new UITransformData(t);
+        CurrentConfig.UICanvas.backgroundColor = new SerializableColor(backgroundColor);
 
         if (saveImmediately) Save();
     }

@@ -4,6 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
+public class SerializableColor
+{
+    public float r, g, b, a;
+
+    public SerializableColor() { r = 0; g = 0; b = 0; a = 1; }
+    public SerializableColor(Color c) { r = c.r; g = c.g; b = c.b; a = c.a; }
+    public Color ToColor() => new Color(r, g, b, a);
+}
+
+[Serializable]
 public class SerializableVector3
 {
     public float x, y, z;
@@ -25,12 +35,14 @@ public class UITransformData
     public SerializableVector3 position;
     public SerializableVector3 rotation;
     public SerializableVector3 scale;
+    public SerializableColor backgroundColor;
 
     public UITransformData()
     {
         position = new SerializableVector3(0f, 0f, 0f);
         rotation = new SerializableVector3(0f, 0f, 0f);
         scale = new SerializableVector3(1f, 1f, 1f);
+        backgroundColor = new SerializableColor();
     }
 
     public UITransformData(Transform t)
@@ -38,6 +50,15 @@ public class UITransformData
         position = new SerializableVector3(t.position);
         rotation = new SerializableVector3(t.eulerAngles);
         scale = new SerializableVector3(t.localScale);
+        backgroundColor = new SerializableColor();
+    }
+
+    public UITransformData(Transform t, Color color)
+    {
+        position = new SerializableVector3(t.position);
+        rotation = new SerializableVector3(t.eulerAngles);
+        scale = new SerializableVector3(t.localScale);
+        backgroundColor = new SerializableColor(color);
     }
 
     public void ApplyTo(Transform t)
@@ -49,7 +70,7 @@ public class UITransformData
 
     public override string ToString()
     {
-        return $"UITransformData(position={position}, rotation={rotation}, scale={scale})";
+        return $"UITransformData(position={position}, rotation={rotation}, scale={scale}, backgroundColor={backgroundColor})";
     }
 }
 

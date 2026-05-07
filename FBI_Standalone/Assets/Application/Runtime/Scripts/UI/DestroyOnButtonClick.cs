@@ -14,10 +14,6 @@ public class DestroyOnButtonClick : MonoBehaviour
         {
             destroyButton.onClick.AddListener(DestroyThisObject);
         }
-        else
-        {
-            Debug.LogWarning("DestroyOnButtonClick: Aucun bouton assigné sur " + gameObject.name);
-        }
     }
 
     private void DestroyThisObject()
