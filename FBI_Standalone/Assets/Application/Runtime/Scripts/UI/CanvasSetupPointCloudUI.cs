@@ -48,7 +48,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     [Header("Static View")]
     [SerializeField] private GameObject avatarToggleGameObject;
-    private UISwitcher.UISwitcher avatarToggle; 
+    private UISwitcher.UISwitcher avatarToggle;
 
     [SerializeField] private TMP_InputField positionXInputField;
     [SerializeField] private TMP_InputField positionYInputField;
@@ -79,6 +79,9 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     [Header("Scene")]
     [SerializeField] private SceneReference scene;
+    [SerializeField] private TMP_Dropdown sceneDropdown;
+    [SerializeField] private Button loadSceneButton;
+    [SerializeField] private List<SceneReference> availableScenes = new List<SceneReference>();
 
 
 
@@ -87,6 +90,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     private string selectedConfig;
     private List<string> configs;
     private string newConfigName;
+    private int selectedSceneIndex = 0;
 
     private List<PointCloudUIEntry> pointCloudEntries = new List<PointCloudUIEntry>();
 
@@ -111,10 +115,11 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         StartCoroutine(LoadScene());
         RefreshList();
         ClearPointCloudEntry();
-        
+        InitSceneDropdown();
+
         ShortcutManager.Instance.DisableShortCut();
 
-        
+
     }
 
 
@@ -156,6 +161,11 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         ConfigFileManager.Instance.OnConfigSaved += OnConfigSaved;
         ConfigFileManager.Instance.OnFileListRefreshed += OnFileListRefreshed;
         SceneLoaderManager.Instance.OnSceneLoaded += OnSceneLoaded;
+
+        if (sceneDropdown != null)
+            sceneDropdown.onValueChanged.AddListener(OnSceneDropdownValueChanged);
+        if (loadSceneButton != null)
+            loadSceneButton.onClick.AddListener(OnLoadSceneButtonClick);
     }
 
 
@@ -175,7 +185,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         positionXInputField.onValueChanged.RemoveAllListeners();
         positionYInputField.onValueChanged.RemoveAllListeners();
         positionZInputField.onValueChanged.RemoveAllListeners();
-                                           
+
         rotationXInputField.onValueChanged.RemoveAllListeners();
         rotationYInputField.onValueChanged.RemoveAllListeners();
         rotationZInputField.onValueChanged.RemoveAllListeners();
@@ -191,6 +201,11 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         ConfigFileManager.Instance.OnFileListRefreshed -= OnFileListRefreshed;
         SceneLoaderManager.Instance.OnSceneLoaded -= OnSceneLoaded;
 
+        if (sceneDropdown != null)
+            sceneDropdown.onValueChanged.RemoveListener(OnSceneDropdownValueChanged);
+        if (loadSceneButton != null)
+            loadSceneButton.onClick.RemoveListener(OnLoadSceneButtonClick);
+
         foreach (var entry in pointCloudEntries)
         {
             entry.OnDisplayToggleRequested -= OnDisplayToggleRequested;
@@ -204,7 +219,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         {
             DestroyImmediate(pointCloudContainer.GetChild(0).gameObject);
         }
-      
+
     }
 
     [ContextMenu("SpawnPointCloudEntries")]
@@ -323,7 +338,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         foreach (var entry in pointCloudEntries)
         {
-            entry.ResetToDefaults();    
+            entry.ResetToDefaults();
             entry.SetInteractable(true);
         }
 
@@ -388,7 +403,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             WorldUIManager.Instance.BackgroundColor = color;
             canvaUIAlphaPreview.color = color;
 
-            SetWorldUIInputField(); 
+            SetWorldUIInputField();
         }
     }
 
@@ -497,7 +512,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void OnDisplayCanvaUIValueChanged(bool value)
     {
-        if(value)
+        if (value)
         {
             WorldUIManager.Instance.DisplayText("Canva UI");
         }
@@ -505,13 +520,13 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         {
             WorldUIManager.Instance.HideText();
         }
-        
+
     }
 
     private void OnCanvasUIColorPickerButtonPress()
     {
 
-        if(flexibleColorPicker == null)
+        if (flexibleColorPicker == null)
         {
             var gameObject = GameObject.Instantiate(flexibleColorPickerPrefab, this.transform);
 
@@ -538,6 +553,47 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         ConfigFileManager.Instance.SaveUICanvas(WorldUIManager.Instance.transform, WorldUIManager.Instance.BackgroundColor);
     }
 
+    private void InitSceneDropdown()
+    {
+        if (sceneDropdown == null) return;
+
+        sceneDropdown.ClearOptions();
+
+        var names = new List<string>();
+        for (int i = 0; i < availableScenes.Count; i++)
+        {
+            string displayName = availableScenes[i].Name;
+            names.Add(displayName);
+        }
+
+        sceneDropdown.AddOptions(names);
+        sceneDropdown.value = 0;
+        selectedSceneIndex = 0;
+    }
+
+    private void OnSceneDropdownValueChanged(int value)
+    {
+        selectedSceneIndex = value;
+    }
+
+    private void OnLoadSceneButtonClick()
+    {
+        if (availableScenes == null || availableScenes.Count == 0)
+        {
+            SetStatus("No scenes available.", Color.red);
+            return;
+        }
+
+        if (selectedSceneIndex < 0 || selectedSceneIndex >= availableScenes.Count)
+        {
+            SetStatus("Invalid scene selection.", Color.red);
+            return;
+        }
+
+        scene = availableScenes[selectedSceneIndex];
+        StartCoroutine(LoadScene());
+    }
+
     private void SetStatus(string message, Color color)
     {
         Debug.Log($"[CanvasSetupPointCloudUI] {message}");
@@ -546,7 +602,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             statusText.text = statusLocalizedText.GetLocalizedString(message);
         }
 
-        if(dotImage)
+        if (dotImage)
         {
             dotImage.color = color;
         }
