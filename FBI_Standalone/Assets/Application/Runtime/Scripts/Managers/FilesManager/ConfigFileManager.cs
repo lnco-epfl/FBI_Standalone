@@ -89,6 +89,33 @@ public class ConfigFileManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Loads a config directly from a full file path (used with StandaloneFileBrowser).
+    /// </summary>
+    public ConfigFile LoadFromPath(string fullPath, bool loadConfigIntoPointCloud = true)
+    {
+        if (!File.Exists(fullPath))
+        {
+            EventFileManager.Log($"[ConfigFileManager] File not found: {fullPath}");
+            return null;
+        }
+
+        try
+        {
+            string yaml = File.ReadAllText(fullPath);
+            CurrentConfig = deserializer.Deserialize<ConfigFile>(yaml);
+            CurrentConfig.configName = Path.GetFileNameWithoutExtension(fullPath);
+            EventFileManager.Log($"[ConfigFileManager] Loaded from path: {fullPath}");
+            OnConfigLoaded?.Invoke(CurrentConfig, loadConfigIntoPointCloud);
+            return CurrentConfig;
+        }
+        catch (Exception e)
+        {
+            EventFileManager.Log($"[ConfigFileManager] Load error: {e.Message}\n{e.StackTrace}\n{e.InnerException?.Message}");
+            return null;
+        }
+    }
+
     public bool Save(ConfigFile config = null)
     {
         config ??= CurrentConfig;
@@ -107,6 +134,87 @@ public class ConfigFileManager : MonoBehaviour
         {
             EventFileManager.Log($"[ConfigFileManager] Save error: {e.Message}");
             return false;
+        }
+    }
+
+    /// <summary>
+    /// Saves the current config to a specific full path (used with StandaloneFileBrowser Save As dialog).
+    /// Updates the current config name to the new file name.
+    /// </summary>
+    public bool SaveAs(string fullPath, ConfigFile config = null)
+    {
+        config ??= CurrentConfig;
+        if (config == null) { EventFileManager.Log("[ConfigFileManager] No config to save."); return false; }
+
+        try
+        {
+            string newName = Path.GetFileNameWithoutExtension(fullPath);
+            config.configName = newName;
+            config.lastModified = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+            string yaml = serializer.Serialize(config);
+            File.WriteAllText(fullPath, yaml);
+            CurrentConfig = config;
+            OnConfigSaved?.Invoke(config);
+            EventFileManager.Log($"[ConfigFileManager] Saved as: {fullPath}");
+            return true;
+        }
+        catch (Exception e)
+        {
+            EventFileManager.Log($"[ConfigFileManager] SaveAs error: {e.Message}");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Copies the current config serialized as YAML to the system clipboard.
+    /// </summary>
+    public bool CopyToClipboard(ConfigFile config = null)
+    {
+        config ??= CurrentConfig;
+        if (config == null) { EventFileManager.Log("[ConfigFileManager] No config to copy."); return false; }
+
+        try
+        {
+            string yaml = serializer.Serialize(config);
+            GUIUtility.systemCopyBuffer = yaml;
+            EventFileManager.Log("[ConfigFileManager] Config copied to clipboard.");
+            return true;
+        }
+        catch (Exception e)
+        {
+            EventFileManager.Log($"[ConfigFileManager] CopyToClipboard error: {e.Message}");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Pastes a config from the system clipboard (YAML format).
+    /// Does NOT save to disk automatically — call Save() afterwards if needed.
+    /// Returns null if the clipboard is empty or contains invalid data.
+    /// </summary>
+    public ConfigFile PasteFromClipboard(bool loadConfigIntoPointCloud = true)
+    {
+        string yaml = GUIUtility.systemCopyBuffer;
+
+        if (string.IsNullOrWhiteSpace(yaml))
+        {
+            EventFileManager.Log("[ConfigFileManager] Clipboard is empty.");
+            return null;
+        }
+
+        try
+        {
+            var config = deserializer.Deserialize<ConfigFile>(yaml);
+            CurrentConfig = config;
+            OnConfigLoaded?.Invoke(CurrentConfig, loadConfigIntoPointCloud);
+            EventFileManager.Log("[ConfigFileManager] Config pasted from clipboard.");
+            return CurrentConfig;
+        }
+        catch (Exception e)
+        {
+            EventFileManager.Log($"[ConfigFileManager] PasteFromClipboard error (invalid content): {e.Message}");
+            return null;
         }
     }
 
@@ -231,6 +339,12 @@ public class ConfigFileManager : MonoBehaviour
 
         if (saveImmediately) Save();
     }
+
+    /// <summary>
+    /// Returns the root folder path where configs are stored.
+    /// Used to open StandaloneFileBrowser dialogs in the right location.
+    /// </summary>
+    public string GetRootPath() => RootPath;
 
     private string GetPath(string configName) =>
         Path.Combine(RootPath, $"{configName}.yaml");

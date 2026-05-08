@@ -1,6 +1,7 @@
 using com.rfilkov.kinect;
 using Eflatun.SceneReference;
 using Intel.RealSense;
+using SFB;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,25 +20,23 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     [SerializeField] private Button closeButton;
     [SerializeField] private TMP_Text title;
 
-    [Header("New Config")]
-    [SerializeField] private TMP_InputField configNameInputField;
-    [SerializeField] private Button createConfigButton;
-    [SerializeField] private CanvasGroup newConfigCanvasGroup;
-
     [Header("Status")]
     [SerializeField] private TMP_Text statusText;
-    [SerializeField] private Image dotImage;
+    [SerializeField] private TMP_Text currentFileNameText;
     [SerializeField] private LocalizedString statusLocalizedText;
 
-    [Header("Load Config")]
-    [SerializeField] private TMP_Dropdown loadConfigDropdown;
-    [SerializeField] private Button loadConfigButton;
-    [SerializeField] private CanvasGroup loadConfigCanvasGroup;
+    [Header("Toolbar - File")]
+    [SerializeField] private Button newConfigButton;
+    [SerializeField] private Button openConfigButton;
+    [SerializeField] private Button saveButton;
+    [SerializeField] private Button saveAsButton;
+
+    [Header("Toolbar - Clipboard (Hamburger)")]
+    [SerializeField] private HamburgerMenu hamburgerMenu;
 
     [Header("Point cloud")]
     [SerializeField] private GameObject pointCloudEntryPrefab;
     [SerializeField] private Transform pointCloudContainer;
-    [SerializeField] private Button saveButton;
 
     [Header("Point Cloud Switch")]
     [Tooltip("Delay in seconds between disabling the previous point cloud and enabling the next one, to allow textures to initialize.")]
@@ -60,7 +59,6 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     [SerializeField] private GameObject staticCameraPrefab;
     private Transform staticCamera;
 
-
     [Header("Canva UI")]
     [SerializeField] private UISwitcher.UISwitcher displayCanvaUIToggle;
 
@@ -80,16 +78,12 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     [Header("Scene")]
     [SerializeField] private SceneReference scene;
     [SerializeField] private TMP_Dropdown sceneDropdown;
-    [SerializeField] private Button loadSceneButton;
     [SerializeField] private List<SceneReference> availableScenes = new List<SceneReference>();
-
 
 
     public event Action<CanvasSetupPointCloudUI> OnCanvasSetupPointCloudUIDestroy;
 
     private string selectedConfig;
-    private List<string> configs;
-    private string newConfigName;
     private int selectedSceneIndex = 0;
 
     private List<PointCloudUIEntry> pointCloudEntries = new List<PointCloudUIEntry>();
@@ -109,30 +103,29 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         avatarToggle = avatarToggleGameObject.GetComponent<UISwitcher.UISwitcher>();
     }
 
-
     private void Start()
     {
         StartCoroutine(LoadScene());
-        RefreshList();
         ClearPointCloudEntry();
         InitSceneDropdown();
+        UpdateFileNameDisplay();
 
         ShortcutManager.Instance.DisableShortCut();
 
-
+        SetStatus("No config loaded.", Color.grey);
     }
-
-
 
     private void OnEnable()
     {
         closeButton.onClick.AddListener(OnButtonCloseClick);
-        createConfigButton.onClick.AddListener(OnCreateConfigButtonClick);
+
+        newConfigButton.onClick.AddListener(OnNewConfigButtonClick);
+        openConfigButton.onClick.AddListener(OnOpenConfigButtonClick);
         saveButton.onClick.AddListener(OnSaveButtonClick);
-        loadConfigDropdown.onValueChanged.AddListener(OnLoadConfigDropdownValueChanged);
-        loadConfigButton.onClick.AddListener(OnLoadConfigButtonClick);
-        configNameInputField.onSubmit.AddListener(OnConfigNameInputFieldSubmit);
-        configNameInputField.onDeselect.AddListener(OnConfigNameInputFieldSubmit);
+        saveAsButton.onClick.AddListener(OnSaveAsButtonClick);
+
+        hamburgerMenu.OnCopyConfigClicked += OnCopyConfigButtonClick;
+        hamburgerMenu.OnPasteConfigClicked += OnPasteConfigButtonClick;
 
         resetXROriginButton.onClick.AddListener(OnResetXROriginButtonPress);
 
@@ -159,26 +152,23 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         ConfigFileManager.Instance.OnConfigLoaded += OnConfigLoaded;
         ConfigFileManager.Instance.OnConfigSaved += OnConfigSaved;
-        ConfigFileManager.Instance.OnFileListRefreshed += OnFileListRefreshed;
         SceneLoaderManager.Instance.OnSceneLoaded += OnSceneLoaded;
 
         if (sceneDropdown != null)
             sceneDropdown.onValueChanged.AddListener(OnSceneDropdownValueChanged);
-        if (loadSceneButton != null)
-            loadSceneButton.onClick.AddListener(OnLoadSceneButtonClick);
     }
-
-
 
     private void OnDisable()
     {
         closeButton.onClick.RemoveListener(OnButtonCloseClick);
-        createConfigButton.onClick.RemoveListener(OnCreateConfigButtonClick);
+
+        newConfigButton.onClick.RemoveListener(OnNewConfigButtonClick);
+        openConfigButton.onClick.RemoveListener(OnOpenConfigButtonClick);
         saveButton.onClick.RemoveListener(OnSaveButtonClick);
-        loadConfigDropdown.onValueChanged.RemoveListener(OnLoadConfigDropdownValueChanged);
-        loadConfigButton.onClick.RemoveListener(OnLoadConfigButtonClick);
-        configNameInputField.onSubmit.RemoveListener(OnConfigNameInputFieldSubmit);
-        configNameInputField.onDeselect.RemoveListener(OnConfigNameInputFieldSubmit);
+        saveAsButton.onClick.RemoveListener(OnSaveAsButtonClick);
+
+        hamburgerMenu.OnCopyConfigClicked -= OnCopyConfigButtonClick;
+        hamburgerMenu.OnPasteConfigClicked -= OnPasteConfigButtonClick;
 
         resetXROriginButton.onClick.RemoveListener(OnResetXROriginButtonPress);
 
@@ -192,19 +182,16 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         avatarToggle.onValueChanged.RemoveListener(OnAvatarToggleValueChanged);
 
-        displayCanvaUIToggle.onValueChanged.AddListener(OnDisplayCanvaUIValueChanged);
+        displayCanvaUIToggle.onValueChanged.RemoveListener(OnDisplayCanvaUIValueChanged);
 
-        canvaUIColorPickerButton.onClick.AddListener(OnCanvasUIColorPickerButtonPress);
+        canvaUIColorPickerButton.onClick.RemoveListener(OnCanvasUIColorPickerButtonPress);
 
         ConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
         ConfigFileManager.Instance.OnConfigSaved -= OnConfigSaved;
-        ConfigFileManager.Instance.OnFileListRefreshed -= OnFileListRefreshed;
         SceneLoaderManager.Instance.OnSceneLoaded -= OnSceneLoaded;
 
         if (sceneDropdown != null)
             sceneDropdown.onValueChanged.RemoveListener(OnSceneDropdownValueChanged);
-        if (loadSceneButton != null)
-            loadSceneButton.onClick.RemoveListener(OnLoadSceneButtonClick);
 
         foreach (var entry in pointCloudEntries)
         {
@@ -212,14 +199,164 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         }
     }
 
+    // ─── File actions ────────────────────────────────────────────────────────
+
+    private void OnNewConfigButtonClick()
+    {
+        var paths = StandaloneFileBrowser.SaveFilePanel("New config", ConfigFileManager.Instance.GetRootPath(), "new_config", "yaml");
+
+        if (string.IsNullOrEmpty(paths))
+        {
+            SetStatus("New config cancelled.", Color.grey);
+            return;
+        }
+
+        string configName = System.IO.Path.GetFileNameWithoutExtension(paths);
+        ConfigFileManager.Instance.CreateNew(configName);
+
+        foreach (var entry in pointCloudEntries)
+        {
+            entry.ResetToDefaults();
+            entry.SetInteractable(true);
+        }
+
+        foreach (var entry in pointCloudEntries)
+            entry.ForceApplyAndSave();
+
+        bool saved = ConfigFileManager.Instance.SaveAs(paths);
+
+        if (saved)
+        {
+            selectedConfig = configName;
+            UpdateFileNameDisplay();
+            SetStatus($"Created {configName}", Color.green);
+        }
+        else
+        {
+            SetStatus("Failed to save file.", Color.red);
+        }
+    }
+
+    private void OnOpenConfigButtonClick()
+    {
+        var paths = StandaloneFileBrowser.OpenFilePanel("Open config", ConfigFileManager.Instance.GetRootPath(), "yaml", false);
+
+        if (paths == null || paths.Length == 0 || string.IsNullOrEmpty(paths[0]))
+        {
+            SetStatus("Open cancelled.", Color.grey);
+            return;
+        }
+
+        string fullPath = paths[0];
+        var config = ConfigFileManager.Instance.LoadFromPath(fullPath);
+
+        if (config != null)
+        {
+            selectedConfig = config.configName;
+            UpdateFileNameDisplay();
+
+            foreach (var entry in pointCloudEntries)
+                entry.SetInteractable(true);
+
+            SetStatus($"Opened {selectedConfig}", Color.green);
+        }
+        else
+        {
+            SetStatus("Failed to read file.", Color.red);
+        }
+    }
+
+    private void OnSaveButtonClick()
+    {
+        if (ConfigFileManager.Instance.CurrentConfig == null)
+        {
+            SetStatus("No config loaded.", Color.grey);
+            return;
+        }
+
+        bool saved = ConfigFileManager.Instance.Save();
+        SetStatus(saved ? $"Saved {selectedConfig}" : "Failed to save file.", saved ? Color.green : Color.red);
+    }
+
+    private void OnSaveAsButtonClick()
+    {
+        if (ConfigFileManager.Instance.CurrentConfig == null)
+        {
+            SetStatus("No config loaded.", Color.grey);
+            return;
+        }
+
+        string defaultName = selectedConfig ?? "config";
+        var path = StandaloneFileBrowser.SaveFilePanel("Save config as", ConfigFileManager.Instance.GetRootPath(), defaultName, "yaml");
+
+        if (string.IsNullOrEmpty(path))
+        {
+            SetStatus("Save cancelled.", Color.grey);
+            return;
+        }
+
+        bool saved = ConfigFileManager.Instance.SaveAs(path);
+
+        if (saved)
+        {
+            selectedConfig = System.IO.Path.GetFileNameWithoutExtension(path);
+            UpdateFileNameDisplay();
+            SetStatus($"Saved as {selectedConfig}", Color.green);
+        }
+        else
+        {
+            SetStatus("Failed to save file.", Color.red);
+        }
+    }
+
+    // ─── Clipboard actions ───────────────────────────────────────────────────
+
+    private void OnCopyConfigButtonClick()
+    {
+        bool copied = ConfigFileManager.Instance.CopyToClipboard();
+        SetStatus(copied ? "Config copied to clipboard." : "No config loaded.", copied ? Color.green : Color.grey);
+    }
+
+    private void OnPasteConfigButtonClick()
+    {
+        if (string.IsNullOrWhiteSpace(GUIUtility.systemCopyBuffer))
+        {
+            SetStatus("Clipboard is empty.", Color.red);
+            return;
+        }
+
+        var config = ConfigFileManager.Instance.PasteFromClipboard();
+
+        if (config != null)
+        {
+            selectedConfig = config.configName;
+            UpdateFileNameDisplay();
+
+            foreach (var entry in pointCloudEntries)
+                entry.SetInteractable(true);
+
+            SetStatus("Config pasted from clipboard.", Color.green);
+        }
+        else
+        {
+            SetStatus("Clipboard content is invalid.", Color.red);
+        }
+    }
+
+    // ─── Helpers ─────────────────────────────────────────────────────────────
+
+    private void UpdateFileNameDisplay()
+    {
+        if (currentFileNameText == null) return;
+        currentFileNameText.text = string.IsNullOrEmpty(selectedConfig) ? "" : $"{selectedConfig}.yaml";
+    }
+
     private void ClearPointCloudEntry()
     {
-
         while (pointCloudContainer.childCount > 0)
         {
             DestroyImmediate(pointCloudContainer.GetChild(0).gameObject);
         }
-
     }
 
     [ContextMenu("SpawnPointCloudEntries")]
@@ -254,14 +391,12 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             return;
         }
 
-        // Turning off the currently active entry.
         if (!desiredState && requestingEntry == activeEntry)
         {
             StartCoroutine(SwitchPointCloudCoroutine(activeEntry, null));
             return;
         }
 
-        // Turning on a new entry (exclusive: deactivate the current one first).
         if (desiredState && requestingEntry != activeEntry)
         {
             StartCoroutine(SwitchPointCloudCoroutine(activeEntry, requestingEntry));
@@ -276,7 +411,6 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     {
         isSwitching = true;
 
-        // Disable the previously active point cloud.
         if (previous != null)
         {
             previous.ApplyDisplayState(false);
@@ -286,9 +420,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         if (next != null)
         {
-            // Wait for textures / VFX to properly reset before activating the new camera.
             yield return new WaitForSeconds(switchDelay);
-
             next.ApplyDisplayState(true);
             activeEntry = next;
         }
@@ -301,78 +433,6 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         ShortcutManager.Instance.EnableShortCut();
         SceneLoaderManager.Instance.LoadDefaultScene();
         OnCanvasSetupPointCloudUIDestroy.Invoke(this);
-    }
-
-    private void OnSaveButtonClick()
-    {
-        ConfigFileManager.Instance.Save();
-        SetStatus($"Saved {selectedConfig}", Color.green);
-    }
-
-    private void OnLoadConfigButtonClick()
-    {
-        ConfigFileManager.Instance.Load(selectedConfig);
-        SetStatus($"Loaded {selectedConfig}", Color.green);
-
-        foreach (var entry in pointCloudEntries)
-            entry.SetInteractable(true);
-    }
-
-    private void OnLoadConfigDropdownValueChanged(int value)
-    {
-        selectedConfig = configs[value];
-    }
-
-    private void OnCreateConfigButtonClick()
-    {
-        if (string.IsNullOrEmpty(newConfigName))
-        {
-            SetStatus("Please enter a config name.", Color.red);
-            return;
-        }
-
-        ConfigFileManager.Instance.CreateNew(newConfigName);
-
-        selectedConfig = newConfigName;
-
-
-        foreach (var entry in pointCloudEntries)
-        {
-            entry.ResetToDefaults();
-            entry.SetInteractable(true);
-        }
-
-        foreach (var entry in pointCloudEntries)
-            entry.ForceApplyAndSave();
-
-        ConfigFileManager.Instance.Save();
-
-        RefreshList();
-        SetStatus($"Created {newConfigName}", Color.green);
-    }
-
-    private void OnConfigNameInputFieldSubmit(string value)
-    {
-        newConfigName = value.Trim();
-    }
-
-    private void RefreshList()
-    {
-        configs = ConfigFileManager.Instance.GetAvailableConfigs();
-
-        if (configs.Count > 0)
-        {
-            loadConfigDropdown.ClearOptions();
-            loadConfigDropdown.AddOptions(configs);
-
-            loadConfigDropdown.value = configs.IndexOf(selectedConfig);
-
-            loadConfigCanvasGroup.interactable = true;
-        }
-        else
-        {
-            loadConfigCanvasGroup.interactable = false;
-        }
     }
 
     private void OnConfigSaved(ConfigFile file)
@@ -392,8 +452,6 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             pointCloudEntries[i].SetMinDepth(data.depthMin);
             pointCloudEntries[i].SetMaxDepth(data.depthMax);
             pointCloudEntries[i].SetFlip(data.scale.x == -1, data.scale.y == -1);
-
-            pointCloudEntries[i].SetClamp(data.clampXMin, data.clampXMax, data.clampYMin, data.clampYMax);
         }
 
         if (file.UICanvas != null)
@@ -407,10 +465,6 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
             SetWorldUIInputField();
         }
-    }
-
-    private void OnFileListRefreshed(List<string> list)
-    {
     }
 
     private void OnResetXROriginButtonPress()
@@ -452,7 +506,6 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         avatarToggle.SetWithoutNotify(false);
         displayCanvaUIToggle.SetWithoutNotify(false);
-
     }
 
     private void SetStaticCameraInputField()
@@ -515,19 +568,13 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     private void OnDisplayCanvaUIValueChanged(bool value)
     {
         if (value)
-        {
             WorldUIManager.Instance.DisplayText("Canva UI");
-        }
         else
-        {
             WorldUIManager.Instance.HideText();
-        }
-
     }
 
     private void OnCanvasUIColorPickerButtonPress()
     {
-
         if (flexibleColorPicker == null)
         {
             var gameObject = GameObject.Instantiate(flexibleColorPickerPrefab, this.transform);
@@ -540,7 +587,6 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
             flexibleColorPicker.onColorChange.AddListener(OnCanvasUIColorChanged);
         }
-
     }
 
     private void HandleBeforeDestroy()
@@ -555,6 +601,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         ConfigFileManager.Instance.SaveUICanvas(WorldUIManager.Instance.transform, WorldUIManager.Instance.BackgroundColor);
     }
 
+    // ─── Scene ───────────────────────────────────────────────────────────────
+
     private void InitSceneDropdown()
     {
         if (sceneDropdown == null) return;
@@ -563,23 +611,20 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         var names = new List<string>();
         for (int i = 0; i < availableScenes.Count; i++)
-        {
-            string displayName = availableScenes[i].Name;
-            names.Add(displayName);
-        }
+            names.Add(availableScenes[i].Name);
 
         sceneDropdown.AddOptions(names);
         sceneDropdown.value = 0;
         selectedSceneIndex = 0;
     }
 
+    /// <summary>
+    /// Auto-loads the scene as soon as the dropdown value changes.
+    /// </summary>
     private void OnSceneDropdownValueChanged(int value)
     {
         selectedSceneIndex = value;
-    }
 
-    private void OnLoadSceneButtonClick()
-    {
         if (availableScenes == null || availableScenes.Count == 0)
         {
             SetStatus("No scenes available.", Color.red);
@@ -596,17 +641,15 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         StartCoroutine(LoadScene());
     }
 
+    // ─── Status ──────────────────────────────────────────────────────────────
+
     private void SetStatus(string message, Color color)
     {
         Debug.Log($"[CanvasSetupPointCloudUI] {message}");
         if (statusText)
         {
-            statusText.text = statusLocalizedText.GetLocalizedString(message);
+            statusText.text = statusLocalizedText.GetLocalizedString("• " + message);
         }
 
-        if (dotImage)
-        {
-            dotImage.color = color;
-        }
     }
 }
