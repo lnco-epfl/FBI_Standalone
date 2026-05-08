@@ -28,6 +28,13 @@ public class PointCloudUIEntry : MonoBehaviour
     [SerializeField] private Slider cameraDepthMinSlider;
     [SerializeField] private Toggle flipXToggle;
     [SerializeField] private Toggle flipYToggle;
+
+    [Header("Clamp Settings")]
+    [SerializeField] private Slider clampXMinSlider;
+    [SerializeField] private Slider clampXMaxSlider;
+    [SerializeField] private Slider clampYMinSlider;
+    [SerializeField] private Slider clampYMaxSlider;
+
     private SensorData sensorData;
     private Kinect4AzureInterface kinectInerface;
 
@@ -83,7 +90,21 @@ public class PointCloudUIEntry : MonoBehaviour
             cameraDepthMinSlider.SetValueWithoutNotify(kinectInerface.minDepthDistance);
         }
 
+        // Init clamp sliders
+        InitClampSlider(clampXMinSlider, 0f);
+        InitClampSlider(clampXMaxSlider, 1f);
+        InitClampSlider(clampYMinSlider, 0f);
+        InitClampSlider(clampYMaxSlider, 1f);
+
         CaptureDefaults();
+    }
+
+    private void InitClampSlider(Slider slider, float defaultValue)
+    {
+        if (slider == null) return;
+        slider.minValue = 0f;
+        slider.maxValue = 1f;
+        slider.SetValueWithoutNotify(defaultValue);
     }
 
     private void OnEnable()
@@ -103,6 +124,11 @@ public class PointCloudUIEntry : MonoBehaviour
         flipYToggle.onValueChanged.AddListener(OnFlipYChanged);
 
         displayPointCloudToggle.onValueChanged.AddListener(OnDisplayToggleChanged);
+
+        if (clampXMinSlider != null) clampXMinSlider.onValueChanged.AddListener(OnClampChanged);
+        if (clampXMaxSlider != null) clampXMaxSlider.onValueChanged.AddListener(OnClampChanged);
+        if (clampYMinSlider != null) clampYMinSlider.onValueChanged.AddListener(OnClampChanged);
+        if (clampYMaxSlider != null) clampYMaxSlider.onValueChanged.AddListener(OnClampChanged);
     }
 
     private void OnDisable()
@@ -122,6 +148,11 @@ public class PointCloudUIEntry : MonoBehaviour
         flipYToggle.onValueChanged.RemoveListener(OnFlipYChanged);
 
         displayPointCloudToggle.onValueChanged.RemoveListener(OnDisplayToggleChanged);
+
+        if (clampXMinSlider != null) clampXMinSlider.onValueChanged.RemoveListener(OnClampChanged);
+        if (clampXMaxSlider != null) clampXMaxSlider.onValueChanged.RemoveListener(OnClampChanged);
+        if (clampYMinSlider != null) clampYMinSlider.onValueChanged.RemoveListener(OnClampChanged);
+        if (clampYMaxSlider != null) clampYMaxSlider.onValueChanged.RemoveListener(OnClampChanged);
     }
 
     public void ForceApplyAndSave()
@@ -136,6 +167,13 @@ public class PointCloudUIEntry : MonoBehaviour
 
         var t = PointCloudManager.Instance.GetVisualEffectTransform(CameraId);
         ConfigFileManager.Instance.SaveFlip(CameraId, t.localScale.x < 0, t.localScale.y < 0, saveImmediately: false);
+
+        ConfigFileManager.Instance.SaveClamp(CameraId,
+            clampXMinSlider != null ? clampXMinSlider.value : 0f,
+            clampXMaxSlider != null ? clampXMaxSlider.value : 1f,
+            clampYMinSlider != null ? clampYMinSlider.value : 0f,
+            clampYMaxSlider != null ? clampYMaxSlider.value : 1f,
+            saveImmediately: false);
     }
 
     private void OnPositionOrRotationChanged()
@@ -163,14 +201,11 @@ public class PointCloudUIEntry : MonoBehaviour
 
     private void OnDisplayToggleChanged(bool isOn)
     {
-        //displayPointCloudToggle.SetWithoutNotify(!isOn);
-
         OnDisplayToggleRequested?.Invoke(this, isOn);
     }
 
     public void ApplyDisplayState(bool isOn)
     {
-
         displayPointCloudToggle.SetWithoutNotify(isOn);
 
         var container = PointCloudManager.Instance.GetPointCloudContainer(CameraId);
@@ -200,7 +235,7 @@ public class PointCloudUIEntry : MonoBehaviour
 
     private void OnDepthMaxChanged(float value)
     {
-        if(kinectInerface != null)
+        if (kinectInerface != null)
         {
             kinectInerface.maxDepthDistance = value;
         }
@@ -269,7 +304,39 @@ public class PointCloudUIEntry : MonoBehaviour
         ApplyFlip(flipX, flipY);
     }
 
-    private (Vector3 position, Vector3 rotation, float depthMin, float depthMax, bool flipX, bool flipY) initialDefaults;
+    private void OnClampChanged(float _)
+    {
+        float xMin = clampXMinSlider != null ? clampXMinSlider.value : 0f;
+        float xMax = clampXMaxSlider != null ? clampXMaxSlider.value : 1f;
+        float yMin = clampYMinSlider != null ? clampYMinSlider.value : 0f;
+        float yMax = clampYMaxSlider != null ? clampYMaxSlider.value : 1f;
+
+        ApplyClampToVFX(xMin, xMax, yMin, yMax);
+        ConfigFileManager.Instance.SaveClamp(CameraId, xMin, xMax, yMin, yMax);
+    }
+
+    private void ApplyClampToVFX(float xMin, float xMax, float yMin, float yMax)
+    {
+        var vfx = PointCloudManager.Instance.GetVisualEffect(CameraId);
+        if (vfx == null) return;
+
+        vfx.SetFloat("Clamp X Min", xMin);
+        vfx.SetFloat("Clamp X Max", xMax);
+        vfx.SetFloat("Clamp Y Min", yMin);
+        vfx.SetFloat("Clamp Y Max", yMax);
+    }
+
+    public void SetClamp(float xMin, float xMax, float yMin, float yMax)
+    {
+        if (clampXMinSlider != null) clampXMinSlider.SetValueWithoutNotify(xMin);
+        if (clampXMaxSlider != null) clampXMaxSlider.SetValueWithoutNotify(xMax);
+        if (clampYMinSlider != null) clampYMinSlider.SetValueWithoutNotify(yMin);
+        if (clampYMaxSlider != null) clampYMaxSlider.SetValueWithoutNotify(yMax);
+
+        ApplyClampToVFX(xMin, xMax, yMin, yMax);
+    }
+
+    private (Vector3 position, Vector3 rotation, float depthMin, float depthMax, bool flipX, bool flipY, float clampXMin, float clampXMax, float clampYMin, float clampYMax) initialDefaults;
 
     public void CaptureDefaults()
     {
@@ -283,7 +350,11 @@ public class PointCloudUIEntry : MonoBehaviour
             depthMin,
             depthMax,
             t.localScale.x < 0,
-            t.localScale.y < 0
+            t.localScale.y < 0,
+            clampXMinSlider != null ? clampXMinSlider.value : 0f,
+            clampXMaxSlider != null ? clampXMaxSlider.value : 1f,
+            clampYMinSlider != null ? clampYMinSlider.value : 0f,
+            clampYMaxSlider != null ? clampYMaxSlider.value : 1f
         );
     }
 
@@ -294,5 +365,6 @@ public class PointCloudUIEntry : MonoBehaviour
         SetMinDepth(initialDefaults.depthMin);
         SetMaxDepth(initialDefaults.depthMax);
         SetFlip(initialDefaults.flipX, initialDefaults.flipY);
+        SetClamp(initialDefaults.clampXMin, initialDefaults.clampXMax, initialDefaults.clampYMin, initialDefaults.clampYMax);
     }
 }

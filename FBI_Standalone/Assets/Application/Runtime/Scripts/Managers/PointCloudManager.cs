@@ -21,7 +21,6 @@ public class PointCloudContainer
         this.replayBuffer = replayBuffer;
         this.realtimeDelaySwitcher = realtimeDelaySwitcher;
     }
-
 }
 
 
@@ -30,7 +29,6 @@ public class PointCloudManager : MonoBehaviour
     private Dictionary<int, PointCloudContainer> pointCloudContainers = new Dictionary<int, PointCloudContainer>();
 
     [SerializeField] private List<Transform> pointClouds;
-
 
     private static PointCloudManager instance;
     private bool loadConfigTransform;
@@ -41,7 +39,6 @@ public class PointCloudManager : MonoBehaviour
     {
         if (instance != null && instance != this) { Destroy(this.gameObject); } else { instance = this; }
 
-
         foreach (var pointCloud in pointClouds)
         {
             var pointCloudVFX = pointCloud.GetComponentInChildren<VisualEffect>();
@@ -51,9 +48,6 @@ public class PointCloudManager : MonoBehaviour
             pointCloudReplayBuffer.enabled = true;
             pointCloudReplayBuffer.enableReplay = false;
 
-            //var pointCloudRealtime = pointCloudVFX.GetComponent<PointCloudRealtime>();
-            //pointCloudRealtime.enabled = true;
-
             var realtimeDelaySwitcher = pointCloudVFX.GetComponent<RealtimeDelaySwitcher>();
             realtimeDelaySwitcher.enabled = true;
 
@@ -62,12 +56,8 @@ public class PointCloudManager : MonoBehaviour
             pointCloudContainers[cameraID] = new PointCloudContainer(pointCloudVFX, pointCloudReplayBuffer, realtimeDelaySwitcher);
         }
 
-
         StartCoroutine(WaitForKinectManagerInitialization(InitializePointCloud));
-
     }
-
-
 
     private void OnEnable()
     {
@@ -79,8 +69,6 @@ public class PointCloudManager : MonoBehaviour
         ConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
     }
 
-
-
     private void OnConfigLoaded(ConfigFile obj, bool loadConfigIntoPointCloud)
     {
         loadConfigTransform = loadConfigIntoPointCloud;
@@ -89,23 +77,17 @@ public class PointCloudManager : MonoBehaviour
 
     private IEnumerator WaitForKinectManagerInitialization(Action callback)
     {
-
         yield return new WaitUntil(() => KinectManager.Instance != null && KinectManager.Instance.IsInitialized());
-
         callback.Invoke();
     }
 
     private void InitializePointCloud()
     {
-
         foreach (var kvp in pointCloudContainers)
         {
             var pointCloudContainer = kvp.Value;
-
             pointCloudContainer.replayBuffer.Initialize();
-
         }
-
     }
 
     private void LoadConfigSettings()
@@ -122,20 +104,24 @@ public class PointCloudManager : MonoBehaviour
                 var scale = currentConfig.pointClouds[i].scale.ToVector3();
                 var depthMin = currentConfig.pointClouds[i].depthMin;
                 var depthMax = currentConfig.pointClouds[i].depthMax;
+                var clampXMin = currentConfig.pointClouds[i].clampXMin;
+                var clampXMax = currentConfig.pointClouds[i].clampXMax;
+                var clampYMin = currentConfig.pointClouds[i].clampYMin;
+                var clampYMax = currentConfig.pointClouds[i].clampYMax;
 
-                if(loadConfigTransform)
+                if (loadConfigTransform)
                 {
                     SetVisualEffectPositionRotationScale(position, rotation, scale, id);
                 }
-          
+
                 SetCameraDepthValues(depthMin, depthMax, id);
+                SetClampValues(clampXMin, clampXMax, clampYMin, clampYMax, id);
             }
         }
     }
 
     public PointCloudContainer GetPointCloudContainer(int cameraID)
     {
-
         if (pointCloudContainers.ContainsKey(cameraID))
         {
             return pointCloudContainers[cameraID];
@@ -177,11 +163,22 @@ public class PointCloudManager : MonoBehaviour
     {
         var kinectInerface = GetKinectInterface(id);
 
-        if(kinectInerface)
+        if (kinectInerface)
         {
             kinectInerface.maxDepthDistance = depthMax;
             kinectInerface.minDepthDistance = depthMin;
         }
+    }
+
+    private void SetClampValues(float xMin, float xMax, float yMin, float yMax, int id)
+    {
+        var vfx = GetVisualEffect(id);
+        if (vfx == null) return;
+
+        vfx.SetFloat("Clamp X Min", xMin);
+        vfx.SetFloat("Clamp X Max", xMax);
+        vfx.SetFloat("Clamp Y Min", yMin);
+        vfx.SetFloat("Clamp Y Max", yMax);
     }
 
     public Kinect4AzureInterface GetKinectInterface(int cameraID)
@@ -201,11 +198,13 @@ public class PointCloudManager : MonoBehaviour
         var container = GetPointCloudContainer(cameraID);
         return container != null ? container.vfx : null;
     }
+
     public PointCloudReplayBuffer GetReplayBuffer(int cameraID)
     {
         var container = GetPointCloudContainer(cameraID);
         return container != null ? container.replayBuffer : null;
     }
+
     public RealtimeDelaySwitcher GetRealtimeDelaySwitcher(int cameraID)
     {
         var container = GetPointCloudContainer(cameraID);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -11,7 +11,7 @@ public class ConfigFileManager : MonoBehaviour
 
     private string configFolder = "Configs";
 
-    private string RootPath => Path.Combine( Application.dataPath, "..", "Input", configFolder);
+    private string RootPath => Path.Combine(Application.dataPath, "..", "Input", configFolder);
 
     private ISerializer serializer;
     private IDeserializer deserializer;
@@ -25,7 +25,6 @@ public class ConfigFileManager : MonoBehaviour
 
     private void Awake()
     {
-
         System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
         System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
 
@@ -34,7 +33,6 @@ public class ConfigFileManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         serializer = new SerializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).Build();
-
         deserializer = new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).IgnoreUnmatchedProperties().Build();
 
         currentConfig = null;
@@ -43,7 +41,6 @@ public class ConfigFileManager : MonoBehaviour
         {
             Directory.CreateDirectory(RootPath);
         }
-
     }
 
     public List<string> GetAvailableConfigs()
@@ -55,7 +52,6 @@ public class ConfigFileManager : MonoBehaviour
         OnFileListRefreshed?.Invoke(names);
         return names;
     }
-
 
     public ConfigFile CreateNew(string configName)
     {
@@ -104,7 +100,6 @@ public class ConfigFileManager : MonoBehaviour
         {
             string yaml = serializer.Serialize(config);
             File.WriteAllText(GetPath(config.configName), yaml);
-            //Debug.Log($"[ConfigFileManager] Saved: {GetPath(config.configName)}");
             OnConfigSaved?.Invoke(config);
             return true;
         }
@@ -196,6 +191,31 @@ public class ConfigFileManager : MonoBehaviour
             var data = new ObjectTransformData(cameraID);
             data.scale.x = flipX ? -1 : 1;
             data.scale.y = flipY ? -1 : 1;
+            CurrentConfig.pointClouds.Add(data);
+        }
+
+        if (saveImmediately) Save();
+    }
+
+    public void SaveClamp(int cameraID, float xMin, float xMax, float yMin, float yMax, bool saveImmediately = true)
+    {
+        if (CurrentConfig == null) { EventFileManager.Log("[ConfigFileManager] No active config."); return; }
+
+        var existing = CurrentConfig.pointClouds.Find(o => o.ID == cameraID);
+        if (existing != null)
+        {
+            existing.clampXMin = xMin;
+            existing.clampXMax = xMax;
+            existing.clampYMin = yMin;
+            existing.clampYMax = yMax;
+        }
+        else
+        {
+            var data = new ObjectTransformData(cameraID);
+            data.clampXMin = xMin;
+            data.clampXMax = xMax;
+            data.clampYMin = yMin;
+            data.clampYMax = yMax;
             CurrentConfig.pointClouds.Add(data);
         }
 

@@ -24,7 +24,7 @@ public class SerializableVector3
     public Vector3 ToVector3() => new Vector3(x, y, z);
     public override string ToString()
     {
-        return $"({x}, {y}, {z})"; 
+        return $"({x}, {y}, {z})";
     }
 }
 
@@ -83,11 +83,16 @@ public class ObjectTransformData
     public SerializableVector3 cameraRotation;
 
     public SerializableVector3 position;
-    public SerializableVector3 rotation; 
+    public SerializableVector3 rotation;
     public SerializableVector3 scale;
 
     public float depthMax = 3.0f;
     public float depthMin = 0.1f;
+
+    public float clampXMin = 0f;
+    public float clampXMax = 1f;
+    public float clampYMin = 0f;
+    public float clampYMax = 1f;
 
     public ObjectTransformData() { }
 
@@ -115,7 +120,7 @@ public class ObjectTransformData
 
     public override string ToString()
     {
-        return $"ObjectTransformData(ID={ID}, position={position}, rotation={rotation}, scale={scale}, depthMin={depthMin}, depthMax={depthMax})";
+        return $"ObjectTransformData(ID={ID}, position={position}, rotation={rotation}, scale={scale}, depthMin={depthMin}, depthMax={depthMax}, clampX=[{clampXMin},{clampXMax}], clampY=[{clampYMin},{clampYMax}])";
     }
 }
 
@@ -126,7 +131,7 @@ public class ConfigFile
     public string createdAt = "";
     public string lastModified = "";
 
-    public UITransformData UICanvas; 
+    public UITransformData UICanvas;
     public List<ObjectTransformData> pointClouds = new List<ObjectTransformData>();
 
     public override string ToString()

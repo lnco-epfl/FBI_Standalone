@@ -195,6 +195,22 @@ MonoBehaviour:
     m_Key: canva-UI
     m_Metadata:
       m_Items: []
+  - m_Id: 114152172140597248
+    m_Key: clamp-x-max
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114152247587737600
+    m_Key: clamp-y-max
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114152300859592704
+    m_Key: clamp-x-min
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114152303971766272
+    m_Key: clamp-y-min
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
