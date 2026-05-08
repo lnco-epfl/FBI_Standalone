@@ -211,6 +211,30 @@ MonoBehaviour:
     m_Key: clamp-y-min
     m_Metadata:
       m_Items: []
+  - m_Id: 114287108537421824
+    m_Key: New Entry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114287115923591168
+    m_Key: button-new
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114288320301207552
+    m_Key: button-open
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114292629210370048
+    m_Key: button-save-as
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114307761697165312
+    m_Key: button-copy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114307811382890496
+    m_Key: button-past
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -107,7 +107,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 85565494642057216
-    m_Localized: Load config
+    m_Localized: Scene
     m_Metadata:
       m_Items: []
   - m_Id: 85565541215608832
@@ -216,6 +216,26 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 114152303971766272
     m_Localized: Y Min
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114287115923591168
+    m_Localized: New
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114288320301207552
+    m_Localized: Open...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114292629210370048
+    m_Localized: Save as...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114307761697165312
+    m_Localized: Copy config
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114307811382890496
+    m_Localized: Past config
     m_Metadata:
       m_Items: []
   references:
