@@ -328,10 +328,10 @@ public class PointCloudUIEntry : MonoBehaviour
 
     public void SetClamp(float xMin, float xMax, float yMin, float yMax)
     {
-        if (clampXMinSlider != null) clampXMinSlider.SetValueWithoutNotify(xMin);
-        if (clampXMaxSlider != null) clampXMaxSlider.SetValueWithoutNotify(xMax);
-        if (clampYMinSlider != null) clampYMinSlider.SetValueWithoutNotify(yMin);
-        if (clampYMaxSlider != null) clampYMaxSlider.SetValueWithoutNotify(yMax);
+        if (clampXMinSlider != null) clampXMinSlider.SetValueWithoutNotify(xMin); clampXMinSlider.GetComponent<SliderToText>().UpdateText(xMin);
+        if (clampXMaxSlider != null) clampXMaxSlider.SetValueWithoutNotify(xMax); clampXMaxSlider.GetComponent<SliderToText>().UpdateText(xMax);
+        if (clampYMinSlider != null) clampYMinSlider.SetValueWithoutNotify(yMin); clampYMinSlider.GetComponent<SliderToText>().UpdateText(yMin);
+        if (clampYMaxSlider != null) clampYMaxSlider.SetValueWithoutNotify(yMax); clampYMaxSlider.GetComponent<SliderToText>().UpdateText(yMax);
 
         ApplyClampToVFX(xMin, xMax, yMin, yMax);
     }

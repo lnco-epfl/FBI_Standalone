@@ -1,6 +1,6 @@
 configName: Bruno
 createdAt: 2026-04-02 15:20:45
-lastModified: 2026-05-07 14:52:20
+lastModified: 2026-05-08 15:00:23
 uICanvas:
   position:
     x: 0
@@ -37,6 +37,10 @@ pointClouds:
     z: 1
   depthMax: 2.5
   depthMin: 1.264349
+  clampXMin: 0.1302839
+  clampXMax: 0.7164412
+  clampYMin: 0
+  clampYMax: 1
 - iD: 1
   cameraPosition: 
   cameraRotation: 
@@ -49,8 +53,12 @@ pointClouds:
     y: 0
     z: 0
   scale:
-    x: -1
+    x: 1
     y: 1
     z: 1
-  depthMax: 4.00466
-  depthMin: 1.490223
+  depthMax: 2.65431
+  depthMin: 1.264349
+  clampXMin: 0.2760581
+  clampXMax: 0.8161816
+  clampYMin: 0.2915484
+  clampYMax: 1
