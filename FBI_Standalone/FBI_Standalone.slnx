@@ -2,6 +2,7 @@
   <Project Path="Application.csproj" />
   <Project Path="AzureKinectExamples.csproj" />
   <Project Path="PrimeTween.Demo.csproj" />
+  <Project Path="SFB.csproj" />
   <Project Path="Unity.XR.Interaction.Toolkit.Samples.StarterAssets.csproj" />
   <Project Path="UISwitcherEditor.csproj" />
   <Project Path="Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor.csproj" />
