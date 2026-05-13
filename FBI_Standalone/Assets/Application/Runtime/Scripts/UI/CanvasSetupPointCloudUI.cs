@@ -348,15 +348,19 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     private void UpdateFileNameDisplay()
     {
         if (currentFileNameText == null) return;
-        currentFileNameText.text = string.IsNullOrEmpty(selectedConfig) ? "" : $"{selectedConfig}.yaml";
+        currentFileNameText.text = string.IsNullOrEmpty(selectedConfig) ? "" : $"{selectedConfig}";
     }
 
     private void ClearPointCloudEntry()
     {
+        foreach (var entry in pointCloudEntries)
+            entry.OnDisplayToggleRequested -= OnDisplayToggleRequested;
+
+        pointCloudEntries.Clear();
+        activeEntry = null;
+
         while (pointCloudContainer.childCount > 0)
-        {
             DestroyImmediate(pointCloudContainer.GetChild(0).gameObject);
-        }
     }
 
     [ContextMenu("SpawnPointCloudEntries")]
@@ -474,12 +478,19 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene)
     {
-        StartCoroutine(WaitForKinectManagerInitialization());
+        //StartCoroutine(WaitForKinectManagerInitialization());
+
+        ClearPointCloudEntry();
+        SpawnPointCloudEntries();
+
+        foreach (var entry in pointCloudEntries)
+            entry.SetInteractable(true);
     }
 
     public IEnumerator WaitForKinectManagerInitialization()
     {
         yield return new WaitUntil(() => KinectManager.Instance.IsInitialized());
+        ClearPointCloudEntry();
         SpawnPointCloudEntries();
     }
 
@@ -649,6 +660,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         if (statusText)
         {
             statusText.text = statusLocalizedText.GetLocalizedString("• " + message);
+            statusText.color = color;
         }
 
     }
