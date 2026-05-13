@@ -1,29 +1,29 @@
 configName: 1PP
 createdAt: 2026-05-07 14:14:56
-lastModified: 2026-05-08 18:33:56
+lastModified: 2026-05-13 16:03:23
 uICanvas: 
 pointClouds:
 - iD: 1
   cameraPosition: 
   cameraRotation: 
   position:
-    x: 0
-    y: 1.64
-    z: 1.18
+    x: 0.96
+    y: 0.77
+    z: 3.07
   rotation:
-    x: 46.7
-    y: 175.3
+    x: 0
+    y: 0
     z: 0
   scale:
-    x: -1
+    x: 1
     y: 1
     z: 1
-  depthMax: 5.398874
+  depthMax: 0
   depthMin: 0
-  clampXMin: 0
-  clampXMax: 1
-  clampYMin: 0
-  clampYMax: 1
+  clampXMin: 0.2125715
+  clampXMax: 0.6814758
+  clampYMin: 0.1809047
+  clampYMax: 0.808
 - iD: 2
   cameraPosition: 
   cameraRotation: 
