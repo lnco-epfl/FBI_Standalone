@@ -212,7 +212,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 114287108537421824
-    m_Key: New Entry
+    m_Key: clamp-title
     m_Metadata:
       m_Items: []
   - m_Id: 114287115923591168
@@ -233,6 +233,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 114307811382890496
     m_Key: button-past
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116733347235602432
+    m_Key: setuppointcloud-title-vr
     m_Metadata:
       m_Items: []
   m_Metadata:

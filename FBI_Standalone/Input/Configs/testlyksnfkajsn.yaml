@@ -1,11 +1,12 @@
 configName: testlyksnfkajsn
 createdAt: 2026-03-26 15:07:44
-lastModified: 2026-03-26 15:08:12
+lastModified: 2026-05-15 15:00:26
+uICanvas: 
 pointClouds:
 - iD: 1
   position:
     x: 0
-    y: 1.23
+    y: 1.25
     z: 0.38
   rotation:
     x: 350.77
@@ -15,8 +16,12 @@ pointClouds:
     x: -1
     y: 1
     z: 1
-  depthMax: 3.47
-  depthMin: 0.4120876
+  depthMax: 0.8692043
+  depthMin: 0.392096
+  clampXMin: 0.595985
+  clampXMax: 0.589321
+  clampYMin: 0.1295127
+  clampYMax: 0.8425489
 - iD: 2
   position:
     x: 0.23
@@ -32,3 +37,26 @@ pointClouds:
     z: 1
   depthMax: 3.47
   depthMin: 0
+  clampXMin: 0
+  clampXMax: 1
+  clampYMin: 0
+  clampYMax: 1
+- iD: 0
+  position:
+    x: 0
+    y: 0
+    z: 0
+  rotation:
+    x: 0
+    y: 0
+    z: 0
+  scale:
+    x: -1
+    y: -1
+    z: 1
+  depthMax: 3
+  depthMin: 0.1
+  clampXMin: 0.6930787
+  clampXMax: 0.3774592
+  clampYMin: 0.5412484
+  clampYMax: 0.7844326
