@@ -47,6 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Application::PlayerManager
   avatar: {fileID: 8288671142501549417}
+  leftController: {fileID: 0}
+  rightController: {fileID: 0}
 --- !u!1 &5594756713832329693
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,6 +95,14 @@ PrefabInstance:
     - target: {fileID: 3429511973970599970, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
       propertyPath: m_Name
       value: XR Origin
+      objectReference: {fileID: 0}
+    - target: {fileID: 4572591751242516804, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_Name
+      value: Ray Interactor
+      objectReference: {fileID: 0}
+    - target: {fileID: 4611283864371880590, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_Name
+      value: Ray Interactor
       objectReference: {fileID: 0}
     - target: {fileID: 5366232192436624926, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
       propertyPath: m_LocalPosition.x

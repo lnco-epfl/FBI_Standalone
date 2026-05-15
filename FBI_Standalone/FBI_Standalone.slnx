@@ -31,6 +31,7 @@
   <Project Path="Unity.VisualStudio.Editor.csproj" />
   <Project Path="Unity.XR.Oculus.Editor.csproj" />
   <Project Path="Unity.InputSystem.csproj" />
+  <Project Path="Application.csproj" />
   <Project Path="Unity.XR.Interaction.Toolkit.Editor.csproj" />
   <Project Path="PPv2URPConverters.csproj" />
   <Project Path="Unity.XR.CoreUtils.csproj" />
@@ -42,7 +43,6 @@
   <Project Path="Unity.Cinemachine.csproj" />
   <Project Path="Unity.VisualEffectGraph.Runtime.csproj" />
   <Project Path="Unity.Burst.CodeGen.csproj" />
-  <Project Path="Application.csproj" />
   <Project Path="Unity.Addressables.DocExampleCode.Editor.Tests.csproj" />
   <Project Path="Unity.Splines.Editor.csproj" />
   <Project Path="Unity.PerformanceTesting.csproj" />
