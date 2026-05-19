@@ -26,11 +26,6 @@ public class DisplayImageState : IState
     public void Exit()
     {
         WorldUIManager.Instance.HideImage();
-
-        if (step.fadeToClear)
-        {
-            Fader.Instance.FadeToClear();
-        }
     }
 
 }
