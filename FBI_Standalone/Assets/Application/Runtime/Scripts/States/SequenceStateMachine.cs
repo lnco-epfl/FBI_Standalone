@@ -46,6 +46,7 @@ public class SequenceStateMachine : MonoBehaviour
         states.Add("DisplayQuestion", new DisplayQuestionState());
         states.Add("PlaySound", new PlaySoundState());
         states.Add("DisplayCamera", new DisplayCameraState());
+        states.Add("DisplayVideo", new DisplayVideoState());
     }
 
     /// <summary>

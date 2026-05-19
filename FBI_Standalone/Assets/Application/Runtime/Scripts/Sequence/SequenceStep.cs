@@ -218,6 +218,30 @@ public class DisplayCameraStep : SequenceStep
     public override Color GetColor() => Color.grey;
 }
 
+[System.Serializable]
+public class DisplayVideoStep : SequenceStep
+{
+    public string videoName;    
+    
+    public bool looping = false;
+    public bool muteAudio = false;
+
+    public bool fadeToBlack;
+
+    public bool fadeToClear;
+
+    public float displayDuration = 10f;
+
+    public override float GetDuration() => displayDuration;
+    public override string GetStateName() => "DisplayVideo";
+    public override string GetDisplayName()
+    {
+        var name = string.IsNullOrEmpty(videoName) ? "No Video" : videoName;
+        return $"Display Video {name}";
+    }
+    public override Color GetColor() => Color.azure;
+}
+
 [Serializable]
 public class SequenceStepWrapper
 {
@@ -229,7 +253,7 @@ public class SequenceStepWrapper
 
     public enum StepType
     {
-        DisplayText, Wait, SpawnObject, LoadScene, LoadConfig, DisplayLikertScale, Break, DisplayImage, DisplayQuestion, PlaySound, DisplayCamera
+        DisplayText, Wait, SpawnObject, LoadScene, LoadConfig, DisplayLikertScale, Break, DisplayImage, DisplayQuestion, PlaySound, DisplayCamera, DisplayVideo
     }
 
     public SequenceStepWrapper()
@@ -252,6 +276,7 @@ public class SequenceStepWrapper
             case StepType.DisplayQuestion: step = new DisplayQuestionStep(); break;
             case StepType.PlaySound: step = new PlaySoundStep(); break;
             case StepType.DisplayCamera: step = new DisplayCameraStep(); break;
+            case StepType.DisplayVideo: step = new DisplayVideoStep(); break;
         }
     }
 }
