@@ -5,6 +5,11 @@ steps:
   - stepType: LoadConfig
     fileName: interpolation
 
+  - stepType: DisplayVideo
+    videoName: "Soaem_Encode_Part2"
+    looping: false
+    muteAudio: false
+
   - stepType: DisplayText
     text: "welcome to FBI"
     duration: 3.0

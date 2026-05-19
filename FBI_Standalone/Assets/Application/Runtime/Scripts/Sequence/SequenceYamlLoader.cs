@@ -133,6 +133,14 @@ public class SequenceYamlLoader
                 {
                     sound = LoadAudioClip(data.soundPath)
                 };
+
+            case SequenceStepWrapper.StepType.DisplayVideo:
+                return new DisplayVideoStep
+                {
+                    videoName = data.videoName,
+                    looping = data.looping,
+                    muteAudio = data.muteAudio,
+                };
             case SequenceStepWrapper.StepType.DisplayCamera:
                 return new DisplayCameraStep
                 {
@@ -200,6 +208,7 @@ public class StepData
     public string scenePath;
     public string imagePath;
     public string soundPath;
+    public string videoName;
 
     //config
     public string fileName;
@@ -209,5 +218,9 @@ public class StepData
 
     // Image
     public float scale;
+
+    //Video 
+    public bool looping;
+    public bool muteAudio;
 
 }

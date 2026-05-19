@@ -63,6 +63,17 @@ public class WorldUIManager : MonoBehaviour
 
     public event Action OnSkipHoldValidated;
 
+    [Header("Video")]
+    [SerializeField] private Transform videoContainer;
+    private Image videoContainerBackground;
+    private CanvasGroup canvasGroupVideoContainer;
+    private RawImage videoRawImage;
+    private UnityEngine.Video.VideoPlayer videoPlayer;
+    private RenderTexture videoRenderTexture;
+    private Action onVideoFinishedCallback;
+
+    private Action<float> onReadyCallback;
+
     [Header("Question")]
     [SerializeField] private Transform questionContainer;
     [SerializeField] private Button responceButtonPrefab;
@@ -127,6 +138,13 @@ public class WorldUIManager : MonoBehaviour
         holdmaskButtonBreakContainer = skipHoldButtonBreakContainer.transform.Find("Hold Mask").GetComponent<Image>();
         breakContainerBackground = breakContainer.transform.Find("Background").GetComponent<Image>();
 
+        canvasGroupVideoContainer = videoContainer.GetComponent<CanvasGroup>();
+        videoContainerBackground = videoContainer.Find("Background").GetComponent<Image>();
+        videoRawImage = videoContainer.Find("Video Player").GetComponent<RawImage>();
+        videoPlayer = videoContainer.GetComponentInChildren<UnityEngine.Video.VideoPlayer>();
+
+        videoPlayer.loopPointReached += OnVideoLoopPointReached;
+
         canvasImageContainer = imageContainer.GetComponent<CanvasGroup>();
         imageImageContainer = imageContainer.Find("Image").GetComponent<Image>();
         imageImageTransform = imageImageContainer.GetComponent<Transform>();
@@ -149,6 +167,9 @@ public class WorldUIManager : MonoBehaviour
         questionTextLikertScaleContainer.text = string.Empty;
         labelLeftTextLikertScaleContainer.text = string.Empty;
         labelRightTextLikertScaleContainer.text = string.Empty;
+
+        canvasGroupVideoContainer.alpha = 0;
+        videoRawImage.texture = null;
 
         canvasGroupBreakContainer.alpha = 0;
         instructionTextBreakContainer.text = string.Empty;
@@ -401,6 +422,72 @@ public class WorldUIManager : MonoBehaviour
             for (int i = 0; i < responseButtonsList.Count; i++)
             {
                 responseButtonsList[i].GetComponentInChildren<TMP_Text>().text = string.Empty;
+            }
+        });
+    }
+
+    public void DisplayVideo(string filePath, bool loop, bool mute, Action onFinished = null, Action<float> onReady = null)
+    {
+        canvasGroupVideoContainer.alpha = 0;
+
+        videoContainerBackground.color = backgroundColor;
+        currentBackground = videoContainerBackground;
+
+        onVideoFinishedCallback = onFinished;
+
+        if (videoRenderTexture != null)
+            videoRenderTexture.Release();
+
+        videoRenderTexture = new RenderTexture(1920, 1080, 0);
+        videoRawImage.texture = videoRenderTexture;
+
+        videoPlayer.targetTexture = videoRenderTexture;
+        videoPlayer.url = $"file://{filePath}";
+        videoPlayer.isLooping = loop;
+        videoPlayer.SetDirectAudioMute(0, mute);
+        videoPlayer.Prepare();
+        videoPlayer.prepareCompleted += OnVideoPrepared;
+        onReadyCallback = onReady;
+
+    }
+
+    private void OnVideoPrepared(UnityEngine.Video.VideoPlayer vp)
+    {
+        vp.prepareCompleted -= OnVideoPrepared;
+        vp.Play();
+
+        canvasGroupVideoContainer.interactable = true;
+        canvasGroupVideoContainer.blocksRaycasts = true;
+
+        FadeCanvasGroup(canvasGroupVideoContainer, 1);
+
+        float duration = (float)vp.frameCount / vp.frameRate;
+        onReadyCallback?.Invoke(duration);
+        onReadyCallback = null;
+    }
+
+    private void OnVideoLoopPointReached(UnityEngine.Video.VideoPlayer vp)
+    {
+        onVideoFinishedCallback?.Invoke();
+        onVideoFinishedCallback = null;
+    }
+
+    public void HideVideo()
+    {
+        canvasGroupVideoContainer.interactable = false;
+        canvasGroupVideoContainer.blocksRaycasts = false;
+
+        currentBackground = null;
+
+        FadeCanvasGroup(canvasGroupVideoContainer, 0, () =>
+        {
+            videoPlayer.Stop();
+            videoRawImage.texture = null;
+
+            if (videoRenderTexture != null)
+            {
+                videoRenderTexture.Release();
+                videoRenderTexture = null;
             }
         });
     }

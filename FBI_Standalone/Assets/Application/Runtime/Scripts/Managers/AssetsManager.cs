@@ -25,6 +25,8 @@ public class AssetsManager : MonoBehaviour
 
     private Dictionary<string, Sprite> loadedSprites = new Dictionary<string, Sprite>();
     private Dictionary<string, AudioClip> loadedAudioClips = new Dictionary<string, AudioClip>();
+    private Dictionary<string, string> loadedVideoPaths = new Dictionary<string, string>();
+
 
     public string ImagesPath { get; private set; }
     public string AudioPath { get; private set; }
@@ -63,6 +65,7 @@ public class AssetsManager : MonoBehaviour
     {
         LoadAllImages();
         LoadAllAudio();
+        LoadAllVideos();
     }
 
     #region Images
@@ -259,6 +262,55 @@ public class AssetsManager : MonoBehaviour
 
         Debug.LogWarning($"[AssetsManager] Audio clip not found: {clipName}");
         return null;
+    }
+
+    #endregion
+
+    #region Videos
+
+    public void LoadAllVideos()
+    {
+        loadedVideoPaths.Clear();
+
+        if (!Directory.Exists(VideosPath))
+        {
+            Debug.LogWarning($"[AssetsManager] Videos folder not found: {VideosPath}");
+            return;
+        }
+
+        string[] extensions = { "*.mp4", "*.webm", "*.mov" };
+
+        foreach (string extension in extensions)
+        {
+            string[] files = Directory.GetFiles(VideosPath, extension, SearchOption.AllDirectories);
+
+            foreach (string filePath in files)
+            {
+                string relativePath = GetRelativePath(filePath, VideosPath);
+                string key = Path.GetFileNameWithoutExtension(relativePath);
+                loadedVideoPaths[key] = filePath;
+                Debug.Log($"[AssetsManager] Registered video: {key}");
+            }
+        }
+
+        Debug.Log($"[AssetsManager] Registered {loadedVideoPaths.Count} videos");
+    }
+
+    public string GetVideoPath(string videoName)
+    {
+        if (string.IsNullOrEmpty(videoName))
+            return null;
+
+        if (loadedVideoPaths.TryGetValue(videoName, out string path))
+            return path;
+
+        Debug.LogWarning($"[AssetsManager] Video not found: {videoName}");
+        return null;
+    }
+
+    public List<string> GetAllVideoNames()
+    {
+        return new List<string>(loadedVideoPaths.Keys);
     }
 
     #endregion
