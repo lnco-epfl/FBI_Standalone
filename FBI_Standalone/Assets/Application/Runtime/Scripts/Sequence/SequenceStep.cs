@@ -20,10 +20,6 @@ public class DisplayTextStep : SequenceStep
 {
     public string text;
 
-    public bool fadeToBlack;
-
-    public bool fadeToClear;
-
     public float diplayDuration = 5f;
 
     public override float GetDuration() => diplayDuration;
@@ -44,7 +40,6 @@ public class DisplayTextStep : SequenceStep
 public class WaitStep : SequenceStep
 {
     public float waitTime = 1f;
-
     public override float GetDuration() => waitTime;
     public override string GetStateName() => "Wait";
     public override string GetDisplayName() => $"Wait {waitTime}s";
@@ -58,7 +53,6 @@ public class LoadSceneStep : SequenceStep
 
     public SceneReference Scene;
 
-    public bool fadeToClear;
     public override float GetDuration() => duration;
     public override string GetStateName() => "LoadScene";
     public override string GetDisplayName()
@@ -95,10 +89,6 @@ public class DisplayLikertScaleStep : SequenceStep
     public string leftLabel;
 
     public string rightLabel;
-
-    public bool fadeToBlack;
-
-    public bool fadeToClear;
     public override float GetDuration() => 4f;
     public override string GetStateName() => "DisplayLikertScale";
     public override string GetDisplayName()
@@ -116,10 +106,6 @@ public class BreakStep : SequenceStep
     public string instructionText;
 
     public float duration = 90;
-
-    public bool fadeToBlack;
-
-    public bool fadeToClear;
     public override float GetDuration() => duration;
     public override string GetStateName() => "Break";
     public override string GetDisplayName()
@@ -137,10 +123,6 @@ public class DisplayImageStep : SequenceStep
     public float scale;
 
     public bool fixationCross;
-
-    public bool fadeToBlack;
-
-    public bool fadeToClear;
 
     public float diplayDuration = 5f;
 
@@ -165,10 +147,6 @@ public class DisplayQuestionStep : SequenceStep
     public string question;
     
     public List<string> responseOptions = new List<string>();
-
-    public bool fadeToBlack;
-
-    public bool fadeToClear;
     public override float GetDuration() => 4f;
     public override string GetStateName() => "DisplayQuestion";
     public override string GetDisplayName()
@@ -225,10 +203,6 @@ public class DisplayVideoStep : SequenceStep
     
     public bool looping = false;
     public bool muteAudio = false;
-
-    public bool fadeToBlack;
-
-    public bool fadeToClear;
 
     public float displayDuration = 10f;
 

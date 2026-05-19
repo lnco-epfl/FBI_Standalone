@@ -52,10 +52,5 @@ public class DisplayVideoState : IState
     public void Exit()
     {
         WorldUIManager.Instance.HideVideo();
-
-        if (step.fadeToClear)
-        {
-            Fader.Instance.FadeToClear();
-        }
     }
 }

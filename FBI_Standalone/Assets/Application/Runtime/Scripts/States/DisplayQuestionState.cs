@@ -30,12 +30,6 @@ public class DisplayQuestionState : IState
     public IEnumerator Execute()
     {
 
-        if (step.fadeToBlack)
-        {
-            Fader.Instance.FadeToBlack();
-        }
-        yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
-
         questionValue = QuestionAnswer.None;
 
         OutputFileManager.Instance.OutputFileData.TimeSinceStart = ExperimentManager.Instance.ElaspedTimeSinceStart;
@@ -64,12 +58,6 @@ public class DisplayQuestionState : IState
         yield return new WaitForSeconds(0.5f);
 
         WorldUIManager.Instance.HideQuestion();
-
-        if (step.fadeToClear)
-        {
-            Fader.Instance.FadeToClear();
-        }
-        yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
 
     }
 
