@@ -143,7 +143,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 85899228595249152
-    m_Localized: Setup point cloud configuration file
+    m_Localized: Config Editor
     m_Metadata:
       m_Items: []
   - m_Id: 85926823851122688
@@ -199,7 +199,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 113526093879418880
-    m_Localized: Canva UI
+    m_Localized: Stimulus Display
     m_Metadata:
       m_Items: []
   - m_Id: 114152172140597248
@@ -223,7 +223,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 114288320301207552
-    m_Localized: Open...
+    m_Localized: Open
     m_Metadata:
       m_Items: []
   - m_Id: 114292629210370048
@@ -236,6 +236,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 114307811382890496
     m_Localized: Past config
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114287108537421824
+    m_Localized: Clamp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116733347235602432
+    m_Localized: Config Editor VR
     m_Metadata:
       m_Items: []
   references:

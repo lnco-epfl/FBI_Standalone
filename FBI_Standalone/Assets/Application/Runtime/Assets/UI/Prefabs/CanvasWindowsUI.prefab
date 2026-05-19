@@ -730,7 +730,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &6938279409019128147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -774,11 +774,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   closeButton: {fileID: 5873768109528026216}
   title: {fileID: 7804090561144365082}
-  configNameInputField: {fileID: 0}
-  createConfigButton: {fileID: 0}
-  newConfigCanvasGroup: {fileID: 0}
   statusText: {fileID: 0}
-  dotImage: {fileID: 0}
+  currentFileNameText: {fileID: 0}
   statusLocalizedText:
     m_TableReference:
       m_TableCollectionName: GUID:4823a8d02f8d786498601cdb3db61537
@@ -788,16 +785,35 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  loadConfigDropdown: {fileID: 0}
-  loadConfigButton: {fileID: 0}
-  loadConfigCanvasGroup: {fileID: 0}
+  newConfigButton: {fileID: 0}
+  openConfigButton: {fileID: 0}
+  saveButton: {fileID: 0}
+  saveAsButton: {fileID: 0}
+  hamburgerMenu: {fileID: 0}
   pointCloudEntryPrefab: {fileID: 7208497660169839647, guid: 9c37ea395f913234ca6d96028e0cff79, type: 3}
   pointCloudContainer: {fileID: 0}
-  saveButton: {fileID: 0}
   switchDelay: 1.5
-  scene:
-    asset: {fileID: 102900000, guid: 1124e634fc283304d876957226301a9e, type: 3}
-    guid: 1124e634fc283304d876957226301a9e
+  resetXROriginButton: {fileID: 0}
+  avatarToggleGameObject: {fileID: 0}
+  positionXInputField: {fileID: 0}
+  positionYInputField: {fileID: 0}
+  positionZInputField: {fileID: 0}
+  rotationXInputField: {fileID: 0}
+  rotationYInputField: {fileID: 0}
+  rotationZInputField: {fileID: 0}
+  staticCameraPrefab: {fileID: 0}
+  displayCanvaUIToggle: {fileID: 0}
+  canvaUIColorPickerButton: {fileID: 0}
+  canvaUIAlphaPreview: {fileID: 0}
+  canvaUIPositionXInputField: {fileID: 0}
+  canvaUIPositionYInputField: {fileID: 0}
+  canvaUIPositionZInputField: {fileID: 0}
+  canvaUIRotationXInputField: {fileID: 0}
+  canvaUIRotationYInputField: {fileID: 0}
+  canvaUIRotationZInputField: {fileID: 0}
+  flexibleColorPickerPrefab: {fileID: 0}
+  sceneDropdown: {fileID: 0}
+  availableScenes: []
   references:
     version: 2
     RefIds: []

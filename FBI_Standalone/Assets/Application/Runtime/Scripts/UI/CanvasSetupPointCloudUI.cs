@@ -39,7 +39,6 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     [SerializeField] private Transform pointCloudContainer;
 
     [Header("Point Cloud Switch")]
-    [Tooltip("Delay in seconds between disabling the previous point cloud and enabling the next one, to allow textures to initialize.")]
     [SerializeField] private float switchDelay = 1.5f;
 
     [Header("VRView")]
@@ -80,6 +79,12 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     [SerializeField] private TMP_Dropdown sceneDropdown;
     [SerializeField] private List<SceneReference> availableScenes = new List<SceneReference>();
 
+    [Header("World Space Canvas")]
+    [SerializeField] private GameObject worldSpaceCanvasPrefab;
+    [SerializeField] private UISwitcher.UISwitcher worldCanvasEditToggle;
+
+    private WorldSpacePointCloudUI worldSpaceUI;
+    private PointCloudUIBridge bridge;
 
     public event Action<CanvasSetupPointCloudUI> OnCanvasSetupPointCloudUIDestroy;
 
@@ -88,15 +93,12 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private List<PointCloudUIEntry> pointCloudEntries = new List<PointCloudUIEntry>();
 
-    /// <summary>
-    /// The entry whose point cloud is currently active (visible). Null if none.
-    /// </summary>
+    /// <summary>The entry whose point cloud is currently active (visible). Null if none.</summary>
     private PointCloudUIEntry activeEntry;
 
-    /// <summary>
-    /// Prevents the user from switching while a switch transition is already in progress.
-    /// </summary>
+    /// <summary>Prevents the user from switching while a switch transition is already in progress.</summary>
     private bool isSwitching;
+
 
     private void Awake()
     {
@@ -111,7 +113,6 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         UpdateFileNameDisplay();
 
         ShortcutManager.Instance.DisableShortCut();
-
         SetStatus("No config loaded.", Color.grey);
     }
 
@@ -124,7 +125,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         saveButton.onClick.AddListener(OnSaveButtonClick);
         saveAsButton.onClick.AddListener(OnSaveAsButtonClick);
 
-        hamburgerMenu.OnCopyConfigClicked += OnCopyConfigButtonClick;
+        hamburgerMenu.OnCopyConfigClicked  += OnCopyConfigButtonClick;
         hamburgerMenu.OnPasteConfigClicked += OnPasteConfigButtonClick;
 
         resetXROriginButton.onClick.AddListener(OnResetXROriginButtonPress);
@@ -139,8 +140,9 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         avatarToggle.onValueChanged.AddListener(OnAvatarToggleValueChanged);
 
-        displayCanvaUIToggle.onValueChanged.AddListener(OnDisplayCanvaUIValueChanged);
+        if (worldCanvasEditToggle) worldCanvasEditToggle.onValueChanged.AddListener(OnWorldCanvasEditToggleChanged);
 
+        displayCanvaUIToggle.onValueChanged.AddListener(OnDisplayCanvaUIValueChanged);
         canvaUIColorPickerButton.onClick.AddListener(OnCanvasUIColorPickerButtonPress);
 
         canvaUIPositionXInputField.onValueChanged.AddListener((str) => SetWorldUIPosition());
@@ -151,7 +153,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         canvaUIRotationZInputField.onValueChanged.AddListener((str) => SetWorldUIRotation());
 
         ConfigFileManager.Instance.OnConfigLoaded += OnConfigLoaded;
-        ConfigFileManager.Instance.OnConfigSaved += OnConfigSaved;
+        ConfigFileManager.Instance.OnConfigSaved  += OnConfigSaved;
         SceneLoaderManager.Instance.OnSceneLoaded += OnSceneLoaded;
 
         if (sceneDropdown != null)
@@ -167,7 +169,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         saveButton.onClick.RemoveListener(OnSaveButtonClick);
         saveAsButton.onClick.RemoveListener(OnSaveAsButtonClick);
 
-        hamburgerMenu.OnCopyConfigClicked -= OnCopyConfigButtonClick;
+        hamburgerMenu.OnCopyConfigClicked  -= OnCopyConfigButtonClick;
         hamburgerMenu.OnPasteConfigClicked -= OnPasteConfigButtonClick;
 
         resetXROriginButton.onClick.RemoveListener(OnResetXROriginButtonPress);
@@ -182,24 +184,74 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         avatarToggle.onValueChanged.RemoveListener(OnAvatarToggleValueChanged);
 
-        displayCanvaUIToggle.onValueChanged.RemoveListener(OnDisplayCanvaUIValueChanged);
+        if (worldCanvasEditToggle) worldCanvasEditToggle.onValueChanged.RemoveListener(OnWorldCanvasEditToggleChanged);
 
+        displayCanvaUIToggle.onValueChanged.RemoveListener(OnDisplayCanvaUIValueChanged);
         canvaUIColorPickerButton.onClick.RemoveListener(OnCanvasUIColorPickerButtonPress);
 
+        canvaUIPositionXInputField.onValueChanged.RemoveAllListeners();
+        canvaUIPositionYInputField.onValueChanged.RemoveAllListeners();
+        canvaUIPositionZInputField.onValueChanged.RemoveAllListeners();
+        canvaUIRotationXInputField.onValueChanged.RemoveAllListeners();
+        canvaUIRotationYInputField.onValueChanged.RemoveAllListeners();
+        canvaUIRotationZInputField.onValueChanged.RemoveAllListeners();
+
         ConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
-        ConfigFileManager.Instance.OnConfigSaved -= OnConfigSaved;
+        ConfigFileManager.Instance.OnConfigSaved  -= OnConfigSaved;
         SceneLoaderManager.Instance.OnSceneLoaded -= OnSceneLoaded;
 
         if (sceneDropdown != null)
             sceneDropdown.onValueChanged.RemoveListener(OnSceneDropdownValueChanged);
 
         foreach (var entry in pointCloudEntries)
-        {
             entry.OnDisplayToggleRequested -= OnDisplayToggleRequested;
-        }
     }
 
-    // ─── File actions ────────────────────────────────────────────────────────
+    private void OnDestroy()
+    {
+        if (worldSpaceUI != null) Destroy(worldSpaceUI.gameObject);
+        if (bridge != null)       Destroy(bridge.gameObject);
+    }
+
+
+    private void SpawnWorldSpaceCanvas()
+    {
+        if (worldSpaceUI != null)
+        {
+            Destroy(worldSpaceUI.gameObject);
+            worldSpaceUI = null;
+        }
+        if (bridge != null)
+        {
+            Destroy(bridge.gameObject);
+            bridge = null;
+        }
+
+        if (worldSpaceCanvasPrefab == null)
+        {
+            Debug.LogWarning("[CanvasSetupPointCloudUI] worldSpaceCanvasPrefab non assigné — canvas WS ignoré.");
+            return;
+        }
+
+        var wsGo = Instantiate(worldSpaceCanvasPrefab);
+        wsGo.name = "WorldSpacePointCloudCanvas";
+        worldSpaceUI = wsGo.GetComponent<WorldSpacePointCloudUI>();
+
+        if (worldSpaceUI == null)
+        {
+            Debug.LogError("[CanvasSetupPointCloudUI] Prefab is missing WorldSpacePointCloudUI component!");
+            Destroy(wsGo);
+            return;
+        }
+
+        var bridgeGo = new GameObject("PointCloudUIBridge");
+        bridge = bridgeGo.AddComponent<PointCloudUIBridge>();
+        bridge.Initialize(this, worldSpaceUI, switchDelay);
+        worldSpaceUI.SetBridge(bridge);
+        worldSpaceUI.gameObject.SetActive(false);
+        if (worldCanvasEditToggle) worldCanvasEditToggle.SetWithoutNotify(false);
+    }
+
 
     private void OnNewConfigButtonClick()
     {
@@ -208,6 +260,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         if (string.IsNullOrEmpty(paths))
         {
             SetStatus("New config cancelled.", Color.grey);
+            bridge?.MirrorStatus("New config cancelled.", Color.grey);
             return;
         }
 
@@ -230,10 +283,14 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             selectedConfig = configName;
             UpdateFileNameDisplay();
             SetStatus($"Created {configName}", Color.green);
+            bridge?.MirrorFileName(configName);
+            bridge?.MirrorStatus($"Created {configName}", Color.green);
+            bridge?.MirrorEntryInteractable(true);
         }
         else
         {
             SetStatus("Failed to save file.", Color.red);
+            bridge?.MirrorStatus("Failed to save file.", Color.red);
         }
     }
 
@@ -244,11 +301,11 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         if (paths == null || paths.Length == 0 || string.IsNullOrEmpty(paths[0]))
         {
             SetStatus("Open cancelled.", Color.grey);
+            bridge?.MirrorStatus("Open cancelled.", Color.grey);
             return;
         }
 
-        string fullPath = paths[0];
-        var config = ConfigFileManager.Instance.LoadFromPath(fullPath);
+        var config = ConfigFileManager.Instance.LoadFromPath(paths[0]);
 
         if (config != null)
         {
@@ -259,10 +316,14 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
                 entry.SetInteractable(true);
 
             SetStatus($"Opened {selectedConfig}", Color.green);
+            bridge?.MirrorFileName(selectedConfig);
+            bridge?.MirrorStatus($"Opened {selectedConfig}", Color.green);
+            bridge?.MirrorEntryInteractable(true);
         }
         else
         {
             SetStatus("Failed to read file.", Color.red);
+            bridge?.MirrorStatus("Failed to read file.", Color.red);
         }
     }
 
@@ -271,11 +332,15 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         if (ConfigFileManager.Instance.CurrentConfig == null)
         {
             SetStatus("No config loaded.", Color.grey);
+            bridge?.MirrorStatus("No config loaded.", Color.grey);
             return;
         }
 
         bool saved = ConfigFileManager.Instance.Save();
-        SetStatus(saved ? $"Saved {selectedConfig}" : "Failed to save file.", saved ? Color.green : Color.red);
+        string msg = saved ? $"Saved {selectedConfig}" : "Failed to save file.";
+        Color  col = saved ? Color.green : Color.red;
+        SetStatus(msg, col);
+        bridge?.MirrorStatus(msg, col);
     }
 
     private void OnSaveAsButtonClick()
@@ -283,6 +348,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         if (ConfigFileManager.Instance.CurrentConfig == null)
         {
             SetStatus("No config loaded.", Color.grey);
+            bridge?.MirrorStatus("No config loaded.", Color.grey);
             return;
         }
 
@@ -292,6 +358,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         if (string.IsNullOrEmpty(path))
         {
             SetStatus("Save cancelled.", Color.grey);
+            bridge?.MirrorStatus("Save cancelled.", Color.grey);
             return;
         }
 
@@ -302,19 +369,24 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             selectedConfig = System.IO.Path.GetFileNameWithoutExtension(path);
             UpdateFileNameDisplay();
             SetStatus($"Saved as {selectedConfig}", Color.green);
+            bridge?.MirrorFileName(selectedConfig);
+            bridge?.MirrorStatus($"Saved as {selectedConfig}", Color.green);
         }
         else
         {
             SetStatus("Failed to save file.", Color.red);
+            bridge?.MirrorStatus("Failed to save file.", Color.red);
         }
     }
 
-    // ─── Clipboard actions ───────────────────────────────────────────────────
 
     private void OnCopyConfigButtonClick()
     {
         bool copied = ConfigFileManager.Instance.CopyToClipboard();
-        SetStatus(copied ? "Config copied to clipboard." : "No config loaded.", copied ? Color.green : Color.grey);
+        string msg = copied ? "Config copied to clipboard." : "No config loaded.";
+        Color  col = copied ? Color.green : Color.grey;
+        SetStatus(msg, col);
+        bridge?.MirrorStatus(msg, col);
     }
 
     private void OnPasteConfigButtonClick()
@@ -322,6 +394,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         if (string.IsNullOrWhiteSpace(GUIUtility.systemCopyBuffer))
         {
             SetStatus("Clipboard is empty.", Color.red);
+            bridge?.MirrorStatus("Clipboard is empty.", Color.red);
             return;
         }
 
@@ -336,27 +409,34 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
                 entry.SetInteractable(true);
 
             SetStatus("Config pasted from clipboard.", Color.green);
+            bridge?.MirrorFileName(selectedConfig);
+            bridge?.MirrorStatus("Config pasted from clipboard.", Color.green);
+            bridge?.MirrorEntryInteractable(true);
         }
         else
         {
             SetStatus("Clipboard content is invalid.", Color.red);
+            bridge?.MirrorStatus("Clipboard content is invalid.", Color.red);
         }
     }
 
-    // ─── Helpers ─────────────────────────────────────────────────────────────
 
     private void UpdateFileNameDisplay()
     {
         if (currentFileNameText == null) return;
-        currentFileNameText.text = string.IsNullOrEmpty(selectedConfig) ? "" : $"{selectedConfig}.yaml";
+        currentFileNameText.text = string.IsNullOrEmpty(selectedConfig) ? "" : selectedConfig;
     }
 
     private void ClearPointCloudEntry()
     {
+        foreach (var entry in pointCloudEntries)
+            entry.OnDisplayToggleRequested -= OnDisplayToggleRequested;
+
+        pointCloudEntries.Clear();
+        activeEntry = null;
+
         while (pointCloudContainer.childCount > 0)
-        {
             DestroyImmediate(pointCloudContainer.GetChild(0).gameObject);
-        }
     }
 
     [ContextMenu("SpawnPointCloudEntries")]
@@ -375,14 +455,17 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             entry.SetDisplayToggle(false);
 
             entry.OnDisplayToggleRequested += OnDisplayToggleRequested;
-
             pointCloudEntries.Add(entry);
+        }
+
+        // Spawner les entrées WS et les pairer
+        if (worldSpaceUI != null)
+        {
+            worldSpaceUI.SpawnPointCloudEntries(cameraIds);
+            bridge?.PairEntries(pointCloudEntries, worldSpaceUI.GetEntries());
         }
     }
 
-    /// <summary>
-    /// Handles exclusive toggle switching with a delay to allow texture initialization.
-    /// </summary>
     private void OnDisplayToggleRequested(PointCloudUIEntry requestingEntry, bool desiredState)
     {
         if (isSwitching)
@@ -398,15 +481,9 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         }
 
         if (desiredState && requestingEntry != activeEntry)
-        {
             StartCoroutine(SwitchPointCloudCoroutine(activeEntry, requestingEntry));
-        }
     }
 
-    /// <summary>
-    /// Coroutine that disables the previous point cloud, waits for the switch delay,
-    /// then enables the next one.
-    /// </summary>
     private IEnumerator SwitchPointCloudCoroutine(PointCloudUIEntry previous, PointCloudUIEntry next)
     {
         isSwitching = true;
@@ -414,6 +491,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         if (previous != null)
         {
             previous.ApplyDisplayState(false);
+            bridge?.MirrorEntryDisplayState(previous.CameraId, false);
         }
 
         activeEntry = null;
@@ -422,6 +500,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         {
             yield return new WaitForSeconds(switchDelay);
             next.ApplyDisplayState(true);
+            bridge?.MirrorEntryDisplayState(next.CameraId, true);
             activeEntry = next;
         }
 
@@ -435,9 +514,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         OnCanvasSetupPointCloudUIDestroy.Invoke(this);
     }
 
-    private void OnConfigSaved(ConfigFile file)
-    {
-    }
+    private void OnConfigSaved(ConfigFile file) { }
 
     private void OnConfigLoaded(ConfigFile file, bool loadConfigIntoPointCloud)
     {
@@ -448,10 +525,17 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             var data = file.pointClouds[i];
             pointCloudEntries[i].SetPositionFields(data.position.ToVector3());
             pointCloudEntries[i].SetRotationFields(data.rotation.ToVector3());
-
             pointCloudEntries[i].SetMinDepth(data.depthMin);
             pointCloudEntries[i].SetMaxDepth(data.depthMax);
             pointCloudEntries[i].SetFlip(data.scale.x == -1, data.scale.y == -1);
+
+            bridge?.MirrorEntryData(i,
+                data.position.ToVector3(),
+                data.rotation.ToVector3(),
+                data.depthMin,
+                data.depthMax,
+                data.scale.x == -1,
+                data.scale.y == -1);
         }
 
         if (file.UICanvas != null)
@@ -464,6 +548,10 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             canvaUIAlphaPreview.color = color;
 
             SetWorldUIInputField();
+
+            bridge?.MirrorCanvasUIPosition(WorldUIManager.Instance.Position);
+            bridge?.MirrorCanvasUIRotation(WorldUIManager.Instance.Rotation);
+            bridge?.MirrorCanvasUIColor(color);
         }
     }
 
@@ -474,18 +562,26 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene)
     {
-        StartCoroutine(WaitForKinectManagerInitialization());
+        /*ClearPointCloudEntry();
+        SpawnPointCloudEntries();
+
+        foreach (var entry in pointCloudEntries)
+            entry.SetInteractable(true);
+
+        bridge?.MirrorEntryInteractable(true);*/
     }
 
     public IEnumerator WaitForKinectManagerInitialization()
     {
         yield return new WaitUntil(() => KinectManager.Instance.IsInitialized());
+        ClearPointCloudEntry();
         SpawnPointCloudEntries();
     }
 
     public IEnumerator LoadScene()
     {
         SetStatus("Loading config scene", Color.yellow);
+        bridge?.MirrorStatus("Loading config scene", Color.yellow);
 
         Fader.Instance.FadeToBlack();
         yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
@@ -504,9 +600,27 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         canvaUIAlphaPreview.color = WorldUIManager.Instance.BackgroundColor;
 
+        SpawnWorldSpaceCanvas();
+
+        ClearPointCloudEntry();
+        SpawnPointCloudEntries();
+
+        foreach (var entry in pointCloudEntries)
+            entry.SetInteractable(true);
+
+        bridge?.MirrorEntryInteractable(true);
+
         avatarToggle.SetWithoutNotify(false);
+
         displayCanvaUIToggle.SetWithoutNotify(false);
+
+        bridge?.MirrorStatus("Config scene loaded", Color.green);
+        bridge?.MirrorDisplayCanvasUIToggle(false);
+        bridge?.MirrorCanvasUIPosition(WorldUIManager.Instance.Position);
+        bridge?.MirrorCanvasUIRotation(WorldUIManager.Instance.Rotation);
+        bridge?.MirrorCanvasUIColor(WorldUIManager.Instance.BackgroundColor);
     }
+
 
     private void SetStaticCameraInputField()
     {
@@ -521,18 +635,33 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void SetStaticCameraPosition()
     {
-        staticCamera.position = new Vector3(float.Parse(positionXInputField.text), float.Parse(positionYInputField.text), float.Parse(positionZInputField.text));
+        if (staticCamera == null) return;
+        staticCamera.position = new Vector3(
+            float.Parse(positionXInputField.text),
+            float.Parse(positionYInputField.text),
+            float.Parse(positionZInputField.text));
     }
 
     private void SetStaticCameraRotation()
     {
-        staticCamera.rotation = Quaternion.Euler(float.Parse(rotationXInputField.text), float.Parse(rotationYInputField.text), float.Parse(rotationZInputField.text));
+        if (staticCamera == null) return;
+        staticCamera.rotation = Quaternion.Euler(
+            float.Parse(rotationXInputField.text),
+            float.Parse(rotationYInputField.text),
+            float.Parse(rotationZInputField.text));
     }
+
 
     private void OnAvatarToggleValueChanged(bool value)
     {
         PlayerManager.Instance.DisplayAvatar(value);
     }
+
+    private void OnWorldCanvasEditToggleChanged(bool value)
+    {
+        if (worldSpaceUI != null) worldSpaceUI.gameObject.SetActive(value);
+    }
+
 
     private void SetWorldUIInputField()
     {
@@ -550,9 +679,9 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         WorldUIManager.Instance.Position = new Vector3(
             float.Parse(canvaUIPositionXInputField.text),
             float.Parse(canvaUIPositionYInputField.text),
-            float.Parse(canvaUIPositionZInputField.text)
-        );
+            float.Parse(canvaUIPositionZInputField.text));
         ConfigFileManager.Instance.SaveUICanvas(WorldUIManager.Instance.transform, WorldUIManager.Instance.BackgroundColor);
+        bridge?.MirrorCanvasUIPosition(WorldUIManager.Instance.Position);
     }
 
     private void SetWorldUIRotation()
@@ -560,29 +689,27 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         WorldUIManager.Instance.Rotation = new Vector3(
             float.Parse(canvaUIRotationXInputField.text),
             float.Parse(canvaUIRotationYInputField.text),
-            float.Parse(canvaUIRotationZInputField.text)
-        );
+            float.Parse(canvaUIRotationZInputField.text));
         ConfigFileManager.Instance.SaveUICanvas(WorldUIManager.Instance.transform, WorldUIManager.Instance.BackgroundColor);
+        bridge?.MirrorCanvasUIRotation(WorldUIManager.Instance.Rotation);
     }
 
     private void OnDisplayCanvaUIValueChanged(bool value)
     {
-        if (value)
-            WorldUIManager.Instance.DisplayText("Canva UI");
-        else
-            WorldUIManager.Instance.HideText();
+        if (value) WorldUIManager.Instance.DisplayText("Canva UI");
+        else       WorldUIManager.Instance.HideText();
+        bridge?.MirrorDisplayCanvasUIToggle(value);
     }
 
     private void OnCanvasUIColorPickerButtonPress()
     {
         if (flexibleColorPicker == null)
         {
-            var gameObject = GameObject.Instantiate(flexibleColorPickerPrefab, this.transform);
-
-            flexibleColorPicker = gameObject.GetComponent<FlexibleColorPicker>();
+            var go = Instantiate(flexibleColorPickerPrefab, this.transform);
+            flexibleColorPicker = go.GetComponent<FlexibleColorPicker>();
             flexibleColorPicker.color = WorldUIManager.Instance.BackgroundColor;
 
-            DestroyOnButtonClick destroyer = gameObject.GetComponent<DestroyOnButtonClick>();
+            var destroyer = go.GetComponent<DestroyOnButtonClick>();
             destroyer.OnBeforeDestroy += HandleBeforeDestroy;
 
             flexibleColorPicker.onColorChange.AddListener(OnCanvasUIColorChanged);
@@ -599,28 +726,90 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         canvaUIAlphaPreview.color = color;
         WorldUIManager.Instance.SetCurrentBackgoundColor(color);
         ConfigFileManager.Instance.SaveUICanvas(WorldUIManager.Instance.transform, WorldUIManager.Instance.BackgroundColor);
+        bridge?.MirrorCanvasUIColor(color);
     }
 
-    // ─── Scene ───────────────────────────────────────────────────────────────
+
+    /// <summary>Position caméra statique venant du WS canvas.</summary>
+    public void ApplyStaticCameraPositionFromWS(Vector3 pos)
+    {
+        if (staticCamera == null) return;
+        staticCamera.position = pos;
+        positionXInputField.SetTextWithoutNotify(pos.x.ToString("F3"));
+        positionYInputField.SetTextWithoutNotify(pos.y.ToString("F3"));
+        positionZInputField.SetTextWithoutNotify(pos.z.ToString("F3"));
+    }
+
+    /// <summary>Rotation caméra statique venant du WS canvas.</summary>
+    public void ApplyStaticCameraRotationFromWS(Vector3 euler)
+    {
+        if (staticCamera == null) return;
+        staticCamera.rotation = Quaternion.Euler(euler);
+        rotationXInputField.SetTextWithoutNotify(euler.x.ToString("F3"));
+        rotationYInputField.SetTextWithoutNotify(euler.y.ToString("F3"));
+        rotationZInputField.SetTextWithoutNotify(euler.z.ToString("F3"));
+    }
+
+    /// <summary>Avatar toggle venant du WS canvas.</summary>
+    public void ApplyAvatarToggleFromWS(bool value)
+    {
+        PlayerManager.Instance.DisplayAvatar(value);
+        avatarToggle.SetWithoutNotify(value);
+    }
+
+    /// <summary>Position World UI venant du WS canvas.</summary>
+    public void ApplyCanvasUIPositionFromWS(Vector3 pos)
+    {
+        WorldUIManager.Instance.Position = pos;
+        canvaUIPositionXInputField.SetTextWithoutNotify(pos.x.ToString("F3"));
+        canvaUIPositionYInputField.SetTextWithoutNotify(pos.y.ToString("F3"));
+        canvaUIPositionZInputField.SetTextWithoutNotify(pos.z.ToString("F3"));
+        ConfigFileManager.Instance.SaveUICanvas(WorldUIManager.Instance.transform, WorldUIManager.Instance.BackgroundColor);
+    }
+
+    /// <summary>Rotation World UI venant du WS canvas.</summary>
+    public void ApplyCanvasUIRotationFromWS(Vector3 euler)
+    {
+        WorldUIManager.Instance.Rotation = euler;
+        canvaUIRotationXInputField.SetTextWithoutNotify(euler.x.ToString("F3"));
+        canvaUIRotationYInputField.SetTextWithoutNotify(euler.y.ToString("F3"));
+        canvaUIRotationZInputField.SetTextWithoutNotify(euler.z.ToString("F3"));
+        ConfigFileManager.Instance.SaveUICanvas(WorldUIManager.Instance.transform, WorldUIManager.Instance.BackgroundColor);
+    }
+
+    /// <summary>Couleur World UI venant du WS canvas.</summary>
+    public void ApplyCanvasUIColorFromWS(Color color)
+    {
+        canvaUIAlphaPreview.color = color;
+        WorldUIManager.Instance.SetCurrentBackgoundColor(color);
+        ConfigFileManager.Instance.SaveUICanvas(WorldUIManager.Instance.transform, WorldUIManager.Instance.BackgroundColor);
+    }
+
+    /// <summary>Display toggle World UI venant du WS canvas.</summary>
+    public void ApplyDisplayCanvasUIFromWS(bool value)
+    {
+        displayCanvaUIToggle.SetWithoutNotify(value);
+        if (value) WorldUIManager.Instance.DisplayText("Stimulus Display");
+        else       WorldUIManager.Instance.HideText();
+    }
+
 
     private void InitSceneDropdown()
     {
         if (sceneDropdown == null) return;
 
         sceneDropdown.ClearOptions();
-
         var names = new List<string>();
         for (int i = 0; i < availableScenes.Count; i++)
             names.Add(availableScenes[i].Name);
 
         sceneDropdown.AddOptions(names);
         sceneDropdown.value = 0;
-        selectedSceneIndex = 0;
+        selectedSceneIndex  = 0;
+
+        bridge?.MirrorSceneDropdownOptions(names, 0);
     }
 
-    /// <summary>
-    /// Auto-loads the scene as soon as the dropdown value changes.
-    /// </summary>
     private void OnSceneDropdownValueChanged(int value)
     {
         selectedSceneIndex = value;
@@ -638,18 +827,18 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         }
 
         scene = availableScenes[selectedSceneIndex];
+        bridge?.MirrorSceneDropdownSelection(value);
         StartCoroutine(LoadScene());
     }
 
-    // ─── Status ──────────────────────────────────────────────────────────────
 
     private void SetStatus(string message, Color color)
     {
         Debug.Log($"[CanvasSetupPointCloudUI] {message}");
         if (statusText)
         {
-            statusText.text = statusLocalizedText.GetLocalizedString("• " + message);
+            statusText.text  = statusLocalizedText.GetLocalizedString("• " + message);
+            statusText.color = color;
         }
-
     }
 }
