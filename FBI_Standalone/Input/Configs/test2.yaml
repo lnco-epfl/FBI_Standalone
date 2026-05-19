@@ -1,6 +1,7 @@
 configName: test2
 createdAt: 2026-03-26 14:16:33
-lastModified: 2026-03-26 14:16:43
+lastModified: 2026-05-15 15:16:38
+uICanvas: 
 pointClouds:
 - iD: 1
   position:
@@ -17,8 +18,10 @@ pointClouds:
     z: 1
   depthMax: 3
   depthMin: 0.1
-  flipX: false
-  flipY: false
+  clampXMin: 0.4064974
+  clampXMax: 0.2494627
+  clampYMin: 0.476035
+  clampYMax: 0.6293043
 - iD: 2
   position:
     x: 0
@@ -34,5 +37,7 @@ pointClouds:
     z: 1
   depthMax: 3
   depthMin: 0.1
-  flipX: false
-  flipY: false
+  clampXMin: 0
+  clampXMax: 1
+  clampYMin: 0
+  clampYMax: 1

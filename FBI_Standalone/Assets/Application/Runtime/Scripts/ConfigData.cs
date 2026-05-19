@@ -79,9 +79,6 @@ public class ObjectTransformData
 {
     public int ID;
 
-    public SerializableVector3 cameraPosition;
-    public SerializableVector3 cameraRotation;
-
     public SerializableVector3 position;
     public SerializableVector3 rotation;
     public SerializableVector3 scale;
