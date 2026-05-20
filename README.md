@@ -356,7 +356,7 @@ Config files are YAML files located in `Input/Configs/`. They define the spatial
 configName: DefaultConfig
 createdAt: 2026-04-02 15:20:45
 lastModified: 2026-04-10 12:26:32
-uICanvas:
+stimulusDisplay:
   position:
     x: 0.11
     y: 0.68
@@ -398,14 +398,14 @@ pointClouds:
 
 ## UICanvas
 
-The `uICanvas` block defines the position, orientation and background color of the in-world UI panel displayed during the experiment.
+The `stimulusDisplay` block defines the position, orientation and background color of the in-world UI panel displayed during the experiment.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `position` | Vector3 | Position of the UI canvas in the scene |
-| `rotation` | Vector3 | Euler rotation of the UI canvas |
-| `scale` | Vector3 | Scale of the UI canvas |
-| `backgroundColor` | Color (r,g,b,a) | Background color of the canvas. Values are normalized floats between `0` and `1` |
+| `position` | Vector3 | Position of the display in the scene |
+| `rotation` | Vector3 | Euler rotation of the display |
+| `scale` | Vector3 | Scale of the display |
+| `backgroundColor` | Color (r,g,b,a) | Background color of the display. Values are normalized floats between `0` and `1` |
 
 ## Point Clouds
 
