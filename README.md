@@ -231,6 +231,34 @@ Plays an audio file from the `Input/Audio/` folder.
 
 ---
 
+### DisplayVideo
+Plays a video file from the `Input/Videos/` folder. Supported formats: MP4, WEBM, MOV. The step ends automatically when the video finishes, or after `duration` seconds as a fallback timeout if the video duration cannot be determined. If `looping` is enabled, the step runs until the `duration` timeout is reached.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `videoName` | string | Video filename without extension |
+| `looping` | bool | If `true`, the video loops until the duration timeout. Default: `false` |
+| `muteAudio` | bool | If `true`, the video plays without audio. Default: `false` |
+| `duration` | float | Fallback timeout in seconds, used when looping or if the video duration cannot be read |
+
+```yaml
+# Play a video once (ends automatically when finished)
+- stepType: DisplayVideo
+  videoName: "intro"
+  looping: false
+  muteAudio: false
+  duration: 60.0
+
+# Loop a video for 30 seconds
+- stepType: DisplayVideo
+  videoName: "background"
+  looping: true
+  muteAudio: true
+  duration: 30.0
+```
+
+---
+
 ### DisplayQuestion
 Displays a multiple-choice question and waits for a response.
 
@@ -328,6 +356,24 @@ Config files are YAML files located in `Input/Configs/`. They define the spatial
 configName: DefaultConfig
 createdAt: 2026-04-02 15:20:45
 lastModified: 2026-04-10 12:26:32
+uICanvas:
+  position:
+    x: 0.11
+    y: 0.68
+    z: 2.47
+  rotation:
+    x: 0
+    y: 23.2
+    z: 0
+  scale:
+    x: 1
+    y: 1
+    z: 1
+  backgroundColor:
+    r: 0
+    g: 0
+    b: 0
+    a: 1
 pointClouds:
   - iD: 1
     position:
@@ -344,22 +390,26 @@ pointClouds:
       z: 1
     depthMax: 3.47
     depthMin: 0
-  - iD: 2
-    position:
-      x: 0
-      y: 1.97
-      z: 0.97
-    rotation:
-      x: 53.51
-      y: 180
-      z: 0
-    scale:
-      x: -1
-      y: 1
-      z: 1
-    depthMax: 3.47
-    depthMin: 0.1
+    clampXMin: 0.0
+    clampXMax: 1.0
+    clampYMin: 0.0
+    clampYMax: 1.0
 ```
+
+## UICanvas
+
+The `uICanvas` block defines the position, orientation and background color of the in-world UI panel displayed during the experiment.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `position` | Vector3 | Position of the UI canvas in the scene |
+| `rotation` | Vector3 | Euler rotation of the UI canvas |
+| `scale` | Vector3 | Scale of the UI canvas |
+| `backgroundColor` | Color (r,g,b,a) | Background color of the canvas. Values are normalized floats between `0` and `1` |
+
+## Point Clouds
+
+The `pointClouds` list defines the spatial configuration, depth settings and spatial clipping for each camera.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -369,6 +419,10 @@ pointClouds:
 | `scale` | Vector3 | Scale of the point cloud. Use `-1` on X or Y to flip the axis |
 | `depthMax` | float | Maximum depth distance captured by the camera (in meters) |
 | `depthMin` | float | Minimum depth distance captured by the camera (in meters) |
+| `clampXMin` | float | Left boundary of the visible area, as a normalized value between `0` and `1` |
+| `clampXMax` | float | Right boundary of the visible area, as a normalized value between `0` and `1` |
+| `clampYMin` | float | Bottom boundary of the visible area, as a normalized value between `0` and `1` |
+| `clampYMax` | float | Top boundary of the visible area, as a normalized value between `0` and `1` |
 
 Config files can be created and edited directly through the application GUI, which saves changes automatically.
 
