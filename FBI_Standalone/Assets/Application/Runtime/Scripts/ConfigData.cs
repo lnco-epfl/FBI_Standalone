@@ -128,11 +128,11 @@ public class ConfigFile
     public string createdAt = "";
     public string lastModified = "";
 
-    public UITransformData UICanvas;
+    public UITransformData stimulusDisplay;
     public List<ObjectTransformData> pointClouds = new List<ObjectTransformData>();
 
     public override string ToString()
     {
-        return $"ConfigFile(configName={configName}, createdAt={createdAt}, lastModified={lastModified}, UICanvas=[{UICanvas}], pointClouds=[{string.Join(", ", pointClouds)}])";
+        return $"ConfigFile(configName={configName}, createdAt={createdAt}, lastModified={lastModified}, UICanvas=[{stimulusDisplay}], pointClouds=[{string.Join(", ", pointClouds)}])";
     }
 }
