@@ -58,22 +58,3 @@ pointClouds:
   clampXMax: 0.3796241
   clampYMin: 0.8476286
   clampYMax: 0.4498739
-- iD: 0
-  position:
-    x: 0
-    y: 0
-    z: 0
-  rotation:
-    x: 0
-    y: 0
-    z: 0
-  scale:
-    x: -1
-    y: -1
-    z: 1
-  depthMax: 0.7088241
-  depthMin: 0.6158895
-  clampXMin: 0.5422649
-  clampXMax: 0.1591993
-  clampYMin: 0
-  clampYMax: 0

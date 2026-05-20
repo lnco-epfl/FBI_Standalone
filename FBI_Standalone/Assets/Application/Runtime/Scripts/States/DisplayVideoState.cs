@@ -23,19 +23,16 @@ public class DisplayVideoState : IState
             yield break;
         }
 
-        EventFileManager.Log($"[DisplayVideoState] DisplayVideo {step.videoName} for {step.displayDuration}s");
-
         float timeout = step.displayDuration;
 
         WorldUIManager.Instance.DisplayVideo(videoPath, step.looping, step.muteAudio,
-            onFinished: () =>
+            onFinished: () => videoFinished = true,
+            onReady: (duration) =>
             {
-                videoFinished = true;
-            },
-            onReady: (duration) =>                  
-            {
-                timeout = duration;
-                EventFileManager.Log($"[DisplayVideoState] DisplayVideo {step.videoName} duration={duration:F2}s");
+                if (!step.looping)
+                    timeout = duration;
+
+                EventFileManager.Log($"[DisplayVideoState] DisplayVideo {step.videoName} duration={duration:F2}s looping={step.looping}");
             }
         );
 
