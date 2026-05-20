@@ -140,7 +140,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         avatarToggle.onValueChanged.AddListener(OnAvatarToggleValueChanged);
 
-        if (worldCanvasEditToggle) worldCanvasEditToggle.onValueChanged.AddListener(OnWorldCanvasEditToggleChanged);
+        worldCanvasEditToggle.onValueChanged.AddListener(OnWorldCanvasEditToggleChanged);
 
         displayCanvaUIToggle.onValueChanged.AddListener(OnDisplayCanvaUIValueChanged);
         canvaUIColorPickerButton.onClick.AddListener(OnCanvasUIColorPickerButtonPress);
@@ -156,8 +156,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         ConfigFileManager.Instance.OnConfigSaved  += OnConfigSaved;
         SceneLoaderManager.Instance.OnSceneLoaded += OnSceneLoaded;
 
-        if (sceneDropdown != null)
-            sceneDropdown.onValueChanged.AddListener(OnSceneDropdownValueChanged);
+        sceneDropdown.onValueChanged.AddListener(OnSceneDropdownValueChanged);
     }
 
     private void OnDisable()
@@ -184,7 +183,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         avatarToggle.onValueChanged.RemoveListener(OnAvatarToggleValueChanged);
 
-        if (worldCanvasEditToggle) worldCanvasEditToggle.onValueChanged.RemoveListener(OnWorldCanvasEditToggleChanged);
+        worldCanvasEditToggle.onValueChanged.RemoveListener(OnWorldCanvasEditToggleChanged);
 
         displayCanvaUIToggle.onValueChanged.RemoveListener(OnDisplayCanvaUIValueChanged);
         canvaUIColorPickerButton.onClick.RemoveListener(OnCanvasUIColorPickerButtonPress);
@@ -200,8 +199,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         ConfigFileManager.Instance.OnConfigSaved  -= OnConfigSaved;
         SceneLoaderManager.Instance.OnSceneLoaded -= OnSceneLoaded;
 
-        if (sceneDropdown != null)
-            sceneDropdown.onValueChanged.RemoveListener(OnSceneDropdownValueChanged);
+        sceneDropdown.onValueChanged.RemoveListener(OnSceneDropdownValueChanged);
 
         foreach (var entry in pointCloudEntries)
             entry.OnDisplayToggleRequested -= OnDisplayToggleRequested;
@@ -659,7 +657,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void OnWorldCanvasEditToggleChanged(bool value)
     {
-        if (worldSpaceUI != null) worldSpaceUI.gameObject.SetActive(value);
+        PlayerManager.Instance.DisplayControllers(value);
+        worldSpaceUI.gameObject.SetActive(value);
     }
 
 
