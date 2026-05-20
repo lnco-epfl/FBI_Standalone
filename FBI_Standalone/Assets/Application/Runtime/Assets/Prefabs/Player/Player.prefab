@@ -47,8 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Application::PlayerManager
   avatar: {fileID: 8288671142501549417}
-  leftController: {fileID: 0}
-  rightController: {fileID: 0}
+  leftController: {fileID: 6615892060668190718}
+  rightController: {fileID: 3658499367109395406}
 --- !u!1 &5594756713832329693
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,6 +152,16 @@ PrefabInstance:
 --- !u!4 &2019329133508235343 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5366232192436624926, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+  m_PrefabInstance: {fileID: 6232619710008544849}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3658499367109395406 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7258447248447786399, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+  m_PrefabInstance: {fileID: 6232619710008544849}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6615892060668190718 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 985980852143657391, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
   m_PrefabInstance: {fileID: 6232619710008544849}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &8288671142501549417 stripped
