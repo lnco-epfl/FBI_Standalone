@@ -6,6 +6,7 @@
   * [How to use](#how-to-use)
   * [Input Files](#input-files)
   * [Sequence Files](#sequence-files)
+  * [Config Editor](#config-editor)
   * [Config Files](#config-files)
   * [Output Files](#output-files)
   * [GUI](#gui)
@@ -348,6 +349,112 @@ steps:
     duration: 4.0
 ```
 
+# Config Editor
+ 
+The Config Editor is a dedicated interface for creating and editing camera configuration files. It can be opened from the main GUI and provides a real-time preview of the scene from the participant's perspective.
+
+ <img width="1932" height="1098" alt="Capture d&#39;écran 2026-05-20 080347" src="https://github.com/user-attachments/assets/fa9f5c5f-4c59-4a78-8a3d-d2e0d53dd35c" />
+
+ 
+## Toolbar
+ 
+| Button | Description |
+|--------|-------------|
+| **New** | Creates a new empty configuration |
+| **Open** | Opens an existing config file from disk via a file browser |
+| **Save** | Saves the current configuration to disk |
+| **Save as...** | Saves the current configuration under a new name and location |
+| **≡** (menu) | Opens a menu with clipboard options: **Copy** to copy the current configuration as YAML to the clipboard, and **Paste** to load a configuration from the clipboard |
+| **Scene** | Dropdown to select which Unity scene to load in the preview (e.g. `EmptyRoom`) |
+ 
+On the left of the status indicator, the name of the currently loaded config file is displayed. The status indicator shows a message reflecting the current state of the editor:
+ 
+| Message | Color | Description |
+|---------|-------|-------------|
+| `No config loaded.` | Grey | Initial state at startup, no config is active |
+| `Ready.` | Grey | Config is loaded and no pending changes |
+| `Unsaved changes.` | Yellow | The config has been modified but not yet saved — displayed continuously until saved |
+| `Opened {filename}` | Green | A config file was successfully opened from disk |
+| `Saved as {filename}` | Green | The config was successfully saved under a new name |
+| `Config copied to clipboard.` | Green | The config was successfully copied to the clipboard |
+| `Config pasted from clipboard.` | Green | A config was successfully loaded from the clipboard |
+| `Open cancelled.` | Grey | The file browser was closed without selecting a file |
+| `Save cancelled.` | Grey | The save dialog was closed without saving |
+| `Clipboard is empty.` | Red | Paste was attempted but the clipboard contains nothing |
+| `Clipboard content is invalid.` | Red | Paste was attempted but the clipboard content is not a valid config |
+| `Failed to save file.` | Red | An error occurred while saving to disk |
+| `Failed to read file.` | Red | An error occurred while reading a file from disk |
+| `Invalid file format.` | Red | The opened file is not a valid config YAML |
+
+ 
+## Camera Panels (Camera 1, Camera 2, ...)
+ 
+One panel is displayed per connected camera. Each panel contains the following controls.
+ 
+**Display toggle** — enables or disables the real-time point cloud preview for that camera. Only one camera can be displayed at a time.
+ 
+### Transform
+Controls the position and rotation of the point cloud in the 3D scene.
+ 
+| Control | Description |
+|---------|-------------|
+| **Position X / Y / Z** | Position of the point cloud in world space |
+| **Rotation X / Y / Z** | Euler rotation of the point cloud |
+ 
+### Depth
+Controls the depth range captured by the camera. Points outside this range are discarded.
+ 
+| Control | Description |
+|---------|-------------|
+| **Max** | Maximum capture depth in meters (0–10 m) |
+| **Min** | Minimum capture depth in meters (0–10 m) |
+ 
+### Clamp
+Crops the visible area of the point cloud along X and Y axes. Values are normalized between `0` and `1`, where `0` is the left/bottom edge and `1` is the right/top edge of the camera frame.
+ 
+| Control | Description |
+|---------|-------------|
+| **X Min / X Max** | Left and right crop boundaries |
+| **Y Min / Y Max** | Bottom and top crop boundaries |
+ 
+### Mirror
+Flips the point cloud along a given axis.
+ 
+| Button | Description |
+|--------|-------------|
+| **↔ Horizontal** | Flips the point cloud horizontally (X axis) |
+| **↕ Vertical** | Flips the point cloud vertically (Y axis) |
+ 
+## Stimulus Display
+ 
+The **Stimulus Display** section controls the position and appearance of the in-world UI canvas — the panel used to display text, images, questions, and other stimuli to the participant.
+ 
+| Control | Description |
+|---------|-------------|
+| **Display toggle** | Shows or hides the stimulus display canvas in the preview |
+| **Position X / Y / Z** | Position of the canvas in world space |
+| **Rotation Y** | Vertical rotation of the canvas |
+| **Background color** | Background color of the canvas (click to open a color picker) |
+ 
+## Preview Panel (right side)
+ 
+The right side of the Config Editor shows a live preview of the scene split into two viewports.
+ 
+| Viewport | Description |
+|----------|-------------|
+| **Participant view** | First-person view from the VR headset's perspective. Reflects the actual experience seen by the participant |
+| **Static view** | Fixed camera view of the scene, useful for monitoring the overall layout |
+ 
+Additional controls in the preview panel:
+ 
+| Control | Description |
+|---------|-------------|
+| **VR edition** toggle | Enables editing mode inside the VR headset, allowing the researcher to adjust the config while wearing the headset |
+| **Reset Headset Orientation** | Resets the headset's forward direction to the current facing direction |
+| **Display Avatar** toggle | Shows or hides a body avatar in the scene |
+| **Camera Position / Rotation** | Displays the current position and rotation of the static preview camera (read-only) |
+ 
+
 # Config Files
 
 Config files are YAML files located in `Input/Configs/`. They define the spatial configuration and depth settings for each Azure Kinect camera's point cloud.
@@ -396,7 +503,7 @@ pointClouds:
     clampYMax: 1.0
 ```
 
-## UICanvas
+## Stimulus Display
 
 The `stimulusDisplay` block defines the position, orientation and background color of the in-world UI panel displayed during the experiment.
 
@@ -492,11 +599,6 @@ There are two types of output files:
 
 
 <img width="1607" height="912" alt="1294" src="https://github.com/user-attachments/assets/a671e382-7cb6-4912-83de-cecffbcbfcc7" />
-
-## Config file GUI
-
-<img width="1607" height="912" alt="708" src="https://github.com/user-attachments/assets/071ecd7a-3c6a-4c21-b2e7-4a3235ef9db1" />
-
 
 # Authors
 
