@@ -334,8 +334,8 @@ public class ConfigFileManager : MonoBehaviour
     {
         if (CurrentConfig == null) { EventFileManager.Log("[ConfigFileManager] No active config."); return; }
 
-        CurrentConfig.UICanvas = new UITransformData(t);
-        CurrentConfig.UICanvas.backgroundColor = new SerializableColor(backgroundColor);
+        CurrentConfig.stimulusDisplay = new UITransformData(t);
+        CurrentConfig.stimulusDisplay.backgroundColor = new SerializableColor(backgroundColor);
 
         if (saveImmediately) Save();
     }

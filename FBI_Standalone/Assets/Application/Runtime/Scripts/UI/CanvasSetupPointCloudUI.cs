@@ -538,11 +538,11 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
                 data.scale.y == -1);
         }
 
-        if (file.UICanvas != null)
+        if (file.stimulusDisplay != null)
         {
-            file.UICanvas.ApplyTo(WorldUIManager.Instance.transform);
+            file.stimulusDisplay.ApplyTo(WorldUIManager.Instance.transform);
 
-            var color = file.UICanvas.backgroundColor?.ToColor() ?? Color.black;
+            var color = file.stimulusDisplay.backgroundColor?.ToColor() ?? Color.black;
             WorldUIManager.Instance.SetCurrentBackgoundColor(color);
             WorldUIManager.Instance.BackgroundColor = color;
             canvaUIAlphaPreview.color = color;
