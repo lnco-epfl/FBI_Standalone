@@ -1,6 +1,6 @@
 configName: 1PP
 createdAt: 2026-05-07 14:14:56
-lastModified: 2026-05-21 13:36:13
+lastModified: 2026-05-21 14:21:12
 stimulusDisplay:
   position:
     x: 0
@@ -15,14 +15,14 @@ stimulusDisplay:
     y: 1
     z: 1
   backgroundColor:
-    r: 0.165923
-    g: 0.1079616
+    r: 0
+    g: 0
     b: 0
-    a: 1
+    a: 0.8843256
 pointClouds:
 - iD: 1
   position:
-    x: 0.01072705
+    x: 0
     y: 0
     z: 0
   rotation:
@@ -41,20 +41,20 @@ pointClouds:
   clampYMax: 0.4077484
 - iD: 2
   position:
-    x: 0
-    y: 1.050336
-    z: 1.924489
+    x: 0.4
+    y: 1.66
+    z: 1.72
   rotation:
-    x: 331.9962
-    y: 24.20363
-    z: 301.4346
+    x: 332.4
+    y: 23.6
+    z: 303.05
   scale:
-    x: -1
+    x: 1
     y: 1
     z: 1
-  depthMax: 7.060299
-  depthMin: 2.724762
-  clampXMin: 0.5591808
-  clampXMax: 0.4588739
-  clampYMin: 0.50374
-  clampYMax: 0.477282
+  depthMax: 3.883522
+  depthMin: 0
+  clampXMin: 0
+  clampXMax: 0.7225603
+  clampYMin: 0
+  clampYMax: 1

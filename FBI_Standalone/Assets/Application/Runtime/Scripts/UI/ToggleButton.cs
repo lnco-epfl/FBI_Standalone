@@ -16,6 +16,11 @@ public class ToggleButton : MonoBehaviour
 
     private void OnEnable()
     {
+        if (toggle == null)
+        {
+            Awake();
+        }
+
         toggle.onValueChanged.AddListener(OnValueChanged);
     }
 
@@ -26,6 +31,11 @@ public class ToggleButton : MonoBehaviour
 
     public void OnValueChanged(bool value)
     {
+        if(animator == null)
+        {
+            Awake();
+        }
+
         animator.SetBool("IsOn", value);
     }
 
