@@ -1,0 +1,24 @@
+configName: new_config
+createdAt: 2026-05-21 11:39:34
+lastModified: 2026-05-21 11:40:54
+stimulusDisplay: 
+pointClouds:
+- iD: 1
+  position:
+    x: 0.22
+    y: -0.08
+    z: 1.47
+  rotation:
+    x: 5.41
+    y: 1.08
+    z: 0.43
+  scale:
+    x: -1
+    y: 1
+    z: 1
+  depthMax: 5.776803
+  depthMin: 5.313354
+  clampXMin: 0.07560861
+  clampXMax: 0.7707851
+  clampYMin: 0.1837472
+  clampYMax: 0.7939575

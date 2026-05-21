@@ -239,6 +239,30 @@ MonoBehaviour:
     m_Key: setuppointcloud-title-vr
     m_Metadata:
       m_Items: []
+  - m_Id: 118909508666265600
+    m_Key: 'position-x '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118909537153978368
+    m_Key: position-y
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118909564140130304
+    m_Key: position-z
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118909799285395456
+    m_Key: rotation-x
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118909840678981632
+    m_Key: rotation-y
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118909856625725440
+    m_Key: rotation-z
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

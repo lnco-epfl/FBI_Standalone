@@ -2916,17 +2916,6 @@
                 },
                 {
                     "name": "",
-                    "id": "0e3252a9-8fd3-47fc-9e3f-96b04d4b6892",
-                    "path": "<XRController>/trigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "XR",
-                    "action": "Click",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "d8e97d3e-4fb5-4de5-851e-bf46c66ba2e1",
                     "path": "<Mouse>/scroll",
                     "interactions": "",

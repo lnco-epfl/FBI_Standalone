@@ -10,6 +10,9 @@ public class WorldSpacePointCloudUI : MonoBehaviour
     [SerializeField] private GameObject pointCloudEntryPrefab;
     [SerializeField] private Transform  pointCloudContainer;
 
+    [Header("Status")]
+    [SerializeField] private TMP_Text currentFileNameText;
+
     [Header("Canvas UI")]
     [SerializeField] private UISwitcher.UISwitcher displayCanvaUIToggle;
     [SerializeField] private Image  canvaUIAlphaPreview;
@@ -29,14 +32,16 @@ public class WorldSpacePointCloudUI : MonoBehaviour
     [Header("Color Picker")]
     [SerializeField] private GameObject flexibleColorPickerPrefab;
 
-    private PointCloudUIBridge              bridge;
-    private FlexibleColorPicker             flexibleColorPicker;
+    private PointCloudUIBridge bridge;
+    private FlexibleColorPicker flexibleColorPicker;
     private List<WorldSpacePointCloudEntry> wsEntries = new List<WorldSpacePointCloudEntry>();
 
     private void Awake()
     {
         gameObject.SetActive(false);
         SetupCanvasUISliders();
+
+        GetComponent<Canvas>().worldCamera = Camera.main;
     }
 
     private void SetupCanvasUISliders()
@@ -113,6 +118,8 @@ public class WorldSpacePointCloudUI : MonoBehaviour
         if (flexibleColorPicker != null || flexibleColorPickerPrefab == null) return;
 
         var go = Instantiate(flexibleColorPickerPrefab, transform);
+        //go.transform.position = new Vector3(425.0f, -475.0f, 0.0f);
+
         flexibleColorPicker = go.GetComponent<FlexibleColorPicker>();
         flexibleColorPicker.color = canvaUIAlphaPreview != null ? canvaUIAlphaPreview.color : Color.white;
 
@@ -124,7 +131,10 @@ public class WorldSpacePointCloudUI : MonoBehaviour
 
     private void OnColorChanged(Color color)
     {
-        if (canvaUIAlphaPreview) canvaUIAlphaPreview.color = color;
+        if (canvaUIAlphaPreview)
+        {
+            canvaUIAlphaPreview.color = color;
+        }
         bridge?.RequestCanvasUIColor(color);
     }
 
@@ -205,9 +215,18 @@ public class WorldSpacePointCloudUI : MonoBehaviour
         if (flexibleColorPicker != null) flexibleColorPicker.color = color;
     }
 
+    public void MirrorEntryClamp(int index, float xMin, float xMax, float yMin, float yMax)
+    {
+        if (index < 0 || index >= wsEntries.Count) return;
+        wsEntries[index].SetClamp(xMin, xMax, yMin, yMax);
+    }
+
     // Stubs for bridge compatibility
     public void MirrorStatus(string message, Color color) { }
-    public void MirrorFileName(string name) { }
+    public void MirrorFileName(string name)
+    {
+        if (currentFileNameText) currentFileNameText.text = name ?? "";
+    }
     public void MirrorSceneDropdownOptions(List<string> options, int selectedIndex) { }
     public void MirrorSceneDropdownSelection(int index) { }
 

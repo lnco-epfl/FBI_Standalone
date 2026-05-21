@@ -5,14 +5,13 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 [RequireComponent(typeof(UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable))]
 public class VRCanvasDragger : MonoBehaviour
 {
-    [SerializeField] private float fixedDistance = 0f;
     [SerializeField] private float positionSmoothing = 20f;
     [SerializeField] private float rotationSmoothing = 20f;
 
     private UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable interactable;
     private IXRSelectInteractor  currentInteractor;
 
-    private float grabDistance;
+    private Vector3 grabOffset;
     private float grabYawOffset;
     private bool  isDragging;
 
@@ -36,44 +35,40 @@ public class VRCanvasDragger : MonoBehaviour
     private void OnSelectEntered(SelectEnterEventArgs args)
     {
         currentInteractor = args.interactorObject;
-        isDragging        = true;
+        isDragging = true;
 
         Transform hand = currentInteractor.GetAttachTransform(interactable);
-        grabDistance   = fixedDistance > 0f ? fixedDistance : Vector3.Distance(hand.position, transform.position);
 
-        // Store the Y rotation offset between hand and canvas at grab time
-        float handYaw   = hand.eulerAngles.y;
+        grabOffset = transform.position - hand.position;
+
+        float handYaw = hand.eulerAngles.y;
         float canvasYaw = transform.eulerAngles.y;
-        grabYawOffset   = canvasYaw - handYaw;
+        grabYawOffset = canvasYaw - handYaw;
     }
 
     private void OnSelectExited(SelectExitEventArgs args)
     {
-        isDragging        = false;
+        isDragging = false;
         currentInteractor = null;
     }
 
     private void Update()
     {
-        if (!isDragging || currentInteractor == null) return;
+        if (!isDragging || currentInteractor == null)
+        {
+            return;
+        }
 
         Transform hand = currentInteractor.GetAttachTransform(interactable);
 
-        // Position: follow hand forward at grab distance
-        Vector3 targetPosition = hand.position + hand.forward * grabDistance;
+        Vector3 targetPosition = hand.position + grabOffset;
 
-        // Rotation: Y only — canvas stays perfectly upright
-        float targetYaw     = hand.eulerAngles.y + grabYawOffset;
+        float targetYaw = hand.eulerAngles.y + grabYawOffset;
         Quaternion targetRot = Quaternion.Euler(0f, targetYaw, 0f);
 
-        if (positionSmoothing > 0f)
-            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * positionSmoothing);
-        else
-            transform.position = targetPosition;
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * positionSmoothing);
 
-        if (rotationSmoothing > 0f)
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * rotationSmoothing);
-        else
-            transform.rotation = targetRot;
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * rotationSmoothing);
+
     }
 }
