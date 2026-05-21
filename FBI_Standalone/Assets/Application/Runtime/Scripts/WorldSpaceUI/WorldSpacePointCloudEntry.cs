@@ -40,13 +40,15 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
 
     public int CameraId { get; private set; }
 
-    private PointCloudUIEntry        pairedOverlayEntry;
-    private Kinect4AzureInterface    kinectInterface;
+    private PointCloudUIEntry pairedOverlayEntry;
+    private Kinect4AzureInterface kinectInterface;
 
     private void Awake()
     {
         if (displayPointCloudToggle == null)
+        {
             displayPointCloudToggle = GetComponentInChildren<UISwitcher.UISwitcher>();
+        }    
     }
 
     public void Init(int cameraId)
@@ -54,13 +56,14 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
         CameraId = cameraId;
 
         if (titleText && titleLocalizedString != null)
+        {
             titleText.text = titleLocalizedString.GetLocalizedString(cameraId);
+        }
 
         SetupPositionSliders();
         SetupRotationSliders();
 
-        var sensorData = KinectManager.Instance != null && KinectManager.Instance.IsInitialized()
-            ? KinectManager.Instance.GetSensorData(cameraId - 1) : null;
+        var sensorData = KinectManager.Instance != null && KinectManager.Instance.IsInitialized() ? KinectManager.Instance.GetSensorData(cameraId - 1) : null;
 
         if (sensorData?.sensorInterface != null)
         {
@@ -289,4 +292,5 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
         scale.y = Mathf.Abs(scale.y) * (flipY ? -1f : 1f);
         t.localScale = scale;
     }
+
 }

@@ -12,6 +12,7 @@ using UnityEngine.Localization;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 using UnityEngine.VFX;
+using static UnityEngine.EventSystems.EventTrigger;
 
 
 public class CanvasSetupPointCloudUI : MonoBehaviour
@@ -231,98 +232,118 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             return;
         }
 
-        var wsGo = Instantiate(worldSpaceCanvasPrefab);
-        wsGo.name = "WorldSpacePointCloudCanvas";
-        worldSpaceUI = wsGo.GetComponent<WorldSpacePointCloudUI>();
+        var worldSpaceCanvas = Instantiate(worldSpaceCanvasPrefab);
+        worldSpaceCanvas.name = "WorldSpacePointCloudCanvas";
+
+        worldSpaceUI = worldSpaceCanvas.GetComponent<WorldSpacePointCloudUI>();
+
+        ResetWorldSpaceCanvasPositionAndRotation();
 
         if (worldSpaceUI == null)
         {
             Debug.LogError("[CanvasSetupPointCloudUI] Prefab is missing WorldSpacePointCloudUI component!");
-            Destroy(wsGo);
+            Destroy(worldSpaceCanvas);
             return;
         }
 
         var bridgeGo = new GameObject("PointCloudUIBridge");
+
         bridge = bridgeGo.AddComponent<PointCloudUIBridge>();
         bridge.Initialize(this, worldSpaceUI, switchDelay);
+
         worldSpaceUI.SetBridge(bridge);
         worldSpaceUI.gameObject.SetActive(false);
-        if (worldCanvasEditToggle) worldCanvasEditToggle.SetWithoutNotify(false);
+
+        if (worldCanvasEditToggle)
+        {
+            worldCanvasEditToggle.SetWithoutNotify(false);
+        }
     }
 
+    private void ResetWorldSpaceCanvasPositionAndRotation()
+    {
+        worldSpaceUI.transform.position = new Vector3(-1.0f, 1.0f, 1.0f);
+        worldSpaceUI.transform.rotation = Quaternion.Euler(0.0f, -45.0f, 0.0f);
+    }
 
     private void OnNewConfigButtonClick()
     {
-        var paths = StandaloneFileBrowser.SaveFilePanel("New config", ConfigFileManager.Instance.GetRootPath(), "new_config", "yaml");
-
-        if (string.IsNullOrEmpty(paths))
+        StandaloneFileBrowser.SaveFilePanelAsync("New config", ConfigFileManager.Instance.GetRootPath(), "new_config", "yaml", (paths) =>
         {
-            SetStatus("New config cancelled.", Color.grey);
-            bridge?.MirrorStatus("New config cancelled.", Color.grey);
-            return;
-        }
+            if (string.IsNullOrEmpty(paths))
+            {
+                SetStatus("New config cancelled.", Color.grey);
+                bridge?.MirrorStatus("New config cancelled.", Color.grey);
+                return;
+            }
 
-        string configName = System.IO.Path.GetFileNameWithoutExtension(paths);
-        ConfigFileManager.Instance.CreateNew(configName);
+            string configName = System.IO.Path.GetFileNameWithoutExtension(paths);
+            ConfigFileManager.Instance.CreateNew(configName);
 
-        foreach (var entry in pointCloudEntries)
-        {
-            entry.ResetToDefaults();
-            entry.SetInteractable(true);
-        }
+            foreach (var entry in pointCloudEntries)
+            {
+                entry.ResetToDefaults();
+                entry.SetInteractable(true);
+            }
 
-        foreach (var entry in pointCloudEntries)
-            entry.ForceApplyAndSave();
+            foreach (var entry in pointCloudEntries)
+                entry.ForceApplyAndSave();
 
-        bool saved = ConfigFileManager.Instance.SaveAs(paths);
+            bool saved = ConfigFileManager.Instance.SaveAs(paths);
 
-        if (saved)
-        {
-            selectedConfig = configName;
-            UpdateFileNameDisplay();
-            SetStatus($"Created {configName}", Color.green);
-            bridge?.MirrorFileName(configName);
-            bridge?.MirrorStatus($"Created {configName}", Color.green);
-            bridge?.MirrorEntryInteractable(true);
-        }
-        else
-        {
-            SetStatus("Failed to save file.", Color.red);
-            bridge?.MirrorStatus("Failed to save file.", Color.red);
-        }
+            if (saved)
+            {
+                selectedConfig = configName;
+                UpdateFileNameDisplay();
+                SetStatus($"Created {configName}", Color.green);
+                bridge?.MirrorFileName(configName);
+                bridge?.MirrorStatus($"Created {configName}", Color.green);
+                bridge?.MirrorEntryInteractable(true);
+            }
+            else
+            {
+                SetStatus("Failed to save file.", Color.red);
+                bridge?.MirrorStatus("Failed to save file.", Color.red);
+            }
+        });
+
+    
     }
 
     private void OnOpenConfigButtonClick()
     {
-        var paths = StandaloneFileBrowser.OpenFilePanel("Open config", ConfigFileManager.Instance.GetRootPath(), "yaml", false);
-
-        if (paths == null || paths.Length == 0 || string.IsNullOrEmpty(paths[0]))
+        StandaloneFileBrowser.OpenFilePanelAsync("Open config", ConfigFileManager.Instance.GetRootPath(), "yaml", false, (paths) =>
         {
-            SetStatus("Open cancelled.", Color.grey);
-            bridge?.MirrorStatus("Open cancelled.", Color.grey);
-            return;
-        }
+            if (paths == null || paths.Length == 0 || string.IsNullOrEmpty(paths[0]))
+            {
+                SetStatus("Open cancelled.", Color.grey);
+                bridge?.MirrorStatus("Open cancelled.", Color.grey);
+                return;
+            }
 
-        var config = ConfigFileManager.Instance.LoadFromPath(paths[0]);
+            var config = ConfigFileManager.Instance.LoadFromPath(paths[0]);
 
-        if (config != null)
-        {
-            selectedConfig = config.configName;
-            UpdateFileNameDisplay();
+            if (config != null)
+            {
+                selectedConfig = config.configName;
+                UpdateFileNameDisplay();
 
-            foreach (var entry in pointCloudEntries)
-                entry.SetInteractable(true);
+                foreach (var entry in pointCloudEntries)
+                    entry.SetInteractable(true);
 
-            SetStatus($"Opened {selectedConfig}", Color.green);
-            bridge?.MirrorFileName(selectedConfig);
-            bridge?.MirrorStatus($"Opened {selectedConfig}", Color.green);
-            bridge?.MirrorEntryInteractable(true);
-        }
-        else
-        {
-            SetStatus("Failed to read file.", Color.red);
-            bridge?.MirrorStatus("Failed to read file.", Color.red);
-        }
+                SetStatus($"Opened {selectedConfig}", Color.green);
+                bridge?.MirrorFileName(selectedConfig);
+                bridge?.MirrorStatus($"Opened {selectedConfig}", Color.green);
+                bridge?.MirrorEntryInteractable(true);
+            }
+            else
+            {
+                SetStatus("Failed to read file.", Color.red);
+                bridge?.MirrorStatus("Failed to read file.", Color.red);
+            }
+        });
+
+       
     }
 
     private void OnSaveButtonClick()
@@ -351,30 +372,33 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         }
 
         string defaultName = selectedConfig ?? "config";
-        var path = StandaloneFileBrowser.SaveFilePanel("Save config as", ConfigFileManager.Instance.GetRootPath(), defaultName, "yaml");
-
-        if (string.IsNullOrEmpty(path))
+        StandaloneFileBrowser.SaveFilePanelAsync("Save config as", ConfigFileManager.Instance.GetRootPath(), defaultName, "yaml", (path) =>
         {
-            SetStatus("Save cancelled.", Color.grey);
-            bridge?.MirrorStatus("Save cancelled.", Color.grey);
-            return;
-        }
+            if (string.IsNullOrEmpty(path))
+            {
+                SetStatus("Save cancelled.", Color.grey);
+                bridge?.MirrorStatus("Save cancelled.", Color.grey);
+                return;
+            }
 
-        bool saved = ConfigFileManager.Instance.SaveAs(path);
+            bool saved = ConfigFileManager.Instance.SaveAs(path);
 
-        if (saved)
-        {
-            selectedConfig = System.IO.Path.GetFileNameWithoutExtension(path);
-            UpdateFileNameDisplay();
-            SetStatus($"Saved as {selectedConfig}", Color.green);
-            bridge?.MirrorFileName(selectedConfig);
-            bridge?.MirrorStatus($"Saved as {selectedConfig}", Color.green);
-        }
-        else
-        {
-            SetStatus("Failed to save file.", Color.red);
-            bridge?.MirrorStatus("Failed to save file.", Color.red);
-        }
+            if (saved)
+            {
+                selectedConfig = System.IO.Path.GetFileNameWithoutExtension(path);
+                UpdateFileNameDisplay();
+                SetStatus($"Saved as {selectedConfig}", Color.green);
+                bridge?.MirrorFileName(selectedConfig);
+                bridge?.MirrorStatus($"Saved as {selectedConfig}", Color.green);
+            }
+            else
+            {
+                SetStatus("Failed to save file.", Color.red);
+                bridge?.MirrorStatus("Failed to save file.", Color.red);
+            }
+        });
+
+      
     }
 
 
@@ -428,7 +452,14 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     private void ClearPointCloudEntry()
     {
         foreach (var entry in pointCloudEntries)
+        {
             entry.OnDisplayToggleRequested -= OnDisplayToggleRequested;
+            entry.OnTransformChanged -= OnEntryTransformChanged;
+            entry.OnMaxDepthChanged -= OnEntryMaxDepthChanged;
+            entry.OnMinDepthChanged -= OnEntryMinDepthChanged;
+            entry.OnFlipChanged -= OnEntryFlipChanged;
+            entry.OnClampChanged -= OnEntryClampChanged;
+        }
 
         pointCloudEntries.Clear();
         activeEntry = null;
@@ -453,6 +484,11 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             entry.SetDisplayToggle(false);
 
             entry.OnDisplayToggleRequested += OnDisplayToggleRequested;
+            entry.OnTransformChanged += OnEntryTransformChanged;
+            entry.OnMaxDepthChanged += OnEntryMaxDepthChanged;
+            entry.OnMinDepthChanged += OnEntryMinDepthChanged;
+            entry.OnFlipChanged += OnEntryFlipChanged;
+            entry.OnClampChanged += OnEntryClampChanged;
             pointCloudEntries.Add(entry);
         }
 
@@ -482,6 +518,44 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             StartCoroutine(SwitchPointCloudCoroutine(activeEntry, requestingEntry));
     }
 
+    private void OnEntryTransformChanged(int cameraId, Vector3 pos, Vector3 rot)
+    {
+        int i = pointCloudEntries.FindIndex(e => e.CameraId == cameraId);
+        if (i < 0) return;
+        var e = pointCloudEntries[i];
+        bridge?.MirrorEntryData(i, pos, rot, e.DepthMin, e.DepthMax, e.FlipX, e.FlipY);
+    }
+
+    private void OnEntryMaxDepthChanged(int cameraId, float value)
+    {
+        int i = pointCloudEntries.FindIndex(e => e.CameraId == cameraId);
+        if (i < 0) return;
+        var e = pointCloudEntries[i];
+        bridge?.MirrorEntryData(i, e.Position, e.Rotation, e.DepthMin, value, e.FlipX, e.FlipY);
+    }
+
+    private void OnEntryMinDepthChanged(int cameraId, float value)
+    {
+        int i = pointCloudEntries.FindIndex(e => e.CameraId == cameraId);
+        if (i < 0) return;
+        var e = pointCloudEntries[i];
+        bridge?.MirrorEntryData(i, e.Position, e.Rotation, value, e.DepthMax, e.FlipX, e.FlipY);
+    }
+
+    private void OnEntryFlipChanged(int cameraId, bool flipX, bool flipY)
+    {
+        int i = pointCloudEntries.FindIndex(e => e.CameraId == cameraId);
+        if (i < 0) return;
+        var e = pointCloudEntries[i];
+        bridge?.MirrorEntryData(i, e.Position, e.Rotation, e.DepthMin, e.DepthMax, flipX, flipY);
+    }
+
+    private void OnEntryClampChanged(int cameraId, float xMin, float xMax, float yMin, float yMax)
+    {
+        int i = pointCloudEntries.FindIndex(e => e.CameraId == cameraId);
+        if (i < 0) return;
+        bridge?.MirrorEntryClamp(i, xMin, xMax, yMin, yMax);
+    }
     private IEnumerator SwitchPointCloudCoroutine(PointCloudUIEntry previous, PointCloudUIEntry next)
     {
         isSwitching = true;
@@ -534,6 +608,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
                 data.depthMax,
                 data.scale.x == -1,
                 data.scale.y == -1);
+
+            bridge?.MirrorEntryClamp(i, data.clampXMin, data.clampXMax, data.clampYMin, data.clampYMax);
         }
 
         if (file.stimulusDisplay != null)
@@ -659,6 +735,12 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     {
         PlayerManager.Instance.DisplayControllers(value);
         worldSpaceUI.gameObject.SetActive(value);
+        
+        if(value)
+        {
+            ResetWorldSpaceCanvasPositionAndRotation();
+        }
+        
     }
 
 

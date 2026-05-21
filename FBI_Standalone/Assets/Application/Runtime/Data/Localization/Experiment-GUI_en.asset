@@ -246,6 +246,30 @@ MonoBehaviour:
     m_Localized: Config Editor VR
     m_Metadata:
       m_Items: []
+  - m_Id: 118909508666265600
+    m_Localized: X
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118909537153978368
+    m_Localized: Y
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118909564140130304
+    m_Localized: Z
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118909799285395456
+    m_Localized: X
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118909840678981632
+    m_Localized: Y
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118909856625725440
+    m_Localized: Z
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

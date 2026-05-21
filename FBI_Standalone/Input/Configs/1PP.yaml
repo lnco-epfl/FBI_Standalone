@@ -1,47 +1,28 @@
 configName: 1PP
 createdAt: 2026-05-07 14:14:56
-lastModified: 2026-05-15 14:56:16
-uICanvas:
+lastModified: 2026-05-21 13:36:13
+stimulusDisplay:
   position:
-    x: 0.1127654
-    y: 0.6850326
-    z: 2.46953
+    x: 0
+    y: 1
+    z: 2
   rotation:
     x: 0
-    y: 23.21499
+    y: 0
     z: 0
   scale:
     x: 1
     y: 1
     z: 1
   backgroundColor:
-    r: 0
-    g: 0
+    r: 0.165923
+    g: 0.1079616
     b: 0
     a: 1
 pointClouds:
 - iD: 1
   position:
-    x: 1.4
-    y: 0
-    z: 0
-  rotation:
-    x: 0
-    y: 0
-    z: 0
-  scale:
-    x: -1
-    y: 1
-    z: 1
-  depthMax: 0.7714286
-  depthMin: 0.1139047
-  clampXMin: 0.2125715
-  clampXMax: 0.6814758
-  clampYMin: 0.1809047
-  clampYMax: 0.808
-- iD: 2
-  position:
-    x: 1.36
+    x: 0.01072705
     y: 0
     z: 0
   rotation:
@@ -50,11 +31,30 @@ pointClouds:
     z: 0
   scale:
     x: 1
-    y: -1
+    y: 1
     z: 1
-  depthMax: 0.2966736
-  depthMin: 0.7631794
-  clampXMin: 0.7744392
-  clampXMax: 0.3796241
-  clampYMin: 0.8476286
-  clampYMax: 0.4498739
+  depthMax: 7.167158
+  depthMin: 3.691275
+  clampXMin: 0.5236112
+  clampXMax: 0.5776803
+  clampYMin: 0.3073342
+  clampYMax: 0.4077484
+- iD: 2
+  position:
+    x: 0
+    y: 1.050336
+    z: 1.924489
+  rotation:
+    x: 331.9962
+    y: 24.20363
+    z: 301.4346
+  scale:
+    x: -1
+    y: 1
+    z: 1
+  depthMax: 7.060299
+  depthMin: 2.724762
+  clampXMin: 0.5591808
+  clampXMax: 0.4588739
+  clampYMin: 0.50374
+  clampYMax: 0.477282
