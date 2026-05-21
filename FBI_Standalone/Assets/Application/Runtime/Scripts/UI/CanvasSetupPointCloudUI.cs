@@ -1,7 +1,7 @@
 using com.rfilkov.kinect;
 using Eflatun.SceneReference;
 using Intel.RealSense;
-using SFB;
+using PrimeTween;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -114,7 +114,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         UpdateFileNameDisplay();
 
         ShortcutManager.Instance.DisableShortCut();
-        SetStatus("No config loaded.", Color.grey);
+
     }
 
     private void OnEnable()
@@ -268,7 +268,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void OnNewConfigButtonClick()
     {
-        StandaloneFileBrowser.SaveFilePanelAsync("New config", ConfigFileManager.Instance.GetRootPath(), "new_config", "yaml", (paths) =>
+        FileBrowserService.SaveFile("New config", ConfigFileManager.Instance.GetRootPath(), "new_config", "yaml", (paths) =>
         {
             if (string.IsNullOrEmpty(paths))
             {
@@ -312,16 +312,16 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void OnOpenConfigButtonClick()
     {
-        StandaloneFileBrowser.OpenFilePanelAsync("Open config", ConfigFileManager.Instance.GetRootPath(), "yaml", false, (paths) =>
+        FileBrowserService.OpenFile("Open config", ConfigFileManager.Instance.GetRootPath(), "yaml", (path) =>
         {
-            if (paths == null || paths.Length == 0 || string.IsNullOrEmpty(paths[0]))
+            if (path == null || path.Length == 0 || string.IsNullOrEmpty(path))
             {
                 SetStatus("Open cancelled.", Color.grey);
                 bridge?.MirrorStatus("Open cancelled.", Color.grey);
                 return;
             }
 
-            var config = ConfigFileManager.Instance.LoadFromPath(paths[0]);
+            var config = ConfigFileManager.Instance.LoadFromPath(path);
 
             if (config != null)
             {
@@ -372,7 +372,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         }
 
         string defaultName = selectedConfig ?? "config";
-        StandaloneFileBrowser.SaveFilePanelAsync("Save config as", ConfigFileManager.Instance.GetRootPath(), defaultName, "yaml", (path) =>
+        FileBrowserService.SaveFile("Save config as", ConfigFileManager.Instance.GetRootPath(), defaultName, "yaml", (path) =>
         {
             if (string.IsNullOrEmpty(path))
             {
@@ -654,8 +654,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     public IEnumerator LoadScene()
     {
-        SetStatus("Loading config scene", Color.yellow);
-        bridge?.MirrorStatus("Loading config scene", Color.yellow);
+        SetStatus("Loading scene, please wait", Color.yellow);
+        bridge?.MirrorStatus("Loading scene, please wait", Color.yellow);
 
         Fader.Instance.FadeToBlack();
         yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
@@ -665,7 +665,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         Fader.Instance.FadeToClear();
         yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
 
-        SetStatus("Config scene loaded", Color.green);
+        SetStatus("Scene loaded", Color.green);
 
         staticCamera = Instantiate(staticCameraPrefab).transform;
 
@@ -688,11 +688,13 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         displayCanvaUIToggle.SetWithoutNotify(false);
 
-        bridge?.MirrorStatus("Config scene loaded", Color.green);
+        bridge?.MirrorStatus("Scene loaded", Color.green);
         bridge?.MirrorDisplayCanvasUIToggle(false);
         bridge?.MirrorCanvasUIPosition(WorldUIManager.Instance.Position);
         bridge?.MirrorCanvasUIRotation(WorldUIManager.Instance.Rotation);
         bridge?.MirrorCanvasUIColor(WorldUIManager.Instance.BackgroundColor);
+
+        Tween.Delay(1.0f, () => SetStatus("No config loaded.", Color.grey));
     }
 
 

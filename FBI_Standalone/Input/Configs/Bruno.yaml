@@ -1,28 +1,9 @@
 configName: Bruno
 createdAt: 2026-04-02 15:20:45
-lastModified: 2026-05-08 15:00:23
-uICanvas:
-  position:
-    x: 0
-    y: 0.84
-    z: 2
-  rotation:
-    x: 0
-    y: 0
-    z: 0
-  scale:
-    x: 1
-    y: 1
-    z: 1
-  backgroundColor:
-    r: 0
-    g: 0
-    b: 0
-    a: 0.7
+lastModified: 2026-05-21 13:49:26
+stimulusDisplay: 
 pointClouds:
 - iD: 2
-  cameraPosition: 
-  cameraRotation: 
   position:
     x: 0
     y: 1.1
@@ -42,16 +23,14 @@ pointClouds:
   clampYMin: 0
   clampYMax: 1
 - iD: 1
-  cameraPosition: 
-  cameraRotation: 
   position:
     x: 0
     y: 1.1
-    z: 1
+    z: 0.17
   rotation:
-    x: 12.5
-    y: 0
-    z: 0
+    x: 335.7675
+    y: 168.1032
+    z: 180
   scale:
     x: 1
     y: 1
