@@ -1,6 +1,6 @@
 configName: 1PP
 createdAt: 2026-05-07 14:14:56
-lastModified: 2026-05-21 14:21:12
+lastModified: 2026-05-21 14:48:52
 stimulusDisplay:
   position:
     x: 0
@@ -41,13 +41,13 @@ pointClouds:
   clampYMax: 0.4077484
 - iD: 2
   position:
-    x: 0.4
-    y: 1.66
-    z: 1.72
+    x: 0
+    y: 0
+    z: 0
   rotation:
-    x: 332.4
-    y: 23.6
-    z: 303.05
+    x: 0
+    y: 0
+    z: 0
   scale:
     x: 1
     y: 1
