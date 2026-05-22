@@ -5,19 +5,22 @@ using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 using UnityEngine.VFX;
 
-public class DisplayCameraState : IState
+public class DisplayCamerasState : IState
 {
-    private DisplayCameraStep step;
+    private DisplayCamerasStep step;
 
     private ConfigFile previousConfig;
 
     public void Enter(SequenceStep sequenceStep)
     {
-        step = sequenceStep as DisplayCameraStep;
+        step = sequenceStep as DisplayCamerasStep;
     }
 
     public IEnumerator Execute()
     {
+
+        // to DO, boucle for multiple cameras in the same step
+        // for interpolation Create a tween sequence for executing all the transition a the in the timelime 
 
         var pointCloudID = int.Parse(step.cameraID);
         var pointCloudContainer = PointCloudManager.Instance.GetPointCloudContainer(pointCloudID);
@@ -37,7 +40,7 @@ public class DisplayCameraState : IState
 
             if (configs.Contains(step.configFileName) && ConfigFileManager.Instance.CurrentConfig.configName != step.configFileName)
             {
-                ConfigFileManager.Instance.Load(step.configFileName, step.interpolation == null);
+                ConfigFileManager.Instance.Load(step.configFileName);
             }
             else
             {

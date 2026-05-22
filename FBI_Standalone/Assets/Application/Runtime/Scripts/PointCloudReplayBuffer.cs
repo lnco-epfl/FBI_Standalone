@@ -1,7 +1,9 @@
+using com.rfilkov.kinect;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.TestTools.TestRunner.Api;
 using UnityEngine;
-using com.rfilkov.kinect;
 
 
 public class PointCloudReplayBuffer : MonoBehaviour
@@ -40,8 +42,6 @@ public class PointCloudReplayBuffer : MonoBehaviour
 
         public PointCloudFrame(int width, int height)
         {
-            // ✅ CHANGEMENT 1: Utiliser RenderTexture au lieu de Texture2D
-            // Évite les copies CPU coûteuses et reste sur GPU
             vertexTexture = new RenderTexture(width, height, 0, RenderTextureFormat.ARGBHalf);
             vertexTexture.Create();
 
@@ -72,7 +72,6 @@ public class PointCloudReplayBuffer : MonoBehaviour
     private int writeIndex = 0;
     private int readIndex = 0;
 
-    // Flag: safe to run Update logic
     private bool isBufferReady = false;
 
     // References
@@ -86,9 +85,15 @@ public class PointCloudReplayBuffer : MonoBehaviour
     private int textureWidth = 0;
     private int textureHeight = 0;
 
-    private void Awake()
+    private void Start()
     {
-        //Initialize();
+        StartCoroutine(WaitForKinectManagerInitialization(Initialize));
+    }
+
+    private IEnumerator WaitForKinectManagerInitialization(Action callback)
+    {
+        yield return new WaitUntil(() => KinectManager.Instance != null && KinectManager.Instance.IsInitialized());
+        callback.Invoke();
     }
 
     public void Initialize()
@@ -97,12 +102,10 @@ public class PointCloudReplayBuffer : MonoBehaviour
 
         sensorData = kinectManager.GetSensorData(sensorIndex);
 
-        // ✅ CHANGEMENT 2: Correction du bug logique || -> &&
         if (sensorData != null && sensorData.sensorInterface != null)
         {
             sensorInt = (DepthSensorBase)sensorData.sensorInterface;
 
-            // ✅ CHANGEMENT 3: Simplification de la condition
             if (sensorInt.pointCloudVertexTexture != null &&
                 sensorInt.pointCloudColorTexture != null)
             {
@@ -164,7 +167,6 @@ public class PointCloudReplayBuffer : MonoBehaviour
             return;
         }
 
-        // ✅ CHANGEMENT 4: Libérer l'ancien buffer avant d'en créer un nouveau
         if (frameBuffer != null)
         {
             foreach (var frame in frameBuffer)
@@ -196,9 +198,7 @@ public class PointCloudReplayBuffer : MonoBehaviour
         readIndex = 0;
         isBufferReady = true;
 
-        // ✅ CHANGEMENT 5: Calcul de l'utilisation mémoire estimée
         float estimatedMemoryMB = (bufferSize * textureWidth * textureHeight * 12) / (1024f * 1024f);
-        // 12 bytes = 8 bytes (ARGBHalf) + 4 bytes (ARGB32)
 
         if (showDebugInfo)
         {
@@ -219,15 +219,15 @@ public class PointCloudReplayBuffer : MonoBehaviour
         PointCloudFrame frame = frameBuffer[writeIndex];
         frame.timestamp = Time.time;
 
-        // ✅ CHANGEMENT 6: Graphics.Blit au lieu de ReadPixels
-        // Reste entièrement sur GPU, pas de transfert CPU coûteux
         Graphics.Blit(vertexRT, frame.vertexTexture);
         Graphics.Blit(colorRT, frame.colorTexture);
 
         writeIndex = (writeIndex + 1) % bufferSize;
 
         if (showDebugInfo && writeIndex == 0)
+        {
             Debug.Log($"[ReplayBuffer] Buffer wrap-around at {Time.time:F2}s");
+        }    
     }
 
     private void DisplayDelayedFrame()
@@ -257,17 +257,6 @@ public class PointCloudReplayBuffer : MonoBehaviour
         Graphics.Blit(frame.colorTexture, replayColorTexture);
     }
 
-    // ✅ CHANGEMENT 7: Cette méthode n'est plus nécessaire
-    // (gardée pour compatibilité si utilisée ailleurs)
-    private void CopyRenderTextureToTexture2D(RenderTexture source, Texture2D destination)
-    {
-        RenderTexture previous = RenderTexture.active;
-        RenderTexture.active = source;
-        destination.ReadPixels(new Rect(0, 0, source.width, source.height), 0, 0);
-        destination.Apply();
-        RenderTexture.active = previous;
-    }
-
 
     void OnDestroy()
     {
@@ -278,7 +267,6 @@ public class PointCloudReplayBuffer : MonoBehaviour
             frameBuffer.Clear();
         }
 
-        // ✅ CHANGEMENT 8: Libérer les RenderTextures de sortie si créées dynamiquement
         if (replayVertexTexture != null && replayVertexTexture.name == "ReplayVertexTexture")
         {
             replayVertexTexture.Release();
@@ -334,7 +322,6 @@ public class PointCloudReplayBuffer : MonoBehaviour
             frame.timestamp = 0f;
     }
 
-    // ✅ AJOUT: Méthode pour vider le buffer et libérer la mémoire temporairement
     /// <summary>
     /// Releases all buffer memory. Call this when replay is not needed temporarily.
     /// </summary>

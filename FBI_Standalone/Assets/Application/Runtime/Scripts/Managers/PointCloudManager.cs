@@ -7,212 +7,154 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.VFX;
-using static com.rfilkov.kinect.KinectInterop;
 
 
-public class PointCloudContainer
+public class RenderTextureContainer
 {
-    public VisualEffect vfx;
-    public PointCloudReplayBuffer replayBuffer;
-    public RealtimeDelaySwitcher realtimeDelaySwitcher;
-    public PointCloudContainer(VisualEffect vfx, PointCloudReplayBuffer replayBuffer, RealtimeDelaySwitcher realtimeDelaySwitcher)
+    public RenderTexture colorTexture;
+    public RenderTexture vertexTexture;
+    public RenderTextureContainer(RenderTexture colorTexture, RenderTexture vertexTexture)
     {
-        this.vfx = vfx;
-        this.replayBuffer = replayBuffer;
-        this.realtimeDelaySwitcher = realtimeDelaySwitcher;
+        this.colorTexture = colorTexture;
+        this.vertexTexture = vertexTexture;
     }
+}
+
+public class  ConditionRenderTextureContainer
+{
+    public RenderTextureContainer realtimeTextures;
+    public RenderTextureContainer delayTextures;
 }
 
 
 public class PointCloudManager : MonoBehaviour
 {
-    private Dictionary<int, PointCloudContainer> pointCloudContainers = new Dictionary<int, PointCloudContainer>();
 
-    [SerializeField] private List<Transform> pointClouds;
+    [SerializeField] private GameObject pointCloudPrefab;
+
+    private Dictionary<int, ConditionRenderTextureContainer> renderTextureDictionary = new Dictionary<int, ConditionRenderTextureContainer>();
+
+    private List<PointCloud> spawnedPointClouds;
 
     private static PointCloudManager instance;
-    private bool loadConfigTransform;
 
     public static PointCloudManager Instance { get { return instance; } }
 
     private void Awake()
     {
         if (instance != null && instance != this) { Destroy(this.gameObject); } else { instance = this; }
+    }
 
-        foreach (var pointCloud in pointClouds)
+    private void Start()
+    {
+        if(KinectManager.Instance.IsInitialized())
         {
-            var pointCloudVFX = pointCloud.GetComponentInChildren<VisualEffect>();
-            pointCloudVFX.enabled = false;
+            var cameraCount = KinectManager.Instance.GetSensorCount();
 
-            var pointCloudReplayBuffer = pointCloudVFX.GetComponent<PointCloudReplayBuffer>();
-            pointCloudReplayBuffer.enabled = true;
-            pointCloudReplayBuffer.enableReplay = false;
+            for (int i = 0; i < cameraCount; i++)
+            {
 
-            var realtimeDelaySwitcher = pointCloudVFX.GetComponent<RealtimeDelaySwitcher>();
-            realtimeDelaySwitcher.enabled = true;
+                var conditionRenderTexture = new ConditionRenderTextureContainer();
 
-            int cameraID = int.Parse(pointCloud.name.Split('_')[1]);
+                var sensorData = KinectManager.Instance.GetSensorData(i);
 
-            pointCloudContainers[cameraID] = new PointCloudContainer(pointCloudVFX, pointCloudReplayBuffer, realtimeDelaySwitcher);
+                if (sensorData != null && sensorData.sensorInterface != null)
+                {
+                    var sensorInterface = (DepthSensorBase)sensorData.sensorInterface;
+
+                    if (sensorInterface.pointCloudVertexTexture != null && sensorInterface.pointCloudColorTexture != null)
+                    {
+                        conditionRenderTexture.realtimeTextures = new RenderTextureContainer(sensorInterface.pointCloudColorTexture, sensorInterface.pointCloudVertexTexture);
+                    }
+
+                    var replayBuffer = sensorInterface.GetComponent<PointCloudReplayBuffer>();
+
+                    if(replayBuffer.replayColorTexture != null && replayBuffer.replayVertexTexture != null)
+                    {
+                        conditionRenderTexture.delayTextures = new RenderTextureContainer(replayBuffer.replayColorTexture, replayBuffer.replayVertexTexture);
+                    }
+
+                    renderTextureDictionary.Add(i+1, conditionRenderTexture);
+                }
+            }
         }
 
-        StartCoroutine(WaitForKinectManagerInitialization(InitializePointCloud));
+      
     }
 
     private void OnEnable()
     {
-        ConfigFileManager.Instance.OnConfigLoaded += OnConfigLoaded;
+
     }
 
     private void OnDisable()
     {
-        ConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
+
     }
 
-    private void OnConfigLoaded(ConfigFile obj, bool loadConfigIntoPointCloud)
+    public void SpawnPointCloud(int cameraID, float delay, ConfigFile configFile)
     {
-        loadConfigTransform = loadConfigIntoPointCloud;
-        StartCoroutine(WaitForKinectManagerInitialization(LoadConfigSettings));
-    }
-
-    private IEnumerator WaitForKinectManagerInitialization(Action callback)
-    {
-        yield return new WaitUntil(() => KinectManager.Instance != null && KinectManager.Instance.IsInitialized());
-        callback.Invoke();
-    }
-
-    private void InitializePointCloud()
-    {
-        foreach (var kvp in pointCloudContainers)
+        if (!pointCloudPrefab)
         {
-            var pointCloudContainer = kvp.Value;
-            pointCloudContainer.replayBuffer.Initialize();
+            Debug.LogError("Point cloud prefab is not assigned.");
+            return;
         }
-    }
 
-    private void LoadConfigSettings()
-    {
-        var currentConfig = ConfigFileManager.Instance.CurrentConfig;
+        bool isDelay = delay > 0.0f ? true : false;
+
+        var sensorData = KinectManager.Instance.GetSensorData(cameraID-1);
+        var sensorInterface = (Kinect4AzureInterface)sensorData.sensorInterface;
+
+        var pointcloudGO = Instantiate(pointCloudPrefab, transform);
+
+        pointcloudGO.transform.position = Vector3.zero;
+        pointcloudGO.transform.rotation = Quaternion.identity;
+
+        var pointcloud = pointcloudGO.GetComponent<PointCloud>();
+
+        if(isDelay)
+        {
+            pointcloud.SetRenderTextures(renderTextureDictionary[cameraID].delayTextures.colorTexture, renderTextureDictionary[cameraID].delayTextures.vertexTexture);
+        }
+        else
+        {
+            pointcloud.SetRenderTextures(renderTextureDictionary[cameraID].realtimeTextures.colorTexture, renderTextureDictionary[cameraID].realtimeTextures.vertexTexture);
+
+        }
+
+        pointcloud.SetKinectInterface(sensorInterface);
+
+
+        var currentConfig = configFile;
 
         if (currentConfig != null)
         {
             for (int i = 0; i < currentConfig.pointClouds.Count; i++)
             {
                 var id = currentConfig.pointClouds[i].ID;
-                var position = currentConfig.pointClouds[i].position.ToVector3();
-                var rotation = currentConfig.pointClouds[i].rotation.ToVector3();
-                var scale = currentConfig.pointClouds[i].scale.ToVector3();
-                var depthMin = currentConfig.pointClouds[i].depthMin;
-                var depthMax = currentConfig.pointClouds[i].depthMax;
-                var clampXMin = currentConfig.pointClouds[i].clampXMin;
-                var clampXMax = currentConfig.pointClouds[i].clampXMax;
-                var clampYMin = currentConfig.pointClouds[i].clampYMin;
-                var clampYMax = currentConfig.pointClouds[i].clampYMax;
 
-                if (loadConfigTransform)
+                if(id == cameraID)
                 {
-                    SetVisualEffectPositionRotationScale(position, rotation, scale, id);
-                }
+                    var position = currentConfig.pointClouds[i].position.ToVector3();
+                    var rotation = currentConfig.pointClouds[i].rotation.ToVector3();
+                    var scale = currentConfig.pointClouds[i].scale.ToVector3();
+                    var depthMin = currentConfig.pointClouds[i].depthMin;
+                    var depthMax = currentConfig.pointClouds[i].depthMax;
+                    var clampXMin = currentConfig.pointClouds[i].clampXMin;
+                    var clampXMax = currentConfig.pointClouds[i].clampXMax;
+                    var clampYMin = currentConfig.pointClouds[i].clampYMin;
+                    var clampYMax = currentConfig.pointClouds[i].clampYMax;
 
-                SetCameraDepthValues(depthMin, depthMax, id);
-                SetClampValues(clampXMin, clampXMax, clampYMin, clampYMax, id);
+                    pointcloud.SetTransform(position, rotation, scale);
+                    pointcloud.SetCameraDeptValues(depthMin, depthMax);
+                    pointcloud.SetClampValues(clampXMin, clampXMax, clampYMin, clampYMax);
+
+                }
             }
         }
+
+        spawnedPointClouds.Add(pointcloud);
+
     }
 
-    public PointCloudContainer GetPointCloudContainer(int cameraID)
-    {
-        if (pointCloudContainers.ContainsKey(cameraID))
-        {
-            return pointCloudContainers[cameraID];
-        }
-        else
-        {
-            Debug.LogError($"Point cloud container with camera ID {cameraID} not found.");
-            return null;
-        }
-    }
-
-    public Transform GetVisualEffectTransform(int cameraID)
-    {
-        return GetVisualEffect(cameraID).transform;
-    }
-
-    public void SetVisualEffectPositionRotationScale(Vector3 postion, Vector3 rotation, Vector3 scale, int cameraID)
-    {
-        var vfx = GetVisualEffect(cameraID);
-        if (vfx != null)
-        {
-            vfx.transform.position = postion;
-            vfx.transform.rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z);
-            vfx.transform.localScale = scale;
-        }
-    }
-
-    public void SetVisualEffectTransform(Transform transform, int cameraID)
-    {
-        var vfx = GetVisualEffect(cameraID);
-        if (vfx != null)
-        {
-            vfx.transform.position = transform.position;
-            vfx.transform.rotation = transform.rotation;
-        }
-    }
-
-    private void SetCameraDepthValues(float depthMin, float depthMax, int id)
-    {
-        var kinectInerface = GetKinectInterface(id);
-
-        if (kinectInerface)
-        {
-            kinectInerface.maxDepthDistance = depthMax;
-            kinectInerface.minDepthDistance = depthMin;
-        }
-    }
-
-    private void SetClampValues(float xMin, float xMax, float yMin, float yMax, int id)
-    {
-        var vfx = GetVisualEffect(id);
-        if (vfx == null) return;
-
-        vfx.SetFloat("Clamp X Min", xMin);
-        vfx.SetFloat("Clamp X Max", xMax);
-        vfx.SetFloat("Clamp Y Min", yMin);
-        vfx.SetFloat("Clamp Y Max", yMax);
-    }
-
-    public Kinect4AzureInterface GetKinectInterface(int cameraID)
-    {
-        var sensorData = KinectManager.Instance != null && KinectManager.Instance.IsInitialized() ? KinectManager.Instance.GetSensorData(cameraID - 1) : null;
-
-        if (sensorData != null && sensorData.sensorInterface != null)
-        {
-            return (Kinect4AzureInterface)sensorData.sensorInterface;
-        }
-
-        return null;
-    }
-
-    public VisualEffect GetVisualEffect(int cameraID)
-    {
-        var container = GetPointCloudContainer(cameraID);
-        return container != null ? container.vfx : null;
-    }
-
-    public PointCloudReplayBuffer GetReplayBuffer(int cameraID)
-    {
-        var container = GetPointCloudContainer(cameraID);
-        return container != null ? container.replayBuffer : null;
-    }
-
-    public RealtimeDelaySwitcher GetRealtimeDelaySwitcher(int cameraID)
-    {
-        var container = GetPointCloudContainer(cameraID);
-        return container != null ? container.realtimeDelaySwitcher : null;
-    }
-
-    public List<int> GetAvailableCameraIds()
-    {
-        return pointCloudContainers.Keys.ToList();
-    }
 }

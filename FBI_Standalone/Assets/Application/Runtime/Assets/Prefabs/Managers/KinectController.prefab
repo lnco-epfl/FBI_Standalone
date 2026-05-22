@@ -93,6 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8575610876163093211}
   - component: {fileID: 6474066014606128782}
+  - component: {fileID: 5380958969885094297}
   m_Layer: 0
   m_Name: Kinect4Azure_2
   m_TagString: Untagged
@@ -158,6 +159,25 @@ MonoBehaviour:
   bodyTrackingSensorOrientation: 0
   bodyTrackingProcessingMode: 2
   detectFloorForPoseEstimation: 1
+--- !u!114 &5380958969885094297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5832613452178571215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79890c84661181c45b5c3618a9db3514, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensorIndex: 1
+  replayDelaySeconds: 1
+  captureFrameRate: 30
+  enableReplay: 0
+  replayVertexTexture: {fileID: 8400000, guid: bf4b2e07efd9b2a4ab70404c989be853, type: 2}
+  replayColorTexture: {fileID: 8400000, guid: fcd806223dba5aa42943fe5f0628b368, type: 2}
+  showDebugInfo: 0
 --- !u!1 &6937756508794796131
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,6 +188,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2311850117997658819}
   - component: {fileID: 6867206271747297554}
+  - component: {fileID: 6424575532403498539}
   m_Layer: 0
   m_Name: Kinect4Azure_1
   m_TagString: Untagged
@@ -233,3 +254,22 @@ MonoBehaviour:
   bodyTrackingSensorOrientation: 0
   bodyTrackingProcessingMode: 2
   detectFloorForPoseEstimation: 1
+--- !u!114 &6424575532403498539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6937756508794796131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79890c84661181c45b5c3618a9db3514, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Application::PointCloudReplayBuffer
+  sensorIndex: 0
+  replayDelaySeconds: 1
+  captureFrameRate: 30
+  enableReplay: 0
+  replayVertexTexture: {fileID: 8400000, guid: 95862d4269c396a43b9b32d3a70cde3e, type: 2}
+  replayColorTexture: {fileID: 8400000, guid: d76eb5eb5c81be247a6dc7c19e3a88d6, type: 2}
+  showDebugInfo: 0

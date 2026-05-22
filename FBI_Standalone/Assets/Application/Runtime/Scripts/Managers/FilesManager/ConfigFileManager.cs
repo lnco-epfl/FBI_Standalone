@@ -19,7 +19,7 @@ public class ConfigFileManager : MonoBehaviour
 
     public ConfigFile CurrentConfig { get => currentConfig; private set => currentConfig = value; }
 
-    public event Action<ConfigFile, bool> OnConfigLoaded;
+    public event Action<ConfigFile> OnConfigLoaded;
     public event Action<ConfigFile> OnConfigSaved;
     public event Action<List<string>> OnFileListRefreshed;
 
@@ -65,7 +65,7 @@ public class ConfigFileManager : MonoBehaviour
         return cfg;
     }
 
-    public ConfigFile Load(string configName, bool loadConfigIntoPointCloud = true)
+    public ConfigFile Load(string configName)
     {
         string path = GetPath(configName);
         if (!File.Exists(path))
@@ -79,7 +79,7 @@ public class ConfigFileManager : MonoBehaviour
             string yaml = File.ReadAllText(path);
             CurrentConfig = deserializer.Deserialize<ConfigFile>(yaml);
             EventFileManager.Log($"[ConfigFileManager] Loaded: {path}");
-            OnConfigLoaded?.Invoke(CurrentConfig, loadConfigIntoPointCloud);
+            OnConfigLoaded?.Invoke(CurrentConfig);
             return CurrentConfig;
         }
         catch (Exception e)
@@ -92,7 +92,7 @@ public class ConfigFileManager : MonoBehaviour
     /// <summary>
     /// Loads a config directly from a full file path (used with StandaloneFileBrowser).
     /// </summary>
-    public ConfigFile LoadFromPath(string fullPath, bool loadConfigIntoPointCloud = true)
+    public ConfigFile LoadFromPath(string fullPath)
     {
         if (!File.Exists(fullPath))
         {
@@ -106,7 +106,7 @@ public class ConfigFileManager : MonoBehaviour
             CurrentConfig = deserializer.Deserialize<ConfigFile>(yaml);
             CurrentConfig.configName = Path.GetFileNameWithoutExtension(fullPath);
             EventFileManager.Log($"[ConfigFileManager] Loaded from path: {fullPath}");
-            OnConfigLoaded?.Invoke(CurrentConfig, loadConfigIntoPointCloud);
+            OnConfigLoaded?.Invoke(CurrentConfig);
             return CurrentConfig;
         }
         catch (Exception e)
@@ -193,7 +193,7 @@ public class ConfigFileManager : MonoBehaviour
     /// Does NOT save to disk automatically — call Save() afterwards if needed.
     /// Returns null if the clipboard is empty or contains invalid data.
     /// </summary>
-    public ConfigFile PasteFromClipboard(bool loadConfigIntoPointCloud = true)
+    public ConfigFile PasteFromClipboard()
     {
         string yaml = GUIUtility.systemCopyBuffer;
 
@@ -207,7 +207,7 @@ public class ConfigFileManager : MonoBehaviour
         {
             var config = deserializer.Deserialize<ConfigFile>(yaml);
             CurrentConfig = config;
-            OnConfigLoaded?.Invoke(CurrentConfig, loadConfigIntoPointCloud);
+            OnConfigLoaded?.Invoke(CurrentConfig);
             EventFileManager.Log("[ConfigFileManager] Config pasted from clipboard.");
             return CurrentConfig;
         }
