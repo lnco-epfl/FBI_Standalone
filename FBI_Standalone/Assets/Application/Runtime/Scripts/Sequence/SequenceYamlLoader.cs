@@ -95,7 +95,7 @@ public class SequenceYamlLoader
             case SequenceStepWrapper.StepType.LoadConfig:
                 return new LoadConfigStep
                 {
-                    fileName = data.fileName,
+                    fileName = data.configFileName,
                 };
 
             case SequenceStepWrapper.StepType.DisplayLikertScale:
@@ -141,14 +141,11 @@ public class SequenceYamlLoader
                     looping = data.looping,
                     muteAudio = data.muteAudio,
                 };
-            case SequenceStepWrapper.StepType.DisplayCamera:
-                return new DisplayCameraStep
+            case SequenceStepWrapper.StepType.DisplayCameras:
+                return new DisplayCamerasStep
                 {
                     displayTime = data.duration,
-                    cameraID = data.cameraID,
-                    delay = data.delay,
-                    configFileName = data.fileName, //optional, can be empty
-                    interpolation = data.interpolation //optional, can be null
+                    camerasData = data.cameraDatas,
                 };
 
             default:
@@ -201,7 +198,7 @@ public class StepData
     public List<string> options;
 
     //camera
-    public string cameraID;
+    public List<CameraData> cameraDatas;
     public float delay;
 
     // Assets
@@ -211,10 +208,7 @@ public class StepData
     public string videoName;
 
     //config
-    public string fileName;
-
-    // Interpolation
-    public InterpolationData interpolation;
+    public string configFileName;
 
     // Image
     public float scale;

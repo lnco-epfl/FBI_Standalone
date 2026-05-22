@@ -177,22 +177,29 @@ public class InterpolationData
     public float duration = 0;
     public float delay = 0;
     public Ease ease = Ease.Default;
+    public string startConfigName = string.Empty;
+}
+
+public class  CameraData
+{
+    public string ID = "1";
+    public float delay = 0.0f;
+    public string configName = string.Empty;
+
+    public InterpolationData interpolation;
 }
 
 
 [System.Serializable]
-public class DisplayCameraStep : SequenceStep
+public class DisplayCamerasStep : SequenceStep
 {
     public float displayTime = 1f;
-    public string cameraID = "1";
-    public float delay = 0.0f;
 
-    public string configFileName = string.Empty;
+    public List<CameraData> camerasData = new List<CameraData>();
 
-    public InterpolationData interpolation;
     public override float GetDuration() => displayTime;
-    public override string GetStateName() => "DisplayCamera";
-    public override string GetDisplayName() => $"Display Camera {cameraID} for {displayTime} with {delay} of delay";
+    public override string GetStateName() => "DisplayCameras";
+    public override string GetDisplayName() => $"Display Cameras {camerasData.Count} for {displayTime}";
     public override Color GetColor() => Color.grey;
 }
 
@@ -227,7 +234,7 @@ public class SequenceStepWrapper
 
     public enum StepType
     {
-        DisplayText, Wait, SpawnObject, LoadScene, LoadConfig, DisplayLikertScale, Break, DisplayImage, DisplayQuestion, PlaySound, DisplayCamera, DisplayVideo
+        DisplayText, Wait, SpawnObject, LoadScene, LoadConfig, DisplayLikertScale, Break, DisplayImage, DisplayQuestion, PlaySound, DisplayCameras, DisplayVideo
     }
 
     public SequenceStepWrapper()
@@ -249,7 +256,7 @@ public class SequenceStepWrapper
             case StepType.DisplayImage: step = new DisplayImageStep(); break;
             case StepType.DisplayQuestion: step = new DisplayQuestionStep(); break;
             case StepType.PlaySound: step = new PlaySoundStep(); break;
-            case StepType.DisplayCamera: step = new DisplayCameraStep(); break;
+            case StepType.DisplayCameras: step = new DisplayCamerasStep(); break;
             case StepType.DisplayVideo: step = new DisplayVideoStep(); break;
         }
     }
