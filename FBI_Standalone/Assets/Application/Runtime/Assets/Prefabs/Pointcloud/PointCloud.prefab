@@ -307,7 +307,7 @@ GameObject:
   - component: {fileID: 6644337737570343424}
   - component: {fileID: 6158691178368329591}
   m_Layer: 0
-  m_Name: PointCloud_Condition_CameraIndex
+  m_Name: PointCloud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

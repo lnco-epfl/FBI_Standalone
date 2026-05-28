@@ -53,6 +53,19 @@ public class ConfigFileManager : MonoBehaviour
         return names;
     }
 
+    public bool IsValideConfigName(string name)
+    {
+        var configs = ConfigFileManager.Instance.GetAvailableConfigs();
+
+        if (configs.Contains(name))
+        {
+            return true;
+        }
+
+        return false;
+
+    }
+
     public ConfigFile CreateNew(string configName)
     {
         var cfg = new ConfigFile
