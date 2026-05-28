@@ -13,7 +13,7 @@ public class OutputFileData
     public string SequenceFile { get; set; }
 
     public string ConfigFile { get; set; }
-    public float CameraDelay { get; set; }
+    public string CameraDelay { get; set; }
     public float CameraDisplayDuration { get; set; }
     public string CameraID { get; set; }
 
@@ -46,7 +46,7 @@ public class OutputFileData
         StepType = string.Empty;
         StepCount = 0;
 
-        CameraDelay = 0f;
+        CameraDelay = string.Empty;
         CameraDisplayDuration = 0f;
         CameraID = string.Empty;
 
@@ -119,7 +119,7 @@ public class OutputFileManager : MonoBehaviour
             OutputFileData.Age = UIManager.Instance.SelectedAge;
         }
     }
-    private void OnConfigLoaded(ConfigFile file, bool loadConfigIntoPointCloud)
+    private void OnConfigLoaded(ConfigFile file)
     {
         OutputFileData.ConfigFile = file.configName;
     }

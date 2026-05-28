@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6131c50a720f72e41878fcb8e1627312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Application::PointCloudManager
-  pointClouds: []
+  pointCloudPrefab: {fileID: 9110722354836192830, guid: f909059c6ce5d81479dc163004fcc633, type: 3}

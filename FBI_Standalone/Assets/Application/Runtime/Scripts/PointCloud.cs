@@ -1,5 +1,6 @@
 using com.rfilkov.kinect;
 using PrimeTween;
+using System;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -12,9 +13,21 @@ public class PointCloud : MonoBehaviour
 
     private Kinect4AzureInterface kinectAzureInterface;
 
-    private void Awake()
+    
+    public void Init()
     {
-        
+        mainVisuEffect.enabled = false;
+        dissolutionVisuEffect.enabled = false;
+    }
+
+    public void DisplayMain()
+    {
+        mainVisuEffect.enabled = true;
+    }
+
+    public void HideMain()
+    {
+        mainVisuEffect.enabled = false;
     }
 
     public void SetDissolutionDuration(float duration)
@@ -87,5 +100,6 @@ public class PointCloud : MonoBehaviour
         dissolutionVisuEffect.SetFloat("Clamp Y Min", yMin);
         dissolutionVisuEffect.SetFloat("Clamp Y Max", yMax);
     }
+
 
 }

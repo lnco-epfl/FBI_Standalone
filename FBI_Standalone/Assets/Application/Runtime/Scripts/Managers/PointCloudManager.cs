@@ -92,12 +92,12 @@ public class PointCloudManager : MonoBehaviour
 
     }
 
-    public void SpawnPointCloud(int cameraID, float delay, ConfigFile configFile)
+    public PointCloud SpawnPointCloud(int cameraID, float delay, ConfigFile configFile)
     {
         if (!pointCloudPrefab)
         {
             Debug.LogError("Point cloud prefab is not assigned.");
-            return;
+            return null;
         }
 
         bool isDelay = delay > 0.0f ? true : false;
@@ -107,12 +107,16 @@ public class PointCloudManager : MonoBehaviour
 
         var pointcloudGO = Instantiate(pointCloudPrefab, transform);
 
+        pointcloudGO.name = $"PointCloud_{cameraID}_{(delay > 0 ? "delay" : "realtime")}";
+
         pointcloudGO.transform.position = Vector3.zero;
         pointcloudGO.transform.rotation = Quaternion.identity;
 
         var pointcloud = pointcloudGO.GetComponent<PointCloud>();
 
-        if(isDelay)
+        pointcloud.Init();
+
+        if (isDelay)
         {
             pointcloud.SetRenderTextures(renderTextureDictionary[cameraID].delayTextures.colorTexture, renderTextureDictionary[cameraID].delayTextures.vertexTexture);
         }
@@ -155,6 +159,23 @@ public class PointCloudManager : MonoBehaviour
 
         spawnedPointClouds.Add(pointcloud);
 
+        return pointcloud;
+
     }
 
+    public void DisplaySpawnedPointClouds()
+    {
+        foreach (var pointCloud in spawnedPointClouds)
+        {
+            pointCloud.DisplayMain();
+        }
+    }
+
+    public void HideSpawnedPointClouds()
+    {
+        foreach (var pointCloud in spawnedPointClouds)
+        {
+            pointCloud.HideMain();
+        }
+    }
 }
