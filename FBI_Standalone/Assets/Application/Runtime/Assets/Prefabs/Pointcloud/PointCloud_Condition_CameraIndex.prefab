@@ -342,3 +342,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f0716b733b9e854ebcf36899af81da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Application::PointCloud
+  mainVisuEffect: {fileID: 7319099188678209907}
+  dissolutionVisuEffect: {fileID: 3353743081506591614}

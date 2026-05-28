@@ -21,12 +21,18 @@ public class PointCloud : MonoBehaviour
     {
         dissolutionVisuEffect.SetFloat("Duration", duration);
     }
+
+    [ContextMenu("StartDissolution")]
     public void StartDissolution()
     {
+        mainVisuEffect.enabled = true;
         dissolutionVisuEffect.enabled = true;
-        Tween.Custom(startValue: 0.0f, endValue: 1.0f, duration: 1.0f, ease: Ease.Linear, onValueChange: (float value) =>
+
+        dissolutionVisuEffect.Play();
+
+        Tween.Custom(startValue: 1.0f, endValue: 0.0f, duration: 0.5f, ease: Ease.Linear, onValueChange: (float value) =>
         {
-            dissolutionVisuEffect.SetFloat("Float", value);
+            mainVisuEffect.SetFloat("Alpha", value);
         }).OnComplete(() =>
         {
             mainVisuEffect.enabled = false;
