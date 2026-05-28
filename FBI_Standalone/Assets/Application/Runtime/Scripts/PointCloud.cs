@@ -11,13 +11,19 @@ public class PointCloud : MonoBehaviour
     [SerializeField] private VisualEffect mainVisuEffect;
     [SerializeField] private VisualEffect dissolutionVisuEffect;
 
+
+
     private Kinect4AzureInterface kinectAzureInterface;
 
-    
-    public void Init()
+    private int id = 0;
+    public int Id { get => id;  }
+
+    public void Init(int ID)
     {
         mainVisuEffect.enabled = false;
         dissolutionVisuEffect.enabled = false;
+
+        id = ID;
     }
 
     public void DisplayMain()
@@ -100,6 +106,5 @@ public class PointCloud : MonoBehaviour
         dissolutionVisuEffect.SetFloat("Clamp Y Min", yMin);
         dissolutionVisuEffect.SetFloat("Clamp Y Max", yMax);
     }
-
 
 }
