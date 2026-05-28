@@ -114,7 +114,7 @@ public class PointCloudManager : MonoBehaviour
 
         var pointcloud = pointcloudGO.GetComponent<PointCloud>();
 
-        pointcloud.Init();
+        pointcloud.Init(cameraID);
 
         if (isDelay)
         {
@@ -177,5 +177,17 @@ public class PointCloudManager : MonoBehaviour
         {
             pointCloud.HideMain();
         }
+    }
+
+    public PointCloud GetPointCloud(int cameraID)
+    {
+        foreach(var pointCloud in spawnedPointClouds)
+        {
+            if(pointCloud.Id == cameraID)
+            {
+                return pointCloud;
+            }
+        }
+        return null;
     }
 }

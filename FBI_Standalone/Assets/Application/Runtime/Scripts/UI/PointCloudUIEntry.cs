@@ -172,7 +172,7 @@ public class PointCloudUIEntry : MonoBehaviour
             ConfigFileManager.Instance.SaveDepthMin(CameraId, kinectInerface.minDepthDistance, saveImmediately: false);
         }
 
-        var t = PointCloudManager.Instance.GetVisualEffectTransform(CameraId);
+        var t = PointCloudManager.Instance.GetPointCloud(CameraId).transform;
         ConfigFileManager.Instance.SaveFlip(CameraId, t.localScale.x < 0, t.localScale.y < 0, saveImmediately: false);
 
         ConfigFileManager.Instance.SaveClamp(CameraId,
@@ -185,10 +185,10 @@ public class PointCloudUIEntry : MonoBehaviour
 
     private void OnPositionOrRotationChanged()
     {
-        var t = PointCloudManager.Instance.GetVisualEffectTransform(CameraId);
+        var t = PointCloudManager.Instance.GetPointCloud(CameraId).transform;
         t.position = Position;
         t.rotation = Quaternion.Euler(Rotation);
-        PointCloudManager.Instance.SetVisualEffectTransform(t, CameraId);
+
         ConfigFileManager.Instance.SaveObjectTransform(CameraId, t);
         OnTransformChanged?.Invoke(CameraId, Position, Rotation);
     }
@@ -216,17 +216,16 @@ public class PointCloudUIEntry : MonoBehaviour
     {
         displayPointCloudToggle.SetWithoutNotify(isOn);
 
-        var container = PointCloudManager.Instance.GetPointCloudContainer(CameraId);
-        if (container == null) return;
+        var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
+        if (pointCloud == null) return;
 
         if (isOn)
         {
-            container.realtimeDelaySwitcher.displayMode = RealtimeDelaySwitcher.DisplayMode.Realtime;
-            container.vfx.enabled = true;
+            pointCloud.DisplayMain();
         }
         else
         {
-            container.vfx.enabled = false;
+            pointCloud.HideMain();
         }
     }
 
@@ -297,10 +296,10 @@ public class PointCloudUIEntry : MonoBehaviour
 
     private void ApplyFlip(bool flipX, bool flipY)
     {
-        var container = PointCloudManager.Instance.GetPointCloudContainer(CameraId);
-        if (container == null) return;
+        var pointcloud = PointCloudManager.Instance.GetPointCloud(CameraId);
+        if (pointcloud == null) return;
 
-        Transform t = container.vfx.transform;
+        Transform t = pointcloud.transform;
         Vector3 scale = t.localScale;
         scale.x = Mathf.Abs(scale.x) * (flipX ? -1f : 1f);
         scale.y = Mathf.Abs(scale.y) * (flipY ? -1f : 1f);
@@ -330,13 +329,10 @@ public class PointCloudUIEntry : MonoBehaviour
 
     private void ApplyClampToVFX(float xMin, float xMax, float yMin, float yMax)
     {
-        var vfx = PointCloudManager.Instance.GetVisualEffect(CameraId);
-        if (vfx == null) return;
+        var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
+        if (pointCloud == null) return;
 
-        vfx.SetFloat("Clamp X Min", xMin);
-        vfx.SetFloat("Clamp X Max", xMax);
-        vfx.SetFloat("Clamp Y Min", yMin);
-        vfx.SetFloat("Clamp Y Max", yMax);
+        pointCloud.SetClampValues(xMin, xMax, yMin, yMax);
     }
 
     public void SetClamp(float xMin, float xMax, float yMin, float yMax)
@@ -353,7 +349,7 @@ public class PointCloudUIEntry : MonoBehaviour
 
     public void CaptureDefaults()
     {
-        var t = PointCloudManager.Instance.GetVisualEffectTransform(CameraId);
+        var t = PointCloudManager.Instance.GetPointCloud(CameraId).transform;
         float depthMin = kinectInerface != null ? kinectInerface.minDepthDistance : 0f;
         float depthMax = kinectInerface != null ? kinectInerface.maxDepthDistance : 10f;
 

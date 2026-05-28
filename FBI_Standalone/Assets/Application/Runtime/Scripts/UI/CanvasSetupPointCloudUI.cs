@@ -12,6 +12,7 @@ using UnityEngine.Localization;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 using UnityEngine.VFX;
+using static com.rfilkov.kinect.Kinect4AzureInterface;
 using static UnityEngine.EventSystems.EventTrigger;
 
 
@@ -471,10 +472,12 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     [ContextMenu("SpawnPointCloudEntries")]
     private void SpawnPointCloudEntries()
     {
-        var cameraIds = PointCloudManager.Instance.GetAvailableCameraIds();
+        var cameraIds = new List<int>() { 1,2};
 
         foreach (var id in cameraIds)
         {
+            PointCloudManager.Instance.SpawnPointCloud(id, 0.0f, null);
+
             var go = Instantiate(pointCloudEntryPrefab, pointCloudContainer);
             go.name = $"PointCloudEntry_Camera{id}";
 
@@ -645,13 +648,6 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         bridge?.MirrorEntryInteractable(true);*/
     }
 
-    public IEnumerator WaitForKinectManagerInitialization()
-    {
-        yield return new WaitUntil(() => KinectManager.Instance.IsInitialized());
-        ClearPointCloudEntry();
-        SpawnPointCloudEntries();
-    }
-
     public IEnumerator LoadScene()
     {
         SetStatus("Loading scene, please wait", Color.yellow);
@@ -696,7 +692,6 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         Tween.Delay(1.0f, () => SetStatus("No config loaded.", Color.grey));
     }
-
 
     private void SetStaticCameraInputField()
     {

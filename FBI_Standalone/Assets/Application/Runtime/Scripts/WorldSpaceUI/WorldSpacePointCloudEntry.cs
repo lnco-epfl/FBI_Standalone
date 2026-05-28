@@ -149,10 +149,10 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
         pairedOverlayEntry.SetPositionFields(Position);
         pairedOverlayEntry.SetRotationFields(Rotation);
 
-        var t = PointCloudManager.Instance.GetVisualEffectTransform(CameraId);
+        var t = PointCloudManager.Instance.GetPointCloud(CameraId).transform;
         t.position = Position;
         t.rotation = Quaternion.Euler(Rotation);
-        PointCloudManager.Instance.SetVisualEffectTransform(t, CameraId);
+
         ConfigFileManager.Instance.SaveObjectTransform(CameraId, t);
     }
 
@@ -249,10 +249,17 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
     public void ApplyDisplayState(bool isOn)
     {
         displayPointCloudToggle?.SetWithoutNotify(isOn);
-        var container = PointCloudManager.Instance.GetPointCloudContainer(CameraId);
-        if (container == null) return;
-        if (isOn) { container.realtimeDelaySwitcher.displayMode = RealtimeDelaySwitcher.DisplayMode.Realtime; container.vfx.enabled = true; }
-        else      { container.vfx.enabled = false; }
+        var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
+        if (pointCloud == null) return;
+
+        if (isOn)
+        {
+            pointCloud.DisplayMain();
+        }
+        else
+        {
+            pointCloud.HideMain();
+        }
     }
 
     public void SetDisplayToggle(bool isOn) => displayPointCloudToggle?.SetWithoutNotify(isOn);
@@ -284,9 +291,9 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
 
     private void ApplyFlip(bool flipX, bool flipY)
     {
-        var container = PointCloudManager.Instance.GetPointCloudContainer(CameraId);
-        if (container == null) return;
-        Transform t  = container.vfx.transform;
+        var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
+        if (pointCloud == null) return;
+        Transform t  = pointCloud.transform;
         Vector3 scale = t.localScale;
         scale.x = Mathf.Abs(scale.x) * (flipX ? -1f : 1f);
         scale.y = Mathf.Abs(scale.y) * (flipY ? -1f : 1f);
