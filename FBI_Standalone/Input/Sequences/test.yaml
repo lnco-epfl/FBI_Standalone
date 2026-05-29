@@ -1,85 +1,101 @@
 steps:
-  - stepType: LoadScene
+  - stepType: loadScene
     scenePath: "EmptyRoom"
 
-  - stepType: LoadConfig
-    fileName: interpolation
+  - stepType: loadConfig
+    configName: interpolation
 
-  - stepType: DisplayVideo
+  - stepType: displayVideo
     videoName: "Soaem_Encode_Part2"
     looping: false
     muteAudio: false
 
-  - stepType: DisplayText
+  - stepType: displayText
     text: "welcome to FBI"
     duration: 3.0
 
-  - stepType: Wait
+  - stepType: wait
     duration: 2.0
 
-  - stepType: DisplayCamera
-    duration: 2
-    cameraID: "1"
-    delay: 0.0
+  - stepType: displayCameras
+    duration: 10
+    cameraDatas:
+      - id: "1"
+        delay: 0.0
+        configName: 1PP
+        interpolation:
+          duration: 3.0
+          delay: 1.0
+          ease: InOutQuad
+          startConfigName: interpolation
+      - id: "2"
+        delay: 0.0
+        configName: Bruno
+        dissolution:
+          duration: 5.0
+          delay: 2.0
 
-  - stepType: Wait
+  - stepType: wait
     duration: 2.0
 
-  - stepType: DisplayCamera
+  - stepType: displayCameras
     duration: 20.0
-    cameraID: "1"
-    delay: 0.5
+    cameraDatas:
+      - id: "1"
+        delay: 0.5
 
-  - stepType: LoadConfig
-    fileName: interpolation2
+  - stepType: loadConfig
+    configName: interpolation2
 
-  - stepType: Wait
+  - stepType: wait
     duration: 2.0
 
-  - stepType: DisplayCamera
+  - stepType: displayCameras
     duration: 20.0
-    cameraID: "2"
-    delay: 0.0
+    cameraDatas:
+      - id: "2"
+        delay: 0.0
 
-  - stepType: Wait
+  - stepType: wait
     duration: 2.0
 
-  - stepType: DisplayCamera
+  - stepType: displayCameras
     duration: 20.0
-    cameraID: "2"
-    delay: 0.5
+    cameraDatas:
+      - id: "2"
+        delay: 0.5
 
-  - stepType: Wait
+  - stepType: wait
     duration: 2.0
 
-  - stepType: DisplayImage
+  - stepType: displayImage
     imagePath: "plus"
     scale: 0.3
     duration: 5.0
 
-  - stepType: PlaySound
+  - stepType: playSound
     soundPath: "bell-sfx"
 
-  - stepType: DisplayQuestion
+  - stepType: displayQuestion
     question: "question 1"
-    options: 
+    options:
       - "option 1"
       - "option 2"
       - "option 3"
       - "option 4"
 
-  - stepType: DisplayLikertScale
+  - stepType: displayLikertScale
     question: "satisfaction question"
     leftLabel: "not satisfied"
     rightLabel: "very satisfied"
 
-  - stepType: Break
+  - stepType: break
     text: "break instructions"
     duration: 90
 
-  - stepType: Wait
+  - stepType: wait
     duration: 1.0
 
-  - stepType: DisplayText
+  - stepType: displayText
     text: "thank you"
     duration: 4.0

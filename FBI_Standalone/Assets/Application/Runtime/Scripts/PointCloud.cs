@@ -36,6 +36,12 @@ public class PointCloud : MonoBehaviour
         mainVisuEffect.enabled = false;
     }
 
+    public void HideDissolution()
+    {
+        dissolutionVisuEffect.enabled = false;
+    }
+
+
     public void SetDissolutionDuration(float duration)
     {
         dissolutionVisuEffect.SetFloat("Duration", duration);

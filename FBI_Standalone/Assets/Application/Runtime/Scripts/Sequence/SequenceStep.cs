@@ -180,13 +180,21 @@ public class InterpolationData
     public string startConfigName = string.Empty;
 }
 
+public class Dissolution
+{
+    public float duration = 0;
+    public float delay = 0;
+}
+
 public class  CameraData
 {
-    public string ID = "1";
+    public string id = "1";
     public float delay = 0.0f;
     public string configName = string.Empty;
 
     public InterpolationData interpolation;
+
+    public Dissolution dissolution;
 }
 
 

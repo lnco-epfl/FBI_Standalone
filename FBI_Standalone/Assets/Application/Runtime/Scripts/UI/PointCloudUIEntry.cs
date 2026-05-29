@@ -172,7 +172,12 @@ public class PointCloudUIEntry : MonoBehaviour
             ConfigFileManager.Instance.SaveDepthMin(CameraId, kinectInerface.minDepthDistance, saveImmediately: false);
         }
 
-        var t = PointCloudManager.Instance.GetPointCloud(CameraId).transform;
+        var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
+        if (pointCloud == null)
+        {
+            return;
+        }
+        var t = pointCloud.transform;
         ConfigFileManager.Instance.SaveFlip(CameraId, t.localScale.x < 0, t.localScale.y < 0, saveImmediately: false);
 
         ConfigFileManager.Instance.SaveClamp(CameraId,
@@ -349,7 +354,13 @@ public class PointCloudUIEntry : MonoBehaviour
 
     public void CaptureDefaults()
     {
-        var t = PointCloudManager.Instance.GetPointCloud(CameraId).transform;
+        var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
+        if(pointCloud == null)
+        {
+            return;
+        }
+        var t = pointCloud.transform;
+
         float depthMin = kinectInerface != null ? kinectInerface.minDepthDistance : 0f;
         float depthMax = kinectInerface != null ? kinectInerface.maxDepthDistance : 10f;
 
