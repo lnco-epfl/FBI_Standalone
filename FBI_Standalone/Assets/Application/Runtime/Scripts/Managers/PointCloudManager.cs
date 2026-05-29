@@ -34,7 +34,7 @@ public class PointCloudManager : MonoBehaviour
 
     private Dictionary<int, ConditionRenderTextureContainer> renderTextureDictionary = new Dictionary<int, ConditionRenderTextureContainer>();
 
-    private List<PointCloud> spawnedPointClouds;
+    private List<PointCloud> spawnedPointClouds = new List<PointCloud>();
 
     private static PointCloudManager instance;
 
@@ -102,9 +102,6 @@ public class PointCloudManager : MonoBehaviour
 
         bool isDelay = delay > 0.0f ? true : false;
 
-        var sensorData = KinectManager.Instance.GetSensorData(cameraID-1);
-        var sensorInterface = (Kinect4AzureInterface)sensorData.sensorInterface;
-
         var pointcloudGO = Instantiate(pointCloudPrefab, transform);
 
         pointcloudGO.name = $"PointCloud_{cameraID}_{(delay > 0 ? "delay" : "realtime")}";
@@ -116,15 +113,32 @@ public class PointCloudManager : MonoBehaviour
 
         pointcloud.Init(cameraID);
 
-        if (isDelay)
+        if (renderTextureDictionary.Count > 0)
         {
-            pointcloud.SetRenderTextures(renderTextureDictionary[cameraID].delayTextures.colorTexture, renderTextureDictionary[cameraID].delayTextures.vertexTexture);
-        }
-        else
-        {
-            pointcloud.SetRenderTextures(renderTextureDictionary[cameraID].realtimeTextures.colorTexture, renderTextureDictionary[cameraID].realtimeTextures.vertexTexture);
 
+            if (isDelay)
+            {
+                pointcloud.SetRenderTextures(renderTextureDictionary[cameraID].delayTextures.colorTexture, renderTextureDictionary[cameraID].delayTextures.vertexTexture);
+            }
+            else
+            {
+                pointcloud.SetRenderTextures(renderTextureDictionary[cameraID].realtimeTextures.colorTexture, renderTextureDictionary[cameraID].realtimeTextures.vertexTexture);
+
+            }
+        }else
+        {
+            Debug.LogError("No render textures found for any camera.");
         }
+
+        var sensorData = KinectManager.Instance.GetSensorData(cameraID - 1);
+
+        if (sensorData == null)
+        {
+            Debug.LogError($"No sensor data found for camera ID {cameraID}");
+            return null;
+        }
+
+        var sensorInterface = (Kinect4AzureInterface)sensorData.sensorInterface;
 
         pointcloud.SetKinectInterface(sensorInterface);
 
@@ -163,6 +177,14 @@ public class PointCloudManager : MonoBehaviour
 
     }
 
+    public void DespawnPointClouds()
+    {
+        for (int i = spawnedPointClouds.Count - 1; i >= 0; i--)
+        {
+            Destroy(spawnedPointClouds[i].gameObject);
+        }
+    }
+
     public void DisplaySpawnedPointClouds()
     {
         foreach (var pointCloud in spawnedPointClouds)
@@ -176,6 +198,7 @@ public class PointCloudManager : MonoBehaviour
         foreach (var pointCloud in spawnedPointClouds)
         {
             pointCloud.HideMain();
+            pointCloud.HideDissolution();
         }
     }
 
@@ -190,4 +213,6 @@ public class PointCloudManager : MonoBehaviour
         }
         return null;
     }
+
+
 }

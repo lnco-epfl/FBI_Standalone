@@ -95,7 +95,7 @@ public class SequenceYamlLoader
             case SequenceStepWrapper.StepType.LoadConfig:
                 return new LoadConfigStep
                 {
-                    fileName = data.configFileName,
+                    fileName = data.configName,
                 };
 
             case SequenceStepWrapper.StepType.DisplayLikertScale:
@@ -208,7 +208,7 @@ public class StepData
     public string videoName;
 
     //config
-    public string configFileName;
+    public string configName;
 
     // Image
     public float scale;

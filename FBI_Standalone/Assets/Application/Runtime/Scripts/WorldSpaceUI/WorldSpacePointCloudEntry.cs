@@ -149,7 +149,12 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
         pairedOverlayEntry.SetPositionFields(Position);
         pairedOverlayEntry.SetRotationFields(Rotation);
 
-        var t = PointCloudManager.Instance.GetPointCloud(CameraId).transform;
+        var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
+        if (pointCloud == null)
+        {
+            return;
+        }
+        var t = pointCloud.transform;
         t.position = Position;
         t.rotation = Quaternion.Euler(Rotation);
 
