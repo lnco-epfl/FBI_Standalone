@@ -180,6 +180,8 @@ Pauses the sequence for a given duration.
 
 ```
 
+---
+
 ### DisplayCameras
 
 Displays one or more point clouds simultaneously, each with its own settings. Each camera entry is defined under a `cameraDatas` list and can independently have a temporal delay, a config file, an interpolation animation, and a dissolution effect.
@@ -201,7 +203,7 @@ Each entry in `cameraDatas` supports the following fields:
 | `interpolation.duration` | float | Duration of the interpolation animation in seconds |
 | `interpolation.delay` | float | Delay before the interpolation starts, in seconds |
 | `interpolation.ease` | string | Easing function from [PrimeTween](https://github.com/KyryloKuzyk/PrimeTween#support). Recommended values: `Default`, `Linear`, `InOutSine`, `InOutQuad`, `InOutCubic`, `InOutQuart`, `InOutExpo` |
-| `interpolation.startConfigName` | string | *(Optional)* Name of the config to use as the start position of the interpolation. If omitted, the current transform is used as the start |
+| `interpolation.startConfigName` | string | Name of the config to use as the start position of the interpolation. |
 | `dissolution` | object | *(Optional)* Progressively dissolves the point cloud during the step |
 | `dissolution.duration` | float | Duration of the dissolution effect in seconds |
 | `dissolution.delay` | float | Delay before the dissolution starts, in seconds |
@@ -225,8 +227,6 @@ Each entry in `cameraDatas` supports the following fields:
     - id: "2"
       delay: 1.5
 
-
-
 # With config switch and interpolation
 - stepType: DisplayCameras
   duration: 20.0
@@ -239,8 +239,6 @@ Each entry in `cameraDatas` supports the following fields:
         delay: 1.0
         ease: InOutQuad
         startConfigName: StartConfig
-
-
 
 # With dissolution effect
 - stepType: DisplayCameras
@@ -255,9 +253,9 @@ Each entry in `cameraDatas` supports the following fields:
 
 ```
 
-> ⚠️ When using `interpolation`, `configName` must also be set — it defines the end position of the animation. `interpolation.startConfigName` is optional; if omitted the point cloud starts from its current transform.
+> ⚠️ When using `interpolation`, `configName` must also be set, it defines the end position of the animation.
 
-> ⚠️ When using `dissolution`, `configName` must also be set.
+> ⚠️ Only one delay value can be set per camera, only the last value will be be used 
 
 ---
 
