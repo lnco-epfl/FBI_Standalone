@@ -24,11 +24,8 @@ The application is designed for research experiments involving point cloud visua
 ## Hardware
 
 * **Laptop:** High-end GPU gaming laptop, 32 GB RAM minimum recommended
-
 * **VR Headset:** [Meta Quest 3 / 3S](https://www.meta.com/quest/quest-3s/), connected to the laptop via USB-C cable
-
 * **RGBD Cameras:** [ORBBEC Femto Bolt](https://www.orbbec.com/products/tof-camera/femto-bolt/), one or more, each connected via USB-C data cable + external power supply
-
 * **Tripod(s):** One per camera
 
 ## Software
