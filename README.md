@@ -11,6 +11,7 @@
   * [Config Files](#config-files)
   * [Output Files](#output-files)
   * [GUI](#gui)
+  * [Screenshot](#screenshot)
   * [Authors](#authors)
 
 # Description
@@ -657,20 +658,17 @@ There are two types of output files:
 
 # GUI
 
-<img width="1607" height="912" alt="1" src="https://github.com/user-attachments/assets/df034183-59e6-41f2-a367-58aca8f5fc43" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/9eea46ec-23f6-40c3-831b-11695d415903" />
 
 ### Participant form
 
 - **Age:** Enter the participant's age.
 - **Gender:** Select the participant's gender (Male, Female, Other).
-
-### Sequence form
-
 - **Sequence File:** Select which sequence file to use for the experiment.
 
-### Config form
+### Config editor
 
-- **Config File:** Select which camera configuration file to load.
+- **Config editor:** Open the config editor window.
 
 ### Experiment Status
 
@@ -685,6 +683,8 @@ There are two types of output files:
 - **Start button:** Starts the experiment. Requires a sequence file to be selected.
 - **Play/Pause button:** Pauses or resumes the experiment. The current step restarts when resuming.
 - **Stop button:** Stops the experiment and resets the state.
+- **Reset head orientation:** Allows the participant's view to be realigned in the main direction
+- **Audio volume controls:** Change the volume of the sound (audio, video) during the experiment.
 
 ### Keyboard Shortcuts
 
@@ -693,11 +693,23 @@ There are two types of output files:
 | Q | Start the experiment |
 | W | Stop the experiment |
 | Space | Play / Pause |
-| R | Reset headset view |
+| R | Reset head orientation |
 | M | Mute sound |
 | ← / → | Previous / Next step |
 
-<img width="1607" height="912" alt="1294" src="https://github.com/user-attachments/assets/a671e382-7cb6-4912-83de-cecffbcbfcc7" />
+# Screenshot
+
+### Mirror view 
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/11933bce-0d12-4c67-af16-1fbbbd573cfc" />
+
+### 1PP view
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/e0115e12-dedd-4c00-8907-0d4da5daa898" />
+
+### 3PP view
+<img width="1920" height="1078" alt="image" src="https://github.com/user-attachments/assets/07f5fcce-f090-4133-8701-1926ba2b4728" />
+
+### Full body illustion 
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/36ab1ab1-0b46-41e7-8183-a50634a27b7a" />
 
 # Authors
 
