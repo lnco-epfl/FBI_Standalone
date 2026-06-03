@@ -22,9 +22,6 @@ public class DisplayCamerasState : IState
     public IEnumerator Execute()
     {
 
-        // to DO, boucle for multiple cameras in the same step
-        // for interpolation Create a tween sequence for executing all the transition a the in the timelime 
-
         sequence = PrimeTween.Sequence.Create(cycles: -1, SequenceCycleMode.Restart);
 
         StringBuilder displayText = new StringBuilder();
@@ -91,8 +88,6 @@ public class DisplayCamerasState : IState
 
             displayText.AppendLine($"Display Camera {cameraData.id} for {step.GetDuration()} seconds with {cameraData.delay} of delay");
 
-            //setup interporlation
-
             if(cameraData.interpolation != null)
             {
                 asInterpolation = true;
@@ -131,10 +126,10 @@ public class DisplayCamerasState : IState
         }
 
         cameradelays.Append("]");
-        OutputFileManager.Instance.OutputFileData.CameraDelay = cameradelays.ToString();
+        OutputFileManager.Instance.OutputFileData.CameraDelays = cameradelays.ToString();
 
         cameraIDs.Append("]");
-        OutputFileManager.Instance.OutputFileData.CameraID = cameraIDs.ToString();
+        OutputFileManager.Instance.OutputFileData.CameraIDs = cameraIDs.ToString();
 
         OutputFileManager.Instance.OutputFileData.TimeSinceStart = ExperimentManager.Instance.ElaspedTimeSinceStart;
 
@@ -142,6 +137,9 @@ public class DisplayCamerasState : IState
         OutputFileManager.Instance.OutputFileData.StepCount = ExperimentManager.Instance.SequenceCurrentStep;
 
         OutputFileManager.Instance.OutputFileData.CameraDisplayDuration = step.displayTime;
+
+        OutputFileManager.Instance.OutputFileData.AsDissolution = asDissolution;
+        OutputFileManager.Instance.OutputFileData.AsInterpolation = asInterpolation;
 
         PointCloudManager.Instance.DisplaySpawnedPointClouds();
 
