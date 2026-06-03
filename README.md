@@ -650,9 +650,11 @@ There are two types of output files:
 | `TimeSinceStart` | double | Time elapsed since experiment start (seconds) |
 | `StepType` | string | Type of the current step (e.g. `DisplayCameras`) |
 | `StepCount` | int | Current step index |
-| `CameraID` | string | IDs of the cameras displayed, as a comma-separated list (e.g. `[1,2,]`) |
-| `CameraDelay` | string | Temporal delays applied to each camera feed, as a comma-separated list matching `CameraID` order |
+| `CameraIDs` | string | IDs of the cameras displayed, as a comma-separated list (e.g. `[1,2,]`) |
+| `CameraDelays` | string | Temporal delays applied to each camera feed, as a comma-separated list matching `CameraID` order |
 | `CameraDisplayDuration` | float | Duration the camera was displayed (seconds) |
+| `AsInterpolation` | bool | Point cloud interpolation is enabled |
+| `AsDissolution` | bool | Point cloud dissolution is enabled |
 | `LikertResponse` | int | Response given to a Likert scale question |
 | `LikertResponseTime` | double | Response time for the Likert scale (seconds) |
 | `QuestionResponse` | string | Response given to a multiple-choice question |
