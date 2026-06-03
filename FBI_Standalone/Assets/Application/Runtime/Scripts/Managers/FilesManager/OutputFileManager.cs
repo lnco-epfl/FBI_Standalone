@@ -13,9 +13,12 @@ public class OutputFileData
     public string SequenceFile { get; set; }
 
     public string ConfigFile { get; set; }
-    public string CameraDelay { get; set; }
+    public string CameraDelays { get; set; }
     public float CameraDisplayDuration { get; set; }
-    public string CameraID { get; set; }
+    public string CameraIDs { get; set; }
+
+    public bool AsInterpolation { get; set; }
+    public bool AsDissolution { get; set; }
 
     public double TimeSinceStart { get; set; }
     public string StepType { get; set; }
@@ -46,9 +49,12 @@ public class OutputFileData
         StepType = string.Empty;
         StepCount = 0;
 
-        CameraDelay = string.Empty;
+        CameraDelays = string.Empty;
         CameraDisplayDuration = 0f;
-        CameraID = string.Empty;
+        CameraIDs = string.Empty;
+
+        AsInterpolation = false;
+        AsDissolution = false;
 
         LikertResponse = 0;
         LikertResponseTime = 0f;
