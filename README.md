@@ -693,6 +693,8 @@ There are two types of output files:
 | Q | Start the experiment |
 | W | Stop the experiment |
 | Space | Play / Pause |
+| R | Reset headset view |
+| M | Mute sound |
 | ← / → | Previous / Next step |
 
 <img width="1607" height="912" alt="1294" src="https://github.com/user-attachments/assets/a671e382-7cb6-4912-83de-cecffbcbfcc7" />
