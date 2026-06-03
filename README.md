@@ -684,7 +684,10 @@ There are two types of output files:
 - **Play/Pause button:** Pauses or resumes the experiment. The current step restarts when resuming.
 - **Stop button:** Stops the experiment and resets the state.
 - **Reset head orientation:** Allows the participant's view to be realigned in the main direction
+  
 - **Audio volume controls:** Change the volume of the sound (audio, video) during the experiment.
+
+- **Fullscreen view:** Set the participant in full screen.
 
 ### Keyboard Shortcuts
 
