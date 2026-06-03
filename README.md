@@ -83,14 +83,12 @@ To run the application:
 All input files are located in the `Input/` folder at the root of the executable directory.
 
 ```
-
 Input/
 ├── Sequences/       ← YAML sequence files
 ├── Configs/         ← YAML camera configuration files
 ├── Images/          ← Image assets (PNG, JPG, BMP, TGA)
 ├── Videos/          ← Video assets (MP4)
 └── Audio/           ← Audio assets (WAV, OGG, MP3)
-
 ```
 
 Images and audio files are loaded automatically at startup. They are referenced in sequence files by their filename (without extension).
