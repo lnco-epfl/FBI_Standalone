@@ -89,7 +89,7 @@ Input/
 ├── Configs/         ← YAML camera configuration files
 ├── Images/          ← Image assets (PNG, JPG, BMP, TGA)
 ├── Videos/          ← Video assets (MP4)
-└── Audios/           ← Audio assets (WAV, OGG, MP3)
+└── Audios/          ← Audio assets (WAV, OGG, MP3)
 ```
 
 Images and audio files are loaded automatically at startup. They are referenced in sequence files by their filename (without extension).
@@ -683,10 +683,8 @@ There are two types of output files:
 - **Start button:** Starts the experiment. Requires a sequence file to be selected.
 - **Play/Pause button:** Pauses or resumes the experiment. The current step restarts when resuming.
 - **Stop button:** Stops the experiment and resets the state.
-- **Reset head orientation:** Allows the participant's view to be realigned in the main direction
-  
+- **Reset head orientation:** Allows the participant's view to be realigned in the main direction  
 - **Audio volume controls:** Change the volume of the sound (audio, video) during the experiment.
-
 - **Fullscreen view:** Set the participant in full screen.
 
 ### Keyboard Shortcuts
