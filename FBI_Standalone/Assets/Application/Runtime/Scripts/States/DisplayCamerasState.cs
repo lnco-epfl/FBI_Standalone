@@ -22,7 +22,7 @@ public class DisplayCamerasState : IState
     public IEnumerator Execute()
     {
 
-        sequence = PrimeTween.Sequence.Create(cycles: -1, SequenceCycleMode.Restart);
+        sequence = PrimeTween.Sequence.Create(cycles: 1, SequenceCycleMode.Restart);
 
         StringBuilder displayText = new StringBuilder();
 
@@ -42,6 +42,8 @@ public class DisplayCamerasState : IState
             var cameraData = step.camerasData[i];
 
             var pointCloudID = int.Parse(cameraData.id);
+
+            displayText.AppendLine("");
 
             cameradelays.Append(cameraData.id);
             cameradelays.Append(",");
@@ -69,14 +71,22 @@ public class DisplayCamerasState : IState
 
             if (!string.IsNullOrEmpty(cameraData.configName))
             {
-                if (ConfigFileManager.Instance.IsValideConfigName(cameraData.configName) && ConfigFileManager.Instance.CurrentConfig.configName != cameraData.configName)
+                if (ConfigFileManager.Instance.IsValideConfigName(cameraData.configName))
                 {
-                    configFile = ConfigFileManager.Instance.Load(cameraData.configName);
+                    if(ConfigFileManager.Instance.CurrentConfig.configName != cameraData.configName)
+                    {
+                        configFile = ConfigFileManager.Instance.Load(cameraData.configName);
+                    }
                 }
                 else
                 {
-                    EventFileManager.Error($"[DisplayCamerasState] Config file configName:{cameraData.configName} not found");
+                    EventFileManager.Error($"[DisplayCamerasState] Config file configName:{cameraData.configName} not found or config was already loaded");
                 }
+            }
+
+            if(configFile == null)
+            {
+                configFile = ConfigFileManager.Instance.CurrentConfig;
             }
 
             PointCloud pointCloud = null;
@@ -86,17 +96,21 @@ public class DisplayCamerasState : IState
                 pointCloud = PointCloudManager.Instance.SpawnPointCloud(pointCloudID, cameraData.delay, configFile);
             }
 
-            displayText.AppendLine($"Display Camera {cameraData.id} for {step.GetDuration()} seconds with {cameraData.delay} of delay");
+            displayText.Append($"Display Camera {cameraData.id} for {step.GetDuration()} seconds with {cameraData.delay} of delay");
 
             if(cameraData.interpolation != null)
             {
                 asInterpolation = true;
+
+                displayText.Append(" with interpolation");
 
                 if (!string.IsNullOrEmpty(cameraData.interpolation.startConfigName))
                 {
                     if (ConfigFileManager.Instance.IsValideConfigName(cameraData.interpolation.startConfigName) && ConfigFileManager.Instance.CurrentConfig.configName != cameraData.interpolation.startConfigName)
                     {
                         startConfigFile = ConfigFileManager.Instance.Load(cameraData.interpolation.startConfigName);
+
+                        pointCloud.SetTransform(startConfigFile.pointClouds[pointCloudID - 1].position.ToVector3(), startConfigFile.pointClouds[pointCloudID - 1].rotation.ToVector3(), startConfigFile.pointClouds[pointCloudID - 1].scale.ToVector3());
                     }
                     else
                     {
@@ -115,14 +129,19 @@ public class DisplayCamerasState : IState
             {
                 asDissolution = true;
 
+                displayText.Append(" with dissolution");
+
                 pointCloud.SetDissolutionDuration(cameraData.dissolution.duration);
 
-                sequence.Insert(atTime: 0, Tween.Delay(duration: cameraData.dissolution.delay).OnComplete(() => pointCloud.StartDissolution()));
+                var capturedPointCloud = pointCloud;
+
+                sequence.Insert(atTime: 0, Tween.Delay(duration: cameraData.dissolution.delay).OnComplete(() => capturedPointCloud.StartDissolution()));
 
                 afterDissolutionMaxWait = Mathf.Max(step.displayTime - cameraData.dissolution.duration - cameraData.dissolution.delay, afterDissolutionMaxWait);
 
             }
 
+   
         }
 
         cameradelays.Append("]");
@@ -143,7 +162,7 @@ public class DisplayCamerasState : IState
 
         PointCloudManager.Instance.DisplaySpawnedPointClouds();
 
-        EventFileManager.Log($"[DisplayCameraState] Display Cameras" + displayText.ToString());
+        EventFileManager.Log($"[DisplayCameraState] Display Cameras :" + displayText.ToString());
 
         if (asInterpolation || asDissolution)
         {
@@ -155,7 +174,6 @@ public class DisplayCamerasState : IState
         {
             yield return new WaitForSeconds(step.displayTime);
         }
-
 
         PointCloudManager.Instance.HideSpawnedPointClouds();
 

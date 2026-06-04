@@ -5,10 +5,10 @@ steps:
   - stepType: loadConfig
     configName: interpolation
 
-  - stepType: displayVideo
-    videoName: "Soaem_Encode_Part2"
-    looping: false
-    muteAudio: false
+#  - stepType: displayVideo
+#    videoName: "Soaem_Encode_Part2"
+#    looping: false
+#    muteAudio: false
 
   - stepType: displayText
     text: "welcome to FBI"
@@ -18,31 +18,58 @@ steps:
     duration: 2.0
 
   - stepType: displayCameras
-    duration: 10
+    duration: 20
     cameraDatas:
+#      - id: "1"
+#        delay: 0.0
+#        configName: interpolation
+#        dissolution:
+#          duration: 5.0
+#          delay: 5.0
       - id: "1"
         delay: 0.0
         configName: 1PP
         interpolation:
           duration: 3.0
-          delay: 1.0
+          delay: 5.0
           ease: InOutQuad
           startConfigName: interpolation
-      - id: "2"
+      - id: "1"
         delay: 0.0
-        configName: Bruno
+        configName: interpolation
         dissolution:
           duration: 5.0
-          delay: 2.0
+          delay: 5.0
+
 
   - stepType: wait
     duration: 2.0
+
+  - stepType: displayCameras
+    duration: 20
+    cameraDatas:
+      - id: "1"
+        delay: 0.0
+        configName: interpolation
+        dissolution:
+          duration: 5.0
+          delay: 5.0
+      - id: "1"
+        delay: 0.0
+        configName: 1PP
+        interpolation:
+          duration: 3.0
+          delay: 5.0
+          ease: InOutQuad
+          startConfigName: interpolation
+
 
   - stepType: displayCameras
     duration: 20.0
     cameraDatas:
       - id: "1"
         delay: 0.5
+        configName: 1PP
 
   - stepType: loadConfig
     configName: interpolation2

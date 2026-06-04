@@ -129,7 +129,7 @@ public class WorldUIManager : MonoBehaviour
         labelLeftTextLikertScaleContainer = sliderLikertScaleContainer.transform.Find("Label Left").GetComponent<TMP_Text>();
         labelRightTextLikertScaleContainer = sliderLikertScaleContainer.transform.Find("Label Right").GetComponent<TMP_Text>();
         validationButtonLikertScaleContrainer = likertScaleContainer.GetComponentInChildren<Button>();
-        likertScaleContainerBackground = sliderLikertScaleContainer.transform.Find("Background").GetComponent<Image>();
+        likertScaleContainerBackground = likertScaleContainer.transform.Find("Background").GetComponent<Image>();
 
         canvasGroupBreakContainer = breakContainer.GetComponent<CanvasGroup>();
         instructionTextBreakContainer = breakContainer.Find("Instruction").GetComponent<TMP_Text>();
@@ -193,9 +193,9 @@ public class WorldUIManager : MonoBehaviour
 
         skipHoldButtonBreakContainer.onClick.AddListener(OnSkipHoldButtonPressed);
 
+        ConfigFileManager.Instance.OnConfigLoaded += OnConfigLoaded;
+
     }
-
-
 
     private void OnDisable()
     {
@@ -206,6 +206,15 @@ public class WorldUIManager : MonoBehaviour
 
         skipHoldButtonBreakContainer.onClick.RemoveListener(OnSkipHoldButtonPressed);
 
+        ConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
+    }
+
+    private void OnConfigLoaded(ConfigFile configFile)
+    {
+        if(configFile.stimulusDisplay != null)
+        {
+            backgroundColor = configFile.stimulusDisplay.backgroundColor.ToColor();
+        }
     }
 
     private void OnSliderValueChanged(float value)
@@ -272,8 +281,8 @@ public class WorldUIManager : MonoBehaviour
         labelLeftTextLikertScaleContainer.text = labelLeft;
         labelRightTextLikertScaleContainer.text = labelRight;
 
-        questionContainerBackground.color = backgroundColor;
-        currentBackground = questionContainerBackground;
+        likertScaleContainerBackground.color = backgroundColor;
+        currentBackground = likertScaleContainerBackground;
 
         sliderLikertScaleContainer.SetValueWithoutNotify(UnityEngine.Random.Range(sliderLikertScaleContainer.minValue + 10, sliderLikertScaleContainer.maxValue - 10));
 

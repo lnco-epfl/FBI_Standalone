@@ -1028,6 +1028,42 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6691262014741597489, guid: 8b1446b7b7c93024ab75a1ec143f8046, type: 3}
+      propertyPath: m_Colors.m_NormalColor.b
+      value: 0.578445
+      objectReference: {fileID: 0}
+    - target: {fileID: 6691262014741597489, guid: 8b1446b7b7c93024ab75a1ec143f8046, type: 3}
+      propertyPath: m_Colors.m_NormalColor.g
+      value: 0.7207546
+      objectReference: {fileID: 0}
+    - target: {fileID: 6691262014741597489, guid: 8b1446b7b7c93024ab75a1ec143f8046, type: 3}
+      propertyPath: m_Colors.m_NormalColor.r
+      value: 0.24342462
+      objectReference: {fileID: 0}
+    - target: {fileID: 6691262014741597489, guid: 8b1446b7b7c93024ab75a1ec143f8046, type: 3}
+      propertyPath: m_Colors.m_PressedColor.b
+      value: 0.4801957
+      objectReference: {fileID: 0}
+    - target: {fileID: 6691262014741597489, guid: 8b1446b7b7c93024ab75a1ec143f8046, type: 3}
+      propertyPath: m_Colors.m_PressedColor.g
+      value: 0.597
+      objectReference: {fileID: 0}
+    - target: {fileID: 6691262014741597489, guid: 8b1446b7b7c93024ab75a1ec143f8046, type: 3}
+      propertyPath: m_Colors.m_PressedColor.r
+      value: 0.20116304
+      objectReference: {fileID: 0}
+    - target: {fileID: 6691262014741597489, guid: 8b1446b7b7c93024ab75a1ec143f8046, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.b
+      value: 0.2968044
+      objectReference: {fileID: 0}
+    - target: {fileID: 6691262014741597489, guid: 8b1446b7b7c93024ab75a1ec143f8046, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.g
+      value: 0.36900002
+      objectReference: {fileID: 0}
+    - target: {fileID: 6691262014741597489, guid: 8b1446b7b7c93024ab75a1ec143f8046, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.r
+      value: 0.12433696
+      objectReference: {fileID: 0}
     - target: {fileID: 7126241776982378854, guid: 8b1446b7b7c93024ab75a1ec143f8046, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

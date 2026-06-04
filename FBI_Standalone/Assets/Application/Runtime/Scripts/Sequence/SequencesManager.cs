@@ -57,7 +57,7 @@ public class SequencesManager : MonoBehaviour
             LoadSequence(file);
         }
 
-        Debug.Log($"[SequencesManager] Loaded {sequences.Count} sequences from YAML files");
+        EventFileManager.Log($"[SequencesManager] Loaded {sequences.Count} sequences from YAML files");
     }
 
     public Sequence LoadSequence(string filePath)
@@ -66,7 +66,7 @@ public class SequencesManager : MonoBehaviour
 
         if (loadedSequences.ContainsKey(fileName))
         {
-            Debug.LogWarning($"[SequencesManager] Sequence '{fileName}' already loaded");
+            EventFileManager.Warning($"[SequencesManager] Sequence '{fileName}' already loaded");
             return loadedSequences[fileName];
         }
 
@@ -77,7 +77,7 @@ public class SequencesManager : MonoBehaviour
             sequence.name = fileName;
             loadedSequences[fileName] = sequence;
             sequences.Add(sequence);
-            Debug.Log($"[SequencesManager] Loaded sequence: {fileName}");
+            EventFileManager.Log($"[SequencesManager] Loaded sequence: {fileName}");
         }
 
         return sequence;
@@ -90,7 +90,7 @@ public class SequencesManager : MonoBehaviour
             return sequence;
         }
 
-        Debug.LogWarning($"[SequencesManager] Sequence '{sequenceName}' not found");
+        EventFileManager.Warning($"[SequencesManager] Sequence '{sequenceName}' not found");
         return null;
     }
 
