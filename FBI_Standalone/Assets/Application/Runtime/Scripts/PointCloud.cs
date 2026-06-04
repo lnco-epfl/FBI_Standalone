@@ -29,6 +29,7 @@ public class PointCloud : MonoBehaviour
     public void DisplayMain()
     {
         mainVisuEffect.enabled = true;
+        mainVisuEffect.SetFloat("Alpha", 1.0f);
     }
 
     public void HideMain()

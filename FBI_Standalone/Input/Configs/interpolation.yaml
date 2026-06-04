@@ -15,8 +15,8 @@ pointClouds:
     x: -1
     y: 1
     z: 1
-  depthMax: 10
-  depthMin: 5.020004
+  depthMax: 3.47
+  depthMin: 0
 - iD: 2
   position:
     x: 0

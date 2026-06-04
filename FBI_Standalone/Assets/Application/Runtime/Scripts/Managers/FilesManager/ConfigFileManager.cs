@@ -80,6 +80,7 @@ public class ConfigFileManager : MonoBehaviour
 
     public ConfigFile Load(string configName)
     {
+
         string path = GetPath(configName);
         if (!File.Exists(path))
         {

@@ -76,7 +76,7 @@ public class AssetsManager : MonoBehaviour
 
         if (!Directory.Exists(ImagesPath))
         {
-            Debug.LogWarning($"[AssetsManager] Images folder not found: {ImagesPath}");
+            EventFileManager.Warning($"[AssetsManager] Images folder not found: {ImagesPath}");
             return;
         }
 
@@ -93,7 +93,7 @@ public class AssetsManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"[AssetsManager] Loaded {loadedSprites.Count} images");
+        EventFileManager.Log($"[AssetsManager] Loaded {loadedSprites.Count} images");
     }
 
     private void LoadImage(string filePath)
@@ -123,16 +123,16 @@ public class AssetsManager : MonoBehaviour
 
                 loadedSprites[key] = sprite;
 
-                Debug.Log($"[AssetsManager] Loaded image: {key}");
+                EventFileManager.Log($"[AssetsManager] Loaded image: {key}");
             }
             else
             {
-                Debug.LogError($"[AssetsManager] Failed to load image: {filePath}");
+                EventFileManager.Error($"[AssetsManager] Failed to load image: {filePath}");
             }
         }
         catch (Exception e)
         {
-            Debug.LogError($"[AssetsManager] Error loading image {filePath}: {e.Message}");
+            EventFileManager.Log($"[AssetsManager] Error loading image {filePath}: {e.Message}");
         }
     }
 
@@ -169,7 +169,7 @@ public class AssetsManager : MonoBehaviour
 
         if (!Directory.Exists(AudioPath))
         {
-            Debug.LogWarning($"[AssetsManager] Audio folder not found: {AudioPath}");
+            EventFileManager.Warning($"[AssetsManager] Audio folder not found: {AudioPath}");
             return;
         }
 
@@ -186,7 +186,7 @@ public class AssetsManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"[AssetsManager] Loaded {loadedAudioClips.Count} audio clips");
+        EventFileManager.Log($"[AssetsManager] Loaded {loadedAudioClips.Count} audio clips");
     }
 
     private void LoadAudioFile(string filePath)
@@ -218,11 +218,11 @@ public class AssetsManager : MonoBehaviour
                 AudioClip clip = UnityEngine.Networking.DownloadHandlerAudioClip.GetContent(www);
                 clip.name = key;
                 loadedAudioClips[key] = clip;
-                Debug.Log($"[AssetsManager] Loaded audio: {key}");
+                EventFileManager.Log($"[AssetsManager] Loaded audio: {key}");
             }
             else
             {
-                Debug.LogError($"[AssetsManager] Failed to load audio {filePath}: {www.error}");
+                EventFileManager.Error($"[AssetsManager] Failed to load audio {filePath}: {www.error}");
             }
         }
     }
@@ -241,11 +241,11 @@ public class AssetsManager : MonoBehaviour
                 AudioClip clip = UnityEngine.Networking.DownloadHandlerAudioClip.GetContent(www);
                 clip.name = key;
                 loadedAudioClips[key] = clip;
-                Debug.Log($"[AssetsManager] Loaded audio: {key}");
+                EventFileManager.Log($"[AssetsManager] Loaded audio: {key}");
             }
             else
             {
-                Debug.LogError($"[AssetsManager] Failed to load audio {filePath}: {www.error}");
+                EventFileManager.Error($"[AssetsManager] Failed to load audio {filePath}: {www.error}");
             }
         }
     }
@@ -260,7 +260,7 @@ public class AssetsManager : MonoBehaviour
             return clip;
         }
 
-        Debug.LogWarning($"[AssetsManager] Audio clip not found: {clipName}");
+        EventFileManager.Warning($"[AssetsManager] Audio clip not found: {clipName}");
         return null;
     }
 
@@ -274,7 +274,7 @@ public class AssetsManager : MonoBehaviour
 
         if (!Directory.Exists(VideosPath))
         {
-            Debug.LogWarning($"[AssetsManager] Videos folder not found: {VideosPath}");
+            EventFileManager.Warning($"[AssetsManager] Videos folder not found: {VideosPath}");
             return;
         }
 
@@ -289,11 +289,11 @@ public class AssetsManager : MonoBehaviour
                 string relativePath = GetRelativePath(filePath, VideosPath);
                 string key = Path.GetFileNameWithoutExtension(relativePath);
                 loadedVideoPaths[key] = filePath;
-                Debug.Log($"[AssetsManager] Registered video: {key}");
+                EventFileManager.Log($"[AssetsManager] Registered video: {key}");
             }
         }
 
-        Debug.Log($"[AssetsManager] Registered {loadedVideoPaths.Count} videos");
+        EventFileManager.Log($"[AssetsManager] Registered {loadedVideoPaths.Count} videos");
     }
 
     public string GetVideoPath(string videoName)
@@ -304,7 +304,7 @@ public class AssetsManager : MonoBehaviour
         if (loadedVideoPaths.TryGetValue(videoName, out string path))
             return path;
 
-        Debug.LogWarning($"[AssetsManager] Video not found: {videoName}");
+        EventFileManager.Warning($"[AssetsManager] Video not found: {videoName}");
         return null;
     }
 

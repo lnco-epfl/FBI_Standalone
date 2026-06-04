@@ -13,7 +13,7 @@ public class LoadConfigState : IState
     public IEnumerator Execute()
     {
 
-        EventFileManager.Log($"[LoadConfigState] Load condig file{step.fileName}");
+        EventFileManager.Log($"[LoadConfigState] Load condig file {step.fileName}");
 
         var configs = ConfigFileManager.Instance.GetAvailableConfigs();
 

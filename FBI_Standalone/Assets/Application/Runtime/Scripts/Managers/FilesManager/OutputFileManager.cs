@@ -154,7 +154,7 @@ public class OutputFileManager : MonoBehaviour
             csv.NextRecord();
         }
 
-        EventFileManager.Log("$[OutputFileManager] initialized: { newOutputFilePath}");
+        EventFileManager.Log($"[OutputFileManager] Initialized: { newOutputFilePath}");
         OutputFileData.ResetAll();
     }
 
@@ -167,7 +167,7 @@ public class OutputFileManager : MonoBehaviour
             csv.NextRecord();
         }
 
-        EventFileManager.Log($"[OutputFileManager] data saved: {outputFilePath}");
+        EventFileManager.Log($"[OutputFileManager] Data saved: {outputFilePath}");
 
         OutputFileData.Reset();
     }

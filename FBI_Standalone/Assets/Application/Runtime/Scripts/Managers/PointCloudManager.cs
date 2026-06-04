@@ -104,7 +104,7 @@ public class PointCloudManager : MonoBehaviour
 
         var pointcloudGO = Instantiate(pointCloudPrefab, transform);
 
-        pointcloudGO.name = $"PointCloud_{cameraID}_{(delay > 0 ? "delay" : "realtime")}";
+        pointcloudGO.name = $"PointCloud_{cameraID}_{(delay > 0 ? "delay" : "realtime")}_{configFile.configName}";
 
         pointcloudGO.transform.position = Vector3.zero;
         pointcloudGO.transform.rotation = Quaternion.identity;
@@ -142,39 +142,36 @@ public class PointCloudManager : MonoBehaviour
 
         pointcloud.SetKinectInterface(sensorInterface);
 
-
-        var currentConfig = configFile;
-
-        if (currentConfig != null)
-        {
-            for (int i = 0; i < currentConfig.pointClouds.Count; i++)
-            {
-                var id = currentConfig.pointClouds[i].ID;
-
-                if(id == cameraID)
-                {
-                    var position = currentConfig.pointClouds[i].position.ToVector3();
-                    var rotation = currentConfig.pointClouds[i].rotation.ToVector3();
-                    var scale = currentConfig.pointClouds[i].scale.ToVector3();
-                    var depthMin = currentConfig.pointClouds[i].depthMin;
-                    var depthMax = currentConfig.pointClouds[i].depthMax;
-                    var clampXMin = currentConfig.pointClouds[i].clampXMin;
-                    var clampXMax = currentConfig.pointClouds[i].clampXMax;
-                    var clampYMin = currentConfig.pointClouds[i].clampYMin;
-                    var clampYMax = currentConfig.pointClouds[i].clampYMax;
-
-                    pointcloud.SetTransform(position, rotation, scale);
-                    pointcloud.SetCameraDeptValues(depthMin, depthMax);
-                    pointcloud.SetClampValues(clampXMin, clampXMax, clampYMin, clampYMax);
-
-                }
-            }
-        }
+        SetPointcloudConfig(pointcloud, configFile);
 
         spawnedPointClouds.Add(pointcloud);
 
         return pointcloud;
 
+    }
+
+    public void SetPointcloudConfig(PointCloud pointCloud, ConfigFile configFile)
+    {
+
+        var cameraID = pointCloud.Id;
+
+        if (configFile != null)
+        {
+            var position = configFile.pointClouds[cameraID - 1].position.ToVector3();
+            var rotation = configFile.pointClouds[cameraID - 1].rotation.ToVector3();
+            var scale = configFile.pointClouds[cameraID - 1].scale.ToVector3();
+            var depthMin = configFile.pointClouds[cameraID - 1].depthMin;
+            var depthMax = configFile.pointClouds[cameraID - 1].depthMax;
+            var clampXMin = configFile.pointClouds[cameraID - 1].clampXMin;
+            var clampXMax = configFile.pointClouds[cameraID - 1].clampXMax;
+            var clampYMin = configFile.pointClouds[cameraID - 1].clampYMin;
+            var clampYMax = configFile.pointClouds[cameraID - 1].clampYMax;
+
+            pointCloud.SetTransform(position, rotation, scale);
+            pointCloud.SetCameraDeptValues(depthMin, depthMax);
+            pointCloud.SetClampValues(clampXMin, clampXMax, clampYMin, clampYMax);
+
+        }
     }
 
     public void DespawnPointClouds()
@@ -183,6 +180,8 @@ public class PointCloudManager : MonoBehaviour
         {
             Destroy(spawnedPointClouds[i].gameObject);
         }
+
+        spawnedPointClouds.Clear();
     }
 
     public void DisplaySpawnedPointClouds()

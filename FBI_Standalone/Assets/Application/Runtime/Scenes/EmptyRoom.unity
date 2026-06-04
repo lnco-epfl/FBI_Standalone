@@ -1725,6 +1725,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5832613452178571215, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6867206271747297554, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
+      propertyPath: recordingFile
+      value: C:\Users\ADroxler\Documents\FBI_Standalone\FBI_Standalone\Assets\Application\Runtime\Data\Recording\output.mkv
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -15,7 +15,7 @@ public class DisplayTextState : IState
 
         if(step.text != null)
         {
-            EventFileManager.Log($"[DisplayTextState] DisplayText {step.text} for {step.diplayDuration}s");
+            EventFileManager.Log($"[DisplayTextState] DisplayText \"{step.text}\" for {step.diplayDuration}s");
 
             WorldUIManager.Instance.DisplayText(step.text);
 

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
+using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -73,6 +74,7 @@ public class UIManager : MonoBehaviour
     private List<CanvasSetupPointCloudUI> currentCanvasGraphUIs = new List<CanvasSetupPointCloudUI>();
     private List<string> configs;
     private string selectedConfig;
+    private bool lastFullScreen = false;
 
     public string SelectedGender
     {
@@ -230,6 +232,17 @@ public class UIManager : MonoBehaviour
             timeSinceStart.text = timeSpan.ToString(@"hh\:mm\:ss");
 
             UdapteProgressionInfos();
+        }
+
+        if(Screen.fullScreen && lastFullScreen != Screen.fullScreen)
+        {
+            quitButton.gameObject.SetActive(true);
+            lastFullScreen = Screen.fullScreen;
+        }
+        else
+        {
+            quitButton.gameObject.SetActive(false);
+            lastFullScreen = Screen.fullScreen;
         }
     }
 
@@ -580,6 +593,5 @@ public class UIManager : MonoBehaviour
 
         InitConfigDropDown();
     }
-
 
 }
