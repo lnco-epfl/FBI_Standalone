@@ -20,7 +20,7 @@ public class AssetsManager : MonoBehaviour
 
     [Header("Folders")]
     [SerializeField] private string imagesFolderName = "Images";
-    [SerializeField] private string audioFolderName = "Audio";
+    [SerializeField] private string audioFolderName = "Audios";
     [SerializeField] private string videoFolderName = "Videos";
 
     private Dictionary<string, Sprite> loadedSprites = new Dictionary<string, Sprite>();

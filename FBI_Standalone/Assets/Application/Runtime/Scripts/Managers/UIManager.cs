@@ -74,7 +74,7 @@ public class UIManager : MonoBehaviour
     private List<CanvasSetupPointCloudUI> currentCanvasGraphUIs = new List<CanvasSetupPointCloudUI>();
     private List<string> configs;
     private string selectedConfig;
-    private bool lastFullScreen = false;
+    private bool lastFullScreen = true;
 
     public string SelectedGender
     {
@@ -113,6 +113,7 @@ public class UIManager : MonoBehaviour
         {
             instance = this;
         }
+        lastFullScreen = Screen.fullScreen;
     }
 
 
@@ -234,15 +235,13 @@ public class UIManager : MonoBehaviour
             UdapteProgressionInfos();
         }
 
-        if(Screen.fullScreen && lastFullScreen != Screen.fullScreen)
+        if(Screen.fullScreen)
         {
             quitButton.gameObject.SetActive(true);
-            lastFullScreen = Screen.fullScreen;
         }
         else
         {
             quitButton.gameObject.SetActive(false);
-            lastFullScreen = Screen.fullScreen;
         }
     }
 
