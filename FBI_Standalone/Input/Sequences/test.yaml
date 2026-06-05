@@ -5,10 +5,10 @@ steps:
   - stepType: loadConfig
     configName: interpolation
 
-#  - stepType: displayVideo
-#    videoName: "Soaem_Encode_Part2"
-#    looping: false
-#    muteAudio: false
+  - stepType: displayVideo
+    videoName: "FBI_demo_video"
+    looping: false
+    muteAudio: false
 
   - stepType: displayText
     text: "welcome to FBI"
