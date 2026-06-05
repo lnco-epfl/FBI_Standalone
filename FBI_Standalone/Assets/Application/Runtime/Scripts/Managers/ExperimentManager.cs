@@ -11,6 +11,8 @@ public class ExperimentManager : MonoBehaviour
     public Action OnStop;
 
     public bool IsInitialized => isInitialized;
+
+
     private bool isInitialized = false;
 
     public bool IsRunning => isRunning;
@@ -33,7 +35,8 @@ public class ExperimentManager : MonoBehaviour
     private static ExperimentManager instance;
     public static ExperimentManager Instance => instance;
 
-
+    public Sequence CurrentSequence { get => sequence; }
+    private Sequence sequence;
 
     private void Awake()
     {
@@ -90,6 +93,8 @@ public class ExperimentManager : MonoBehaviour
         if (sequence != null)
         {
             sequenceStateMachine.SetSequence(sequence);
+
+            this.sequence = sequence;
 
             isInitialized = true;
 
