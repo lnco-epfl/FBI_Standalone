@@ -40,7 +40,7 @@ public class GazeReticle : MonoBehaviour
 
     private void Start()
     {
-        HideGazeCursor();
+        canvasGroup.alpha = 0.0f;
     }
 
     private void OnDisplayGazeCursor(bool idDisplay)
@@ -57,18 +57,18 @@ public class GazeReticle : MonoBehaviour
 
     public void DisplayGazeCursor()
     {
-        FadeCanvasGroup(canvasGroup, 1.0f);
+        FadeCanvasGroup(canvasGroup, 0.25f, 1.0f);
     }
 
     public void HideGazeCursor()
     {
-        FadeCanvasGroup(canvasGroup, 0.0f); 
+        FadeCanvasGroup(canvasGroup, 0.25f, 0.0f); 
     }
 
 
-    private void FadeCanvasGroup(CanvasGroup canvasGroup, float endValue, Action value = null)
+    private void FadeCanvasGroup(CanvasGroup canvasGroup,float duration, float endValue, Action value = null)
     {
-        Tween.Alpha(canvasGroup, endValue: endValue, duration: 0.25f).OnComplete(value);
+        Tween.Alpha(canvasGroup, endValue: endValue, duration: duration).OnComplete(value);
     }
 
 

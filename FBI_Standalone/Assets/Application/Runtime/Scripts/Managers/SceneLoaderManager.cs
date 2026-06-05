@@ -74,8 +74,11 @@ public class SceneLoaderManager : MonoBehaviour
 
     public void LoadDefaultScene()
     {
-        Fader.Instance?.FadeToBlack();
-
+        if(Fader.Instance != null)
+        {
+            Fader.Instance.FadeToBlack();
+        }
+        
         StartCoroutine(LoadAsyncScene(DefaultScene));
 
         Tween.Delay(1.0f, () => Fader.Instance?.FadeToClear());
