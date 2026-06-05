@@ -75,7 +75,7 @@ Input/
 ├── Sequences/       ← YAML sequence files
 ├── Configs/         ← YAML camera configuration files
 ├── Images/          ← Image assets (PNG, JPG, BMP, TGA)
-├── Videos/          ← Video assets (MP4, WEBM, MOV)
+├── Videos/          ← Video assets (MP4 + SRT)
 └── Audio/           ← Audio assets (WAV, OGG, MP3)
 ```
 
