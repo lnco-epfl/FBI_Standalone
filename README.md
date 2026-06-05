@@ -2,21 +2,21 @@
 
 # Summary
 
-  * [Description](#description)
-  * [Requirements](#requirements)
-  * [How to use](#how-to-use)
-  * [Input Files](#input-files)
-  * [Sequence Files](#sequence-files)
-  * [Config Editor](#config-editor)
-  * [Config Files](#config-files)
-  * [Output Files](#output-files)
-  * [GUI](#gui)
-  * [Screenshot](#screenshot)
-  * [Authors](#authors)
+* [Description](#description)
+* [Requirements](#requirements)
+* [How to use](#how-to-use)
+* [Input Files](#input-files)
+* [Sequence Files](#sequence-files)
+* [Config Files](#config-files)
+* [Output Files](#output-files)
+* [Config Editor](#config-editor)
+* [GUI](#gui)
+* [Screenshot](#screenshot)
+* [Authors](#authors)
 
 # Description
 
-This application has been created with Unity (version 6000.3.11f1). The project uses Femto Bolt cameras to capture and display real-time point clouds of participants as Point cloud.
+This application has been created with Unity (version 6000.3.11f1). The project uses Femto Bolt cameras to capture and display real-time point clouds of participants as point clouds.
 
 The application is designed for research experiments involving point cloud visualizations. It allows researchers to display live or delayed point cloud feeds from multiple cameras as part of a configurable experiment sequence. The experiment flow is defined through YAML sequence files and supports a variety of step types including camera display, text, images, questions, and Likert scales.
 
@@ -35,45 +35,32 @@ The following software must be installed on the laptop before running the applic
 
 ### Meta Horizon Link
 
-[Meta Horizon Link](https://www.oculus.com/download_app/?id=1582076955407037) is required to use the Meta Quest 3 / 3S as a PCVR headset. It must be installed and running on the laptop before connecting the headset (with your Meta account). In Quest Link settings, allow unknown sources and enable OpenXR. When the Quest 3 / 3S is connected via USB-C cable and turned on, it automatically launches Quest Link; this behaviour is configured directly on the headset in the Quest settings. 
+[Meta Horizon Link](https://www.oculus.com/download_app/?id=1582076955407037) is required to use the Meta Quest 3 / 3S as a PCVR headset. It must be installed and running on the laptop before connecting the headset (with your Meta account). In Quest Link settings, allow unknown sources and enable OpenXR. When the Quest 3 / 3S is connected via USB-C cable and turned on, it automatically launches Quest Link; this behaviour is configured directly on the headset in the Quest settings.
 
 ### Orbbec SDK & Drivers (for Femto Bolt cameras)
 
-The Femto Bolt cameras are the recommended replacement for Azure Kinect cameras. They are developed by Orbbec in partnership with Microsoft and are compatible with the Azure Kinect SDK via an Orbbec wrapper.
+The Femto Bolt cameras are developed by Orbbec in partnership with Microsoft as a direct replacement for Azure Kinect cameras. They are compatible with the Azure Kinect SDK via an Orbbec wrapper.
 
-> ℹ️ The Unity project uses the [Azure Kinect and Femto Bolt Examples for Unity](https://assetstore.unity.com/packages/tools/integration/azure-kinect-and-femto-bolt-examples-for-unity-149700) asset with the OrbbecFemtoWrapper already imported, no additional Unity-side camera setup is required.
+> ℹ️ The Unity project uses the [Azure Kinect and Femto Bolt Examples for Unity](https://assetstore.unity.com/packages/tools/integration/azure-kinect-and-femto-bolt-examples-for-unity-149700) asset with the OrbbecFemtoWrapper already imported, no additional Unity-side camera setup is required. For the full setup guide, refer to the [official plugin documentation](https://rfilkov.com/2019/08/26/azure-kinect-tips-tricks/#t19).
 
->
-
-> For the full setup guide, refer to the [official plugin documentation](https://rfilkov.com/2019/08/26/azure-kinect-tips-tricks/#t19).
-
-
-Before first use of an Orbbec Camera, follow these steps:
+Before first use, follow these steps:
 
 1. **Connect** a Femto Bolt camera to its power supply and to the laptop via USB-C.
-
 2. **Download and install [Azure Kinect Sensor SDK](https://github.com/microsoft/Azure-Kinect-Sensor-SDK/blob/develop/docs/usage.md)** (v1.4.1). This is required as a base dependency even when using Femto Bolt cameras.
+3. **Download and install [Azure Kinect Body Tracking SDK](https://learn.microsoft.com/en-us/previous-versions/azure/kinect-dk/body-sdk-download)** (v1.1.2). It is required even when using Femto Bolt cameras, as the plugin relies on it for body tracking. Follow the [official installation instructions](https://learn.microsoft.com/en-us/azure/kinect-dk/body-sdk-setup). The SDK must be installed in its default location: `C:\Program Files\Azure Kinect Body Tracking SDK`. Note: this procedure requires running commands from Windows PowerShell launched as administrator.
+4. **Download and unzip Orbbec Viewer from the [Orbbec SDK for Windows](https://www.orbbec.com/developers/orbbec-sdk/)** (v1.8.1 or later, not V2). Launch Orbbec Viewer, select the connected camera, and verify that the color, depth, IR and IMU streams are visible and that device timestamps are rolling. Then close Orbbec Viewer.
+5. **Check the firmware version** of the device against [Orbbec's firmware repository](https://github.com/orbbec/OrbbecFirmware). Upgrade if needed via Orbbec Viewer.
+6. **Download and unzip [Orbbec's K4A-Wrapper](https://github.com/orbbec/OrbbecSDK-K4A-Wrapper)** (v1.8.1 or later). Run the `k4aviewer` app from its `bin` folder, open the device, start the cameras, and verify all streams are working. Then close the app.
+7. **On Windows**, go to the `script` subfolder of the K4A-Wrapper folder and follow the instructions in `obsensor_metadata_win10.md` to enable device timestamps over the UVC protocol.
 
-3. **Download and install [Azure Kinect Body Tracking SDK](https://learn.microsoft.com/en-us/previous-versions/azure/kinect-dk/body-sdk-download)** (v1.1.2). It is required even when using Femto Bolt cameras, as the plugin relies on it for body tracking.
-
-4. Follow the [official installation instructions](https://learn.microsoft.com/en-us/azure/kinect-dk/body-sdk-setup). The SDK must be installed in its default location: `C:\Program Files\Azure Kinect Body Tracking SDK`. NB: this procedure requires running command lines from Windows Power Shell launched as administrator on your computer.
-
-3. **Download and unzip Orbbec Viewer from the [Orbbec SDK for Windows](https://www.orbbec.com/developers/orbbec-sdk/)** (v1.8.1 or later, not in V2). Launch Orbbec Viewer, select the connected camera, and verify that the color, depth, IR and IMU streams are visible and that device timestamps are rolling. Then close Orbbec Viewer.
-
-4. **Check the firmware version** of the device against [Orbbec's firmware repository](https://github.com/orbbec/OrbbecFirmware). Upgrade if needed via Orbbec Viewer.
-
-5. **Download and unzip [Orbbec's K4A-Wrapper](https://github.com/orbbec/OrbbecSDK-K4A-Wrapper)** (v1.8.1 or later). Run the `k4aviewer` app from its `bin` folder, open the device, start the cameras, and verify all streams are working. Then close the app.
-
-6. **On Windows**, go to the `script` subfolder of the K4A-Wrapper folder and follow the instructions in `obsensor_metadata_win10.md` to enable device timestamps over the UVC protocol.
-
-The step 4 (installation instructions) should be performed for each Orbbec camera plugged individually.
+> ⚠️ Step 7 must be performed for each Orbbec camera plugged in individually.
 
 # How to use
 
 To run the application:
 
-* Connect all Femto Bolt cameras to the PC (ensure they are recognized by the system).
-* Connect the Quest 3 / 3S to the laptop with the usb-C cable, and start Meta Horizon link (Quest Link running on the laptop, validate connection in the headset). 
+* Connect all Femto Bolt cameras to the PC and ensure they are recognized by the system.
+* Connect the Quest 3 / 3S to the laptop with the USB-C cable and start Meta Horizon Link. Validate the Quest Link connection from inside the headset.
 * Run `FBI Standalone.exe`
 * Enter the participant data (age, gender) and select a sequence file.
 * Create or edit a config file (which defines camera positions, depth values, etc.)
@@ -81,24 +68,20 @@ To run the application:
 
 # Input Files
 
-All input files are located in the `Input/` folder at the root of the executable directory.
+All input files are located in the `Input/` folder at the root of the executable directory. This folder is created automatically on first launch if it does not exist. Files are loaded at startup and referenced in sequence files by their filename without extension.
 
 ```
 Input/
 ├── Sequences/       ← YAML sequence files
 ├── Configs/         ← YAML camera configuration files
 ├── Images/          ← Image assets (PNG, JPG, BMP, TGA)
-├── Videos/          ← Video assets (MP4)
-└── Audios/          ← Audio assets (WAV, OGG, MP3)
+├── Videos/          ← Video assets (MP4, WEBM, MOV)
+└── Audio/           ← Audio assets (WAV, OGG, MP3)
 ```
-
-Images and audio files are loaded automatically at startup. They are referenced in sequence files by their filename (without extension).
 
 # Sequence Files
 
-Sequence files are YAML files located in `Input/Sequences/`. Each file defines the ordered list of steps that will be executed during an experiment session.
-
-Output files are named after the sequence file used: `date_hours_sequenceFileName_Output.csv`
+Sequence files are YAML files located in `Input/Sequences/`. Each file defines the ordered list of steps that will be executed during an experiment session. The sequence file name is used to name the output files.
 
 ## Step Types
 
@@ -110,7 +93,7 @@ Loads a Unity scene by name.
 |-----------|------|-------------|
 | `scenePath` | string | Name of the scene to load |
 
-List of the avialable scene : 
+Available scenes:
 
 * `BlackScene`
 * `EmptyGrayRoom`
@@ -118,10 +101,8 @@ List of the avialable scene :
 * `EmptyRoom`
 
 ```yaml
-
 - stepType: LoadScene
   scenePath: "EmptyRoom"
-
 ```
 
 ---
@@ -137,7 +118,6 @@ Loads a camera configuration file by name.
 ```yaml
 - stepType: LoadConfig
   configName: Bruno
-
 ```
 
 ---
@@ -152,11 +132,9 @@ Displays a text message on screen for a given duration.
 | `duration` | float | Display duration in seconds |
 
 ```yaml
-
 - stepType: DisplayText
   text: "Welcome"
   duration: 3.0
-
 ```
 
 ---
@@ -170,10 +148,8 @@ Pauses the sequence for a given duration.
 | `duration` | float | Wait duration in seconds |
 
 ```yaml
-
 - stepType: Wait
   duration: 2.0
-
 ```
 
 ---
@@ -181,7 +157,6 @@ Pauses the sequence for a given duration.
 ### DisplayCameras
 
 Displays one or more point clouds simultaneously, each with its own settings. Each camera entry is defined under a `cameraDatas` list and can independently have a temporal delay, a config file, an interpolation animation, and a dissolution effect.
-
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
@@ -199,15 +174,13 @@ Each entry in `cameraDatas` supports the following fields:
 | `interpolation.duration` | float | Duration of the interpolation animation in seconds |
 | `interpolation.delay` | float | Delay before the interpolation starts, in seconds |
 | `interpolation.ease` | string | Easing function from [PrimeTween](https://github.com/KyryloKuzyk/PrimeTween#support). Recommended values: `Default`, `Linear`, `InOutSine`, `InOutQuad`, `InOutCubic`, `InOutQuart`, `InOutExpo` |
-| `interpolation.startConfigName` | string | Name of the config to use as the start position of the interpolation. |
+| `interpolation.startConfigName` | string | *(Optional)* Name of the config to use as the start position of the interpolation. If omitted, the current transform is used as the start |
 | `dissolution` | object | *(Optional)* Progressively dissolves the point cloud during the step |
 | `dissolution.duration` | float | Duration of the dissolution effect in seconds |
 | `dissolution.delay` | float | Delay before the dissolution starts, in seconds |
 
 ```yaml
-
 # Single camera, real-time display
-
 - stepType: DisplayCameras
   duration: 20.0
   cameraDatas:
@@ -246,15 +219,13 @@ Each entry in `cameraDatas` supports the following fields:
       dissolution:
         duration: 3.0
         delay: 5.0
-
 ```
 
-> ⚠️ When using `interpolation`, `configName` must also be set, it defines the end position of the animation.
+> ⚠️ When using `interpolation`, `configName` must also be set — it defines the end position of the animation.
 
-> ⚠️ Only one delay value can be set per camera, only the last value will be be used 
+> ⚠️ Only one delay value can be set per camera; if multiple values are provided, only the last one will be used.
 
 ---
-
 
 ### DisplayImage
 
@@ -266,14 +237,11 @@ Displays an image from the `Input/Images/` folder.
 | `scale` | float | Display scale of the image |
 | `duration` | float | Display duration in seconds |
 
-
 ```yaml
-
 - stepType: DisplayImage
   imagePath: "plus"
   scale: 0.3
   duration: 5.0
-
 ```
 
 ---
@@ -286,17 +254,12 @@ Plays an audio file from the `Input/Audio/` folder.
 |-----------|------|-------------|
 | `soundPath` | string | Audio filename without extension |
 
-
 ```yaml
-
 - stepType: PlaySound
   soundPath: "bell-sfx"
-
 ```
 
 ---
-
-
 
 ### DisplayVideo
 
@@ -310,7 +273,6 @@ Plays a video file from the `Input/Videos/` folder. Supported formats: MP4, WEBM
 | `duration` | float | Fallback timeout in seconds, used when looping or if the video duration cannot be read |
 
 ```yaml
-
 # Play a video once (ends automatically when finished)
 - stepType: DisplayVideo
   videoName: "intro"
@@ -324,7 +286,6 @@ Plays a video file from the `Input/Videos/` folder. Supported formats: MP4, WEBM
   looping: true
   muteAudio: true
   duration: 30.0
-
 ```
 
 ---
@@ -339,14 +300,12 @@ Displays a multiple-choice question and waits for a response.
 | `options` | list of strings | List of response options |
 
 ```yaml
-
 - stepType: DisplayQuestion
   question: "How do you feel?"
   options:
     - "Option 1"
     - "Option 2"
     - "Option 3"
-
 ```
 
 ---
@@ -361,14 +320,11 @@ Displays a Likert scale question and waits for a response.
 | `leftLabel` | string | Label for the left (low) end of the scale |
 | `rightLabel` | string | Label for the right (high) end of the scale |
 
-
 ```yaml
-
 - stepType: DisplayLikertScale
   question: "How satisfied are you?"
   leftLabel: "Not satisfied"
   rightLabel: "Very satisfied"
-
 ```
 
 ---
@@ -383,27 +339,22 @@ Displays a break screen with instructions for a given duration.
 | `duration` | float | Break duration in seconds |
 
 ```yaml
-
 - stepType: Break
   text: "Take a break."
   duration: 90
-
 ```
 
 ---
 
-
-
 ## Full Sequence Example
 
 ```yaml
-
 steps:
   - stepType: LoadScene
     scenePath: "EmptyRoom"
 
   - stepType: LoadConfig
-    fileName: DefaultConfig
+    configName: DefaultConfig
 
   - stepType: DisplayText
     text: "Welcome to the experiment"
@@ -412,10 +363,11 @@ steps:
   - stepType: Wait
     duration: 2.0
 
-  - stepType: DisplayCamera
+  - stepType: DisplayCameras
     duration: 20.0
-    cameraID: "1"
-    delay: 0.0
+    cameraDatas:
+      - id: "1"
+        delay: 0.0
 
   - stepType: DisplayLikertScale
     question: "How natural did the movement feel?"
@@ -429,128 +381,13 @@ steps:
   - stepType: DisplayText
     text: "Thank you."
     duration: 4.0
-
 ```
-
-
-
-# Config Editor
-
-The Config Editor is a dedicated interface for creating and editing camera configuration files. It can be opened from the main GUI and provides a real-time preview of the scene from the participant's perspective.
-
- <img width="1932" height="1098" alt="Capture d&#39;écran 2026-05-20 080347" src="https://github.com/user-attachments/assets/fa9f5c5f-4c59-4a78-8a3d-d2e0d53dd35c" />
-
-
-## Toolbar
-
-| Button | Description |
-|--------|-------------|
-| **New** | Creates a new empty configuration |
-| **Open** | Opens an existing config file from disk via a file browser |
-| **Save** | Saves the current configuration to disk |
-| **Save as...** | Saves the current configuration under a new name and location |
-| **≡** (menu) | Opens a menu with clipboard options: **Copy** to copy the current configuration as YAML to the clipboard, and **Paste** to load a configuration from the clipboard |
-| **Scene** | Dropdown to select which Unity scene to load in the preview (e.g. `EmptyRoom`) |
-
-On the left of the status indicator, the name of the currently loaded config file is displayed. The status indicator shows a message reflecting the current state of the editor:
-
-| Message | Color | Description |
-|---------|-------|-------------|
-| `No config loaded.` | Grey | Initial state at startup, no config is active |
-| `Ready.` | Grey | Config is loaded and no pending changes |
-| `Unsaved changes.` | Yellow | The config has been modified but not yet saved — displayed continuously until saved |
-| `Opened {filename}` | Green | A config file was successfully opened from disk |
-| `Saved as {filename}` | Green | The config was successfully saved under a new name |
-| `Config copied to clipboard.` | Green | The config was successfully copied to the clipboard |
-| `Config pasted from clipboard.` | Green | A config was successfully loaded from the clipboard |
-| `Open cancelled.` | Grey | The file browser was closed without selecting a file |
-| `Save cancelled.` | Grey | The save dialog was closed without saving |
-| `Clipboard is empty.` | Red | Paste was attempted but the clipboard contains nothing |
-| `Clipboard content is invalid.` | Red | Paste was attempted but the clipboard content is not a valid config |
-| `Failed to save file.` | Red | An error occurred while saving to disk |
-| `Failed to read file.` | Red | An error occurred while reading a file from disk |
-| `Invalid file format.` | Red | The opened file is not a valid config YAML |
-
-## Camera Panels (Camera 1, Camera 2, ...)
-
-One panel is displayed per connected camera. Each panel contains the following controls.
-
-**Display toggle** — enables or disables the real-time point cloud preview for that camera. Only one camera can be displayed at a time.
-
-### Transform
-
-Controls the position and rotation of the point cloud in the 3D scene.
-
-| Control | Description |
-|---------|-------------|
-| **Position X / Y / Z** | Position of the point cloud in world space |
-| **Rotation X / Y / Z** | Euler rotation of the point cloud |
-
-### Depth
-
-Controls the depth range captured by the camera. Points outside this range are discarded.
-
-
-| Control | Description |
-|---------|-------------|
-| **Max** | Maximum capture depth in meters (0–10 m) |
-| **Min** | Minimum capture depth in meters (0–10 m) |
-
-
-### Clamp
-
-Crops the visible area of the point cloud along X and Y axes. Values are normalized between `0` and `1`, where `0` is the left/bottom edge and `1` is the right/top edge of the camera frame.
-
-| Control | Description |
-|---------|-------------|
-| **X Min / X Max** | Left and right crop boundaries |
-| **Y Min / Y Max** | Bottom and top crop boundaries |
-
-### Mirror
-
-Flips the point cloud along a given axis.
-
-| Button | Description |
-|--------|-------------|
-| **↔ Horizontal** | Flips the point cloud horizontally (X axis) |
-| **↕ Vertical** | Flips the point cloud vertically (Y axis) |
-
-## Stimulus Display
-
-The **Stimulus Display** section controls the position and appearance of the in-world UI canvas — the panel used to display text, images, questions, and other stimuli to the participant.
-
-
-| Control | Description |
-|---------|-------------|
-| **Display toggle** | Shows or hides the stimulus display canvas in the preview |
-| **Position X / Y / Z** | Position of the canvas in world space |
-| **Rotation Y** | Vertical rotation of the canvas |
-| **Background color** | Background color of the canvas (click to open a color picker) |
-
-## Preview Panel (right side)
-
-The right side of the Config Editor shows a live preview of the scene split into two viewports.
-
-| Viewport | Description |
-|----------|-------------|
-| **Participant view** | First-person view from the VR headset's perspective. Reflects the actual experience seen by the participant |
-| **Static view** | Fixed camera view of the scene, useful for monitoring the overall layout |
-
-Additional controls in the preview panel:
-
-| Control | Description |
-|---------|-------------|
-| **VR edition** toggle | Enables editing mode inside the VR headset, allowing the researcher to adjust the config while wearing the headset |
-| **Reset Headset Orientation** | Resets the headset's forward direction to the current facing direction |
-| **Display Avatar** toggle | Shows or hides a body avatar in the scene |
-| **Camera Position / Rotation** | Displays the current position and rotation of the static preview camera (read-only) |
 
 # Config Files
 
-Config files are YAML files located in `Input/Configs/`. They define the spatial configuration and depth settings for each Azure Kinect camera's point cloud.
+Config files are YAML files located in `Input/Configs/`. They define the spatial configuration, depth settings, and clipping boundaries for each camera's point cloud, as well as the position and appearance of the stimulus display canvas. Config files can be created and edited through the Config Editor.
 
 ```yaml
-
 configName: DefaultConfig
 createdAt: 2026-04-02 15:20:45
 lastModified: 2026-04-10 12:26:32
@@ -592,7 +429,6 @@ pointClouds:
     clampXMax: 1.0
     clampYMin: 0.0
     clampYMax: 1.0
-
 ```
 
 ## Stimulus Display
@@ -618,12 +454,10 @@ The `pointClouds` list defines the spatial configuration, depth settings and spa
 | `scale` | Vector3 | Scale of the point cloud. Use `-1` on X or Y to flip the axis |
 | `depthMax` | float | Maximum depth distance captured by the camera (in meters) |
 | `depthMin` | float | Minimum depth distance captured by the camera (in meters) |
-| `clampXMin` | float | Left boundary of the visible area, as a normalized value between `0` and `1` |
-| `clampXMax` | float | Right boundary of the visible area, as a normalized value between `0` and `1` |
-| `clampYMin` | float | Bottom boundary of the visible area, as a normalized value between `0` and `1` |
-| `clampYMax` | float | Top boundary of the visible area, as a normalized value between `0` and `1` |
-
-Config files can be created and edited directly through the application GUI, which saves changes automatically.
+| `clampXMin` | float | Left boundary of the visible area, normalized between `0` and `1` |
+| `clampXMax` | float | Right boundary of the visible area, normalized between `0` and `1` |
+| `clampYMin` | float | Bottom boundary of the visible area, normalized between `0` and `1` |
+| `clampYMax` | float | Top boundary of the visible area, normalized between `0` and `1` |
 
 # Output Files
 
@@ -631,8 +465,8 @@ All output files are saved in the `Output/` folder at the root of the executable
 
 There are two types of output files:
 
-- **Event** (`_Events.txt`): A log file that records all events during the experiment, including errors, warnings, and state transitions. Useful for monitoring experiment progress and debugging.
-- **Output** (`_Output.csv`): A CSV file containing all data collected during the experiment. Each row corresponds to a `DisplayCameras` step.
+- **Event log** (`_Events.txt`): Records all events during the experiment, including errors, warnings, and state transitions. Useful for monitoring experiment progress and debugging.
+- **Data output** (`_Output.csv`): A CSV file containing all data collected during the experiment. Each row corresponds to a `DisplayCameras` step.
 
 ## Output file parameters
 
@@ -647,18 +481,125 @@ There are two types of output files:
 | `StepType` | string | Type of the current step (e.g. `DisplayCameras`) |
 | `StepCount` | int | Current step index |
 | `CameraIDs` | string | IDs of the cameras displayed, as a comma-separated list (e.g. `[1,2,]`) |
-| `CameraDelays` | string | Temporal delays applied to each camera feed, as a comma-separated list matching `CameraID` order |
-| `CameraDisplayDuration` | float | Duration the camera was displayed (seconds) |
-| `AsInterpolation` | bool | Point cloud interpolation is enabled |
-| `AsDissolution` | bool | Point cloud dissolution is enabled |
+| `CameraDelays` | string | Temporal delays applied to each camera feed, as a comma-separated list matching `CameraIDs` order |
+| `CameraDisplayDuration` | float | Duration the cameras were displayed (seconds) |
+| `AsInterpolation` | bool | Whether point cloud interpolation was enabled for this step |
+| `AsDissolution` | bool | Whether point cloud dissolution was enabled for this step |
 | `LikertResponse` | int | Response given to a Likert scale question |
 | `LikertResponseTime` | double | Response time for the Likert scale (seconds) |
 | `QuestionResponse` | string | Response given to a multiple-choice question |
 | `QuestionResponseTime` | double | Response time for the question (seconds) |
 
+# Config Editor
+
+The Config Editor is a dedicated interface for creating and editing camera configuration files. It can be opened from the main GUI and provides a real-time preview of the scene from the participant's perspective.
+
+<img width="1932" height="1098" alt="Config Editor" src="https://github.com/user-attachments/assets/fa9f5c5f-4c59-4a78-8a3d-d2e0d53dd35c" />
+
+## Toolbar
+
+| Button | Description |
+|--------|-------------|
+| **New** | Creates a new empty configuration |
+| **Open** | Opens an existing config file from disk via a file browser |
+| **Save** | Saves the current configuration to disk |
+| **Save as...** | Saves the current configuration under a new name and location |
+| **≡** (menu) | Opens a menu with clipboard options: **Copy** to copy the current configuration as YAML to the clipboard, and **Paste** to load a configuration from the clipboard |
+| **Scene** | Dropdown to select which Unity scene to load in the preview (e.g. `EmptyRoom`) |
+
+On the left of the status indicator, the name of the currently loaded config file is displayed. The status indicator shows a message reflecting the current state of the editor:
+
+| Message | Color | Description |
+|---------|-------|-------------|
+| `No config loaded.` | Grey | Initial state at startup, no config is active |
+| `Ready.` | Grey | Config is loaded and no pending changes |
+| `Unsaved changes.` | Yellow | The config has been modified but not yet saveddis, played continuously until saved |
+| `Opened {filename}` | Green | A config file was successfully opened from disk |
+| `Saved as {filename}` | Green | The config was successfully saved under a new name |
+| `Config copied to clipboard.` | Green | The config was successfully copied to the clipboard |
+| `Config pasted from clipboard.` | Green | A config was successfully loaded from the clipboard |
+| `Open cancelled.` | Grey | The file browser was closed without selecting a file |
+| `Save cancelled.` | Grey | The save dialog was closed without saving |
+| `Clipboard is empty.` | Red | Paste was attempted but the clipboard contains nothing |
+| `Clipboard content is invalid.` | Red | Paste was attempted but the clipboard content is not a valid config |
+| `Failed to save file.` | Red | An error occurred while saving to disk |
+| `Failed to read file.` | Red | An error occurred while reading a file from disk |
+| `Invalid file format.` | Red | The opened file is not a valid config YAML |
+
+## Camera Panels (Camera 1, Camera 2, ...)
+
+One panel is displayed per connected camera. Each panel contains the following controls.
+
+**Display toggle:** enables or disables the real-time point cloud preview for that camera. Only one camera can be displayed at a time.
+
+### Transform
+
+Controls the position and rotation of the point cloud in the 3D scene.
+
+| Control | Description |
+|---------|-------------|
+| **Position X / Y / Z** | Position of the point cloud in world space |
+| **Rotation X / Y / Z** | Euler rotation of the point cloud |
+
+### Depth
+
+Controls the depth range captured by the camera. Points outside this range are discarded.
+
+| Control | Description |
+|---------|-------------|
+| **Max** | Maximum capture depth in meters (0–10 m) |
+| **Min** | Minimum capture depth in meters (0–10 m) |
+
+### Clamp
+
+Crops the visible area of the point cloud along X and Y axes. Values are normalized between `0` and `1`, where `0` is the left/bottom edge and `1` is the right/top edge of the camera frame.
+
+| Control | Description |
+|---------|-------------|
+| **X Min / X Max** | Left and right crop boundaries |
+| **Y Min / Y Max** | Bottom and top crop boundaries |
+
+### Mirror
+
+Flips the point cloud along a given axis.
+
+| Button | Description |
+|--------|-------------|
+| **↔ Horizontal** | Flips the point cloud horizontally (X axis) |
+| **↕ Vertical** | Flips the point cloud vertically (Y axis) |
+
+## Stimulus Display
+
+The **Stimulus Display** section controls the position and appearance of the in-world UI canvas — the panel used to display text, images, questions, and other stimuli to the participant.
+
+| Control | Description |
+|---------|-------------|
+| **Display toggle** | Shows or hides the stimulus display canvas in the preview |
+| **Position X / Y / Z** | Position of the canvas in world space |
+| **Rotation Y** | Vertical rotation of the canvas |
+| **Background color** | Background color of the canvas (click to open a color picker) |
+
+## Preview Panel (right side)
+
+The right side of the Config Editor shows a live preview of the scene split into two viewports.
+
+| Viewport | Description |
+|----------|-------------|
+| **Participant view** | First-person view from the VR headset's perspective. Reflects the actual experience seen by the participant |
+| **Static view** | Fixed camera view of the scene, useful for monitoring the overall setup |
+
+Additional controls in the preview panel:
+
+| Control | Description |
+|---------|-------------|
+| **VR edition** toggle | Enables editing mode inside the VR headset, allowing the researcher to adjust the config while wearing the headset |
+| **Reset Headset Orientation** | Resets the headset's forward direction to the current facing direction |
+| **Display Avatar** toggle | Shows or hides a body avatar in the scene (The avatar is only displayed in the config editor ) |
+| **Camera Position / Rotation** | Displays the current position and rotation of the static preview camera (read-only) |
+
 # GUI
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/9eea46ec-23f6-40c3-831b-11695d415903" />
+<img width="1920" height="1080" alt="GUI" src="https://github.com/user-attachments/assets/9eea46ec-23f6-40c3-831b-11695d415903" />
 
 ### Participant form
 
@@ -683,9 +624,9 @@ There are two types of output files:
 - **Start button:** Starts the experiment. Requires a sequence file to be selected.
 - **Play/Pause button:** Pauses or resumes the experiment. The current step restarts when resuming.
 - **Stop button:** Stops the experiment and resets the state.
-- **Reset head orientation:** Allows the participant's view to be realigned in the main direction  
-- **Audio volume controls:** Change the volume of the sound (audio, video) during the experiment.
-- **Fullscreen view:** Set the participant in full screen.
+- **Reset head orientation:** Realigns the participant's view to the current facing direction.
+- **Audio volume controls:** Adjust the volume of audio and video during the experiment.
+- **Fullscreen view:** Sets the participant view to fullscreen.
 
 ### Keyboard Shortcuts
 
@@ -700,21 +641,20 @@ There are two types of output files:
 
 # Screenshot
 
-### Mirror view 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/11933bce-0d12-4c67-af16-1fbbbd573cfc" />
+### Mirror view
+<img width="1920" height="1080" alt="Mirror view" src="https://github.com/user-attachments/assets/11933bce-0d12-4c67-af16-1fbbbd573cfc" />
 
 ### 1PP view
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/e0115e12-dedd-4c00-8907-0d4da5daa898" />
+<img width="1920" height="1080" alt="1PP view" src="https://github.com/user-attachments/assets/e0115e12-dedd-4c00-8907-0d4da5daa898" />
 
 ### 3PP view
-<img width="1920" height="1078" alt="image" src="https://github.com/user-attachments/assets/07f5fcce-f090-4133-8701-1926ba2b4728" />
+<img width="1920" height="1078" alt="3PP view" src="https://github.com/user-attachments/assets/07f5fcce-f090-4133-8701-1926ba2b4728" />
 
-### Full body illustion 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/36ab1ab1-0b46-41e7-8183-a50634a27b7a" />
+### Full body illusion
+<img width="1920" height="1080" alt="Full body illusion" src="https://github.com/user-attachments/assets/36ab1ab1-0b46-41e7-8183-a50634a27b7a" />
 
 # Authors
 
-Developed by Arnaud Droxler, Haotian Yao.  
+Developed by Arnaud Droxler, Haotian Yao.
 
-With the help and advice of Bruno Herbelin, Idil Sezer, Olaf Blanke
-
+With the help and advice of Bruno Herbelin, Idil Sezer, Olaf Blanke.
