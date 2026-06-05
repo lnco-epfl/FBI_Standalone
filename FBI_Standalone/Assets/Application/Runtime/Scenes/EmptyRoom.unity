@@ -1685,6 +1685,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: KinectController
       objectReference: {fileID: 0}
+    - target: {fileID: 865389078659317395, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5357310357031832919, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

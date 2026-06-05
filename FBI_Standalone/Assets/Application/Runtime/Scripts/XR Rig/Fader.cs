@@ -11,12 +11,15 @@ public class Fader : MonoBehaviour
     public event Action<bool> OnFadeCompleted;
 
     private Material material;
-
+    private bool isInitialize = false;
     private static Fader instance;
 
     private bool isBlack = true;
 
     public static Fader Instance { get { return instance; } }
+
+    public bool IsInitialize { get => isInitialize; }
+
     private void Awake()
     {
         if (instance != null && instance != this) { Destroy(this.gameObject); }
@@ -27,6 +30,8 @@ public class Fader : MonoBehaviour
 
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
         material = meshRenderer.material;
+
+        isInitialize = true;
     }
 
     [ContextMenu("FadeToBlack")]
