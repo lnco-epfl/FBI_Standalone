@@ -56,7 +56,7 @@ public class SubtitleReader : MonoBehaviour
 
         textAutoSizer = GetComponentInChildren<TextAutoSizer>();
 
-        //videoPlayer = ScreenManager.Instance.GetVideoPlayer();
+        videoPlayer = WorldUIManager.Instance.GetVideoPlayer();
 
         if (videoPlayer != null)
         {
@@ -175,6 +175,14 @@ public class SubtitleReader : MonoBehaviour
     private void VideoStarted(VideoPlayer source)
     {
         var path = source.url;
+
+        if (path.StartsWith("file:///"))
+            path = path.Substring(8);
+        else if (path.StartsWith("file://"))
+            path = path.Substring(7);
+
+        path = Uri.UnescapeDataString(path);
+
         path = path.Replace(".mp4", ".srt");
 
         if (currentPath != path)

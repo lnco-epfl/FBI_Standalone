@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 
 using UnityEngine.UI;
-
+using UnityEngine.Video;
 using Random = UnityEngine.Random;
 
 public class WorldUIManager : MonoBehaviour
@@ -509,5 +509,10 @@ public class WorldUIManager : MonoBehaviour
         {
             currentBackground.color = backgroundColor;
         }
+    }
+
+    public VideoPlayer GetVideoPlayer()
+    {
+        return videoPlayer;
     }
 }
