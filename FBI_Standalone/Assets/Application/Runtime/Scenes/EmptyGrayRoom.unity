@@ -632,11 +632,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1b6d4856bc356e4895bda6dca2be206, type: 3}
---- !u!4 &684706854 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3176835552422503746, guid: 60ebf16a373448c4f9dc9ce72aceea7a, type: 3}
-  m_PrefabInstance: {fileID: 6873485300634881259}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &767526232
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1767,7 +1762,7 @@ PrefabInstance:
     - target: {fileID: 9050714511273804710, guid: 60ebf16a373448c4f9dc9ce72aceea7a, type: 3}
       propertyPath: 'pointClouds.Array.data[1]'
       value: 
-      objectReference: {fileID: 684706854}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1830,89 +1825,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f980a38d4e29f6d4591e77014caa8e1b, type: 3}
---- !u!1001 &9133497772133028492
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 865389078659317395, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: m_Name
-      value: KinectController
-      objectReference: {fileID: 0}
-    - target: {fileID: 5357310357031832919, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5357310357031832919, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5357310357031832919, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5357310357031832919, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5357310357031832919, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5357310357031832919, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5357310357031832919, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5357310357031832919, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5357310357031832919, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5357310357031832919, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5832613452178571215, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6474066014606128782, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: depthCameraMode
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6474066014606128782, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: pointCloudResolution
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6867206271747297554, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: depthCameraMode
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6867206271747297554, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: pointCloudResolution
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 956175610}
   - {fileID: 647952695}
-  - {fileID: 9133497772133028492}
   - {fileID: 6873485300634881259}
   - {fileID: 8329555347393525841}
