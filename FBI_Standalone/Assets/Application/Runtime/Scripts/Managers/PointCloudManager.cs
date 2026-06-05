@@ -104,7 +104,9 @@ public class PointCloudManager : MonoBehaviour
 
         var pointcloudGO = Instantiate(pointCloudPrefab, transform);
 
-        pointcloudGO.name = $"PointCloud_{cameraID}_{(delay > 0 ? "delay" : "realtime")}_{configFile.configName}";
+        var configName = configFile != null ? configFile.configName : "ConfigEditor";
+
+        pointcloudGO.name = $"PointCloud_{cameraID}_{(delay > 0 ? "delay" : "realtime")}_{configName}";
 
         pointcloudGO.transform.position = Vector3.zero;
         pointcloudGO.transform.rotation = Quaternion.identity;
