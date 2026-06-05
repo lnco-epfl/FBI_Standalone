@@ -18,8 +18,6 @@ public class DisplayQuestionState : IState
 
     private QuestionAnswer questionValue = QuestionAnswer.None;
 
-
-
     public void Enter(SequenceStep sequenceStep)
     {
         step = sequenceStep as DisplayQuestionStep;
@@ -43,10 +41,14 @@ public class DisplayQuestionState : IState
 
         float startTime = Time.time;
 
+        AudioRecorderManager.Instance.StartRecording();
+
         yield return new WaitUntil(() => questionValue != QuestionAnswer.None);
 
         float endTime = Time.time;
         float responseTime = endTime - startTime;
+
+        AudioRecorderManager.Instance.StopAndSave(ExperimentManager.Instance.CurrentSequence.name);
 
         OutputFileManager.Instance.OutputFileData.QuestionResponseTime = responseTime;
         OutputFileManager.Instance.OutputFileData.QuestionResponse = questionValue.ToString();

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8395510054603045854}
   - component: {fileID: 2886263556307135268}
   - component: {fileID: 6526010873417220929}
-  - component: {fileID: 4604587354940588048}
+  - component: {fileID: 1460524275101910200}
   m_Layer: 0
   m_Name: FilesManager
   m_TagString: Untagged
@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventFileName: _Events.txt
---- !u!114 &4604587354940588048
+--- !u!114 &1460524275101910200
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -69,7 +69,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 4520859910864809406}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f77dd6e0ff873804e8622c12ef28d23d, type: 3}
+  m_Script: {fileID: 11500000, guid: 1fb6dd460299dbf4383d893bc19c606e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataFileName: _BreathingData.csv
