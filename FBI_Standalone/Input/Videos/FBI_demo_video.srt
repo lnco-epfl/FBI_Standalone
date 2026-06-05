@@ -1,0 +1,19 @@
+1
+00:00:00,137 --> 00:00:00,879
+Hello,
+
+2
+00:00:01,314 --> 00:00:03,773
+Welcome to the full
+body illusion experiment.
+
+3
+00:00:04,068 --> 00:00:06,470
+Please make sure you
+are sitting comfortably
+
+4
+00:00:06,494 --> 00:00:08,804
+and that the VR headset is
+securely fastened on your head.
+
