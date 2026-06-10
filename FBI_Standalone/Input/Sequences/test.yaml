@@ -1,23 +1,29 @@
 steps:
   - stepType: loadScene
+    startTime: 0
     scenePath: "EmptyRoom"
 
   - stepType: loadConfig
+    startTime: 1.0
     configName: interpolation
 
   - stepType: displayVideo
+    startTime: 2.0
     videoName: "FBI_demo_video"
     looping: false
     muteAudio: false
 
   - stepType: displayText
+    startTime: 12.0
     text: "welcome to FBI"
     duration: 3.0
 
   - stepType: wait
+    startTime: 15.0
     duration: 2.0
 
   - stepType: displayCameras
+    startTime: 17.0
     duration: 20
     cameraDatas:
 #      - id: "1"
@@ -41,11 +47,12 @@ steps:
           duration: 5.0
           delay: 5.0
 
-
   - stepType: wait
+    startTime: 37.0
     duration: 2.0
 
   - stepType: displayCameras
+    startTime: 39.0
     duration: 20
     cameraDatas:
       - id: "1"
@@ -63,8 +70,8 @@ steps:
           ease: InOutQuad
           startConfigName: interpolation
 
-
   - stepType: displayCameras
+    startTime: 59.0
     duration: 20.0
     cameraDatas:
       - id: "1"
@@ -72,38 +79,47 @@ steps:
         configName: 1PP
 
   - stepType: loadConfig
+    startTime: 79.0
     configName: interpolation2
 
   - stepType: wait
+    startTime: 80.0
     duration: 2.0
 
   - stepType: displayCameras
+    startTime: 82.0
     duration: 20.0
     cameraDatas:
       - id: "2"
         delay: 0.0
 
   - stepType: wait
+    startTime: 102.0
     duration: 2.0
 
   - stepType: displayCameras
+    startTime: 104.0
     duration: 20.0
     cameraDatas:
       - id: "2"
         delay: 0.5
 
   - stepType: wait
+    startTime: 124.0
     duration: 2.0
 
   - stepType: displayImage
+    startTime: 126.0
     imagePath: "plus"
     scale: 0.3
     duration: 5.0
 
   - stepType: playSound
+    startTime: 131.0
     soundPath: "bell-sfx"
 
   - stepType: displayQuestion
+    startTime: 131.5
     question: "question 1"
     options:
       - "option 1"
@@ -112,17 +128,21 @@ steps:
       - "option 4"
 
   - stepType: displayLikertScale
+    startTime: 135.5
     question: "satisfaction question"
     leftLabel: "not satisfied"
     rightLabel: "very satisfied"
 
   - stepType: break
+    startTime: 139.5
     text: "break instructions"
     duration: 90
 
   - stepType: wait
+    startTime: 229.5
     duration: 1.0
 
   - stepType: displayText
+    startTime: 230.5
     text: "thank you"
     duration: 4.0

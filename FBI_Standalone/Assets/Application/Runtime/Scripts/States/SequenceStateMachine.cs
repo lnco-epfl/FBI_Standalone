@@ -10,8 +10,8 @@ public class SequenceStateMachine : MonoBehaviour
 
     private Dictionary<string, IState> states;
     private Coroutine currentSequenceCoroutine;
-    private Coroutine currentStateCoroutine;
-    private IState currentState;
+    private List<Coroutine> activeStepCoroutines = new List<Coroutine>();
+    private Dictionary<int, IState> activeStates = new Dictionary<int, IState>();
 
     public Action OnSequenceComplete;
 
@@ -19,48 +19,47 @@ public class SequenceStateMachine : MonoBehaviour
     private bool isPlaying = false;
     public bool IsPaused => isPaused;
     private bool isPaused = false;
+
+    private float sequenceTime = 0f;
+    private float pausedAt = 0f;
+    private HashSet<int> launchedSteps = new HashSet<int>();
+
+    // Pour compatibilité UI — dernier step lancé
     public int CurrentStepIndex => currentStepIndex;
     private int currentStepIndex = 0;
-
-    private bool stateCompleted = false;
-
     public int TotalSteps => sequence != null ? sequence.steps.Count : 0;
-    public string CurrentStateName => sequence != null && currentStepIndex < sequence.steps.Count ? sequence.steps[currentStepIndex].step.GetStateName() : "None";
+    public string CurrentStateName => sequence != null && currentStepIndex < sequence.steps.Count
+        ? sequence.steps[currentStepIndex].step.GetStateName() : "None";
 
-    void Awake()
-    {
-        InitializeStates();
-    }
+    void Awake() => InitializeStates();
 
     void InitializeStates()
     {
-        states = new Dictionary<string, IState>();
-
-        states.Add("Wait", new WaitState());
-        states.Add("DisplayText", new DisplayTextState());
-        states.Add("LoadScene", new LoadSceneState());
-        states.Add("LoadConfig", new LoadConfigState());
-        states.Add("DisplayLikertScale", new DisplayLikertScaleState());
-        states.Add("Break", new BreakState());
-        states.Add("DisplayImage", new DisplayImageState());
-        states.Add("DisplayQuestion", new DisplayQuestionState());
-        states.Add("PlaySound", new PlaySoundState());
-        states.Add("DisplayCameras", new DisplayCamerasState());
-        states.Add("DisplayVideo", new DisplayVideoState());
+        states = new Dictionary<string, IState>
+        {
+            { "Wait",               new WaitState() },
+            { "DisplayText",        new DisplayTextState() },
+            { "LoadScene",          new LoadSceneState() },
+            { "LoadConfig",         new LoadConfigState() },
+            { "DisplayLikertScale", new DisplayLikertScaleState() },
+            { "Break",              new BreakState() },
+            { "DisplayImage",       new DisplayImageState() },
+            { "DisplayQuestion",    new DisplayQuestionState() },
+            { "PlaySound",          new PlaySoundState() },
+            { "DisplayCameras",     new DisplayCamerasState() },
+            { "DisplayVideo",       new DisplayVideoState() },
+        };
     }
 
-    /// <summary>
-    /// Charge et initialise une s�quence depuis un fichier YAML par son nom
-    /// </summary>
+    // ─── Chargement ────────────────────────────────────────────────────────────
+
     public void LoadSequenceByName(string sequenceName)
     {
-        Sequence loadedSequence = SequencesManager.Instance.GetSequence(sequenceName);
-
-        if (loadedSequence != null)
+        Sequence loaded = SequencesManager.Instance.GetSequence(sequenceName);
+        if (loaded != null)
         {
-            SetSequence(loadedSequence);
+            SetSequence(loaded);
             currentSequenceName = sequenceName;
-            Debug.Log($"Loaded sequence: {sequenceName}");
         }
         else
         {
@@ -68,49 +67,45 @@ public class SequenceStateMachine : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Recharge la s�quence actuelle depuis le fichier YAML
-    /// </summary>
-    public void ReloadCurrentSequence()
+    public void SetSequence(Sequence seq)
     {
-        if (!string.IsNullOrEmpty(currentSequenceName))
-        {
-            bool wasPlaying = isPlaying;
-            int savedIndex = currentStepIndex;
-
-            Stop(false);
-            LoadSequenceByName(currentSequenceName);
-
-            currentStepIndex = savedIndex;
-
-            if (wasPlaying)
-            {
-                Play(false);
-            }
-        }
+        sequence = seq;
     }
 
+    public void ReloadCurrentSequence()
+    {
+        if (string.IsNullOrEmpty(currentSequenceName)) return;
 
-    public void Play(bool resetCurrentIndex = false)
+        bool wasPlaying = isPlaying;
+        Stop(true);
+        SequencesManager.Instance.ReloadSequences();
+        LoadSequenceByName(currentSequenceName);
+
+        if (wasPlaying) Play(true);
+    }
+
+    // ─── Contrôles ─────────────────────────────────────────────────────────────
+
+    public void Play(bool resetTime = true)
     {
         if (sequence == null || sequence.steps.Count == 0)
         {
-            Debug.LogWarning("No Sequence define");
+            Debug.LogWarning("No sequence defined");
             return;
+        }
+
+        if (resetTime)
+        {
+            sequenceTime = 0f;
+            launchedSteps.Clear();
+            currentStepIndex = 0;
         }
 
         isPlaying = true;
         isPaused = false;
 
-        if (resetCurrentIndex)
-        {
-            currentStepIndex = 0;
-        }
-
         if (currentSequenceCoroutine == null)
-        {
-            currentSequenceCoroutine = StartCoroutine(ExecuteSequence());
-        }
+            currentSequenceCoroutine = StartCoroutine(RunTimeline());
     }
 
     public void Pause()
@@ -119,23 +114,42 @@ public class SequenceStateMachine : MonoBehaviour
 
         isPaused = true;
         isPlaying = false;
+        pausedAt = sequenceTime;
 
-        if (currentStateCoroutine != null)
+        // Stopper toutes les coroutines actives
+        foreach (var c in activeStepCoroutines)
+            if (c != null) StopCoroutine(c);
+        activeStepCoroutines.Clear();
+
+        // Exit les states et les retirer de launchedSteps
+        // pour qu'ils soient relancés depuis le début au Resume
+        foreach (var kvp in activeStates)
         {
-            StopCoroutine(currentStateCoroutine);
-            currentStateCoroutine = null;
+            kvp.Value.Exit();
+            launchedSteps.Remove(kvp.Key);
         }
+        activeStates.Clear();
 
-        if (currentState != null)
+        if (currentSequenceCoroutine != null)
         {
-            currentState.Exit();
-            currentState = null;
+            StopCoroutine(currentSequenceCoroutine);
+            currentSequenceCoroutine = null;
         }
-
-        stateCompleted = false;
     }
 
-    public void Stop(bool resetCurrentIndex = false)
+    public void Resume()
+    {
+        if (!isPaused) return;
+
+        isPlaying = true;
+        isPaused = false;
+        // sequenceTime reste à pausedAt — les steps actifs seront relancés depuis leur début
+
+        if (currentSequenceCoroutine == null)
+            currentSequenceCoroutine = StartCoroutine(RunTimeline());
+    }
+
+    public void Stop(bool resetTime = true)
     {
         isPlaying = false;
         isPaused = false;
@@ -146,154 +160,118 @@ public class SequenceStateMachine : MonoBehaviour
             currentSequenceCoroutine = null;
         }
 
-        if (currentStateCoroutine != null)
-        {
-            StopCoroutine(currentStateCoroutine);
-            currentStateCoroutine = null;
-        }
+        foreach (var c in activeStepCoroutines)
+            if (c != null) StopCoroutine(c);
+        activeStepCoroutines.Clear();
 
-        if (currentState != null)
-        {
-            currentState.Exit();
-            currentState = null;
-        }
+        foreach (var state in activeStates.Values)
+            state.Exit();
+        activeStates.Clear();
 
-        if (resetCurrentIndex)
+        if (resetTime)
         {
+            sequenceTime = 0f;
+            launchedSteps.Clear();
             currentStepIndex = 0;
         }
-
-        stateCompleted = false;
     }
 
-    public void NextStep()
+    // ─── Timeline ──────────────────────────────────────────────────────────────
+
+    private IEnumerator RunTimeline()
     {
-        if (sequence == null || sequence.steps.Count == 0)
-            return;
+        float totalDuration = GetTotalDuration();
 
-        bool wasPlaying = isPlaying;
-        Stop(false);
-
-        currentStepIndex = Mathf.Min(currentStepIndex + 1, sequence.steps.Count - 1);
-
-        if (wasPlaying)
+        while (isPlaying)
         {
-            Play(false);
-        }
-    }
+            // Lancer tous les steps dont le startTime est atteint
+            for (int i = 0; i < sequence.steps.Count; i++)
+            {
+                if (launchedSteps.Contains(i)) continue;
 
-    public void PreviousStep()
-    {
-        if (sequence == null || sequence.steps.Count == 0)
-            return;
+                SequenceStep step = sequence.steps[i].step;
+                if (sequenceTime >= step.startTime)
+                {
+                    launchedSteps.Add(i);
+                    currentStepIndex = i;
+                    Coroutine c = StartCoroutine(RunStep(i, step));
+                    activeStepCoroutines.Add(c);
+                }
+            }
 
-        bool wasPlaying = isPlaying;
-        Stop(false);
+            // Fin : tous lancés et tous terminés
+            if (launchedSteps.Count >= sequence.steps.Count && activeStates.Count == 0)
+                break;
 
-        currentStepIndex = Mathf.Max(currentStepIndex - 1, 0);
-
-        if (wasPlaying)
-        {
-            Play(false);
-        }
-    }
-
-    public void GoToStep(int stepIndex)
-    {
-        if (sequence == null || sequence.steps.Count == 0)
-            return;
-
-        bool wasPlaying = isPlaying;
-        Stop(false);
-
-        currentStepIndex = Mathf.Clamp(stepIndex, 0, sequence.steps.Count - 1);
-
-        if (wasPlaying)
-        {
-            Play(false);
-        }
-    }
-
-    private IEnumerator ExecuteSequence()
-    {
-        while (currentStepIndex < sequence.steps.Count)
-        {
-            yield return new WaitUntil(() => !isPaused);
-
-            if (!isPlaying && !isPaused) break;
-
-            yield return StartCoroutine(ExecuteCurrentStep());
-
-            if (!isPlaying && !isPaused) break;
-
-            if (isPaused) continue;
-
-            currentStepIndex++;
+            sequenceTime += Time.deltaTime;
+            yield return null;
         }
 
-        if ((!isPaused && isPlaying) && currentStepIndex >= sequence.steps.Count)
+        if (isPlaying)
         {
             isPlaying = false;
             currentSequenceCoroutine = null;
             OnSequenceComplete?.Invoke();
         }
-        else if (!isPaused && !isPlaying)
+        else
         {
-
             currentSequenceCoroutine = null;
         }
     }
 
-    private IEnumerator ExecuteCurrentStep()
+    private IEnumerator RunStep(int index, SequenceStep stepData)
     {
-        if (currentStepIndex >= sequence.steps.Count) yield break;
-
-        SequenceStep currentStep = sequence.steps[currentStepIndex].step;
-        var stateName = currentStep.GetStateName();
-
-        if (states.ContainsKey(stateName))
+        if (!states.TryGetValue(stepData.GetStateName(), out IState state))
         {
-            currentState = states[stateName];
-            currentState.Enter(currentStep);
-
-            stateCompleted = false;
-            currentStateCoroutine = StartCoroutine(ExecuteStateWithCallback(currentState));
-
-            yield return new WaitUntil(() => stateCompleted || isPaused || (!isPlaying && !isPaused));
-
-            if (stateCompleted && currentState != null)
-            {
-                currentState.Exit();
-                currentState = null;
-            }
-
-            currentStateCoroutine = null;
-        }
-        else
-        {
-            Debug.LogWarning($"State '{stateName}' not found");
-        }
-    }
-
-    private IEnumerator ExecuteStateWithCallback(IState state)
-    {
-        IEnumerator stateEnumerator = state.Execute();
-
-        while (stateEnumerator.MoveNext())
-        {
-            if (isPaused || !isPlaying)
-            {
-                yield break;
-            }
-
-            yield return stateEnumerator.Current;
+            Debug.LogWarning($"State '{stepData.GetStateName()}' not found");
+            yield break;
         }
 
-        stateCompleted = true;
+        activeStates[index] = state;
+        state.Enter(stepData);
+
+        IEnumerator exec = state.Execute();
+        while (exec.MoveNext())
+        {
+            if (!isPlaying) yield break;
+            yield return exec.Current;
+        }
+
+        state.Exit();
+        activeStates.Remove(index);
     }
 
-    public void SetSequence(Sequence sequence)
+    // ─── Helpers ───────────────────────────────────────────────────────────────
+
+    private float GetTotalDuration()
     {
-        this.sequence = sequence;
+        float max = 0f;
+        foreach (var wrapper in sequence.steps)
+        {
+            float end = wrapper.step.startTime + wrapper.step.GetDuration();
+            if (end > max) max = end;
+        }
+        return max;
     }
+
+    /// Retourne les indices des steps actifs à un instant donné
+    public List<int> GetActiveStepIndicesAt(float time)
+    {
+        var result = new List<int>();
+        for (int i = 0; i < sequence.steps.Count; i++)
+        {
+            var step = sequence.steps[i].step;
+            float end = step.startTime + step.GetDuration();
+            if (step.startTime <= time && time < end)
+                result.Add(i);
+        }
+        return result;
+    }
+
+#if UNITY_EDITOR
+    [ContextMenu("Play")] public void EditorPlay() => Play(true);
+    [ContextMenu("Pause")] public void EditorPause() => Pause();
+    [ContextMenu("Resume")] public void EditorResume() => Resume();
+    [ContextMenu("Stop")] public void EditorStop() => Stop(true);
+#endif
 }
