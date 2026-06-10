@@ -9,6 +9,8 @@ using UnityEngine.Localization;
 [System.Serializable]
 public abstract class SequenceStep
 {
+    public float startTime = 0f;
+
     public virtual float GetDuration() => 1f;
     public abstract string GetStateName();
     public virtual string GetDisplayName() => GetStateName();

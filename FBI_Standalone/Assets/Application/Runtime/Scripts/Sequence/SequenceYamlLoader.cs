@@ -1,8 +1,9 @@
+using Eflatun.SceneReference;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Eflatun.SceneReference;
 using UnityEngine;
+using UnityEngine.Rendering;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -75,6 +76,7 @@ public class SequenceYamlLoader
             case SequenceStepWrapper.StepType.DisplayText:
                 return new DisplayTextStep
                 {
+                    startTime = data.startTime,
                     text = data.text,
                     diplayDuration = data.duration
                 };
@@ -82,12 +84,14 @@ public class SequenceYamlLoader
             case SequenceStepWrapper.StepType.Wait:
                 return new WaitStep
                 {
+                    startTime = data.startTime,
                     waitTime = data.duration
                 };
 
             case SequenceStepWrapper.StepType.LoadScene:
                 return new LoadSceneStep
                 {
+                    startTime = data.startTime,
                     duration = data.duration,
                     Scene = LoadSceneReference(data.scenePath),
                 };
@@ -95,12 +99,14 @@ public class SequenceYamlLoader
             case SequenceStepWrapper.StepType.LoadConfig:
                 return new LoadConfigStep
                 {
+                    startTime = data.startTime,
                     fileName = data.configName,
                 };
 
             case SequenceStepWrapper.StepType.DisplayLikertScale:
                 return new DisplayLikertScaleStep
                 {
+                    startTime = data.startTime,
                     question = data.question,
                     leftLabel = data.leftLabel,
                     rightLabel = data.rightLabel,
@@ -109,6 +115,7 @@ public class SequenceYamlLoader
             case SequenceStepWrapper.StepType.Break:
                 return new BreakStep
                 {
+                    startTime = data.startTime,
                     instructionText = data.text,
                     duration = data.duration,
                 };
@@ -116,6 +123,7 @@ public class SequenceYamlLoader
             case SequenceStepWrapper.StepType.DisplayImage:
                 return new DisplayImageStep
                 {
+                    startTime = data.startTime,
                     image = LoadSprite(data.imagePath),
                     scale = data.scale,
                     diplayDuration = data.duration
@@ -124,6 +132,7 @@ public class SequenceYamlLoader
             case SequenceStepWrapper.StepType.DisplayQuestion:
                 return new DisplayQuestionStep
                 {
+                    startTime = data.startTime,
                     question = data.question,
                     responseOptions = data.options,
                 };
@@ -131,12 +140,14 @@ public class SequenceYamlLoader
             case SequenceStepWrapper.StepType.PlaySound:
                 return new PlaySoundStep
                 {
+                    startTime = data.startTime,
                     sound = LoadAudioClip(data.soundPath)
                 };
 
             case SequenceStepWrapper.StepType.DisplayVideo:
                 return new DisplayVideoStep
                 {
+                    startTime = data.startTime,
                     videoName = data.videoName,
                     looping = data.looping,
                     muteAudio = data.muteAudio,
@@ -144,6 +155,7 @@ public class SequenceYamlLoader
             case SequenceStepWrapper.StepType.DisplayCameras:
                 return new DisplayCamerasStep
                 {
+                    startTime = data.startTime,
                     displayTime = data.duration,
                     camerasData = data.cameraDatas,
                 };
@@ -189,6 +201,8 @@ public class StepData
     public SequenceStepWrapper.StepType stepType;
 
     public float duration;
+
+    public float startTime;
 
     // Text
     public string text;
