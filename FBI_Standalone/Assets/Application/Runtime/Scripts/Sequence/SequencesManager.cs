@@ -14,8 +14,6 @@ public class SequencesManager : MonoBehaviour
         {
             instance = this;
         }
-
-        Initialize();
     }
 
     [SerializeField]
@@ -25,6 +23,21 @@ public class SequencesManager : MonoBehaviour
     private List<Sequence> sequences = new List<Sequence>();
 
     public List<Sequence> Sequences => sequences;
+
+    private void OnEnable()
+    {
+        AssetsManager.Instance.OnAllAssetsLoaded += OnAllAssetsLoaded;
+    }
+
+    private void OnDisable()
+    {
+        AssetsManager.Instance.OnAllAssetsLoaded -= OnAllAssetsLoaded;
+    }
+
+    private void OnAllAssetsLoaded()
+    {
+        Initialize();
+    }
 
     public void Initialize()
     {

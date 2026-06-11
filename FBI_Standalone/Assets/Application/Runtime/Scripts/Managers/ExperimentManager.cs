@@ -162,19 +162,19 @@ public class ExperimentManager : MonoBehaviour
 
     public void NextStep(int index)
     {
-        if (index > 0)
+        /*if (index > 0)
         {
             sequenceStateMachine.NextStep();
         }
         else if (index < 0)
         {
             sequenceStateMachine.PreviousStep();
-        }
+        }*/
     }
 
     public void GoToStep(int index)
     {
-        sequenceStateMachine.GoToStep(index);
+        //sequenceStateMachine.GoToStep(index);
     }
     private void OnStateMachineSequenceComplete()
     {
