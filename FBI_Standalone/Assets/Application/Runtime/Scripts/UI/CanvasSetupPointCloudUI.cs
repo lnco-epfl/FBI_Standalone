@@ -605,7 +605,9 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             pointCloudEntries[i].SetMinDepth(data.depthMin);
             pointCloudEntries[i].SetMaxDepth(data.depthMax);
             pointCloudEntries[i].SetFlip(data.scale.x == -1, data.scale.y == -1);
-
+            pointCloudEntries[i].SetClamp(data.clampXMin, data.clampXMax, data.clampYMin, data.clampYMax);
+                
+                
             bridge?.MirrorEntryData(i,
                 data.position.ToVector3(),
                 data.rotation.ToVector3(),

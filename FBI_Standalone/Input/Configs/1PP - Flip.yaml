@@ -1,6 +1,6 @@
-configName: demoNoM_1PP - Flip
+configName: 1PP - Flip
 createdAt: 2026-04-23 15:35:05
-lastModified: 2026-06-11 13:56:27
+lastModified: 2026-06-11 15:29:32
 stimulusDisplay: 
 pointClouds:
 - iD: 1
@@ -18,8 +18,8 @@ pointClouds:
     z: 1
   depthMax: 2.537773
   depthMin: 1.235421
-  clampXMin: 0.3277366
-  clampXMax: 0.7318519
+  clampXMin: 0.3427096
+  clampXMax: 1
   clampYMin: 0
   clampYMax: 1
 - iD: 2
