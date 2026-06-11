@@ -27,6 +27,11 @@ public class AssetsManager : MonoBehaviour
     private Dictionary<string, AudioClip> loadedAudioClips = new Dictionary<string, AudioClip>();
     private Dictionary<string, string> loadedVideoPaths = new Dictionary<string, string>();
 
+    // Action called when all assets (including async audio coroutines) are fully loaded
+    public event Action OnAllAssetsLoaded;
+
+    private int pendingCoroutines = 0;
+    private bool loadingComplete = false;
 
     public string ImagesPath { get; private set; }
     public string AudioPath { get; private set; }
@@ -63,9 +68,25 @@ public class AssetsManager : MonoBehaviour
 
     public void LoadAllAssets()
     {
+        loadingComplete = false;
+        pendingCoroutines = 0;
+
         LoadAllImages();
         LoadAllAudio();
         LoadAllVideos();
+
+        // If no audio coroutines were started, fire immediately
+        CheckAllAssetsLoaded();
+    }
+
+    private void CheckAllAssetsLoaded()
+    {
+        if (pendingCoroutines == 0 && !loadingComplete)
+        {
+            loadingComplete = true;
+            EventFileManager.Log($"[AssetsManager] All assets loaded. Sprites: {loadedSprites.Count}, Audio: {loadedAudioClips.Count}, Videos: {loadedVideoPaths.Count}");
+            OnAllAssetsLoaded?.Invoke();
+        }
     }
 
     #region Images
@@ -80,7 +101,7 @@ public class AssetsManager : MonoBehaviour
             return;
         }
 
-       
+
         string[] extensions = { "*.png", "*.jpg", "*.jpeg", "*.bmp", "*.tga" };
 
         foreach (string extension in extensions)
@@ -108,7 +129,7 @@ public class AssetsManager : MonoBehaviour
                 texture.name = Path.GetFileNameWithoutExtension(filePath);
                 texture.filterMode = FilterMode.Bilinear;
 
-                
+
                 Sprite sprite = Sprite.Create(
                     texture,
                     new Rect(0, 0, texture.width, texture.height),
@@ -117,7 +138,7 @@ public class AssetsManager : MonoBehaviour
                 );
                 sprite.name = texture.name;
 
-               
+
                 string relativePath = GetRelativePath(filePath, ImagesPath);
                 string key = Path.GetFileNameWithoutExtension(relativePath);
 
@@ -198,11 +219,13 @@ public class AssetsManager : MonoBehaviour
         // WAV files peuvent être chargés directement
         if (extension == ".wav")
         {
+            pendingCoroutines++;
             StartCoroutine(LoadWavFile(filePath, key));
         }
         // Pour OGG et MP3, utiliser UnityWebRequest
         else if (extension == ".ogg" || extension == ".mp3")
         {
+            pendingCoroutines++;
             StartCoroutine(LoadAudioWithWebRequest(filePath, key));
         }
     }
@@ -225,6 +248,9 @@ public class AssetsManager : MonoBehaviour
                 EventFileManager.Error($"[AssetsManager] Failed to load audio {filePath}: {www.error}");
             }
         }
+
+        pendingCoroutines--;
+        CheckAllAssetsLoaded();
     }
 
     private System.Collections.IEnumerator LoadAudioWithWebRequest(string filePath, string key)
@@ -248,6 +274,9 @@ public class AssetsManager : MonoBehaviour
                 EventFileManager.Error($"[AssetsManager] Failed to load audio {filePath}: {www.error}");
             }
         }
+
+        pendingCoroutines--;
+        CheckAllAssetsLoaded();
     }
 
     public AudioClip GetAudioClip(string clipName)

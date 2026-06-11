@@ -66,6 +66,8 @@ public class SequenceYamlLoader
             sequence.steps.Add(wrapper);
         }
 
+        sequence.steps.Sort((a, b) => a.step.startTime.CompareTo(b.step.startTime));
+
         return sequence;
     }
 
@@ -77,6 +79,7 @@ public class SequenceYamlLoader
                 return new DisplayTextStep
                 {
                     startTime = data.startTime,
+                    blocking = data.blocking,
                     text = data.text,
                     diplayDuration = data.duration
                 };
@@ -85,6 +88,7 @@ public class SequenceYamlLoader
                 return new WaitStep
                 {
                     startTime = data.startTime,
+                    blocking = data.blocking,
                     waitTime = data.duration
                 };
 
@@ -92,6 +96,7 @@ public class SequenceYamlLoader
                 return new LoadSceneStep
                 {
                     startTime = data.startTime,
+                    blocking = data.blocking,
                     duration = data.duration,
                     Scene = LoadSceneReference(data.scenePath),
                 };
@@ -100,6 +105,7 @@ public class SequenceYamlLoader
                 return new LoadConfigStep
                 {
                     startTime = data.startTime,
+                    blocking = data.blocking,
                     fileName = data.configName,
                 };
 
@@ -107,6 +113,7 @@ public class SequenceYamlLoader
                 return new DisplayLikertScaleStep
                 {
                     startTime = data.startTime,
+                    blocking = data.blocking,
                     question = data.question,
                     leftLabel = data.leftLabel,
                     rightLabel = data.rightLabel,
@@ -116,6 +123,7 @@ public class SequenceYamlLoader
                 return new BreakStep
                 {
                     startTime = data.startTime,
+                    blocking = data.blocking,
                     instructionText = data.text,
                     duration = data.duration,
                 };
@@ -124,6 +132,7 @@ public class SequenceYamlLoader
                 return new DisplayImageStep
                 {
                     startTime = data.startTime,
+                    blocking = data.blocking,
                     image = LoadSprite(data.imagePath),
                     scale = data.scale,
                     diplayDuration = data.duration
@@ -133,6 +142,7 @@ public class SequenceYamlLoader
                 return new DisplayQuestionStep
                 {
                     startTime = data.startTime,
+                    blocking = data.blocking,
                     question = data.question,
                     responseOptions = data.options,
                 };
@@ -141,6 +151,7 @@ public class SequenceYamlLoader
                 return new PlaySoundStep
                 {
                     startTime = data.startTime,
+                    blocking = data.blocking,
                     sound = LoadAudioClip(data.soundPath)
                 };
 
@@ -148,6 +159,7 @@ public class SequenceYamlLoader
                 return new DisplayVideoStep
                 {
                     startTime = data.startTime,
+                    blocking = data.blocking,
                     videoName = data.videoName,
                     looping = data.looping,
                     muteAudio = data.muteAudio,
@@ -156,6 +168,7 @@ public class SequenceYamlLoader
                 return new DisplayCamerasStep
                 {
                     startTime = data.startTime,
+                    blocking = data.blocking,
                     displayTime = data.duration,
                     camerasData = data.cameraDatas,
                 };
@@ -201,6 +214,7 @@ public class StepData
     public SequenceStepWrapper.StepType stepType;
 
     public float duration;
+    public bool blocking;
 
     public float startTime;
 

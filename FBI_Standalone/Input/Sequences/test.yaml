@@ -22,6 +22,10 @@ steps:
     startTime: 15.0
     duration: 2.0
 
+  - stepType: playSound
+    startTime: 12.0
+    soundPath: "bell-sfx"
+
   - stepType: displayCameras
     startTime: 17.0
     duration: 20
@@ -119,6 +123,7 @@ steps:
     soundPath: "bell-sfx"
 
   - stepType: displayQuestion
+    blocking: true 
     startTime: 131.5
     question: "question 1"
     options:
@@ -128,6 +133,7 @@ steps:
       - "option 4"
 
   - stepType: displayLikertScale
+    blocking: true 
     startTime: 135.5
     question: "satisfaction question"
     leftLabel: "not satisfied"

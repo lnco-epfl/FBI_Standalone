@@ -10,6 +10,7 @@ using UnityEngine.Localization;
 public abstract class SequenceStep
 {
     public float startTime = 0f;
+    public bool blocking = false;
 
     public virtual float GetDuration() => 1f;
     public abstract string GetStateName();
@@ -91,7 +92,7 @@ public class DisplayLikertScaleStep : SequenceStep
     public string leftLabel;
 
     public string rightLabel;
-    public override float GetDuration() => 4f;
+    public override float GetDuration() => 10f;
     public override string GetStateName() => "DisplayLikertScale";
     public override string GetDisplayName()
     {
@@ -149,7 +150,7 @@ public class DisplayQuestionStep : SequenceStep
     public string question;
     
     public List<string> responseOptions = new List<string>();
-    public override float GetDuration() => 4f;
+    public override float GetDuration() => 10f;
     public override string GetStateName() => "DisplayQuestion";
     public override string GetDisplayName()
     {
