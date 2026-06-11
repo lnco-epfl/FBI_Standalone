@@ -3577,7 +3577,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8601185067807521480, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: m_Name
-      value: WorldCanvasSetupPointCloudUI
+      value: WorldConfigEditorUI
       objectReference: {fileID: 0}
     - target: {fileID: 8601185067807521480, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: m_IsActive

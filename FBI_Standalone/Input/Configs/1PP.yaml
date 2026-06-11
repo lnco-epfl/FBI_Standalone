@@ -1,12 +1,12 @@
-configName: demoNoM_1PP
+configName: 1PP
 createdAt: 2026-04-23 15:35:05
-lastModified: 2026-06-11 13:53:24
+lastModified: 2026-06-11 15:39:46
 stimulusDisplay: 
 pointClouds:
 - iD: 1
   position:
-    x: -0.23
-    y: 1.36
+    x: -0.32
+    y: 1.13
     z: 2.37
   rotation:
     x: 45.90378
@@ -24,9 +24,9 @@ pointClouds:
   clampYMax: 1
 - iD: 2
   position:
-    x: 920.2986
-    y: 542.8495
-    z: 0.607
+    x: 0
+    y: 0
+    z: 0
   rotation:
     x: 0
     y: 0
