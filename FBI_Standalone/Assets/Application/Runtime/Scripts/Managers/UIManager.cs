@@ -46,6 +46,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button nextButton;
     [SerializeField] private TMP_InputField stepInputField;
 
+    [SerializeField] private TMP_Text sequenceTime;
+    [SerializeField] private TMP_InputField seekTime;
+
     [Header("Buttons")]
     [SerializeField] private Button fullscreenInButton;
     [SerializeField] private Button fullscreenOutButton;
@@ -150,6 +153,10 @@ public class UIManager : MonoBehaviour
         stepInputField.onSelect.AddListener(OnInputFieldSelect);
         stepInputField.onDeselect.AddListener(OnInputFieldDeselect);
 
+        seekTime.onSubmit.AddListener(OnSeekTimeFieldEdit);
+        seekTime.onSelect.AddListener(OnInputFieldSelect);
+        seekTime.onDeselect.AddListener(OnInputFieldDeselect);
+
         startButton.onClick.AddListener(OnStartButtonPress);
         stopButton.onClick.AddListener(OnStopButtonPress);
         playPauseButton.onClick.AddListener(OnPlayPauseButtonPress);
@@ -160,6 +167,8 @@ public class UIManager : MonoBehaviour
         ExperimentManager.Instance.OnStop += OnExperimentStop;
 
     }
+
+
 
     private void OnDisable()
     {
@@ -192,6 +201,10 @@ public class UIManager : MonoBehaviour
         stepInputField.onSubmit.RemoveListener(OnStepInputFieldEdit);
         stepInputField.onSelect.RemoveListener(OnInputFieldSelect);
         stepInputField.onDeselect.RemoveListener(OnInputFieldDeselect);
+
+        seekTime.onSubmit.RemoveListener(OnSeekTimeFieldEdit);
+        seekTime.onSelect.RemoveListener(OnInputFieldSelect);
+        seekTime.onDeselect.RemoveListener(OnInputFieldDeselect);
 
         startButton.onClick.RemoveListener(OnStartButtonPress);
         stopButton.onClick.RemoveListener(OnStopButtonPress);
@@ -408,6 +421,20 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    private void OnSeekTimeFieldEdit(string input)
+    {
+        float output = 0.0f;
+        var result = float.TryParse(input, out output);
+        if (result)
+        {
+            ExperimentManager.Instance.SeekTime(output);
+        }
+        else
+        {
+            Debug.LogError("Invalid input: " + input);
+        }
+    }
+
     private void OnGenderDropDownChanged(int value)
     {
         OutputFileManager.Instance.OutputFileData.Gender = genderDropdown.options[value].text;
@@ -547,9 +574,19 @@ public class UIManager : MonoBehaviour
             stepInputField.SetTextWithoutNotify(currentIndex.ToString());
         }
 
-        float ratio = (float)currentIndex / (float)maxIndex;
+        float ratio = (float)ExperimentManager.Instance.SequenceTime / (float)ExperimentManager.Instance.SequenceTotalDuration;
         progression.text = string.Format("{0:0}%", Math.Floor(ratio * 100.0f));
         progressionFill.fillAmount = ratio;
+
+        sequenceTime.text = string.Format("{0:f}", ExperimentManager.Instance.SequenceTime);
+
+
+        if (sequenceTime.text != stepInputField.text && !stepInputField.isFocused)
+        {
+            stepInputField.SetTextWithoutNotify(sequenceTime.text);
+        }
+
+
     }
 
 

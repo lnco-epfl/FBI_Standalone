@@ -29,8 +29,7 @@ public class ConfigFileManager : MonoBehaviour
         System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
 
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        Instance = this;;
 
         serializer = new SerializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).Build();
         deserializer = new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).IgnoreUnmatchedProperties().Build();

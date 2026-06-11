@@ -31,6 +31,8 @@ public class ExperimentManager : MonoBehaviour
 
     public int SequenceCurrentStep => sequenceStateMachine.CurrentStepIndex;
     public int SequenceTotalSetps => sequenceStateMachine.TotalSteps;
+    public float SequenceTime => sequenceStateMachine.SequenceTime;
+    public float SequenceTotalDuration => sequenceStateMachine.TotalDuration;
 
     private static ExperimentManager instance;
     public static ExperimentManager Instance => instance;
@@ -176,6 +178,11 @@ public class ExperimentManager : MonoBehaviour
     {
         //sequenceStateMachine.GoToStep(index);
     }
+
+    public void SeekTime(float output)
+    {
+        sequenceStateMachine.SeekTo(output);
+    }
     private void OnStateMachineSequenceComplete()
     {
         StopExperiment();
@@ -207,8 +214,5 @@ public class ExperimentManager : MonoBehaviour
     {
         NextStep(-1);
     }
-
-
-
 
 }

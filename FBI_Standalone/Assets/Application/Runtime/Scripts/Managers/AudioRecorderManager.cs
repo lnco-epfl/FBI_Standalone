@@ -43,7 +43,6 @@ public class AudioRecorderManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         outputFolderPath = Path.Combine(Application.dataPath, "..", "Output", "Recordings");
 

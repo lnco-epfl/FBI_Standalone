@@ -33,8 +33,6 @@ public class SequenceStateMachine : MonoBehaviour
     public string CurrentStateName => sequence != null && currentStepIndex < sequence.steps.Count
         ? sequence.steps[currentStepIndex].step.GetStateName() : "None";
 
-    // ─── Init ───────────────────────────────────────────────────────────────────
-
     void Awake() => InitializeStates();
 
     void InitializeStates()
@@ -54,8 +52,6 @@ public class SequenceStateMachine : MonoBehaviour
             { "DisplayVideo",       new DisplayVideoState() },
         };
     }
-
-    // ─── Chargement ─────────────────────────────────────────────────────────────
 
     public void LoadSequenceByName(string sequenceName)
     {
@@ -88,8 +84,6 @@ public class SequenceStateMachine : MonoBehaviour
 
         if (wasPlaying) Play(true);
     }
-
-    // ─── Contrôles ──────────────────────────────────────────────────────────────
 
     public void Play(bool resetTime = true)
     {
@@ -130,8 +124,6 @@ public class SequenceStateMachine : MonoBehaviour
             if (c != null) StopCoroutine(c);
         activeStepCoroutines.Clear();
 
-        // Exit les states actifs et les retirer de launchedSteps
-        // pour qu'ils redémarrent depuis le début au Resume
         foreach (var kvp in activeStates)
         {
             kvp.Value.Exit();
@@ -147,8 +139,6 @@ public class SequenceStateMachine : MonoBehaviour
         isPlaying = true;
         isPaused = false;
 
-        // sequenceTime est resté figé — les steps actifs qui ont été retirés
-        // de launchedSteps seront relancés depuis leur début
         if (currentSequenceCoroutine == null)
             currentSequenceCoroutine = StartCoroutine(RunTimeline());
     }
@@ -189,7 +179,6 @@ public class SequenceStateMachine : MonoBehaviour
 
         sequenceTime = time;
 
-        // Marquer comme terminés tous les steps dont la fenêtre est déjà passée
         launchedSteps.Clear();
         for (int i = 0; i < sequence.steps.Count; i++)
         {
@@ -200,14 +189,12 @@ public class SequenceStateMachine : MonoBehaviour
                 launchedSteps.Add(i);
         }
 
-        // currentStepIndex sur le dernier step passé
         currentStepIndex = launchedSteps.Count > 0 ? launchedSteps.Max() : 0;
 
         if (wasPlaying)
             Play(false);
     }
 
-    // ─── Timeline ───────────────────────────────────────────────────────────────
 
     private IEnumerator RunTimeline()
     {
@@ -269,7 +256,6 @@ public class SequenceStateMachine : MonoBehaviour
         state.Exit();
         activeStates.Remove(index);
 
-        // Si bloquant, sauter au startTime du prochain step
         if (stepData.blocking)
         {
             int next = index + 1;
@@ -277,8 +263,6 @@ public class SequenceStateMachine : MonoBehaviour
                 sequenceTime = sequence.steps[next].step.startTime;
         }
     }
-
-    // ─── Helpers ────────────────────────────────────────────────────────────────
 
     private float GetTotalDuration()
     {

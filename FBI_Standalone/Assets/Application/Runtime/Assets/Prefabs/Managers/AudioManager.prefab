@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2737408060955172504}
   - component: {fileID: 4228667535623000285}
   - component: {fileID: 7207597331931892465}
+  - component: {fileID: 5239797285097870510}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -59,5 +60,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03cf412de7836f8498406b3acf8ee073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sfxSource: {fileID: 0}
   sfxVolume: 1
+--- !u!114 &5239797285097870510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512370675587642267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f8499ba42e5d5f4eba587d258a3f624, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Application::AudioRecorderManager
+  maxRecordingSeconds: 300
+  sampleRate: 44100
+  filePrefix: recording
