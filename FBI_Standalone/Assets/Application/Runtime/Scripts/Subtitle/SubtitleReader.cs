@@ -88,7 +88,7 @@ public class SubtitleReader : MonoBehaviour
     {
         if (!File.Exists(filePath))
         {
-            Debug.LogError("SRT file not found: " + filePath);
+            EventFileManager.Error("[SubtitleReader] SRT file not found: " + filePath);
             return;
         }
 
@@ -97,11 +97,11 @@ public class SubtitleReader : MonoBehaviour
             string content = File.ReadAllText(filePath, Encoding.UTF8);
             ParseSrtContent(content);
             subtitlesLoaded = true;
-            Debug.Log($"Successfully loaded {subtitles.Count} subtitles from {filePath}");
+            EventFileManager.Log($"[SubtitleReader] Successfully loaded {subtitles.Count} subtitles from {filePath}");
         }
         catch (Exception e)
         {
-            Debug.LogError($"Error loading subtitles: {e.Message}");
+            EventFileManager.Error($"[SubtitleReader] Error loading subtitles: {e.Message}");
         }
     }
 

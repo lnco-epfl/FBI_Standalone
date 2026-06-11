@@ -12,7 +12,7 @@ public class PlaySoundState : IState
 
     public IEnumerator Execute()
     {
-        EventFileManager.Log($"[PlaySoundState] Play Sound {step.sound} for {step.GetDuration()} seconds");
+        EventFileManager.Log($"[PlaySoundState] Play Sound {step.sound.name} for {step.GetDuration()} seconds");
 
         AudioManager.instance.Play2DSFX(step.sound);
 

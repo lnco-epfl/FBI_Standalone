@@ -221,7 +221,7 @@ public class UIManager : MonoBehaviour
 
         InitSequenceDropDown();
 
-        InitConfigDropDown();
+        //InitConfigDropDown();
 
     }
 

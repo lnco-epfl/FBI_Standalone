@@ -54,14 +54,14 @@ public class LoadSceneStep : SequenceStep
 {
     public float duration = 1f;
 
-    public SceneReference Scene;
+    public SceneReference scene;
 
     public override float GetDuration() => duration;
     public override string GetStateName() => "LoadScene";
     public override string GetDisplayName()
     {
 
-        var sceneName = Scene.State != SceneReferenceState.Unsafe ? Scene.Name : "Unknown Scene";
+        var sceneName = scene.State != SceneReferenceState.Unsafe ? scene.Name : "Unknown Scene";
 
         return $"Load Scene {sceneName}";
 
@@ -164,7 +164,10 @@ public class DisplayQuestionStep : SequenceStep
 public class PlaySoundStep : SequenceStep
 {
     public AudioClip sound;
-    public override float GetDuration() => 0.5f;
+    public override float GetDuration()
+    {
+        return sound != null ? sound.length : 0.0f;
+    }
     public override string GetStateName() => "PlaySound";
     public override string GetDisplayName()
     {

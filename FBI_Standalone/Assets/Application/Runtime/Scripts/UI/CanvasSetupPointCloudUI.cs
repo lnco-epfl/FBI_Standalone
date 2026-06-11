@@ -336,6 +336,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
                 bridge?.MirrorFileName(selectedConfig);
                 bridge?.MirrorStatus($"Opened {selectedConfig}", Color.green);
                 bridge?.MirrorEntryInteractable(true);
+
+
             }
             else
             {
@@ -613,6 +615,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
                 data.scale.y == -1);
 
             bridge?.MirrorEntryClamp(i, data.clampXMin, data.clampXMax, data.clampYMin, data.clampYMax);
+
+            PointCloudManager.Instance.SetPointcloudConfig(PointCloudManager.Instance.GetPointCloud(pointCloudEntries[i].CameraId), file);
         }
 
         if (file.stimulusDisplay != null)

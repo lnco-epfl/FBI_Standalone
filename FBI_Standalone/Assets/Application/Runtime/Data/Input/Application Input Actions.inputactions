@@ -3053,6 +3053,17 @@
                 },
                 {
                     "name": "",
+                    "id": "a3aa3d0e-721f-4847-a6e8-6f89fde05888",
+                    "path": "<OculusTouchController>/thumbstickClicked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Reset XR Origin",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "ec7727e2-7c38-467d-aba8-94f33f0cfe51",
                     "path": "<Keyboard>/space",
                     "interactions": "",
