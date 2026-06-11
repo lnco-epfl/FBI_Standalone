@@ -1,19 +1,19 @@
-configName: demoNoM_1PP
+configName: demoNoM_1PP - Flip
 createdAt: 2026-04-23 15:35:05
-lastModified: 2026-06-11 13:53:24
+lastModified: 2026-06-11 13:56:27
 stimulusDisplay: 
 pointClouds:
 - iD: 1
   position:
-    x: -0.23
-    y: 1.36
-    z: 2.37
+    x: 0.12
+    y: 1.32
+    z: 2.44
   rotation:
-    x: 45.90378
-    y: 171.23
-    z: 356.7675
+    x: 44.57001
+    y: 186.81
+    z: 1.840001
   scale:
-    x: 1
+    x: -1
     y: 1
     z: 1
   depthMax: 2.537773

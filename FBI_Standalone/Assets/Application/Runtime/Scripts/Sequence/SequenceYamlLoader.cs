@@ -98,7 +98,7 @@ public class SequenceYamlLoader
                     startTime = data.startTime,
                     blocking = data.blocking,
                     duration = data.duration,
-                    Scene = LoadSceneReference(data.scenePath),
+                    scene = LoadSceneReference(data.scenePath),
                 };
 
             case SequenceStepWrapper.StepType.LoadConfig:

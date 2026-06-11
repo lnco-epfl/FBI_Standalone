@@ -5,7 +5,7 @@ steps:
 
   - stepType: loadConfig
     startTime: 1.0
-    configName: 3PP
+    configName: 1PP
 
   - stepType: displayVideo
     startTime: 2.0
@@ -32,7 +32,7 @@ steps:
     cameraDatas:
 #      - id: "1"
 #        delay: 0.0
-#        configName: 3PP
+#        configName: interpolation
 #        dissolution:
 #          duration: 5.0
 #          delay: 5.0
@@ -53,7 +53,7 @@ steps:
     cameraDatas:
       - id: "1"
         delay: 0.0
-        configName: 3PP
+        configName: interpolation
         dissolution:
           duration: 5.0
           delay: 5.0
@@ -76,7 +76,7 @@ steps:
 
   - stepType: loadConfig
     startTime: 79.0
-    configName: 3PP2
+    configName: interpolation2
 
   - stepType: wait
     startTime: 80.0
@@ -121,8 +121,6 @@ steps:
     options:
       - "option 1"
       - "option 2"
-      - "option 3"
-      - "option 4"
 
   - stepType: displayLikertScale
     blocking: true 

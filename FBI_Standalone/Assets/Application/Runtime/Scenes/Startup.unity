@@ -217,7 +217,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 644181643188897568, guid: 8d7c84d35cf3ec44db2c8c1c7d650a94, type: 3}
       propertyPath: deviceStreamingMode
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 708910006784106003, guid: 8d7c84d35cf3ec44db2c8c1c7d650a94, type: 3}
       propertyPath: m_AnchorMax.y
@@ -285,7 +285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1037271366816620732, guid: 8d7c84d35cf3ec44db2c8c1c7d650a94, type: 3}
       propertyPath: deviceStreamingMode
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1453501791490953107, guid: 8d7c84d35cf3ec44db2c8c1c7d650a94, type: 3}
       propertyPath: m_AnchorMax.y

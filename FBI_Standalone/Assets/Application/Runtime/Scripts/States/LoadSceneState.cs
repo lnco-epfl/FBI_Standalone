@@ -17,10 +17,10 @@ public class LoadSceneState : IState
         yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
 
 
-        EventFileManager.Log($"[LoadSceneStatea] LoadAsyncScene {step.Scene.Name}");
-        yield return SceneLoaderManager.Instance.LoadAsyncScene(step.Scene);
+        EventFileManager.Log($"[LoadSceneStatea] LoadAsyncScene {step.scene.Name}");
+        yield return SceneLoaderManager.Instance.LoadAsyncScene(step.scene);
 
-        OutputFileManager.Instance.OutputFileData.Scene = step.Scene.Name;
+        OutputFileManager.Instance.OutputFileData.Scene = step.scene.Name;
 
         Fader.Instance.FadeToClear();
         yield return new WaitForSeconds(Fader.Instance.FadeDuration * 2.0f);
