@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetInput: {fileID: 159310013366874628}
-  sensitivity: 0.05
+  sensitivity: 0.01
   minValue: -360
   maxValue: 360
   decimalPlaces: 2
