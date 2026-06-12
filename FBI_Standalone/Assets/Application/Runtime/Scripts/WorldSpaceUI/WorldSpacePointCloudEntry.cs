@@ -1,9 +1,10 @@
-using System;
 using com.rfilkov.kinect;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.UI;
+
 
 public class WorldSpacePointCloudEntry : MonoBehaviour
 {
@@ -208,16 +209,22 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
     public void SetPositionFields(Vector3 position)
     {
         positionXSlider?.SetValueWithoutNotify(position.x);
+        positionXSlider?.GetComponent<SliderToText>()?.UpdateText(position.x);
         positionYSlider?.SetValueWithoutNotify(position.y);
+        positionYSlider?.GetComponent<SliderToText>()?.UpdateText(position.y);
         positionZSlider?.SetValueWithoutNotify(position.z);
+        positionZSlider?.GetComponent<SliderToText>()?.UpdateText(position.z);
     }
 
     public void SetRotationFields(Vector3 rotation)
     {
         // Remap 0-360 to -180/+180 for slider range
         rotationXSlider?.SetValueWithoutNotify(NormalizeAngle(rotation.x));
+        rotationXSlider?.GetComponent<SliderToText>()?.UpdateText(rotation.x);
         rotationYSlider?.SetValueWithoutNotify(NormalizeAngle(rotation.y));
+        rotationYSlider?.GetComponent<SliderToText>()?.UpdateText(rotation.y);
         rotationZSlider?.SetValueWithoutNotify(NormalizeAngle(rotation.z));
+        rotationZSlider?.GetComponent<SliderToText>()?.UpdateText(rotation.z);
     }
 
     public void SetMinDepth(float depthMin)
@@ -246,9 +253,13 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
     public void SetClamp(float xMin, float xMax, float yMin, float yMax)
     {
         clampXMinSlider?.SetValueWithoutNotify(xMin);
+        clampXMinSlider?.GetComponent<SliderToText>()?.UpdateText(xMin);
         clampXMaxSlider?.SetValueWithoutNotify(xMax);
+        clampXMaxSlider?.GetComponent<SliderToText>()?.UpdateText(xMax);
         clampYMinSlider?.SetValueWithoutNotify(yMin);
+        clampYMinSlider?.GetComponent<SliderToText>()?.UpdateText(yMin);
         clampYMaxSlider?.SetValueWithoutNotify(yMax);
+        clampYMaxSlider?.GetComponent<SliderToText>()?.UpdateText(yMax);
     }
 
     public void ApplyDisplayState(bool isOn)
