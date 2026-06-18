@@ -183,9 +183,8 @@ public class SequenceStateMachine : MonoBehaviour
         for (int i = 0; i < sequence.steps.Count; i++)
         {
             SequenceStep step = sequence.steps[i].step;
-            float endTime = step.startTime + step.GetDuration();
 
-            if (endTime <= time)
+            if (step.startTime <= time)
                 launchedSteps.Add(i);
         }
 
