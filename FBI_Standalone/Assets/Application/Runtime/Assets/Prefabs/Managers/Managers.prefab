@@ -1618,10 +1618,6 @@ PrefabInstance:
       propertyPath: loopPlayback
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6867206271747297554, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: recordingFile
-      value: Assets/Application/Runtime/Assets/Recording/frontcamera.mkv
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
