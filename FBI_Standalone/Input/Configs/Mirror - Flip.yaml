@@ -1,7 +1,7 @@
-configName: 1PP
-createdAt: 2026-04-23 15:35:05
-lastModified: 2026-06-18 11:19:34
-stimulusDisplay:
+configName: Mirror - Flip
+createdAt: 2026-06-18 10:41:48
+lastModified: 2026-06-18 10:44:19
+stimulusDisplay: 
   position:
     x: 0
     y: 0.9
@@ -22,21 +22,21 @@ stimulusDisplay:
 pointClouds:
 - iD: 1
   position:
-    x: -0.18
-    y: 1.37
-    z: 2.3
+    x: 0
+    y: 1.32
+    z: 0
   rotation:
-    x: 45.90378
-    y: 171.23
-    z: 356.7675
+    x: 44.26
+    y: 358.01
+    z: 358.52
   scale:
     x: 1
     y: 1
     z: 1
-  depthMax: 2.537773
-  depthMin: 1.235421
-  clampXMin: 0.3277366
-  clampXMax: 0.7318519
+  depthMax: 2.845935
+  depthMin: 0.5105983
+  clampXMin: 0.2581356
+  clampXMax: 0.7418642
   clampYMin: 0
   clampYMax: 1
 - iD: 2
@@ -49,7 +49,7 @@ pointClouds:
     y: 0
     z: 0
   scale:
-    x: -1
+    x: 1
     y: 1
     z: 1
   depthMax: 3.47

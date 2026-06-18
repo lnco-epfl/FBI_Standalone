@@ -1,3 +1,4 @@
+using NUnit.Framework.Internal;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -35,20 +36,16 @@ public class DisplayQuestionState : IState
         OutputFileManager.Instance.OutputFileData.StepType = "Question";
         OutputFileManager.Instance.OutputFileData.StepCount = ExperimentManager.Instance.SequenceCurrentStep;
 
-        EventFileManager.Log($"[DisplayQuestionState] DisplayQuestion");
+        EventFileManager.Log($"[DisplayQuestionState] DisplayQuestion \"{step.question} \"with anwsers \"{string.Join(",", step.responseOptions)}\"");
 
         WorldUIManager.Instance.DisplayQuestion(step.question, step.responseOptions);
 
         float startTime = Time.time;
 
-        AudioRecorderManager.Instance.StartRecording();
-
         yield return new WaitUntil(() => questionValue != QuestionAnswer.None);
 
         float endTime = Time.time;
         float responseTime = endTime - startTime;
-
-        AudioRecorderManager.Instance.StopAndSave(ExperimentManager.Instance.CurrentSequence.name);
 
         OutputFileManager.Instance.OutputFileData.QuestionResponseTime = responseTime;
         OutputFileManager.Instance.OutputFileData.QuestionResponse = questionValue.ToString();

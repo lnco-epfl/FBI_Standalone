@@ -10,6 +10,7 @@ using UnityEngine.InputSystem.Interactions;
 
 using UnityEngine.UI;
 using UnityEngine.Video;
+using static UnityEditor.FilePathAttribute;
 using Random = UnityEngine.Random;
 
 public class WorldUIManager : MonoBehaviour
@@ -214,7 +215,15 @@ public class WorldUIManager : MonoBehaviour
         if(configFile.stimulusDisplay != null)
         {
             backgroundColor = configFile.stimulusDisplay.backgroundColor.ToColor();
+
+            this.transform.position = configFile.stimulusDisplay.position.ToVector3();
+
+            var rotation = configFile.stimulusDisplay.rotation.ToVector3();
+            this.transform.rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z);  
+
         }
+
+
     }
 
     private void OnSliderValueChanged(float value)

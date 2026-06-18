@@ -1614,10 +1614,6 @@ PrefabInstance:
       propertyPath: recordingFile
       value: Assets/Application/Runtime/Assets/Recording/backcamera.mkv
       objectReference: {fileID: 0}
-    - target: {fileID: 6474066014606128782, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: deviceStreamingMode
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 6867206271747297554, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
       propertyPath: loopPlayback
       value: 1
@@ -1625,10 +1621,6 @@ PrefabInstance:
     - target: {fileID: 6867206271747297554, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
       propertyPath: recordingFile
       value: Assets/Application/Runtime/Assets/Recording/frontcamera.mkv
-      objectReference: {fileID: 0}
-    - target: {fileID: 6867206271747297554, guid: c9996f7ea33734d4e9eabbd6ad59a731, type: 3}
-      propertyPath: deviceStreamingMode
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
