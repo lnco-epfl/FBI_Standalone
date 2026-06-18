@@ -5,13 +5,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions;
-
 using UnityEngine.UI;
 using UnityEngine.Video;
-using static UnityEditor.FilePathAttribute;
-using Random = UnityEngine.Random;
 
 public class WorldUIManager : MonoBehaviour
 {
