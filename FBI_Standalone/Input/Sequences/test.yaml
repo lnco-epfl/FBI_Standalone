@@ -26,6 +26,10 @@ steps:
     startTime: 12.0
     soundPath: "bell-sfx"
 
+  - stepType: playSound
+    startTime: 12.25
+    soundPath: "bell-sfx"
+
   - stepType: displayCameras
     startTime: 12.0
     duration: 20
@@ -38,7 +42,7 @@ steps:
 #          delay: 5.0
       - id: "1"
         delay: 0.0
-        configName: 1PP
+        configName: Mirror
         dissolution:
           duration: 5.0
           delay: 5.0
@@ -53,18 +57,12 @@ steps:
     cameraDatas:
       - id: "1"
         delay: 0.0
-        configName: 3PP
-        dissolution:
-          duration: 5.0
-          delay: 5.0
-      - id: "1"
-        delay: 0.0
         configName: 1PP
         interpolation:
           duration: 3.0
           delay: 5.0
           ease: InOutQuad
-          startConfigName: 3PP
+          startConfigName: Mirror
 
   - stepType: displayCameras
     startTime: 59.0

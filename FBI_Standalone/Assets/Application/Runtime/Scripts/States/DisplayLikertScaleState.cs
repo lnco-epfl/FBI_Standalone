@@ -26,7 +26,7 @@ public class DisplayLikertScaleState : IState
         OutputFileManager.Instance.OutputFileData.StepType = "LikertScale";
         OutputFileManager.Instance.OutputFileData.StepCount = ExperimentManager.Instance.SequenceCurrentStep;
 
-        EventFileManager.Log($"[DisplayLikertScaleState] DisplayLikertScale {step.leftLabel}  {step.rightLabel}");
+        EventFileManager.Log($"[DisplayLikertScaleState] DisplayLikertScale \"{step.question}\" with on left \"{step.leftLabel}\" and on right \"{step.rightLabel}\"");
 
         WorldUIManager.Instance.DisplayLikertScale(step.question, step.leftLabel, step.rightLabel);
 
