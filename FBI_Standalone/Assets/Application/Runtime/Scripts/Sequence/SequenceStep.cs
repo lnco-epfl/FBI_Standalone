@@ -237,6 +237,22 @@ public class DisplayVideoStep : SequenceStep
     public override Color GetColor() => Color.azure;
 }
 
+[System.Serializable]
+public class SendLSLEventStep : SequenceStep
+{
+    public string eventName;
+
+    public override float GetDuration() => 0f;
+    public override string GetStateName() => "SendLSLEvent";
+
+    public override string GetDisplayName()
+    {
+        var name = string.IsNullOrEmpty(eventName) ? "No Event" : eventName;
+        return $"Send LSL Event {name}";
+    }
+    public override Color GetColor() => Color.floralWhite;
+}
+
 [Serializable]
 public class SequenceStepWrapper
 {
@@ -248,7 +264,7 @@ public class SequenceStepWrapper
 
     public enum StepType
     {
-        DisplayText, Wait, SpawnObject, LoadScene, LoadConfig, DisplayLikertScale, Break, DisplayImage, DisplayQuestion, PlaySound, DisplayCameras, DisplayVideo
+        DisplayText, Wait, SpawnObject, LoadScene, LoadConfig, DisplayLikertScale, Break, DisplayImage, DisplayQuestion, PlaySound, DisplayCameras, DisplayVideo, SendLSLEvent
     }
 
     public SequenceStepWrapper()
@@ -272,6 +288,7 @@ public class SequenceStepWrapper
             case StepType.PlaySound: step = new PlaySoundStep(); break;
             case StepType.DisplayCameras: step = new DisplayCamerasStep(); break;
             case StepType.DisplayVideo: step = new DisplayVideoStep(); break;
+            case StepType.SendLSLEvent: step = new SendLSLEventStep(); break;
         }
     }
 }

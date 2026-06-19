@@ -22,6 +22,10 @@ steps:
     startTime: 15.0
     duration: 2.0
 
+  - stepType: sendLSLEvent
+    startTime: 15.0
+    eventName: "test"
+
   - stepType: playSound
     startTime: 12.0
     soundPath: "bell-sfx"

@@ -172,6 +172,13 @@ public class SequenceYamlLoader
                     displayTime = data.duration,
                     camerasData = data.cameraDatas,
                 };
+            case SequenceStepWrapper.StepType.SendLSLEvent:
+                return new SendLSLEventStep
+                {
+                    startTime = data.startTime,
+                    blocking = data.blocking,
+                    eventName = data.eventName,
+                };
 
             default:
                 return new WaitStep();
@@ -245,4 +252,6 @@ public class StepData
     public bool looping;
     public bool muteAudio;
 
+    // LSL Event
+    public string eventName;
 }
