@@ -1,19 +1,19 @@
 steps:
-  - stepType: loadScene
+  - stepType: LoadScene
     startTime: 0
     scenePath: "EmptyRoom"
 
-  - stepType: loadConfig
+  - stepType: LoadConfig
     startTime: 1.0
     configName: 3PP
 
-  - stepType: displayVideo
+  - stepType: DisplayVideo
     startTime: 2.0
     videoName: "FBI_demo_video"
     looping: false
     muteAudio: false
 
-  - stepType: displayText
+  - stepType: DisplayText
     startTime: 12.0
     text: "welcome to FBI"
     duration: 3.0

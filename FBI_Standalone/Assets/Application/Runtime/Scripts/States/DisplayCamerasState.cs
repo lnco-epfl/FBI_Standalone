@@ -13,6 +13,7 @@ public class DisplayCamerasState : IState
     private DisplayCamerasStep step;
 
     private PrimeTween.Sequence sequence;
+    private bool spawnedPointCloudsDisplayed;
 
     public void Enter(SequenceStep sequenceStep)
     {
@@ -161,6 +162,7 @@ public class DisplayCamerasState : IState
         OutputFileManager.Instance.OutputFileData.AsInterpolation = asInterpolation;
 
         PointCloudManager.Instance.DisplaySpawnedPointClouds();
+        spawnedPointCloudsDisplayed = true;
 
         EventFileManager.Log($"[DisplayCameraState] Display Cameras :" + displayText.ToString());
 
@@ -176,6 +178,7 @@ public class DisplayCamerasState : IState
         }
 
         PointCloudManager.Instance.HideSpawnedPointClouds();
+        spawnedPointCloudsDisplayed = false;
 
         for (int i = 0; i < step.camerasData.Count; i++)
         {
@@ -211,8 +214,11 @@ public class DisplayCamerasState : IState
             sequence.Stop();
         }
 
-        PointCloudManager.Instance.HideSpawnedPointClouds();
-
+        if(spawnedPointCloudsDisplayed)
+        {
+            PointCloudManager.Instance.HideSpawnedPointClouds();
+        }
+        
         PointCloudManager.Instance.DespawnPointClouds();
 
         for (int i = 0; i < step.camerasData.Count; i++)
