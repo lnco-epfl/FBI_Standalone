@@ -1,6 +1,7 @@
 using com.rfilkov.kinect;
 using Intel.RealSense;
 using NUnit.Framework;
+using PrimeTween;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -178,12 +179,21 @@ public class PointCloudManager : MonoBehaviour
 
     public void DespawnPointClouds()
     {
-        for (int i = spawnedPointClouds.Count - 1; i >= 0; i--)
+        //Waiting for pointcloud to be fully displayed before destroying
+        Tween.Delay(0.5f).OnComplete(() =>
         {
-            Destroy(spawnedPointClouds[i].gameObject);
-        }
+            for (int i = spawnedPointClouds.Count - 1; i >= 0; i--)
+            {
+                if (spawnedPointClouds[i].isMainVFXVisible)
+                {
+                    Destroy(spawnedPointClouds[i].gameObject);
+                }
 
-        spawnedPointClouds.Clear();
+            }
+
+            spawnedPointClouds.Clear();
+        });
+
     }
 
     public void DisplaySpawnedPointClouds()

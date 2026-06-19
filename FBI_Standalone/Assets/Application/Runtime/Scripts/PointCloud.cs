@@ -11,12 +11,17 @@ public class PointCloud : MonoBehaviour
     [SerializeField] private VisualEffect mainVisuEffect;
     [SerializeField] private VisualEffect dissolutionVisuEffect;
 
-
+    [Header("Fade")]
+    [SerializeField] private float fadeDuration = 0.25f;
 
     private Kinect4AzureInterface kinectAzureInterface;
 
     private int id = 0;
+    private Tween fadeTween;
+
     public int Id { get => id;  }
+
+    public bool isMainVFXVisible => mainVisuEffect.enabled;
 
     public void Init(int ID)
     {
@@ -29,12 +34,33 @@ public class PointCloud : MonoBehaviour
     public void DisplayMain()
     {
         mainVisuEffect.enabled = true;
-        mainVisuEffect.SetFloat("Alpha", 1.0f);
+        mainVisuEffect.SetFloat("Alpha", 0.0f);
+
+        if (fadeTween.isAlive)
+        {
+            fadeTween.Stop();
+        }
+
+        fadeTween = Tween.Custom(startValue: 0.0f, endValue: 1.0f, duration: fadeDuration, ease: Ease.InOutSine, onValueChange: (float value) =>
+        {
+            mainVisuEffect.SetFloat("Alpha", value);
+        });
     }
 
     public void HideMain()
     {
-        mainVisuEffect.enabled = false;
+        if (fadeTween.isAlive)
+        {
+            fadeTween.Stop();
+        }
+
+        fadeTween = Tween.Custom(startValue: 1.0f, endValue: 0.0f, duration: fadeDuration, ease: Ease.InOutSine, onValueChange: (float value) =>
+        {
+            mainVisuEffect.SetFloat("Alpha", value);
+        }).OnComplete(() =>
+        {
+            mainVisuEffect.enabled = false;
+        });
     }
 
     public void HideDissolution()
