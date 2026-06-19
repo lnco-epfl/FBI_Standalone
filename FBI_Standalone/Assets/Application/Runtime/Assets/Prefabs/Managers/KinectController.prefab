@@ -242,7 +242,7 @@ MonoBehaviour:
   deviceIndex: 0
   recordingFile: 
   minDepthDistance: 0
-  maxDepthDistance: 3.47
+  maxDepthDistance: 4
   pointCloudResolution: 1
   pointCloudVertexTexture: {fileID: 8400000, guid: ea74259af53a37e42b78d52b0170f1c8, type: 2}
   pointCloudColorTexture: {fileID: 8400000, guid: 76a33ecc1429053428801d9b57237b96, type: 2}
