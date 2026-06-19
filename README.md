@@ -346,6 +346,23 @@ Displays a break screen with instructions for a given duration.
 
 ---
 
+### SendLSLEvent
+
+Sends an LSL (Lab Streaming Layer) event marker, used to synchronize the experiment timeline with external recording systems (e.g. EEG, physiological sensors).
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `eventName` | string | Name/label of the event marker to send |
+
+```yaml
+- stepType: SendLSLEvent
+  eventName: "test"
+```
+
+---
+
+
+
 ## Full Sequence Example
 
 ```yaml
