@@ -22,7 +22,6 @@ public class RecordingSensorSwitcher : MonoBehaviour
 
         string path = Path.Combine(Application.streamingAssetsPath, "Recordings", fileName);
         path = path.Replace("\\", "/");
-        Debug.Log( path );
         azureInterface.recordingFile = path;
 
     }

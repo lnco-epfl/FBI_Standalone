@@ -8,33 +8,25 @@ using UnityEngine;
 public class RuntimeConsoleWindow : MonoBehaviour
 {
     [Header("Console")]
-    [Tooltip("Titre de la fenêtre PowerShell")]
-    public string windowTitle = "Game Console";
-
-    [Tooltip("Afficher aussi en éditeur Unity (normalement inutile)")]
-    public bool enableInEditor = false;
-
-    [Tooltip("Inclure la stack trace pour les erreurs")]
+    public string windowTitle = "FBI Console";
+    public bool enableInEditor = true;
     public bool showStackTrace = true;
-
-    [Tooltip("Nombre max de lignes de stack trace")]
     public int stackTraceLines = 4;
 
-    private NamedPipeServerStream _pipe;
-    private StreamWriter _writer;
-    private Process _psProcess;
-    private Thread _pipeThread;
-    private bool _running;
-    private string _pipeName;
+    private NamedPipeServerStream pipe;
+    private StreamWriter writer;
+    private Process psProcess;
+    private Thread pipeThread;
+    private bool running;
+    private string pipeName;
 
-    private System.Collections.Generic.Queue<(string color, string msg)> _queue
-        = new System.Collections.Generic.Queue<(string, string)>();
-    private readonly object _lock = new object();
+    private System.Collections.Generic.Queue<(string color, string msg)> queue = new System.Collections.Generic.Queue<(string, string)>();
+    private readonly object @lock = new object();
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void AutoStart()
     {
-        var go = new GameObject("[RuntimeConsole]");
+        var go = new GameObject("RuntimeConsole");
         DontDestroyOnLoad(go);
         go.AddComponent<RuntimeConsoleWindow>();
     }
@@ -57,35 +49,45 @@ public class RuntimeConsoleWindow : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
         OpenConsole();
+
+
         Application.logMessageReceivedThreaded += OnLog;
+        
+        
     }
 
     void OnDestroy()
     {
+
         Application.logMessageReceivedThreaded -= OnLog;
+        
         Shutdown();
     }
 
     void OnApplicationQuit()
     {
+
         Application.logMessageReceivedThreaded -= OnLog;
-        Send("Cyan", "──── Application quittée ────");
+        
+        Send("Cyan", "──── Application quit ────");
         Shutdown();
     }
 
     private void OnLog(string message, string stackTrace, LogType type)
     {
-        string color, prefix;
+        string color, prefix = string.Empty;
         switch (type)
         {
             case LogType.Warning:
-                color = "Yellow"; prefix = "[WARN] "; break;
+                color = "Yellow"; prefix = "[Warning] "; break;
             case LogType.Error:
+                color = "Red"; prefix = "[Error] "; break;
             case LogType.Exception:
+                color = "Red"; prefix = "[Error] "; break;
             case LogType.Assert:
-                color = "Red"; prefix = "[ERR]  "; break;
+                color = "Red"; prefix = "[Error] "; break;
             default:
-                color = "Gray"; prefix = "[LOG]  "; break;
+                color = "Gray"; break;
         }
 
         Enqueue(color, prefix + message);
@@ -106,30 +108,30 @@ public class RuntimeConsoleWindow : MonoBehaviour
 
     private void Enqueue(string color, string msg)
     {
-        lock (_lock)
-            _queue.Enqueue((color, msg));
+        lock (@lock)
+            queue.Enqueue((color, msg));
     }
 
     private void PipeFlushLoop()
     {
-        while (_running)
+        while (running)
         {
             (string color, string msg) item = default;
             bool hasItem = false;
 
-            lock (_lock)
+            lock (@lock)
             {
-                if (_queue.Count > 0)
+                if (queue.Count > 0)
                 {
-                    item = _queue.Dequeue();
+                    item = queue.Dequeue();
                     hasItem = true;
                 }
             }
 
             if (hasItem)
             {
-                try { _writer?.WriteLine($"{item.color}|{item.msg}"); }
-                catch { _running = false; break; }
+                try { writer?.WriteLine($"{item.color}|{item.msg}"); }
+                catch { running = false; break; }
             }
             else
             {
@@ -140,7 +142,7 @@ public class RuntimeConsoleWindow : MonoBehaviour
 
     private void OpenConsole()
     {
-        _pipeName = "UnityRuntime_" + Guid.NewGuid().ToString("N").Substring(0, 8);
+        pipeName = "UnityRuntime_" + Guid.NewGuid().ToString("N").Substring(0, 8);
 
         string ps = $@"
 $host.UI.RawUI.WindowTitle = '{windowTitle}'
@@ -153,7 +155,7 @@ Write-Host '  {windowTitle}' -ForegroundColor Cyan
 Write-Host ('  ' + [string]::new([char]0x2500, 80)) -ForegroundColor DarkGray
 Write-Host ''
 try {{
-    $pipe = New-Object System.IO.Pipes.NamedPipeClientStream('.', '{_pipeName}', [System.IO.Pipes.PipeDirection]::In)
+    $pipe = New-Object System.IO.Pipes.NamedPipeClientStream('.', '{pipeName}', [System.IO.Pipes.PipeDirection]::In)
     $pipe.Connect(10000)
     $reader = New-Object System.IO.StreamReader($pipe)
     while (-not $reader.EndOfStream) {{
@@ -184,49 +186,49 @@ $null = $host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
             WindowStyle = ProcessWindowStyle.Normal
         };
 
-        try { _psProcess = Process.Start(psi); }
+        try { psProcess = Process.Start(psi); }
         catch (Exception ex)
         {
             UnityEngine.Debug.LogWarning($"[RuntimeConsole] Impossible de lancer PowerShell : {ex.Message}");
             return;
         }
 
-        _running = true;
-        _pipeThread = new Thread(() =>
+        running = true;
+        pipeThread = new Thread(() =>
         {
             try
             {
-                _pipe = new NamedPipeServerStream(
-                    _pipeName,
+                pipe = new NamedPipeServerStream(
+                    pipeName,
                     PipeDirection.Out,
                     1,
                     PipeTransmissionMode.Byte,
                     PipeOptions.Asynchronous
                 );
 
-                var ar = _pipe.BeginWaitForConnection(null, null);
+                var ar = pipe.BeginWaitForConnection(null, null);
                 ar.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(10));
 
-                if (!_pipe.IsConnected) { _running = false; return; }
+                if (!pipe.IsConnected) { running = false; return; }
 
-                _writer = new StreamWriter(_pipe) { AutoFlush = true };
-                Send("Cyan", $"Connecté — {DateTime.Now:HH:mm:ss}");
+                writer = new StreamWriter(pipe) { AutoFlush = true };
+                //Send("Cyan", $"Connecté — {DateTime.Now:HH:mm:ss}");
 
                 PipeFlushLoop(); 
             }
-            catch { _running = false; }
+            catch { running = false; }
         });
-        _pipeThread.IsBackground = true;
-        _pipeThread.Start();
+        pipeThread.IsBackground = true;
+        pipeThread.Start();
     }
 
     private void Send(string color, string msg) => Enqueue(color, msg);
 
     private void Shutdown()
     {
-        _running = false;
-        try { _writer?.Dispose(); } catch { }
-        try { _pipe?.Dispose(); } catch { }
-        _pipeThread?.Join(500);
+        running = false;
+        try { writer?.Dispose(); } catch { }
+        try { pipe?.Dispose(); } catch { }
+        pipeThread?.Join(500);
     }
 }
