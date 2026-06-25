@@ -9,7 +9,7 @@ public class RuntimeConsoleWindow : MonoBehaviour
 {
     [Header("Console")]
     public string windowTitle = "FBI Console";
-    public bool enableInEditor = true;
+    public bool enableInEditor = false;
     public bool showStackTrace = true;
     public int stackTraceLines = 4;
 
