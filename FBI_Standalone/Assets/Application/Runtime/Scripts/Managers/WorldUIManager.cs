@@ -28,8 +28,10 @@ public class WorldUIManager : MonoBehaviour
     private Image likertScaleContainerBackground;
 
     private TMP_Text questionTextLikertScaleContainer;
-    private TMP_Text labelLeftTextLikertScaleContainer;
-    private TMP_Text labelRightTextLikertScaleContainer;
+    private TMP_Text labelBottomLeftTextLikertScaleContainer;
+    private TMP_Text labelBottomRightTextLikertScaleContainer;
+    private TMP_Text labelTopLeftTextLikertScaleContainer;
+    private TMP_Text labelTopRightTextLikertScaleContainer;
 
     private Button validationButtonLikertScaleContrainer;
     private Slider sliderLikertScaleContainer;
@@ -122,8 +124,10 @@ public class WorldUIManager : MonoBehaviour
         canvasGroupLikertScaleContainer = likertScaleContainer.GetComponent<CanvasGroup>();
         questionTextLikertScaleContainer = likertScaleContainer.GetComponentInChildren<TMP_Text>();
         sliderLikertScaleContainer = likertScaleContainer.GetComponentInChildren<Slider>();
-        labelLeftTextLikertScaleContainer = sliderLikertScaleContainer.transform.Find("Label Left").GetComponent<TMP_Text>();
-        labelRightTextLikertScaleContainer = sliderLikertScaleContainer.transform.Find("Label Right").GetComponent<TMP_Text>();
+        labelTopLeftTextLikertScaleContainer = sliderLikertScaleContainer.transform.Find("Label Top Left").GetComponent<TMP_Text>();
+        labelTopRightTextLikertScaleContainer = sliderLikertScaleContainer.transform.Find("Label Top Right").GetComponent<TMP_Text>();
+        labelBottomLeftTextLikertScaleContainer = sliderLikertScaleContainer.transform.Find("Label Bottom Left").GetComponent<TMP_Text>();
+        labelBottomRightTextLikertScaleContainer = sliderLikertScaleContainer.transform.Find("Label Bottom Right").GetComponent<TMP_Text>();
         validationButtonLikertScaleContrainer = likertScaleContainer.GetComponentInChildren<Button>();
         likertScaleContainerBackground = likertScaleContainer.transform.Find("Background").GetComponent<Image>();
 
@@ -161,8 +165,11 @@ public class WorldUIManager : MonoBehaviour
 
         canvasGroupLikertScaleContainer.alpha = 0;
         questionTextLikertScaleContainer.text = string.Empty;
-        labelLeftTextLikertScaleContainer.text = string.Empty;
-        labelRightTextLikertScaleContainer.text = string.Empty;
+        labelTopLeftTextLikertScaleContainer.text = string.Empty;
+        labelTopRightTextLikertScaleContainer.text = string.Empty;
+        labelBottomLeftTextLikertScaleContainer.text = string.Empty;
+        labelBottomRightTextLikertScaleContainer.text = string.Empty;
+
 
         canvasGroupVideoContainer.alpha = 0;
         videoRawImage.texture = null;
@@ -228,7 +235,10 @@ public class WorldUIManager : MonoBehaviour
 
     private void OnValidationLikertButtonPressed()
     {
-        OnLikertScaleValidated?.Invoke((int)sliderLikertScaleContainer.value);
+        if(validationButtonLikertScaleContrainer.gameObject.activeSelf)
+        {
+            OnLikertScaleValidated?.Invoke((int)sliderLikertScaleContainer.value);
+        }
     }
 
     public void DisplayValidationButton(bool isDisplay)
@@ -279,16 +289,25 @@ public class WorldUIManager : MonoBehaviour
         });
     }
 
-    public void DisplayLikertScale(string question, string labelLeft, string labelRight)
+    public void DisplayLikertScale(string question, string labelLeft, string labelRight, int min, int max, bool randomCursorPosition)
     {
         questionTextLikertScaleContainer.text = question;
-        labelLeftTextLikertScaleContainer.text = labelLeft;
-        labelRightTextLikertScaleContainer.text = labelRight;
+        labelBottomLeftTextLikertScaleContainer.text = labelLeft;
+        labelBottomRightTextLikertScaleContainer.text = labelRight;
+
+        labelTopLeftTextLikertScaleContainer.text = min.ToString();
+        labelTopRightTextLikertScaleContainer.text = max.ToString();
 
         likertScaleContainerBackground.color = backgroundColor;
         currentBackground = likertScaleContainerBackground;
 
-        sliderLikertScaleContainer.SetValueWithoutNotify(UnityEngine.Random.Range(sliderLikertScaleContainer.minValue + 10, sliderLikertScaleContainer.maxValue - 10));
+        sliderLikertScaleContainer.minValue = min;
+        sliderLikertScaleContainer.maxValue = max;
+
+        if(randomCursorPosition)
+        {
+            sliderLikertScaleContainer.SetValueWithoutNotify(UnityEngine.Random.Range(sliderLikertScaleContainer.minValue + 25, sliderLikertScaleContainer.maxValue - 25));
+        }
 
         DisplayValidationButton(false);
 

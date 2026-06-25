@@ -28,7 +28,7 @@ public class DisplayLikertScaleState : IState
 
         EventFileManager.Log($"[DisplayLikertScaleState] DisplayLikertScale \"{step.question}\" with on left \"{step.leftLabel}\" and on right \"{step.rightLabel}\"");
 
-        WorldUIManager.Instance.DisplayLikertScale(step.question, step.leftLabel, step.rightLabel);
+        WorldUIManager.Instance.DisplayLikertScale(step.question, step.leftLabel, step.rightLabel, step.min, step.max, step.randomCursorPosition);
 
         float startTime = Time.time;
 

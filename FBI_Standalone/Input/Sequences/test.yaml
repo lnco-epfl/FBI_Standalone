@@ -132,6 +132,9 @@ steps:
     question: "satisfaction question"
     leftLabel: "not satisfied"
     rightLabel: "very satisfied"
+    min: 1
+    max: 5
+    randomCursorPosition: true
 
   - stepType: break
     startTime: 139.5
