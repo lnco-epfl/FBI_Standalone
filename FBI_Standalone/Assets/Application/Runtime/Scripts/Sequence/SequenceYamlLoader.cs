@@ -117,6 +117,9 @@ public class SequenceYamlLoader
                     question = data.question,
                     leftLabel = data.leftLabel,
                     rightLabel = data.rightLabel,
+                    min = data.min,
+                    max = data.max,
+                    randomCursorPosition = data.randomCursorPosition
                 };
 
             case SequenceStepWrapper.StepType.Break:
@@ -231,6 +234,11 @@ public class StepData
     public string leftLabel;
     public string rightLabel;
     public List<string> options;
+
+    //likert
+    public int min;
+    public int max;
+    public bool randomCursorPosition;
 
     //camera
     public List<CameraData> cameraDatas;

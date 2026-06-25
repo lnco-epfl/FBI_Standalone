@@ -92,6 +92,13 @@ public class DisplayLikertScaleStep : SequenceStep
     public string leftLabel;
 
     public string rightLabel;
+
+    public int min; 
+
+    public int max;
+
+    public bool randomCursorPosition;
+    
     public override float GetDuration() => 10f;
     public override string GetStateName() => "DisplayLikertScale";
     public override string GetDisplayName()
