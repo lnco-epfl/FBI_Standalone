@@ -35,6 +35,8 @@ public class EventFileManager : MonoBehaviour
     private void Awake()
     {
         if (instance != null && instance != this) { Destroy(this.gameObject); } else { instance = this; }
+
+        Initialize();
     }
     #endregion
 
@@ -142,15 +144,17 @@ public class EventFileManager : MonoBehaviour
     }
     private void Write(EmessageType type, string message)
     {
+
+        var finalMessage = message;
         if (addTimestamp)
         {
             DateTime now = DateTime.Now;
-            message = string.Format("[{0:H:mm:ss}] {1}", now, message);
+            finalMessage = string.Format("[{0:HH:mm:ss}] {1}", now, message);
         }
 
         if (eventStreamer != null)
         {
-            eventStreamer.WriteLine(message);
+            eventStreamer.WriteLine(finalMessage);
             eventStreamer.Flush();
 
             if (eventFileStream != null)

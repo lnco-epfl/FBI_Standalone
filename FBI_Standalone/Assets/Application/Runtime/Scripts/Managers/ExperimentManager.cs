@@ -77,11 +77,6 @@ public class ExperimentManager : MonoBehaviour
         sequenceStateMachine.OnSequenceComplete -= OnStateMachineSequenceComplete;
     }
 
-    void Start()
-    {
-        EventFileManager.Instance.Initialize();
-    }
-
     void Update()
     {
         if (isRunning)
