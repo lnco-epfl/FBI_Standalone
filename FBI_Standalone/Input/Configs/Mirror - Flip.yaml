@@ -1,7 +1,7 @@
 configName: Mirror - Flip
 createdAt: 2026-06-18 10:41:48
-lastModified: 2026-06-18 10:44:19
-stimulusDisplay: 
+lastModified: 2026-06-25 15:24:43
+stimulusDisplay:
   position:
     x: 0
     y: 0.9
@@ -22,13 +22,13 @@ stimulusDisplay:
 pointClouds:
 - iD: 1
   position:
-    x: 0
-    y: 1.32
-    z: 0
+    x: 0.15
+    y: 1.59
+    z: 0.17
   rotation:
-    x: 44.26
-    y: 358.01
-    z: 358.52
+    x: 44.27001
+    y: 350.78
+    z: 353.09
   scale:
     x: 1
     y: 1
@@ -57,4 +57,4 @@ pointClouds:
   clampXMin: 0
   clampXMax: 1
   clampYMin: 0
-  clampYMax: 1
+  clampYMax: 0.1561171
