@@ -1,6 +1,6 @@
 configName: 1PP
 createdAt: 2026-04-23 15:35:05
-lastModified: 2026-06-25 09:47:14
+lastModified: 2026-06-26 09:41:20
 stimulusDisplay:
   position:
     x: 0
@@ -23,11 +23,11 @@ pointClouds:
 - iD: 1
   position:
     x: -0.09
-    y: 1.66
-    z: 1.25
+    y: 1.61
+    z: 0.92
   rotation:
-    x: 45.90378
-    y: 171.23
+    x: 44.60535
+    y: 171.25
     z: 356.7675
   scale:
     x: 1
