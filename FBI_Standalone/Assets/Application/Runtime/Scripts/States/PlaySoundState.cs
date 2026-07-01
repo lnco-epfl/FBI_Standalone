@@ -5,6 +5,8 @@ public class PlaySoundState : IState
 {
     private PlaySoundStep step;
 
+    private AudioSource audioSource;
+
     public void Enter(SequenceStep sequenceStep)
     {
         step = sequenceStep as PlaySoundStep;
@@ -14,14 +16,14 @@ public class PlaySoundState : IState
     {
         EventFileManager.Log($"[PlaySoundState] Play Sound {step.sound.name} for {step.GetDuration()} seconds");
 
-        AudioManager.instance.Play2DSFX(step.sound);
+        audioSource = AudioManager.instance.Play2DSFX(step.sound);
 
         yield return new WaitForSeconds(step.GetDuration());
     }
 
     public void Exit()
     {
-
+        AudioManager.instance.KillSound(audioSource);
     }
 
 }

@@ -28,11 +28,7 @@ steps:
 
   - stepType: playSound
     startTime: 12.0
-    soundPath: "bell-sfx"
-
-  - stepType: playSound
-    startTime: 12.25
-    soundPath: "bell-sfx"
+    soundPath: "NoM_Phase1"
 
   - stepType: displayCameras
     startTime: 12.0

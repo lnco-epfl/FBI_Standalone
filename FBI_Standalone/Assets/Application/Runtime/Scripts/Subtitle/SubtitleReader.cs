@@ -1,43 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Video;
-
-[Serializable]
-public class Subtitle
-{
-    public int index;
-    public string startTime;
-    public string endTime;
-    public string text;
-    public float startSeconds;
-    public float endSeconds;
-
-    public Subtitle(int index, string startTime, string endTime, string text)
-    {
-        this.index = index;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.text = text;
-        this.startSeconds = TimeToSeconds(startTime);
-        this.endSeconds = TimeToSeconds(endTime);
-    }
-
-    private float TimeToSeconds(string timeString)
-    {
-        // Format: 00:00:00,000
-        string[] parts = timeString.Split(new char[] { ':', ',' });
-        int hours = int.Parse(parts[0]);
-        int minutes = int.Parse(parts[1]);
-        int seconds = int.Parse(parts[2]);
-        int milliseconds = int.Parse(parts[3]);
-
-        return hours * 3600 + minutes * 60 + seconds + milliseconds / 1000f;
-    }
-}
 
 public class SubtitleReader : MonoBehaviour
 {
@@ -50,6 +15,13 @@ public class SubtitleReader : MonoBehaviour
     private List<Subtitle> subtitles = new List<Subtitle>();
     private Subtitle currentSubtitle = null;
     private bool subtitlesLoaded = false;
+
+    private const string AudioSubtitlesFolder = "Input/Audio";
+
+    private List<Subtitle> audioSubtitles = new List<Subtitle>();
+    private Subtitle currentAudioSubtitle = null;
+    private bool audioSubtitlesActive = false;
+    private float audioElapsed = 0f;
 
     void Start()
     {
@@ -64,87 +36,64 @@ public class SubtitleReader : MonoBehaviour
             videoPlayer.loopPointReached += VideoEnded;
         }
 
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.SfxStarted += AudioSfxStarted;
+            AudioManager.instance.SfxEnded += AudioSfxEnded;
+        }
+
         textAutoSizer.SetText(string.Empty);
+    }
+
+    void OnDestroy()
+    {
+        if (videoPlayer != null)
+        {
+            videoPlayer.started -= VideoStarted;
+            videoPlayer.loopPointReached -= VideoEnded;
+        }
+
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.SfxStarted -= AudioSfxStarted;
+            AudioManager.instance.SfxEnded -= AudioSfxEnded;
+        }
     }
 
     void Update()
     {
-        if (!subtitlesLoaded || videoPlayer == null)
-            return;
+        bool videoSubtitlesReady = subtitlesLoaded && videoPlayer != null;
 
-        if (videoPlayer.isPlaying)
+        if (videoSubtitlesReady && videoPlayer.isPlaying)
         {
+            // La vidéo est prioritaire sur l'affichage si elle est en cours de lecture.
             DisplaySubtitle((float)videoPlayer.time);
+            return;
         }
-        else
+
+        if (videoSubtitlesReady)
         {
             textAutoSizer.SetText(string.Empty);
         }
 
-
+        if (audioSubtitlesActive)
+        {
+            DisplayAudioSubtitle();
+        }
     }
 
     private void LoadSubtitles(string filePath)
     {
-        if (!File.Exists(filePath))
+        List<Subtitle> loaded = SrtParser.ParseFile(filePath);
+
+        if (loaded == null)
         {
-            EventFileManager.Error("[SubtitleReader] SRT file not found: " + filePath);
+            subtitlesLoaded = false;
             return;
         }
 
-        try
-        {
-            string content = File.ReadAllText(filePath, Encoding.UTF8);
-            ParseSrtContent(content);
-            subtitlesLoaded = true;
-            EventFileManager.Log($"[SubtitleReader] Successfully loaded {subtitles.Count} subtitles from {filePath}");
-        }
-        catch (Exception e)
-        {
-            EventFileManager.Error($"[SubtitleReader] Error loading subtitles: {e.Message}");
-        }
-    }
-
-    private void ParseSrtContent(string content)
-    {
-        subtitles.Clear();
-
-
-        string[] entries = Regex.Split(content, @"\r\n\r\n|\n\n");
-
-        foreach (string entry in entries)
-        {
-            if (string.IsNullOrWhiteSpace(entry))
-                continue;
-
-            string[] lines = Regex.Split(entry, @"\r\n|\n");
-            if (lines.Length < 3)
-                continue;
-
-
-            if (!int.TryParse(lines[0].Trim(), out int index))
-                continue;
-
-
-            string[] timeComponents = lines[1].Split(new string[] { " --> " }, StringSplitOptions.None);
-            if (timeComponents.Length != 2)
-                continue;
-
-            string startTime = timeComponents[0].Trim();
-            string endTime = timeComponents[1].Trim();
-
-
-            StringBuilder textBuilder = new StringBuilder();
-            for (int i = 2; i < lines.Length; i++)
-            {
-                if (i > 2)
-                    textBuilder.AppendLine();
-                textBuilder.Append(lines[i]);
-            }
-            string text = textBuilder.ToString();
-
-            subtitles.Add(new Subtitle(index, startTime, endTime, text));
-        }
+        subtitles = loaded;
+        subtitlesLoaded = true;
     }
 
     private void DisplaySubtitle(float currentTime)
@@ -208,5 +157,55 @@ public class SubtitleReader : MonoBehaviour
         }
 
         LoadSubtitles(filePath);
+    }
+
+
+
+    private void AudioSfxStarted(AudioSource source)
+    {
+        string filePath = Path.Combine(Application.dataPath, "..", AudioSubtitlesFolder, source.clip.name + ".srt");
+        List<Subtitle> loaded = SrtParser.ParseFile(filePath);
+
+        audioSubtitles = loaded ?? new List<Subtitle>();
+        currentAudioSubtitle = null;
+        audioElapsed = 0f;
+        audioSubtitlesActive = audioSubtitles.Count > 0;
+    }
+
+    private void AudioSfxEnded(AudioSource source)
+    {
+        audioSubtitlesActive = false;
+        currentAudioSubtitle = null;
+
+        bool videoShowingText = subtitlesLoaded && videoPlayer != null && videoPlayer.isPlaying;
+        if (!videoShowingText)
+        {
+            textAutoSizer.SetText(string.Empty);
+        }
+    }
+
+    private void DisplayAudioSubtitle()
+    {
+        audioElapsed += Time.deltaTime;
+
+        if (currentAudioSubtitle != null &&
+            audioElapsed >= currentAudioSubtitle.startSeconds &&
+            audioElapsed <= currentAudioSubtitle.endSeconds)
+        {
+            return;
+        }
+
+        currentAudioSubtitle = null;
+        foreach (Subtitle subtitle in audioSubtitles)
+        {
+            if (audioElapsed >= subtitle.startSeconds && audioElapsed <= subtitle.endSeconds)
+            {
+                currentAudioSubtitle = subtitle;
+                textAutoSizer.SetText(subtitle.text);
+                return;
+            }
+        }
+
+        textAutoSizer.SetText(string.Empty);
     }
 }

@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
@@ -12,6 +15,11 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private float sfxVolume = 1f;
 
     public static AudioManager instance { get; private set; }
+
+    public event Action<AudioSource> SfxStarted;
+    public event Action<AudioSource> SfxEnded;
+
+    private readonly List<AudioSource> activeSfxSource = new List<AudioSource>();
 
     private void Awake()
     {
@@ -37,12 +45,57 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void Play2DSFX(AudioClip clip, float volumeScale = 1f)
+    public AudioSource Play2DSFX(AudioClip clip, float volumeScale = 1f)
     {
-        if (clip == null) return;
+        if (clip == null) return null;
 
         AudioSource source = GetAvailableSource();
         source.PlayOneShot(clip, volumeScale * sfxVolume);
+
+        source.clip = clip;
+
+        activeSfxSource.Add(source);
+        SfxStarted?.Invoke(source);
+        StartCoroutine(RaiseSfxEndedAfterDelay(source, clip.length));
+
+        return source;
+    }
+
+    public void KillSound(AudioSource source)
+    {
+        if (source == null) return;
+
+        source.Stop();
+
+        activeSfxSource.Remove(source);
+        SfxEnded?.Invoke(source);
+        
+    }
+
+
+    public void KillAllSounds()
+    {
+        StopAllCoroutines();
+
+        foreach (AudioSource source in sfxSources)
+        {
+            source.Stop();
+        }
+
+        List<AudioSource> sourceToNotify = new List<AudioSource>(activeSfxSource);
+        activeSfxSource.Clear();
+
+        foreach (AudioSource source in sourceToNotify)
+        {
+            SfxEnded?.Invoke(source);
+        }
+    }
+
+    private IEnumerator RaiseSfxEndedAfterDelay(AudioSource source, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        activeSfxSource.Remove(source);
+        SfxEnded?.Invoke(source);
     }
 
     private AudioSource GetAvailableSource()
