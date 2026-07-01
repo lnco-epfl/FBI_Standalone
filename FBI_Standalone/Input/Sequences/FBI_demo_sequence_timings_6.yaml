@@ -6,9 +6,8 @@
 #   A. Baseline FBI Measurement   - 2x2 (view: front/back) x (stroking: sync/async)
 #   1. 1PP Embodiment             - camera 1, 1PP config
 #   2. 3PP Back (OBX)             - camera 2, 3PP back config
-#   3. 1PP Inverted               - camera 1, inverted config
-#   4. 3PP Mirror (facing avatar) - camera 1 used twice: 1PP-inverted self
-#                                    + facing avatar, simultaneous
+#   3. 1PP - Flip                 - camera 1, inverted config
+#   4. 3PP Mirror - Flip (facing) - camera 1 no inversion
 #   5. Ego dissolution            - no avatar
 #   B. Post-sequence FBI Measurement - same 2x2 as Baseline
 #
@@ -16,11 +15,10 @@
 #   id "1" = 1PP / 3PP FRONT view
 #   id "2" = 3PP BACK view
 #
-# Condition order for the FBI 2x2 blocks (front/back x sync/async) is
-# RANDOMIZED / COUNTERBALANCED across participants. The order below
-# (front-sync, front-async, back-sync, back-async) is a PLACEHOLDER -
-# replace per your counterbalancing table / randomization script before
-# each session, or swap blocks manually.
+# Condition order for the FBI 2x2 blocks is RANDOMIZED / COUNTERBALANCED
+# across participants. The order below (front-sync, front-async, back-sync,
+# back-async) is a PLACEHOLDER - replace per your counterbalancing table.
+#
 # =========================================================================
 
 steps:
@@ -43,138 +41,132 @@ steps:
     muteAudio: false
 
   - stepType: wait
-    startTime: 32
+    startTime: 12
     duration: 2.0
 
-
   # =========================================================================
-  # A. BASELINE FBI MEASUREMENT - phase timer reset to 0
-  # 2x2 (view x stroking), ~8 min (4 x 90s + questionnaire)
-  # ORDER BELOW IS A PLACEHOLDER (front-sync, front-async, back-sync, back-async)
-  # Randomize/counterbalance per participant.
+  # A. BASELINE FBI MEASUREMENT
   # =========================================================================
-
   - stepType: wait
-    startTime: 34
+    startTime: 15
     duration: 1.0
 
   - stepType: displayText
-    startTime: 35
+    startTime: 17
     text: "Welcome to Full Body Illusion experiment"
     duration: 3.0
 
   # --- A1. Front view / SYNC stroking ---
   - stepType: loadConfig
-    startTime: 38
-    configName: 1PP
+    startTime: 21
+    configName: Mirror - Flip
 
   - stepType: displayImage
-    startTime: 39
+    startTime: 22
     imagePath: "plus"
     scale: 0.3
     duration: 3.0
 
   - stepType: displayCameras
-    startTime: 42
+    startTime: 26
     duration: 90.0
     cameraDatas:
       - id: "1"
         delay: 0.0 #sync stroking
-        configName: 1PP
+        configName: Mirror - Flip
 
   - stepType: wait
-    startTime: 132
+    startTime: 117
     duration: 2.0
 
   - stepType: displayLikertScale
+    startTime: 120
     blocking: true
-    startTime: 134
     question: "I felt that the body I saw was my body."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   - stepType: displayLikertScale
+    startTime: 121
     blocking: true
-    startTime: 134.25
     question: "I felt that the touch I felt was located where I saw the stroking."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   - stepType: displayLikertScale
+    startTime: 122
     blocking: true
-    startTime: 134.5
     question: "I felt as if I have three bodies."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   # --- A2. Front view / ASYNC stroking ---
   - stepType: wait
-    startTime: 134.75
+    startTime: 123
     duration: 2.0
 
   - stepType: displayImage
-    startTime: 136
+    startTime: 126
     imagePath: "plus"
     scale: 0.3
     duration: 3.0
 
   - stepType: playSound
-    startTime: 139
+    startTime: 130
 
   - stepType: displayCameras
-    startTime: 139
+    startTime: 130
     duration: 90.0
     cameraDatas:
       - id: "1"
         delay: 0.5 #async stroking
-        configName: 1PP
+        configName: Mirror - Flip
 
   - stepType: wait
-    startTime: 229
+    startTime: 221
     duration: 2.0
 
   - stepType: displayLikertScale
+    startTime: 224
     blocking: true
-    startTime: 231
     question: "I felt that the body I saw was my body."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   - stepType: displayLikertScale
+    startTime: 225
     blocking: true
-    startTime: 231
     question: "I felt that the touch I felt was located where I saw the stroking."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   - stepType: displayLikertScale
+    startTime: 226
     blocking: true
-    startTime: 231
     question: "I felt as if I have three bodies."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   # --- A3. Back view / SYNC stroking ---
   - stepType: wait
-    startTime: 231
+    startTime: 227
     duration: 2.0
 
   - stepType: loadConfig
-    startTime: 233
+    startTime: 230
     configName: 3PP
 
   - stepType: displayImage
-    startTime: 234
+    startTime: 231
     imagePath: "plus"
     scale: 0.3
     duration: 3.0
 
   - stepType: playSound
-    startTime: 237
-
+    startTime: 235
 
   - stepType: displayCameras
-    startTime: 237
+    startTime: 235
     duration: 90.0
     cameraDatas:
       - id: "2"
@@ -182,46 +174,46 @@ steps:
         configName: 3PP
 
   - stepType: wait
-    startTime: 327
+    startTime: 326
     duration: 2.0
 
   - stepType: displayLikertScale
-    blocking: true
     startTime: 329
+    blocking: true
     question: "I felt that the body I saw was my body."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   - stepType: displayLikertScale
+    startTime: 330
     blocking: true
-    startTime: 329
     question: "I felt that the touch I felt was located where I saw the stroking."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   - stepType: displayLikertScale
+    startTime: 331
     blocking: true
-    startTime: 329
     question: "I felt as if I have three bodies."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   # --- A4. Back view / ASYNC stroking ---
   - stepType: wait
-    startTime: 329
+    startTime: 332
     duration: 2.0
 
   - stepType: displayImage
-    startTime: 331
+    startTime: 335
     imagePath: "plus"
     scale: 0.3
     duration: 3.0
 
   - stepType: playSound
-    startTime: 334
+    startTime: 339
 
   - stepType: displayCameras
-    startTime: 334
+    startTime: 339
     duration: 90.0
     cameraDatas:
       - id: "2"
@@ -229,170 +221,178 @@ steps:
         configName: 3PP
 
   - stepType: wait
-    startTime: 424
+    startTime: 430
     duration: 2.0
 
   - stepType: displayLikertScale
+    startTime: 433
     blocking: true
-    startTime: 426
     question: "I felt that the body I saw was my body."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   - stepType: displayLikertScale
+    startTime: 434
     blocking: true
-    startTime: 426
     question: "I felt that the touch I felt was located where I saw the stroking."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   - stepType: displayLikertScale
+    startTime: 435
     blocking: true
-    startTime: 426
     question: "I felt as if I have three bodies."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   - stepType: break
-    startTime: 426
+    startTime: 436
     text: "Baseline measurement complete. Please take a short break."
     duration: 30
 
-
   # =========================================================================
-  # 1. 1PP EMBODIMENT - camera 1, 1PP config - phase timer reset to 0
-  # Audio: grounding/breath-focus script. Probes at end of phase.
+  # 1. 1PP EMBODIMENT - camera 1, 1PP config
   # =========================================================================
-
   - stepType: loadScene
-    startTime: 456
+    startTime: 467
     scenePath: "EmptyRoom"
 
-  - stepType: loadConfig
-    startTime: 457
-    configName: 1PP
-
   - stepType: playSound
-    startTime: 458
-  #  soundPath: "phase1_1pp_embodiment_script"
+    startTime: 469
 
-  - stepType: displayCameras
-    startTime: 458
-    duration: 178.0
-    cameraDatas:
-      - id: "1"
-        delay: 0.0
-        configName: 1PP
-
-  - stepType: wait
-    startTime: 636
-    duration: 2.0
-
-  # Probing (visual analog scales, at end of phase)
-  - stepType: displayLikertScale
-    blocking: true
-    startTime: 638
-    question: "How much do you feel that the body that you see is your body?"
-    leftLabel: "0 - Not at all"
-    rightLabel: "5 - Completely"
-
-  - stepType: displayLikertScale
-    blocking: true
-    startTime: 638
-    question: "How much do you experience the sensations of your body right now?"
-    leftLabel: "0 - Not at all"
-    rightLabel: "5 - Completely"
-
-  - stepType: displayLikertScale
-    blocking: true
-    startTime: 638
-    question: "How much do you feel your center of awareness to be located where you feel your body to be?"
-    leftLabel: "0 - Not at all"
-    rightLabel: "5 - Completely"
-
-  - stepType: displayLikertScale
-    blocking: true
-    startTime: 638
-    question: "How many times have you been experiencing the nature of mind during this last phase of the experiment?"
-    leftLabel: "0 - Never"
-    rightLabel: "5 - Continuously"
-
-  - stepType: displayLikertScale
-    blocking: true
-    startTime: 638
-    question: "How stable is your attention right now?"
-    leftLabel: "0 - Not stable"
-    rightLabel: "5 - Very stable"
-
-  - stepType: displayLikertScale
-    blocking: true
-    startTime: 638
-    question: "How clearly do you feel your body?"
-    leftLabel: "0 - Not clearly"
-    rightLabel: "5 - Very clearly"
-
-  - stepType: wait
-    startTime: 638
-    duration: 2.0
-
-
-  # =========================================================================
-  # 2. 3PP BACK (OBX) - camera 2, 3PP back config - phase timer reset to 0
-  # Audio: perspective-shift script + arm-movement instructions.
-  # =========================================================================
-
-  - stepType: loadConfig
-    startTime: 640
-    configName: 3PP
-
-  - stepType: playSound
-    startTime: 641
-  #  soundPath: "phase2_3pp_back_script"
-
-  - stepType: displayCameras
-    startTime: 641
-    duration: 119.0
+  - stepType: displayCameras  # settle: hold previous-phase config before interpolation
+    startTime: 469
+    duration: 5.0
     cameraDatas:
       - id: "2"
         delay: 0.0
         configName: 3PP
 
+  - stepType: displayCameras
+    startTime: 474
+    duration: 178.0
+    cameraDatas:
+      - id: "1"
+        delay: 0.0
+        configName: 1PP
+        interpolation:
+          duration: 5.0
+          delay: 0.0
+          ease: InOutSine
+          startConfigName: 3PP   # morph from the previous (3PP) view into 1PP
+
   - stepType: wait
-    startTime: 760
+    startTime: 653
     duration: 2.0
 
-  # Probing (visual analog scales, at end of phase)
   - stepType: displayLikertScale
+    startTime: 656
     blocking: true
-    startTime: 762
-    question: "How much do you feel that the body that you see is your body?"
+    question: "How much do you feel that the body that you saw is your body?"
     leftLabel: "0 - Not at all"
-    rightLabel: "5 - Completely"
+    rightLabel: "Completely - 5"
 
   - stepType: displayLikertScale
+    startTime: 657
     blocking: true
-    startTime: 762
     question: "How much do you experience the sensations of your body right now?"
     leftLabel: "0 - Not at all"
-    rightLabel: "5 - Completely"
+    rightLabel: "Completely - 5"
 
   - stepType: displayLikertScale
+    startTime: 658
     blocking: true
-    startTime: 762
     question: "How much do you feel your center of awareness to be located where you feel your body to be?"
     leftLabel: "0 - Not at all"
-    rightLabel: "5 - Completely"
+    rightLabel: "Completely - 5"
 
   - stepType: displayLikertScale
+    startTime: 659
     blocking: true
-    startTime: 762
     question: "How many times have you been experiencing the nature of mind during this last phase of the experiment?"
     leftLabel: "0 - Never"
-    rightLabel: "5 - Continuously"
+    rightLabel: "Continuously - 5"
+
+  - stepType: displayLikertScale
+    startTime: 660
+    blocking: true
+    question: "How stable is your attention right now?"
+    leftLabel: "0 - Not stable"
+    rightLabel: "Very stable - 5"
+
+  - stepType: displayLikertScale
+    startTime: 661
+    blocking: true
+    question: "How clearly do you feel your body?"
+    leftLabel: "0 - Not clearly"
+    rightLabel: "Very clearly - 5"
+  - stepType: wait
+    startTime: 662
+    duration: 2.0
+
+  # =========================================================================
+  # 2. 3PP BACK (OBX) - camera 2, 3PP back config
+  # =========================================================================
+
+  - stepType: playSound
+    startTime: 666
+
+  - stepType: displayCameras  # settle: hold previous-phase config before interpolation
+    startTime: 666
+    duration: 5.0
+    cameraDatas:
+      - id: "1"
+        delay: 0.0
+        configName: 1PP
+        
+  - stepType: displayCameras
+    startTime: 671
+    duration: 119.0
+    cameraDatas:
+      - id: "2"
+        delay: 0.0
+        configName: 3PP
+        interpolation:
+          duration: 5.0
+          delay: 0.0
+          ease: InOutSine
+          startConfigName: 1PP   # morph from 1PP into the 3PP back view
+
+  - stepType: wait
+    startTime: 791
+    duration: 2.0
+
+  - stepType: displayLikertScale
+    startTime: 794
+    blocking: true
+    question: "How much do you feel that the body that you saw is your body?"
+    leftLabel: "0 - Not at all"
+    rightLabel: "Completely - 5"
+
+  - stepType: displayLikertScale
+    startTime: 795
+    blocking: true
+    question: "How much do you experience the sensations of your body right now?"
+    leftLabel: "0 - Not at all"
+    rightLabel: "Completely - 5"
+
+  - stepType: displayLikertScale
+    startTime: 796
+    blocking: true
+    question: "How much do you feel your center of awareness to be located where you feel your body to be?"
+    leftLabel: "0 - Not at all"
+    rightLabel: "Completely - 5"
+
+  - stepType: displayLikertScale
+    startTime: 797
+    blocking: true
+    question: "How many times have you been experiencing the nature of mind during this last phase of the experiment?"
+    leftLabel: "0 - Never"
+    rightLabel: "Continuously - 5"
 
   - stepType: displayQuestion
+    startTime: 798
     blocking: true
-    startTime: 762
     question: "Where do you feel yourself to be located?"
     options:
       - "Inside the body I see"
@@ -400,74 +400,79 @@ steps:
       - "Somewhere else / unclear"
 
   - stepType: displayLikertScale
+    startTime: 799
     blocking: true
-    startTime: 762
     question: "Does this body feel like yours?"
     leftLabel: "0 - Not at all"
-    rightLabel: "5 - Completely"
+    rightLabel: "Completely - 5"
 
   - stepType: wait
-    startTime: 762
+    startTime: 800
     duration: 2.0
 
-
   # =========================================================================
-  # 3. 1PP INVERTED - camera 1, inverted config - phase timer reset to 0
-  # Audio: sensorimotor conflict script + arm-movement instructions.
+  # 3. 1PP INVERTED - camera 1, inverted config
   # =========================================================================
-
-  - stepType: loadConfig
-    startTime: 764
-    configName: 1PP_Inverted
 
   - stepType: playSound
-    startTime: 765
-  #  soundPath: "phase3_1pp_inverted_script"
+    startTime: 804
+
+  - stepType: displayCameras  # settle: hold previous-phase config before interpolation
+    startTime: 804
+    duration: 5.0
+    cameraDatas:
+      - id: "2"
+        delay: 0.0
+        configName: 3PP
 
   - stepType: displayCameras
-    startTime: 765
+    startTime: 809
     duration: 178.0
     cameraDatas:
       - id: "1"
         delay: 0.0
-        configName: 1PP_Inverted
+        configName: 1PP - Flip
+        interpolation:
+          duration: 5.0
+          delay: 0.0
+          ease: InOutSine
+          startConfigName: 3PP   # morph from the 3PP back view into 1PP - Flip
 
   - stepType: wait
-    startTime: 944
+    startTime: 988
     duration: 2.0
 
-  # Probing (visual analog scales, at end of phase)
   - stepType: displayLikertScale
+    startTime: 991
     blocking: true
-    startTime: 946
-    question: "How much do you feel that the body that you see is your body?"
+    question: "How much do you feel that the body that you saw is your body?"
     leftLabel: "0 - Not at all"
-    rightLabel: "5 - Completely"
+    rightLabel: "Completely - 5"
 
   - stepType: displayLikertScale
+    startTime: 992
     blocking: true
-    startTime: 946
     question: "How much do you experience the sensations of your body right now?"
     leftLabel: "0 - Not at all"
-    rightLabel: "5 - Completely"
+    rightLabel: "Completely - 5"
 
   - stepType: displayLikertScale
+    startTime: 993
     blocking: true
-    startTime: 946
     question: "How much do you feel your center of awareness to be located where you feel your body to be?"
     leftLabel: "0 - Not at all"
-    rightLabel: "5 - Completely"
+    rightLabel: "Completely - 5"
 
   - stepType: displayLikertScale
+    startTime: 994
     blocking: true
-    startTime: 946
     question: "How many times have you been experiencing the nature of mind during this last phase of the experiment?"
     leftLabel: "0 - Never"
-    rightLabel: "5 - Continuously"
+    rightLabel: "Continuously - 5"
 
   - stepType: displayQuestion
+    startTime: 995
     blocking: true
-    startTime: 946
     question: "Are you the visual self or the moving self?"
     options:
       - "The visual self"
@@ -475,82 +480,88 @@ steps:
       - "Both / neither"
 
   - stepType: displayLikertScale
+    startTime: 996
     blocking: true
-    startTime: 946
     question: "How clear is your sense of where your body begins?"
     leftLabel: "0 - Not clear"
-    rightLabel: "5 - Very clear"
+    rightLabel: "Very clear - 5"
 
   - stepType: wait
-    startTime: 946
+    startTime: 997
     duration: 2.0
 
-
   # =========================================================================
-  # 4. 3PP FRONT - Facing avatar
-  # Both avatars come from camera "1" (the front camera), shown
-  # SIMULTANEOUSLY as two separate point cloud entries in the same
-  # cameraDatas list: one in the 1PP-inverted config (own moving body)
-  # and one in a facing config (the "other self" facing the
-  # participant). Camera "2" (back) is NOT used in this phase.
-  # Audio: self-location ambiguity script + arm-movement instructions.
+  # 4. 3PP FRONT - Facing avatar  (TWO point clouds shown SIMULTANEOUSLY)
   # =========================================================================
-
-  - stepType: displayCameras
-    startTime: 948
-    duration: 178.0
+  # Avatar 1: own moving body (1PP - Flip). Runs the full 180 s.
+  - stepType: displayCameras  # settle: hold previous-phase config before interpolation
+    startTime: 1000
+    duration: 5.0
     cameraDatas:
       - id: "1"
         delay: 0.0
-        configName: 1PP_Inverted
+        configName: 1PP - Flip
+
+  - stepType: displayCameras
+    startTime: 1005
+    duration: 180.0
+    cameraDatas:
       - id: "1"
         delay: 0.0
-        configName: Other_Self
+        configName: 1PP - Flip
 
   - stepType: playSound
-    startTime: 949
-    #soundPath: "phase4_3pp_mirror_script"
+    startTime: 1006
 
-  - stepType: loadConfig
-    startTime: 978
-    configName: 3PP
+  # Avatar 2: facing 'other self' (Mirror - Flip), starts +10 s, ends together at avatar1's end.
+  - stepType: displayCameras
+    startTime: 1015
+    duration: 170.0
+    cameraDatas:
+      - id: "1"
+        delay: 0.0
+        configName: Mirror - Flip
+        interpolation:
+          duration: 5.0
+          delay: 0.0
+          ease: InOutSine
+          startConfigName: 1PP - Flip   # facing 'other self' emerges from your own body position
 
   - stepType: wait
-    startTime: 1128
+    startTime: 1186
     duration: 2.0
 
-  # Probing (visual analog scales, at end of phase)
   - stepType: displayLikertScale
+    startTime: 1189
     blocking: true
-    startTime: 1130
-    question: "How much do you feel that the body that you see is your body?"
+    question: "How much do you feel that the body that you saw is your body?"
     leftLabel: "0 - Not at all"
-    rightLabel: "5 - Completely"
+    rightLabel: "Completely - 5"
 
   - stepType: displayLikertScale
+    startTime: 1190
     blocking: true
-    startTime: 1130
     question: "How much do you experience the sensations of your body right now?"
     leftLabel: "0 - Not at all"
-    rightLabel: "5 - Completely"
+    rightLabel: "Completely - 5"
 
   - stepType: displayLikertScale
+    startTime: 1191
     blocking: true
-    startTime: 1130
     question: "How much do you feel your center of awareness to be located where you feel your body to be?"
     leftLabel: "0 - Not at all"
-    rightLabel: "5 - Completely"
+    rightLabel: "Completely - 5"
 
   - stepType: displayLikertScale
+    startTime: 1192
     blocking: true
-    startTime: 1130
     question: "How many times have you been experiencing the nature of mind during this last phase of the experiment?"
     leftLabel: "0 - Never"
-    rightLabel: "5 - Continuously"
+    rightLabel: "Continuously - 5"
 
   - stepType: displayQuestion
+    startTime: 1193
     blocking: true
-    startTime: 1130
     question: "Which body felt most like you?"
     options:
       - "The moving body"
@@ -558,87 +569,83 @@ steps:
       - "Neither"
 
   - stepType: displayLikertScale
+    startTime: 1194
     blocking: true
-    startTime: 1130
     question: "How fixed was your sense of self-location?"
     leftLabel: "0 - Not fixed"
-    rightLabel: "5 - Very fixed"
+    rightLabel: "Very fixed - 5"
 
   - stepType: wait
-    startTime: 1130
+    startTime: 1195
     duration: 2.0
 
-
   # =========================================================================
-  # 5. EGO DISSOLUTION - No avatar - phase timer reset to 0
-  # NOTE: No dedicated step type yet exists for the animated "scaling down to
-  # a point then disappearing" avatar transition described in the design doc
-  # (the "stars" transition). Implemented here as a scene change with a
-  # short wait as a placeholder; replace with the dedicated transition once
-  # available in the Unity build. Audio: open-awareness script.
+  # 5. EGO DISSOLUTION - No avatar
   # =========================================================================
-
   - stepType: loadScene
-    startTime: 1132
+    startTime: 1198
     scenePath: "EmptyRoom"
 
-  - stepType: wait
-    startTime: 1133
+  - stepType: displayCameras
+    startTime: 1199
     duration: 8.0
-    # placeholder for the "stars" scaling/disappearance transition (5-10s)
+    cameraDatas:
+      - id: "1"
+        delay: 0.0
+        configName: 1PP - Flip
+        dissolution:
+          duration: 6.0
+          delay: 1.0
 
   - stepType: playSound
-    startTime: 1141
-  #  soundPath: "phase5_ego_dissolution_script"
+    startTime: 1208
 
   - stepType: wait
-    startTime: 1141
-    duration: 169.0
-    # remainder of the ~3 min phase, resting in open awareness
+    startTime: 1208
+    duration: 169.0  # rest in open awareness
 
   - stepType: wait
-    startTime: 1310
+    startTime: 1378
     duration: 2.0
 
-  # Probing (visual analog scales, at end of phase)
   - stepType: displayLikertScale
+    startTime: 1381
     blocking: true
-    startTime: 1312
-    question: "How much do you feel that the body that you see is your body?"
+    question: "How much do you feel that the body that you saw is your body?"
     leftLabel: "0 - Not at all"
-    rightLabel: "5 - Completely"
+    rightLabel: "Completely - 5"
 
   - stepType: displayLikertScale
+    startTime: 1382
     blocking: true
-    startTime: 1312
     question: "How much do you experience the sensations of your body right now?"
     leftLabel: "0 - Not at all"
-    rightLabel: "5 - Completely"
+    rightLabel: "Completely - 5"
 
   - stepType: displayLikertScale
+    startTime: 1383
     blocking: true
-    startTime: 1312
     question: "How much do you feel your center of awareness to be located where you feel your body to be?"
     leftLabel: "0 - Not at all"
-    rightLabel: "5 - Completely"
+    rightLabel: "Completely - 5"
 
   - stepType: displayLikertScale
+    startTime: 1384
     blocking: true
-    startTime: 1312
     question: "How many times have you been experiencing the nature of mind during this last phase of the experiment?"
     leftLabel: "0 - Never"
-    rightLabel: "5 - Continuously"
+    rightLabel: "Continuously - 5"
 
   - stepType: displayLikertScale
+    startTime: 1385
     blocking: true
-    startTime: 1312
     question: "How wide or boundless did your awareness feel?"
     leftLabel: "0 - Not wide"
-    rightLabel: "5 - Very wide"
+    rightLabel: "Very wide - 5"
 
   - stepType: displayQuestion
+    startTime: 1386
     blocking: true
-    startTime: 1312
     question: "Was there still a sense of a 'self' present?"
     options:
       - "0 - Not at all"
@@ -646,143 +653,129 @@ steps:
       - "5 - Completely"
 
   - stepType: break
-    startTime: 1312
+    startTime: 1387
     text: "This concludes the meditative phase. The following is the final measurement."
     duration: 60
 
-
   # =========================================================================
   # B. POST-SEQUENCE FBI MEASUREMENT
-  # 2x2 (view x stroking), ~8 min
-  # ORDER BELOW IS A PLACEHOLDER (front-sync, front-async, back-sync, back-async)
-  # Randomize/counterbalance per participant (independently from Baseline order
-  # if desired).
   # =========================================================================
-
   - stepType: loadScene
-    startTime: 1372
+    startTime: 1448
     scenePath: "BlackScene"
 
   - stepType: displayText
-    startTime: 1372
+    startTime: 1449
     text: "Welcome to Full Body Illusion experiment"
     duration: 4.0
 
   - stepType: wait
-    startTime: 1376
+    startTime: 1454
     duration: 1.0
 
   # --- B1. Front view / SYNC stroking ---
-  - stepType: loadConfig
-    startTime: 1377
-    configName: 1PP
-
   - stepType: displayImage
-    startTime: 1378
+    startTime: 1457
     imagePath: "plus"
     scale: 0.3
     duration: 3.0
 
   - stepType: displayCameras
-    startTime: 1381
+    startTime: 1461
     duration: 90.0
     cameraDatas:
       - id: "1"
         delay: 0.0 # sync stroking
-        configName: 1PP
+        configName: Mirror - Flip
 
   - stepType: wait
-    startTime: 1471
+    startTime: 1552
     duration: 2.0
 
   - stepType: displayLikertScale
+    startTime: 1555
     blocking: true
-    startTime: 1473
     question: "I felt that the body I saw was my body."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   - stepType: displayLikertScale
+    startTime: 1556
     blocking: true
-    startTime: 1473
     question: "I felt that the touch I felt was located where I saw the stroking."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   - stepType: displayLikertScale
+    startTime: 1557
     blocking: true
-    startTime: 1473
     question: "I felt as if I have three bodies."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   # --- B2. Front view / ASYNC stroking ---
   - stepType: wait
-    startTime: 1473
+    startTime: 1558
     duration: 2.0
 
   - stepType: displayImage
-    startTime: 1475
+    startTime: 1561
     imagePath: "plus"
     scale: 0.3
     duration: 3.0
 
   - stepType: playSound
-    startTime: 1478
+    startTime: 1565
 
   - stepType: displayCameras
-    startTime: 1478
+    startTime: 1565
     duration: 90.0
     cameraDatas:
       - id: "1"
         delay: 0.5 # async stroking
-        configName: 1PP
+        configName: Mirror - Flip
 
   - stepType: wait
-    startTime: 1568
+    startTime: 1656
     duration: 2.0
 
   - stepType: displayLikertScale
+    startTime: 1659
     blocking: true
-    startTime: 1570
     question: "I felt that the body I saw was my body."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   - stepType: displayLikertScale
+    startTime: 1660
     blocking: true
-    startTime: 1570
     question: "I felt that the touch I felt was located where I saw the stroking."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   - stepType: displayLikertScale
+    startTime: 1661
     blocking: true
-    startTime: 1570
     question: "I felt as if I have three bodies."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   # --- B3. Back view / SYNC stroking ---
   - stepType: wait
-    startTime: 1570
+    startTime: 1662
     duration: 2.0
 
-  - stepType: loadConfig
-    startTime: 1572
-    configName: 3PP
-
   - stepType: displayImage
-    startTime: 1573
+    startTime: 1666
     imagePath: "plus"
     scale: 0.3
     duration: 3.0
 
   - stepType: playSound
-    startTime: 1576
+    startTime: 1670
 
   - stepType: displayCameras
-    startTime: 1576
+    startTime: 1670
     duration: 90.0
     cameraDatas:
       - id: "2"
@@ -790,46 +783,46 @@ steps:
         configName: 3PP
 
   - stepType: wait
-    startTime: 1666
+    startTime: 1761
     duration: 2.0
 
   - stepType: displayLikertScale
+    startTime: 1764
     blocking: true
-    startTime: 1668
     question: "I felt that the body I saw was my body."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   - stepType: displayLikertScale
+    startTime: 1765
     blocking: true
-    startTime: 1668
     question: "I felt that the touch I felt was located where I saw the stroking."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   - stepType: displayLikertScale
+    startTime: 1766
     blocking: true
-    startTime: 1668
     question: "I felt as if I have three bodies."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   # --- B4. Back view / ASYNC stroking ---
   - stepType: wait
-    startTime: 1668
+    startTime: 1767
     duration: 2.0
 
   - stepType: displayImage
-    startTime: 1670
+    startTime: 1770
     imagePath: "plus"
     scale: 0.3
     duration: 3.0
 
   - stepType: playSound
-    startTime: 1673
+    startTime: 1774
 
   - stepType: displayCameras
-    startTime: 1673
+    startTime: 1774
     duration: 90.0
     cameraDatas:
       - id: "2"
@@ -837,34 +830,38 @@ steps:
         configName: 3PP
 
   - stepType: wait
-    startTime: 1763
+    startTime: 1865
     duration: 2.0
 
   - stepType: displayLikertScale
+    startTime: 1868
     blocking: true
-    startTime: 1765
     question: "I felt that the body I saw was my body."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   - stepType: displayLikertScale
+    startTime: 1869
     blocking: true
-    startTime: 1765
     question: "I felt that the touch I felt was located where I saw the stroking."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   - stepType: displayLikertScale
+    startTime: 1870
     blocking: true
-    startTime: 1765
     question: "I felt as if I have three bodies."
     leftLabel: "Strongly disagree"
     rightLabel: "Strongly agree"
 
   - stepType: wait
-    startTime: 1765
+    startTime: 1871
     duration: 1.0
 
+  - stepType: displayText
+    startTime: 1872
+    text: "Thank you for participating in the experiment!"
+    duration: 3.0
   # - stepType: playSound
-  #   startTime: 394.0
+  #   startTime: 1873
   #  soundPath: "closing_thanks"
