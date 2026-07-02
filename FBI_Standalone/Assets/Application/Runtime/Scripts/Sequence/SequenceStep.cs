@@ -199,30 +199,56 @@ public class Dissolution
     public float delay = 0;
 }
 
-public class  CameraData
+public class Fade
+{
+    public float duration = 0;
+    public float delay = 0;
+}
+
+[Serializable]
+public class RigInterpolationData
+{
+
+    public Vector3 startPosition = Vector3.zero;
+    public Vector3 endPosition = Vector3.zero;
+
+    public float startYaw = 0f;
+    public float endYaw = 0f;
+
+    public float duration = 0f;
+    public float delay = 0f;
+
+    public Ease ease = Ease.Default;
+
+}
+
+public class CameraData
 {
     public string id = "1";
     public float delay = 0.0f;
     public string configName = string.Empty;
 
     public InterpolationData interpolation;
-
     public Dissolution dissolution;
+    public Fade fade;
 }
-
 
 [System.Serializable]
 public class DisplayCamerasStep : SequenceStep
 {
+
     public float displayTime = 1f;
 
     public List<CameraData> camerasData = new List<CameraData>();
+
+    public RigInterpolationData rigInterpolation;
 
     public override float GetDuration() => displayTime;
     public override string GetStateName() => "DisplayCameras";
     public override string GetDisplayName() => $"Display Cameras {camerasData.Count} for {displayTime}";
     public override Color GetColor() => Color.grey;
 }
+
 
 [System.Serializable]
 public class DisplayVideoStep : SequenceStep

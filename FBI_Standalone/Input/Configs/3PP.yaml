@@ -1,6 +1,6 @@
 configName: 3PP
 createdAt: 2026-06-11 14:02:46
-lastModified: 2026-06-25 15:22:35
+lastModified: 2026-07-02 16:26:30
 stimulusDisplay:
   position:
     x: 0
@@ -43,7 +43,7 @@ pointClouds:
   position:
     x: 0
     y: 0.98
-    z: 0.3034431
+    z: -2.16
   rotation:
     x: 8.99
     y: 2.45

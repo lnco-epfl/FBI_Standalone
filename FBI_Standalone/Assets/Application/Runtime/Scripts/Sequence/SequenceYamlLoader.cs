@@ -52,7 +52,7 @@ public class SequenceYamlLoader
         }
     }
 
- 
+
     private Sequence ConvertToSequence(SequenceData data)
     {
         var sequence = ScriptableObject.CreateInstance<Sequence>();
@@ -167,6 +167,7 @@ public class SequenceYamlLoader
                     looping = data.looping,
                     muteAudio = data.muteAudio,
                 };
+
             case SequenceStepWrapper.StepType.DisplayCameras:
                 return new DisplayCamerasStep
                 {
@@ -174,7 +175,9 @@ public class SequenceYamlLoader
                     blocking = data.blocking,
                     displayTime = data.duration,
                     camerasData = data.cameraDatas,
+                    rigInterpolation = ConvertRigInterpolation(data.rigInterpolation),
                 };
+
             case SequenceStepWrapper.StepType.SendLSLEvent:
                 return new SendLSLEventStep
                 {
@@ -188,6 +191,23 @@ public class SequenceYamlLoader
         }
     }
 
+    // Returns null if no rigInterpolation block was present in the YAML (field stays null = feature disabled).
+    private RigInterpolationData ConvertRigInterpolation(RigInterpolationYamlData data)
+    {
+        if (data == null)
+            return null;
+
+        return new RigInterpolationData
+        {
+            startPosition = new Vector3(data.startPosition.x, data.startPosition.y, data.startPosition.z),
+            endPosition = new Vector3(data.endPosition.x, data.endPosition.y, data.endPosition.z),
+            startYaw = data.startYaw,
+            endYaw = data.endYaw,
+            duration = data.duration,
+            delay = data.delay,
+            ease = data.ease,
+        };
+    }
 
     private SceneReference LoadSceneReference(string path)
     {
@@ -235,14 +255,17 @@ public class StepData
     public string rightLabel;
     public List<string> options;
 
-    //likert
+    // Likert
     public int min;
     public int max;
     public bool randomCursorPosition;
 
-    //camera
+    // Camera
     public List<CameraData> cameraDatas;
     public float delay;
+
+    // Rig interpolation (optional — null if not present in YAML)
+    public RigInterpolationYamlData rigInterpolation;
 
     // Assets
     public string scenePath;
@@ -250,16 +273,40 @@ public class StepData
     public string soundPath;
     public string videoName;
 
-    //config
+    // Config
     public string configName;
 
     // Image
     public float scale;
 
-    //Video 
+    // Video
     public bool looping;
     public bool muteAudio;
 
     // LSL Event
     public string eventName;
+}
+
+// Separate YAML DTO for RigInterpolationData because Vector3 doesn't deserialize
+// directly from YAML — we use a plain XYZ struct instead and convert in ConvertRigInterpolation().
+[Serializable]
+public class RigInterpolationYamlData
+{
+    public Vector3YamlData startPosition = new Vector3YamlData();
+    public Vector3YamlData endPosition = new Vector3YamlData();
+
+    public float startYaw = 0f;
+    public float endYaw = 0f;
+
+    public float duration = 0f;
+    public float delay = 0f;
+    public PrimeTween.Ease ease = PrimeTween.Ease.Default;
+}
+
+[Serializable]
+public class Vector3YamlData
+{
+    public float x = 0f;
+    public float y = 0f;
+    public float z = 0f;
 }

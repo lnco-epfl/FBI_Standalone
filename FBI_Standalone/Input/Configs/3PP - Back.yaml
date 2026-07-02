@@ -1,6 +1,6 @@
-configName: 1PP
-createdAt: 2026-04-23 15:35:05
-lastModified: 2026-07-02 16:57:02
+configName: 3PP - Back
+createdAt: 2026-06-11 14:02:46
+lastModified: 2026-07-02 16:58:33
 stimulusDisplay:
   position:
     x: 0
@@ -22,39 +22,39 @@ stimulusDisplay:
 pointClouds:
 - iD: 1
   position:
-    x: -0.09999999
-    y: 1.62
-    z: 0.94
+    x: 0
+    y: 0
+    z: 0
   rotation:
-    x: 44.60535
-    y: 171.25
-    z: 356.7675
+    x: 0
+    y: 0
+    z: 0
   scale:
     x: 1
-    y: 1
-    z: 1
-  depthMax: 2.537773
-  depthMin: 1.235421
-  clampXMin: 0.3277366
-  clampXMax: 0.7318519
-  clampYMin: 0
-  clampYMax: 1
-- iD: 2
-  position:
-    x: 0
-    y: 0
-    z: 0
-  rotation:
-    x: 0
-    y: 0
-    z: 0
-  scale:
-    x: -1
     y: 1
     z: 1
   depthMax: 3.47
   depthMin: 0
   clampXMin: 0
   clampXMax: 1
+  clampYMin: 0
+  clampYMax: 1
+- iD: 2
+  position:
+    x: 0
+    y: 0.9899999
+    z: -1.96
+  rotation:
+    x: 8.99
+    y: 2.45
+    z: 0
+  scale:
+    x: 1
+    y: 1
+    z: 1
+  depthMax: 2.27823
+  depthMin: 0
+  clampXMin: 0.2204771
+  clampXMax: 0.7139753
   clampYMin: 0
   clampYMax: 1
