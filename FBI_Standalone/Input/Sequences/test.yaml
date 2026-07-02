@@ -51,18 +51,43 @@ steps:
     startTime: 37.0
     duration: 2.0
 
-  - stepType: displayCameras
-    startTime: 39.0
-    duration: 20
+  - stepType: DisplayCameras
+    startTime: 39
+    duration: 60
     cameraDatas:
       - id: "1"
         delay: 0.0
-        configName: 1PP
-        interpolation:
-          duration: 3.0
-          delay: 5.0
-          ease: InOutQuad
-          startConfigName: Mirror
+        configName: "1PP"
+        fade:
+          duration: 1.5
+          delay: 2.8
+
+      - id: "2"
+        delay: 0.0
+        configName: "3PP - Back"
+
+    rigInterpolation:
+      startPosition: { x: 0.0, y: 0.0, z: 0.0 }
+      endPosition: { x: 0.0, y: 0.0, z: -1.5 }
+      startYaw: 0.0
+      endYaw: 0.0
+      delay: 1.0       
+      duration: 10.0    
+      ease: InOutSine  
+      
+
+ #- stepType: displayCameras
+ #  startTime: 39.0
+ #  duration: 20
+ #  cameraDatas:
+ #    - id: "1"
+ #      delay: 0.0
+ #      configName: 1PP
+ #      interpolation:
+ #        duration: 3.0
+ #        delay: 5.0
+ #        ease: InOutQuad
+ #        startConfigName: Mirror
 
   - stepType: displayCameras
     startTime: 59.0

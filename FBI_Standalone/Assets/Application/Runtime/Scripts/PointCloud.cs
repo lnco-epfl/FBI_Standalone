@@ -85,6 +85,17 @@ public class PointCloud : MonoBehaviour
         dissolutionVisualEffect.SetFloat("Duration", duration);
     }
 
+    public void StartFadeOut(float duration)
+    {
+        fadeTween = Tween.Custom(startValue: 1.0f, endValue: 0.0f, duration: duration, ease: Ease.InOutSine, onValueChange: (float value) =>
+        {
+            mainVisualEffect.SetFloat("Alpha", value);
+        }).OnComplete(() =>
+        {
+            mainVisualEffect.enabled = false;
+        });
+    }
+
     [ContextMenu("StartDissolution")]
     public void StartDissolution()
     {
@@ -164,5 +175,6 @@ public class PointCloud : MonoBehaviour
         dissolutionVisualEffect.SetFloat("Clamp Y Min", yMin);
         dissolutionVisualEffect.SetFloat("Clamp Y Max", yMax);
     }
+
 
 }

@@ -57,10 +57,6 @@ steps:
     duration: 3.0
 
   # --- A1. Front view / SYNC stroking ---
-  - stepType: loadConfig
-    startTime: 21
-    configName: Mirror - Flip
-
   - stepType: displayImage
     startTime: 22
     imagePath: "plus"
@@ -211,6 +207,7 @@ steps:
 
   - stepType: playSound
     startTime: 339
+    soundPath: "NoM_Phase1"
 
   - stepType: displayCameras
     startTime: 339
@@ -277,7 +274,7 @@ steps:
         configName: 1PP
         interpolation:
           duration: 5.0
-          delay: 0.0
+          delay: 1.0
           ease: InOutSine
           startConfigName: 3PP   # morph from the previous (3PP) view into 1PP
 
@@ -416,6 +413,7 @@ steps:
 
   - stepType: playSound
     startTime: 804
+    
 
   - stepType: displayCameras  # settle: hold previous-phase config before interpolation
     startTime: 804

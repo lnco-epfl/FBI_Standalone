@@ -13,11 +13,20 @@ public class DisplayCamerasState : IState
     private DisplayCamerasStep step;
 
     private PrimeTween.Sequence sequence;
-    private bool spawnedPointCloudsDisplayed;
+
+    private Tween rigPositionTween;
+    private Tween rigRotationTween;
+
+    private bool rigInterpolationStarted = false;
+
 
     public void Enter(SequenceStep sequenceStep)
     {
         step = sequenceStep as DisplayCamerasStep;
+
+        rigInterpolationStarted = false;
+        rigPositionTween = default;
+        rigRotationTween = default;
     }
 
     public IEnumerator Execute()
@@ -34,9 +43,12 @@ public class DisplayCamerasState : IState
 
         bool asInterpolation = false;
         bool asDissolution = false;
+        bool asFade = false;
 
         float afterInterpolationMaxWait = 0.0f;
         float afterDissolutionMaxWait = 0.0f;
+        float afterFadeMaxWait = 0.0f;
+
 
         for (int i = 0; i < step.camerasData.Count; i++)
         {
@@ -55,7 +67,7 @@ public class DisplayCamerasState : IState
             ConfigFile configFile = null;
             ConfigFile startConfigFile = null;
 
-            if(cameraData.delay > 0.0f)
+            if (cameraData.delay > 0.0f)
             {
                 var sensorData = KinectManager.Instance.GetSensorData(pointCloudID - 1);
 
@@ -74,7 +86,7 @@ public class DisplayCamerasState : IState
             {
                 if (ConfigFileManager.Instance.IsValideConfigName(cameraData.configName))
                 {
-                    if(ConfigFileManager.Instance.CurrentConfig.configName != cameraData.configName)
+                    if (ConfigFileManager.Instance.CurrentConfig.configName != cameraData.configName)
                     {
                         configFile = ConfigFileManager.Instance.Load(cameraData.configName);
                     }
@@ -85,7 +97,7 @@ public class DisplayCamerasState : IState
                 }
             }
 
-            if(configFile == null)
+            if (configFile == null)
             {
                 configFile = ConfigFileManager.Instance.CurrentConfig;
             }
@@ -99,7 +111,7 @@ public class DisplayCamerasState : IState
 
             displayText.Append($"Display Camera {cameraData.id} for {step.GetDuration()} seconds with {cameraData.delay} of delay");
 
-            if(cameraData.interpolation != null)
+            if (cameraData.interpolation != null)
             {
                 asInterpolation = true;
 
@@ -121,12 +133,13 @@ public class DisplayCamerasState : IState
 
                 sequence.Insert(atTime: cameraData.interpolation.delay,
                     Tween.Position(target: pointCloud.transform, startValue: startConfigFile.pointClouds[pointCloudID - 1].position.ToVector3(), endValue: configFile.pointClouds[pointCloudID - 1].position.ToVector3(), duration: cameraData.interpolation.duration, ease: cameraData.interpolation.ease)
-                    .Group(Tween.Rotation(target: pointCloud.transform, startValue: startConfigFile.pointClouds[pointCloudID - 1].rotation.ToVector3(), endValue: configFile.pointClouds[pointCloudID - 1].rotation.ToVector3(), duration: cameraData.interpolation.duration, ease: cameraData.interpolation.ease)));
+                    .Group(Tween.Rotation(target: pointCloud.transform, startValue: startConfigFile.pointClouds[pointCloudID - 1].rotation.ToVector3(), endValue: configFile.pointClouds[pointCloudID - 1].rotation.ToVector3(), duration: cameraData.interpolation.duration, ease: cameraData.interpolation.ease))
+                    .Group(Tween.Scale(target: pointCloud.transform, startValue: startConfigFile.pointClouds[pointCloudID - 1].scale.ToVector3(), endValue: configFile.pointClouds[pointCloudID - 1].scale.ToVector3(), duration: cameraData.interpolation.duration, ease: cameraData.interpolation.ease)));
 
                 afterInterpolationMaxWait = Mathf.Max(step.displayTime - cameraData.interpolation.duration - cameraData.interpolation.delay, afterInterpolationMaxWait);
             }
 
-            if(cameraData.dissolution != null)
+            if (cameraData.dissolution != null)
             {
                 asDissolution = true;
 
@@ -142,7 +155,48 @@ public class DisplayCamerasState : IState
 
             }
 
-   
+            if (cameraData.fade != null)
+            {
+                asFade = true;
+
+                displayText.Append(" with fade");
+
+                var capturedPointCloud = pointCloud;
+
+                sequence.Insert(atTime: 0, Tween.Delay(duration: cameraData.fade.delay).OnComplete(() => capturedPointCloud.StartFadeOut(cameraData.fade.duration)));
+
+                afterFadeMaxWait = Mathf.Max(step.displayTime - cameraData.fade.duration - cameraData.fade.delay, afterFadeMaxWait);
+
+            }
+
+
+        }
+
+        float afterRigInterpolationMaxWait = 0.0f;
+
+        if (step.rigInterpolation != null)
+        {
+            var rigData = step.rigInterpolation;
+            var origin = PlayerManager.Instance.transform;
+
+            displayText.Append($" | Rig interpolation from {rigData.startPosition} to {rigData.endPosition}");
+
+            rigPositionTween = Tween.Position(target: origin, startValue: rigData.startPosition, endValue: rigData.endPosition, duration: rigData.duration, ease: rigData.ease);
+
+            sequence.Insert(atTime: rigData.delay, rigPositionTween);
+
+            // Flags the rig interpolation as having started, so Exit() knows whether to snap to endValue or leave startValue untouched.
+            sequence.Insert(atTime: rigData.delay, Tween.Delay(duration: 0f).OnComplete(() => rigInterpolationStarted = true));
+
+            if (!Mathf.Approximately(rigData.startYaw, rigData.endYaw))
+            {
+                rigRotationTween = Tween.Custom(startValue: rigData.startYaw, endValue: rigData.endYaw, duration: rigData.duration, ease: rigData.ease,
+                    onValueChange: yaw => origin.rotation = Quaternion.Euler(0f, yaw, 0f));
+
+                sequence.Insert(atTime: rigData.delay, rigRotationTween);
+            }
+
+            afterRigInterpolationMaxWait = Mathf.Max(step.displayTime - rigData.duration - rigData.delay, afterRigInterpolationMaxWait);
         }
 
         cameradelays.Append("]");
@@ -162,15 +216,14 @@ public class DisplayCamerasState : IState
         OutputFileManager.Instance.OutputFileData.AsInterpolation = asInterpolation;
 
         PointCloudManager.Instance.DisplaySpawnedPointClouds();
-        spawnedPointCloudsDisplayed = true;
 
         EventFileManager.Log($"[DisplayCameraState] Display Cameras :" + displayText.ToString());
 
-        if (asInterpolation || asDissolution)
+        if (asInterpolation || asDissolution || asFade || step.rigInterpolation != null)
         {
             yield return sequence.ToYieldInstruction();
 
-            yield return new WaitForSeconds(Mathf.Max(afterDissolutionMaxWait, afterInterpolationMaxWait));
+            yield return new WaitForSeconds(Mathf.Max(afterDissolutionMaxWait, afterInterpolationMaxWait, afterRigInterpolationMaxWait, afterFadeMaxWait));
         }
         else
         {
@@ -178,7 +231,6 @@ public class DisplayCamerasState : IState
         }
 
         PointCloudManager.Instance.HideSpawnedPointClouds();
-        spawnedPointCloudsDisplayed = false;
 
         for (int i = 0; i < step.camerasData.Count; i++)
         {
@@ -209,16 +261,29 @@ public class DisplayCamerasState : IState
     public void Exit()
     {
 
-        if(sequence.isAlive)
+        if (sequence.isAlive)
         {
             sequence.Stop();
         }
 
-        if(spawnedPointCloudsDisplayed)
+        if (step.rigInterpolation != null && rigInterpolationStarted)
         {
-            PointCloudManager.Instance.HideSpawnedPointClouds();
+            // The rig was already mid-transition (or had finished) when the step was interrupted:
+            // snap it to its final value rather than leaving it stranded mid-way.
+            var rigData = step.rigInterpolation;
+            var origin = ResetXROrigin.Instance.origin;
+
+            origin.position = rigData.endPosition;
+
+            if (!Mathf.Approximately(rigData.startYaw, rigData.endYaw))
+            {
+                origin.rotation = Quaternion.Euler(0f, rigData.endYaw, 0f);
+            }
         }
-        
+        // If the rig interpolation had not started yet, the rig is still at startValue and is left untouched.
+
+        PointCloudManager.Instance.HideSpawnedPointClouds();
+
         PointCloudManager.Instance.DespawnPointClouds();
 
         for (int i = 0; i < step.camerasData.Count; i++)
@@ -243,7 +308,7 @@ public class DisplayCamerasState : IState
 
         }
 
-  
+
 
     }
 }
