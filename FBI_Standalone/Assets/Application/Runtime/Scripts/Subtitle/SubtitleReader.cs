@@ -156,7 +156,7 @@ public class SubtitleReader : MonoBehaviour
 
     private void AudioSfxStarted(AudioSource source)
     {
-        string filePath = Path.Combine(AssetsManager.Instance.AudioPath, source.clip.name + ".srt");
+        string filePath = Path.Combine(AssetsManager.Instance.AudiosPath, source.clip.name + ".srt");
         List<Subtitle> loaded = SrtParser.ParseFile(filePath);
 
         audioSubtitles = loaded ?? new List<Subtitle>();
