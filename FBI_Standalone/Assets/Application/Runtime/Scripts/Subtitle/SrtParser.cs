@@ -35,6 +35,16 @@ public class Subtitle
 
         return hours * 3600 + minutes * 60 + seconds + milliseconds / 1000f;
     }
+
+    public override string ToString()
+    {
+        return $"Subtitle {{ " +
+               $"Index = {index}, " +
+               $"Start = {startTime} ({startSeconds:F3}s), " +
+               $"End = {endTime} ({endSeconds:F3}s), " +
+               $"Text = \"{text}\" " +
+               $"}}";
+    }
 }
 
 /// <summary>

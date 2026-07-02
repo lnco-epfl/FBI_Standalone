@@ -16,8 +16,6 @@ public class SubtitleReader : MonoBehaviour
     private Subtitle currentSubtitle = null;
     private bool subtitlesLoaded = false;
 
-    private const string AudioSubtitlesFolder = "Input/Audio";
-
     private List<Subtitle> audioSubtitles = new List<Subtitle>();
     private Subtitle currentAudioSubtitle = null;
     private bool audioSubtitlesActive = false;
@@ -69,11 +67,6 @@ public class SubtitleReader : MonoBehaviour
             // La vidéo est prioritaire sur l'affichage si elle est en cours de lecture.
             DisplaySubtitle((float)videoPlayer.time);
             return;
-        }
-
-        if (videoSubtitlesReady)
-        {
-            textAutoSizer.SetText(string.Empty);
         }
 
         if (audioSubtitlesActive)
@@ -159,11 +152,11 @@ public class SubtitleReader : MonoBehaviour
         LoadSubtitles(filePath);
     }
 
-
+    
 
     private void AudioSfxStarted(AudioSource source)
     {
-        string filePath = Path.Combine(Application.dataPath, "..", AudioSubtitlesFolder, source.clip.name + ".srt");
+        string filePath = Path.Combine(AssetsManager.Instance.AudioPath, source.clip.name + ".srt");
         List<Subtitle> loaded = SrtParser.ParseFile(filePath);
 
         audioSubtitles = loaded ?? new List<Subtitle>();
@@ -188,9 +181,7 @@ public class SubtitleReader : MonoBehaviour
     {
         audioElapsed += Time.deltaTime;
 
-        if (currentAudioSubtitle != null &&
-            audioElapsed >= currentAudioSubtitle.startSeconds &&
-            audioElapsed <= currentAudioSubtitle.endSeconds)
+        if (currentAudioSubtitle != null && audioElapsed >= currentAudioSubtitle.startSeconds && audioElapsed <= currentAudioSubtitle.endSeconds)
         {
             return;
         }
