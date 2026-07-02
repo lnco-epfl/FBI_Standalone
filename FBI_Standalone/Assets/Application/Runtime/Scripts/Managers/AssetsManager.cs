@@ -20,7 +20,7 @@ public class AssetsManager : MonoBehaviour
 
     [Header("Folders")]
     [SerializeField] private string imagesFolderName = "Images";
-    [SerializeField] private string audioFolderName = "Audios";
+    [SerializeField] private string audiosFolderName = "Audios";
     [SerializeField] private string videoFolderName = "Videos";
 
     private Dictionary<string, Sprite> loadedSprites = new Dictionary<string, Sprite>();
@@ -34,7 +34,7 @@ public class AssetsManager : MonoBehaviour
     private bool loadingComplete = false;
 
     public string ImagesPath { get; private set; }
-    public string AudioPath { get; private set; }
+    public string AudiosPath { get; private set; }
     public string VideosPath { get; private set; }
 
     private void Initialize()
@@ -50,7 +50,7 @@ public class AssetsManager : MonoBehaviour
         string basePath = Path.Combine(Application.dataPath, "..", "Input");
 
         ImagesPath = Path.Combine(basePath, imagesFolderName);
-        AudioPath = Path.Combine(basePath, audioFolderName);
+        AudiosPath = Path.Combine(basePath, audiosFolderName);
         VideosPath = Path.Combine(basePath, videoFolderName);
     }
 
@@ -59,8 +59,8 @@ public class AssetsManager : MonoBehaviour
         if (!Directory.Exists(ImagesPath))
             Directory.CreateDirectory(ImagesPath);
 
-        if (!Directory.Exists(AudioPath))
-            Directory.CreateDirectory(AudioPath);
+        if (!Directory.Exists(AudiosPath))
+            Directory.CreateDirectory(AudiosPath);
 
         if (!Directory.Exists(VideosPath))
             Directory.CreateDirectory(VideosPath);
@@ -84,7 +84,7 @@ public class AssetsManager : MonoBehaviour
         if (pendingCoroutines == 0 && !loadingComplete)
         {
             loadingComplete = true;
-            EventFileManager.Log($"[AssetsManager] All assets loaded. Sprites: {loadedSprites.Count}, Audio: {loadedAudioClips.Count}, Videos: {loadedVideoPaths.Count}");
+            EventFileManager.Log($"[AssetsManager] All assets loaded. Sprites: {loadedSprites.Count}, Audios: {loadedAudioClips.Count}, Videos: {loadedVideoPaths.Count}");
             OnAllAssetsLoaded?.Invoke();
         }
     }
@@ -188,9 +188,9 @@ public class AssetsManager : MonoBehaviour
     {
         loadedAudioClips.Clear();
 
-        if (!Directory.Exists(AudioPath))
+        if (!Directory.Exists(AudiosPath))
         {
-            EventFileManager.Warning($"[AssetsManager] Audio folder not found: {AudioPath}");
+            EventFileManager.Warning($"[AssetsManager] Audios folder not found: {AudiosPath}");
             return;
         }
 
@@ -199,7 +199,7 @@ public class AssetsManager : MonoBehaviour
 
         foreach (string extension in extensions)
         {
-            string[] files = Directory.GetFiles(AudioPath, extension, SearchOption.AllDirectories);
+            string[] files = Directory.GetFiles(AudiosPath, extension, SearchOption.AllDirectories);
 
             foreach (string filePath in files)
             {
@@ -213,7 +213,7 @@ public class AssetsManager : MonoBehaviour
     private void LoadAudioFile(string filePath)
     {
         string extension = Path.GetExtension(filePath).ToLower();
-        string relativePath = GetRelativePath(filePath, AudioPath);
+        string relativePath = GetRelativePath(filePath, AudiosPath);
         string key = Path.GetFileNameWithoutExtension(relativePath);
 
         // WAV files peuvent être chargés directement
@@ -365,7 +365,7 @@ public class AssetsManager : MonoBehaviour
 
     public void OpenAudioFolder()
     {
-        Application.OpenURL($"file://{AudioPath}");
+        Application.OpenURL($"file://{AudiosPath}");
     }
 
     public List<string> GetAllSpriteNames()
