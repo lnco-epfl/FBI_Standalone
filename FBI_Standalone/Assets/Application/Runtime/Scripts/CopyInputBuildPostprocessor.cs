@@ -13,22 +13,30 @@ public class CopyInputBuildPostprocessor
     {
         Debug.Log(pathToBuiltProject);
 
-        var basePath = Path.Combine(Application.dataPath, "..", "Input");
+        var basePath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "Input"));
 
         string[] dirs = Directory.GetFiles(basePath, "*", SearchOption.AllDirectories);
 
-    
+
 
         foreach (string dir in dirs)
         {
-            Debug.Log(dir);
+            var normalizedDir = Path.GetFullPath(dir);
+            Debug.Log(normalizedDir);
 
-            string[] pathParts = dir.Split(Path.DirectorySeparatorChar);
+            string[] pathParts = normalizedDir.Split(Path.DirectorySeparatorChar);
 
-            var newPath = Path.Combine(Path.GetDirectoryName(pathToBuiltProject), pathParts[pathParts.Length - 3], pathParts[pathParts.Length - 2], pathParts[pathParts.Length - 1]);
+            var newPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(pathToBuiltProject), pathParts[pathParts.Length - 3], pathParts[pathParts.Length - 2], pathParts[pathParts.Length - 1]));
             Debug.Log(newPath);
-            FileUtil.ReplaceFile(dir, newPath);
-        }   
+
+            var newDir = Path.GetDirectoryName(newPath);
+            if (!Directory.Exists(newDir))
+            {
+                Directory.CreateDirectory(newDir);
+            }
+
+            FileUtil.ReplaceFile(normalizedDir, newPath);
+        }
 
     }
 }
