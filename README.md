@@ -395,12 +395,18 @@ Displays a Likert scale question and waits for a response.
 | `question` | string | Question text |
 | `leftLabel` | string | Label for the left (low) end of the scale |
 | `rightLabel` | string | Label for the right (high) end of the scale |
+| `min` | int | Min value of the scale |
+| `max` | int | Max value of the scale |
+| `randomCursorPosition` | bool | Place the cursor at a random position, otherwise, center it in the middle |
 
 ```yaml
 - stepType: displayLikertScale
   question: "How satisfied are you?"
   leftLabel: "Not satisfied"
   rightLabel: "Very satisfied"
+  min: 1
+  max: 5
+  randomCursorPosition: true
 ```
 
 ---
