@@ -76,12 +76,29 @@ Input/
 ├── Configs/         ← YAML camera configuration files
 ├── Images/          ← Image assets (PNG, JPG, BMP, TGA)
 ├── Videos/          ← Video assets (MP4 + SRT)
-└── Audio/           ← Audio assets (WAV, OGG, MP3)
+└── Audios/           ← Audio assets (WAV, OGG, MP3)
 ```
 
 # Sequence Files
 
-Sequence files are YAML files located in `Input/Sequences/`. Each file defines the ordered list of steps that will be executed during an experiment session. The sequence file name is used to name the output files.
+Sequence files are YAML files located in `Input/Sequences/`. Each file defines a timeline of steps that will be executed during an experiment session. The sequence file name is used to name the output files.
+
+## Timeline model
+
+The sequence is **time-based**, not purely sequential: every step has a `startTime` (in seconds, relative to the start of the experiment) at which it is triggered. Steps with different start times can overlap and run concurrently — for example, a sound can play while a question is displayed, or two `DisplayCameras` steps can run side by side.
+
+Each step also has a `blocking` flag:
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `startTime` | float | Time in seconds, from the start of the experiment, at which the step is triggered. Default: `0` |
+| `blocking` | bool | If `true`, the sequence timeline pauses until this step finishes, then jumps directly to the `startTime` of the next step. If `false` (default), the timeline keeps advancing normally while the step runs in the background |
+
+> ℹ️ Steps are automatically sorted by `startTime` when the sequence is loaded — they do not need to be written in chronological order in the YAML file.
+
+> ⚠️ If several `blocking` steps would overlap in time, only the first one encountered blocks the timeline; subsequent steps wait their turn.
+
+These two parameters (`startTime`, `blocking`) are available on every step type, in addition to the parameters described below.
 
 ## Step Types
 
@@ -101,7 +118,7 @@ Available scenes:
 * `EmptyRoom`
 
 ```yaml
-- stepType: LoadScene
+- stepType: loadScene
   scenePath: "EmptyRoom"
 ```
 
@@ -116,7 +133,7 @@ Loads a camera configuration file by name.
 | `configName` | string | Name of the config file to load (without extension) |
 
 ```yaml
-- stepType: LoadConfig
+- stepType: loadConfig
   configName: Bruno
 ```
 
@@ -132,7 +149,7 @@ Displays a text message on screen for a given duration.
 | `duration` | float | Display duration in seconds |
 
 ```yaml
-- stepType: DisplayText
+- stepType: displayText
   text: "Welcome"
   duration: 3.0
 ```
@@ -148,7 +165,7 @@ Pauses the sequence for a given duration.
 | `duration` | float | Wait duration in seconds |
 
 ```yaml
-- stepType: Wait
+- stepType: wait
   duration: 2.0
 ```
 
@@ -179,16 +196,37 @@ Each entry in `cameraDatas` supports the following fields:
 | `dissolution.duration` | float | Duration of the dissolution effect in seconds |
 | `dissolution.delay` | float | Delay before the dissolution starts, in seconds |
 
+The step also supports an optional `rigInterpolation` block (at the step level, not per camera) that smoothly translates the VR rig — moving the participant's point of view in the scene. This is used to transition between a first-person perspective (1PP) and a third-person perspective (3PP) during a single step, while the point clouds are displayed.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `rigInterpolation` | object | *(Optional)* Smoothly moves the VR rig (player origin) during the step |
+| `rigInterpolation.startPosition` | Vector3 | World position of the rig at the start of the transition |
+| `rigInterpolation.endPosition` | Vector3 | World position of the rig at the end of the transition |
+| `rigInterpolation.startYaw` | float | Y-axis rotation of the rig at the start of the transition, in degrees. Default: `0` |
+| `rigInterpolation.endYaw` | float | Y-axis rotation of the rig at the end of the transition, in degrees. Default: `0` (set to `180` to rotate to face backwards, i.e. a full 3PP back view) |
+| `rigInterpolation.duration` | float | Duration of the rig movement in seconds |
+| `rigInterpolation.delay` | float | Delay before the rig starts moving, in seconds |
+| `rigInterpolation.ease` | string | Easing function. Recommended: `InOutSine` for VR comfort |
+
+> ℹ️ `rigInterpolation` runs in the same timeline as point cloud interpolation and dissolution — all `delay` values are relative to the start of the step and can overlap freely.
+
+> ℹ️ To dissolve the 1PP point cloud as the rig recedes, set `dissolution.delay` on that camera entry to match the moment in the rig movement at which the 1PP body is far enough away (e.g. `rigInterpolation.delay + rigInterpolation.duration * 0.6`).
+
+> ⚠️ Yaw rotation is applied around the Y axis only. Pitch and roll are not supported to avoid VR disorientation.
+
+> ⚠️ If the step is interrupted before the rig movement starts, the rig remains at `startPosition`. If interrupted mid-movement, the rig snaps immediately to `endPosition`.
+
 ```yaml
 # Single camera, real-time display
-- stepType: DisplayCameras
+- stepType: displayCameras
   duration: 20.0
   cameraDatas:
     - id: "1"
       delay: 0.0
 
 # Two cameras simultaneously, one with delay
-- stepType: DisplayCameras
+- stepType: displayCameras
   duration: 20.0
   cameraDatas:
     - id: "1"
@@ -197,7 +235,7 @@ Each entry in `cameraDatas` supports the following fields:
       delay: 1.5
 
 # With config switch and interpolation
-- stepType: DisplayCameras
+- stepType: displayCameras
   duration: 20.0
   cameraDatas:
     - id: "1"
@@ -210,7 +248,7 @@ Each entry in `cameraDatas` supports the following fields:
         startConfigName: StartConfig
 
 # With dissolution effect
-- stepType: DisplayCameras
+- stepType: displayCameras
   duration: 20.0
   cameraDatas:
     - id: "1"
@@ -219,6 +257,36 @@ Each entry in `cameraDatas` supports the following fields:
       dissolution:
         duration: 3.0
         delay: 5.0
+
+# 1PP to 3PP transition: the rig recedes while the 1PP point cloud dissolves,
+# leaving only the 3PP (back camera) visible at the end.
+# dissolution.delay = rigInterpolation.delay + rigInterpolation.duration * 0.6 = 1.0 + 3.0 * 0.6 = 2.8s
+- stepType: displayCameras
+  duration: 6.0
+  cameraDatas:
+    - id: "1"
+      delay: 0.0
+      configName: config_1pp
+      dissolution:
+        duration: 1.5
+        delay: 2.8
+    - id: "2"
+      delay: 0.0
+      configName: config_3pp
+  rigInterpolation:
+    startPosition:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    endPosition:
+      x: 0.0
+      y: 0.0
+      z: -2.0
+    startYaw: 0.0
+    endYaw: 0.0
+    delay: 1.0
+    duration: 3.0
+    ease: InOutSine
 ```
 
 > ⚠️ When using `interpolation`, `configName` must also be set — it defines the end position of the animation.
@@ -238,7 +306,7 @@ Displays an image from the `Input/Images/` folder.
 | `duration` | float | Display duration in seconds |
 
 ```yaml
-- stepType: DisplayImage
+- stepType: displayImage
   imagePath: "plus"
   scale: 0.3
   duration: 5.0
@@ -255,7 +323,7 @@ Plays an audio file from the `Input/Audio/` folder.
 | `soundPath` | string | Audio filename without extension |
 
 ```yaml
-- stepType: PlaySound
+- stepType: playSound
   soundPath: "bell-sfx"
 ```
 
@@ -274,14 +342,14 @@ Plays a video file from the `Input/Videos/` folder. Supported formats: MP4, WEBM
 
 ```yaml
 # Play a video once (ends automatically when finished)
-- stepType: DisplayVideo
+- stepType: displayVideo
   videoName: "intro"
   looping: false
   muteAudio: false
   duration: 60.0
 
 # Loop a video for 30 seconds
-- stepType: DisplayVideo
+- stepType: displayVideo
   videoName: "background"
   looping: true
   muteAudio: true
@@ -300,7 +368,7 @@ Displays a multiple-choice question and waits for a response.
 | `options` | list of strings | List of response options |
 
 ```yaml
-- stepType: DisplayQuestion
+- stepType: displayQuestion
   question: "How do you feel?"
   options:
     - "Option 1"
@@ -321,7 +389,7 @@ Displays a Likert scale question and waits for a response.
 | `rightLabel` | string | Label for the right (high) end of the scale |
 
 ```yaml
-- stepType: DisplayLikertScale
+- stepType: displayLikertScale
   question: "How satisfied are you?"
   leftLabel: "Not satisfied"
   rightLabel: "Very satisfied"
@@ -339,7 +407,7 @@ Displays a break screen with instructions for a given duration.
 | `duration` | float | Break duration in seconds |
 
 ```yaml
-- stepType: Break
+- stepType: break
   text: "Take a break."
   duration: 90
 ```
@@ -355,49 +423,118 @@ Sends an LSL (Lab Streaming Layer) event marker, used to synchronize the experim
 | `eventName` | string | Name/label of the event marker to send |
 
 ```yaml
-- stepType: SendLSLEvent
+- stepType: sendLSLEvent
   eventName: "test"
 ```
 
 ---
 
-
-
 ## Full Sequence Example
+
+This example uses `startTime` and `blocking` to mix sequential and overlapping steps: a sound (`PlaySound`) and an LSL marker fire in parallel with the camera display, while the rest of the sequence remains strictly sequential thanks to `blocking: true`.
 
 ```yaml
 steps:
-  - stepType: LoadScene
+  - stepType: loadScene
     scenePath: "EmptyRoom"
+    startTime: 0
+    blocking: true
 
-  - stepType: LoadConfig
+  - stepType: loadConfig
     configName: DefaultConfig
+    startTime: 1
+    blocking: true
 
-  - stepType: DisplayText
+  - stepType: displayText
     text: "Welcome to the experiment"
     duration: 3.0
+    startTime: 2
+    blocking: true
 
-  - stepType: Wait
+  - stepType: wait
     duration: 2.0
+    startTime: 5
+    blocking: true
 
-  - stepType: DisplayCameras
-    duration: 20.0
+  # 1PP display
+  - stepType: displayCameras
+    duration: 5.0
+    startTime: 7
+    blocking: true
     cameraDatas:
       - id: "1"
         delay: 0.0
+        configName: config_1pp
 
-  - stepType: DisplayLikertScale
+  # 1PP to 3PP transition: rig recedes while the 1PP point cloud dissolves
+  - stepType: displayCameras
+    duration: 6.0
+    startTime: 12
+    blocking: true
+    cameraDatas:
+      - id: "1"
+        delay: 0.0
+        configName: config_1pp
+        dissolution:
+          duration: 1.5
+          delay: 2.8
+      - id: "2"
+        delay: 0.0
+        configName: config_3pp
+    rigInterpolation:
+      startPosition:
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      endPosition:
+        x: 0.0
+        y: 0.0
+        z: -2.0
+      startYaw: 0.0
+      endYaw: 0.0
+      delay: 1.0
+      duration: 3.0
+      ease: InOutSine
+
+  # 3PP display, after the transition
+  - stepType: displayCameras
+    duration: 9.0
+    startTime: 18
+    blocking: true
+    cameraDatas:
+      - id: "2"
+        delay: 0.0
+        configName: config_3pp
+
+  # Runs in parallel with the 1PP display step, does not block the timeline
+  - stepType: playSound
+    soundPath: "bell-sfx"
+    startTime: 7
+    blocking: false
+
+  - stepType: sendLSLEvent
+    eventName: "camera_display_start"
+    startTime: 7
+    blocking: false
+
+  - stepType: displayLikertScale
     question: "How natural did the movement feel?"
     leftLabel: "Not natural"
     rightLabel: "Very natural"
+    startTime: 27
+    blocking: true
 
-  - stepType: Break
+  - stepType: break
     text: "Please take a short break."
     duration: 90
+    startTime: 37
+    blocking: true
 
-  - stepType: DisplayText
+  - stepType: displayText
     text: "Thank you."
     duration: 4.0
+    startTime: 127
+    blocking: true
 ```
 
 # Config Files
