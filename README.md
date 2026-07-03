@@ -1,3 +1,4 @@
+
 # FBI Standalone
 
 # Summary
@@ -111,11 +112,18 @@ Loads a Unity scene by name.
 | `scenePath` | string | Name of the scene to load |
 
 Available scenes:
+ 
+<table>
+<tr>
+<td align="center"><b>BlackScene</b><br/><img width="800" height="449" alt="BlackScene" src="https://github.com/user-attachments/assets/49a8d5e9-78b8-4344-889a-c7c9b131c16e" /></td>
+<td align="center"><b>EmptyGrayRoom</b><br/><img width="800" height="450" alt="EmptyGrayRoom" src="https://github.com/user-attachments/assets/3aef4415-213c-4dc9-9606-4b5f4e0be8fd" /></td>
+</tr>
+<tr>
+<td align="center"><b>GrayInfinityScene</b><br/><img width="800" height="450" alt="GrayInfinityScene" src="https://github.com/user-attachments/assets/332ffd76-3ae7-4388-9515-19eec551d1e0" /></td>
+<td align="center"><b>EmptyRoom</b><br/><img width="800" height="450" alt="EmptyRoom" src="https://github.com/user-attachments/assets/1d56b02e-2dc5-49e8-a8b8-a1a6dd0fd6f0" /></td>
+</tr>
+</table>
 
-* `BlackScene`
-* `EmptyGrayRoom`
-* `GrayInfinityScene`
-* `EmptyRoom`
 
 ```yaml
 - stepType: loadScene
