@@ -304,9 +304,18 @@ public class WorldUIManager : MonoBehaviour
         sliderLikertScaleContainer.minValue = min;
         sliderLikertScaleContainer.maxValue = max;
 
-        if(randomCursorPosition)
+        float totalValue = (max + 1) - min;
+
+        float borderValue = Mathf.Ceil(totalValue * 0.1f);
+        float centerValue = Mathf.Ceil(totalValue * 0.5f);
+
+        if (randomCursorPosition)
         {
-            sliderLikertScaleContainer.SetValueWithoutNotify(UnityEngine.Random.Range(sliderLikertScaleContainer.minValue + 25, sliderLikertScaleContainer.maxValue - 25));
+            sliderLikertScaleContainer.SetValueWithoutNotify(UnityEngine.Random.Range(sliderLikertScaleContainer.minValue + borderValue, sliderLikertScaleContainer.maxValue - borderValue));
+        }
+        else
+        {
+            sliderLikertScaleContainer.SetValueWithoutNotify(centerValue);
         }
 
         DisplayValidationButton(false);

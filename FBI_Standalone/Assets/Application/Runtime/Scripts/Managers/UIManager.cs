@@ -123,6 +123,8 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
 
+        SequencesManager.Instance.OnSequenceLoaded += InitSequenceDropDown;
+
         sequenceDropdown.onValueChanged.AddListener(OnInputFileDropDownChanged);
 
         configDropdown.onValueChanged.AddListener(OnConfigDropDownChanged);
@@ -172,6 +174,9 @@ public class UIManager : MonoBehaviour
 
     private void OnDisable()
     {
+
+        SequencesManager.Instance.OnSequenceLoaded -= InitSequenceDropDown;
+
         sequenceDropdown.onValueChanged.RemoveListener(OnInputFileDropDownChanged);
 
         configDropdown.onValueChanged.RemoveListener(OnConfigDropDownChanged);
@@ -232,7 +237,7 @@ public class UIManager : MonoBehaviour
         var index = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale);
         languageDropdown.SetValueWithoutNotify(index);
 
-        InitSequenceDropDown();
+        //InitSequenceDropDown();
 
         //InitConfigDropDown();
 

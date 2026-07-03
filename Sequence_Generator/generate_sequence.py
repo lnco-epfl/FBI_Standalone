@@ -203,9 +203,9 @@ def display_cameras(duration, *cameras):
     return {"stepType": "displayCameras", "duration": float(duration),
             "cameraDatas": list(cameras)}
 
-def likert(question, left, right):
+def likert(question, left, right, min, max, randomCursorPosition):
     return {"stepType": "displayLikertScale", "blocking": True,
-            "question": question, "leftLabel": left, "rightLabel": right}
+            "question": question, "leftLabel": left, "rightLabel": right, "min": min, "max": max, "randomCursorPosition": randomCursorPosition}
 
 def choice(question, options):
     return {"stepType": "displayQuestion", "blocking": True,
@@ -233,23 +233,23 @@ FIXATION = dict(path="plus", scale=0.3, duration=3.0)
 # ---- FBI 2x2 questionnaire (asked after every FBI trial) -------------------
 FBI_QUESTIONS = [
     ("I felt that the body I saw was my body.",
-     "Strongly disagree", "Strongly agree"),
+     "Strongly disagree", "Strongly agree", 0, 100, True),
     ("I felt that the touch I felt was located where I saw the stroking.",
-     "Strongly disagree", "Strongly agree"),
+     "Strongly disagree", "Strongly agree", 0, 100, True),
     ("I felt as if I have three bodies.",
-     "Strongly disagree", "Strongly agree"),
+     "Strongly disagree", "Strongly agree", 0, 100, True),
 ]
 
 # ---- Meditation-phase core questions (asked after every phase) --------------
 MEDITATION_CORE = [
     ("How much do you feel that the body that you saw is your body?",
-     "0 - Not at all", "Completely - 5"),
+     "Not at all", "Completely", 0, 5, True),
     ("How much do you experience the sensations of your body right now?",
-     "0 - Not at all", "Completely - 5"),
+     "Not at all", "Completely", 0, 5, True),
     ("How much do you feel your center of awareness to be located where you feel your body to be?",
-     "0 - Not at all", "Completely - 5"),
+     "Not at all", "Completely", 0, 5, True),
     ("How many times have you been experiencing the nature of mind during this last phase of the experiment?",
-     "0 - Never", "Continuously - 5"),
+     "Never", "Continuously", 0, 5, True),
 ]
 
 # ---- FBI conditions ----------------------------------------------------------
@@ -279,8 +279,8 @@ LATIN_SQUARE = [
 # ============================================================================
 
 def likert_battery(tl, questions):
-    for q, left, right in questions:
-        tl.add(likert(q, left, right))
+    for q, left, right, min, max, randomCursorPosition, in questions:
+        tl.add(likert(q, left, right, min, max, randomCursorPosition))
 
 
 def fbi_trial(tl, name, cam, config, delay, *, current_config, first):
@@ -393,9 +393,9 @@ def build_sequence(baseline_order, post_order):
                         sound_path="NoM_Phase1", sound_at="settle")  # display timed to the 77 s audio
     meditation_questions(tl, extra=[
         likert("How stable is your attention right now?",
-               "0 - Not stable", "Very stable - 5"),
+               "Not stable", "Very stable", 0, 5, True),
         likert("How clearly do you feel your body?",
-               "0 - Not clearly", "Very clearly - 5"),
+               "Not clearly", "Very clearly", 0, 5, True),
     ])
     tl.add(wait(2.0))
 
@@ -411,7 +411,7 @@ def build_sequence(baseline_order, post_order):
                ["Inside the body I see", "Outside the body I see",
                 "Somewhere else / unclear"]),
         likert("Does this body feel like yours?",
-               "0 - Not at all", "Completely - 5"),
+               "Not at all", "Completely", 0, 5, True),
     ])
     tl.add(wait(2.0))
 
@@ -426,7 +426,7 @@ def build_sequence(baseline_order, post_order):
         choice("Are you the visual self or the moving self?",
                ["The visual self", "The moving self", "Both / neither"]),
         likert("How clear is your sense of where your body begins?",
-               "0 - Not clear", "Very clear - 5"),
+               "Not clear", "Very clear", 0, 5, True),
     ])
     tl.add(wait(2.0))
 
@@ -454,7 +454,7 @@ def build_sequence(baseline_order, post_order):
         choice("Which body felt most like you?",
                ["The moving body", "The mirror body", "Neither"]),
         likert("How fixed was your sense of self-location?",
-               "0 - Not fixed", "Very fixed - 5"),
+               "Not fixed", "Very fixed", 0, 5, True),
     ])
     tl.add(wait(2.0))
 
@@ -475,7 +475,7 @@ def build_sequence(baseline_order, post_order):
     tl.marker("phase5_audio_NoM_Phase5_end", at=audio5_t + AUDIO_DURATIONS["NoM_Phase5"])
     meditation_questions(tl, extra=[
         likert("How wide or boundless did your awareness feel?",
-               "0 - Not wide", "Very wide - 5"),
+               "Not wide", "Very wide", 0, 5, True),
         choice("Was there still a sense of a 'self' present?",
                ["0 - Not at all", "2.5 - Somewhat", "5 - Completely"]),
     ])
