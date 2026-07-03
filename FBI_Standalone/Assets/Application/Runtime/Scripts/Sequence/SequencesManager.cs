@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
+using System;
 
 
 public class SequencesManager : MonoBehaviour
@@ -23,6 +24,8 @@ public class SequencesManager : MonoBehaviour
     private List<Sequence> sequences = new List<Sequence>();
 
     public List<Sequence> Sequences => sequences;
+
+    public event Action OnSequenceLoaded;
 
     private void OnEnable()
     {
@@ -69,6 +72,8 @@ public class SequencesManager : MonoBehaviour
         {
             LoadSequence(file);
         }
+
+        OnSequenceLoaded.Invoke();
 
         EventFileManager.Log($"[SequencesManager] Loaded {sequences.Count} sequences from YAML files");
     }
