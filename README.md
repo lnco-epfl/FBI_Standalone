@@ -180,32 +180,38 @@ Pauses the sequence for a given duration.
 ---
 
 ### DisplayCameras
-
-Displays one or more point clouds simultaneously, each with its own settings. Each camera entry is defined under a `cameraDatas` list and can independently have a temporal delay, a config file, an interpolation animation, and a dissolution effect.
-
+ 
+Displays one or more point clouds simultaneously, each with its own settings. Each camera entry is defined under a `cameraDatas` list and can independently have a temporal delay, a config file, an interpolation animation, a dissolution effect, or a fade effect.
+ 
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `duration` | float | Total display duration in seconds for the step |
 | `cameraDatas` | list | List of camera entries to display simultaneously |
-
+ 
 Each entry in `cameraDatas` supports the following fields:
-
+ 
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | string | ID of the camera to display (`"1"`, `"2"`, etc.) |
 | `delay` | float | Temporal delay in seconds. `0.0` = real-time display |
 | `configName` | string | *(Optional)* Name of a config file to load for this camera (without extension). If omitted, the currently loaded config is used |
+| | | |
 | `interpolation` | object | *(Optional)* Smoothly animates the point cloud transform from a start config to the target config |
 | `interpolation.duration` | float | Duration of the interpolation animation in seconds |
 | `interpolation.delay` | float | Delay before the interpolation starts, in seconds |
 | `interpolation.ease` | string | Easing function from [PrimeTween](https://github.com/KyryloKuzyk/PrimeTween#support). Recommended values: `Default`, `Linear`, `InOutSine`, `InOutQuad`, `InOutCubic`, `InOutQuart`, `InOutExpo` |
 | `interpolation.startConfigName` | string | *(Optional)* Name of the config to use as the start position of the interpolation. If omitted, the current transform is used as the start |
-| `dissolution` | object | *(Optional)* Progressively dissolves the point cloud during the step |
+| | | |
+| `dissolution` | object | *(Optional)* Progressively dissolves the point cloud using a particle/noise effect |
 | `dissolution.duration` | float | Duration of the dissolution effect in seconds |
 | `dissolution.delay` | float | Delay before the dissolution starts, in seconds |
-
+| | | |
+| `fade` | object | *(Optional)* Fades out the point cloud by reducing its opacity to zero. Alternative to `dissolution` — use one or the other per camera entry |
+| `fade.duration` | float | Duration of the fade-out in seconds |
+| `fade.delay` | float | Delay before the fade starts, in seconds |
+ 
 The step also supports an optional `rigInterpolation` block (at the step level, not per camera) that smoothly translates the VR rig — moving the participant's point of view in the scene. This is used to transition between a first-person perspective (1PP) and a third-person perspective (3PP) during a single step, while the point clouds are displayed.
-
+ 
 | Field | Type | Description |
 |-------|------|-------------|
 | `rigInterpolation` | object | *(Optional)* Smoothly moves the VR rig (player origin) during the step |
@@ -216,15 +222,15 @@ The step also supports an optional `rigInterpolation` block (at the step level, 
 | `rigInterpolation.duration` | float | Duration of the rig movement in seconds |
 | `rigInterpolation.delay` | float | Delay before the rig starts moving, in seconds |
 | `rigInterpolation.ease` | string | Easing function. Recommended: `InOutSine` for VR comfort |
-
+ 
 > ℹ️ `rigInterpolation` runs in the same timeline as point cloud interpolation and dissolution — all `delay` values are relative to the start of the step and can overlap freely.
-
+ 
 > ℹ️ To dissolve the 1PP point cloud as the rig recedes, set `dissolution.delay` on that camera entry to match the moment in the rig movement at which the 1PP body is far enough away (e.g. `rigInterpolation.delay + rigInterpolation.duration * 0.6`).
-
+ 
 > ⚠️ Yaw rotation is applied around the Y axis only. Pitch and roll are not supported to avoid VR disorientation.
-
+ 
 > ⚠️ If the step is interrupted before the rig movement starts, the rig remains at `startPosition`. If interrupted mid-movement, the rig snaps immediately to `endPosition`.
-
+ 
 ```yaml
 # Single camera, real-time display
 - stepType: displayCameras
@@ -232,7 +238,7 @@ The step also supports an optional `rigInterpolation` block (at the step level, 
   cameraDatas:
     - id: "1"
       delay: 0.0
-
+ 
 # Two cameras simultaneously, one with delay
 - stepType: displayCameras
   duration: 20.0
@@ -241,7 +247,7 @@ The step also supports an optional `rigInterpolation` block (at the step level, 
       delay: 0.0
     - id: "2"
       delay: 1.5
-
+ 
 # With config switch and interpolation
 - stepType: displayCameras
   duration: 20.0
@@ -254,7 +260,7 @@ The step also supports an optional `rigInterpolation` block (at the step level, 
         delay: 1.0
         ease: InOutQuad
         startConfigName: StartConfig
-
+ 
 # With dissolution effect
 - stepType: displayCameras
   duration: 20.0
@@ -265,7 +271,18 @@ The step also supports an optional `rigInterpolation` block (at the step level, 
       dissolution:
         duration: 3.0
         delay: 5.0
-
+ 
+# With fade effect
+- stepType: displayCameras
+  duration: 20.0
+  cameraDatas:
+    - id: "1"
+      delay: 0.0
+      configName: MyConfig
+      fade:
+        duration: 3.0
+        delay: 5.0
+ 
 # 1PP to 3PP transition: the rig recedes while the 1PP point cloud dissolves,
 # leaving only the 3PP (back camera) visible at the end.
 # dissolution.delay = rigInterpolation.delay + rigInterpolation.duration * 0.6 = 1.0 + 3.0 * 0.6 = 2.8s
@@ -296,12 +313,13 @@ The step also supports an optional `rigInterpolation` block (at the step level, 
     duration: 3.0
     ease: InOutSine
 ```
-
+ 
 > ⚠️ When using `interpolation`, `configName` must also be set — it defines the end position of the animation.
-
+ 
 > ⚠️ Only one delay value can be set per camera; if multiple values are provided, only the last one will be used.
-
+ 
 ---
+
 
 ### DisplayImage
 
