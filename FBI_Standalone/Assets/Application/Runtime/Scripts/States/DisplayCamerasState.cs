@@ -20,6 +20,7 @@ public class DisplayCamerasState : IState
     private bool rigInterpolationStarted = false;
 
 
+
     public void Enter(SequenceStep sequenceStep)
     {
         step = sequenceStep as DisplayCamerasStep;
@@ -27,6 +28,7 @@ public class DisplayCamerasState : IState
         rigInterpolationStarted = false;
         rigPositionTween = default;
         rigRotationTween = default;
+
     }
 
     public IEnumerator Execute()
@@ -86,7 +88,7 @@ public class DisplayCamerasState : IState
             {
                 if (ConfigFileManager.Instance.IsValideConfigName(cameraData.configName))
                 {
-                    if (ConfigFileManager.Instance.CurrentConfig.configName != cameraData.configName)
+                    if (ConfigFileManager.Instance.CurrentConfig == null || ConfigFileManager.Instance.CurrentConfig.configName != cameraData.configName)
                     {
                         configFile = ConfigFileManager.Instance.Load(cameraData.configName);
                     }
@@ -107,6 +109,10 @@ public class DisplayCamerasState : IState
             if (configFile != null)
             {
                 pointCloud = PointCloudManager.Instance.SpawnPointCloud(pointCloudID, cameraData.delay, configFile);
+                if (pointCloud != null)
+                {
+                    step.ownedPointClouds.Add(pointCloud);
+                }
             }
 
             displayText.Append($"Display Camera {cameraData.id} for {step.GetDuration()} seconds with {cameraData.delay} of delay");
@@ -185,7 +191,6 @@ public class DisplayCamerasState : IState
 
             sequence.Insert(atTime: rigData.delay, rigPositionTween);
 
-            // Flags the rig interpolation as having started, so Exit() knows whether to snap to endValue or leave startValue untouched.
             sequence.Insert(atTime: rigData.delay, Tween.Delay(duration: 0f).OnComplete(() => rigInterpolationStarted = true));
 
             if (!Mathf.Approximately(rigData.startYaw, rigData.endYaw))
@@ -215,7 +220,7 @@ public class DisplayCamerasState : IState
         OutputFileManager.Instance.OutputFileData.AsDissolution = asDissolution;
         OutputFileManager.Instance.OutputFileData.AsInterpolation = asInterpolation;
 
-        PointCloudManager.Instance.DisplaySpawnedPointClouds();
+        PointCloudManager.Instance.DisplaySpawnedPointClouds(step.ownedPointClouds);
 
         EventFileManager.Log($"[DisplayCameraState] Display Cameras :" + displayText.ToString());
 
@@ -230,7 +235,7 @@ public class DisplayCamerasState : IState
             yield return new WaitForSeconds(step.displayTime);
         }
 
-        PointCloudManager.Instance.HideSpawnedPointClouds();
+        PointCloudManager.Instance.HideSpawnedPointClouds(step.ownedPointClouds);
 
         for (int i = 0; i < step.camerasData.Count; i++)
         {
@@ -268,8 +273,6 @@ public class DisplayCamerasState : IState
 
         if (step.rigInterpolation != null && rigInterpolationStarted)
         {
-            // The rig was already mid-transition (or had finished) when the step was interrupted:
-            // snap it to its final value rather than leaving it stranded mid-way.
             var rigData = step.rigInterpolation;
             var origin = ResetXROrigin.Instance.origin;
 
@@ -280,11 +283,10 @@ public class DisplayCamerasState : IState
                 origin.rotation = Quaternion.Euler(0f, rigData.endYaw, 0f);
             }
         }
-        // If the rig interpolation had not started yet, the rig is still at startValue and is left untouched.
 
-        PointCloudManager.Instance.HideSpawnedPointClouds();
+        PointCloudManager.Instance.HideSpawnedPointClouds(step.ownedPointClouds);
 
-        PointCloudManager.Instance.DespawnPointClouds();
+        PointCloudManager.Instance.DespawnPointClouds(step.ownedPointClouds);
 
         for (int i = 0; i < step.camerasData.Count; i++)
         {

@@ -1,6 +1,6 @@
 configName: 1PP - Flip
 createdAt: 2026-04-23 15:35:05
-lastModified: 2026-07-02 09:38:40
+lastModified: 2026-07-07 08:32:10
 stimulusDisplay:
   position:
     x: 0
@@ -22,9 +22,9 @@ stimulusDisplay:
 pointClouds:
 - iD: 1
   position:
-    x: 0.26
+    x: 0.07
     y: 1.62
-    z: 1.04
+    z: 1.28
   rotation:
     x: 44.57001
     y: 186.81

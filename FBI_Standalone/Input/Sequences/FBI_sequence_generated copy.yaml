@@ -41,6 +41,10 @@ steps:
     startTime: 79
     eventName: config_loaded_Mirror_Flip
 
+  - stepType: loadConfig
+    startTime: 79
+    configName: Mirror - Flip
+
   - stepType: displayImage
     startTime: 80
     imagePath: plus
@@ -57,7 +61,7 @@ steps:
     cameraDatas:
     - id: '1'
       delay: 0.0
-      configName: Mirror
+      configName: Mirror - Flip
 
   - stepType: sendLSLEvent
     startTime: 173
@@ -126,7 +130,7 @@ steps:
     cameraDatas:
     - id: '1'
       delay: 0.5
-      configName: Mirror
+      configName: Mirror - Flip
 
   - stepType: sendLSLEvent
     startTime: 273
@@ -337,9 +341,9 @@ steps:
 
   - stepType: displayCameras
     startTime: 510
-    duration: 4.0
+    duration: 5.0
     cameraDatas:
-    - id: '1'
+    - id: '2'
       delay: 0.0
       configName: 1PP
 
@@ -354,6 +358,11 @@ steps:
     - id: '1'
       delay: 0.0
       configName: 1PP
+      interpolation:
+        duration: 5.0
+        delay: 0.0
+        ease: InOutSine
+        startConfigName: 3PP
 
   - stepType: sendLSLEvent
     startTime: 520
@@ -443,7 +452,7 @@ steps:
 
   - stepType: displayCameras
     startTime: 600
-    duration: 4
+    duration: 5
     cameraDatas:
     - id: '1'
       delay: 0.0
@@ -576,7 +585,7 @@ steps:
 
   - stepType: displayCameras
     startTime: 734
-    duration: 4.0
+    duration: 5.0
     cameraDatas:
     - id: '2'
       delay: 0.0
@@ -712,7 +721,7 @@ steps:
 
   - stepType: displayCameras
     startTime: 927
-    duration: 4.0
+    duration: 5.0
     cameraDatas:
     - id: '1'
       delay: 0.0
@@ -972,7 +981,7 @@ steps:
 
   - stepType: loadConfig
     startTime: 1374
-    configName: Mirror
+    configName: Mirror - Flip
 
   - stepType: displayImage
     startTime: 1375
@@ -990,7 +999,7 @@ steps:
     cameraDatas:
     - id: '1'
       delay: 0.0
-      configName: Mirror
+      configName: Mirror - Flip
 
   - stepType: sendLSLEvent
     startTime: 1468
@@ -1059,7 +1068,7 @@ steps:
     cameraDatas:
     - id: '1'
       delay: 0.5
-      configName: Mirror
+      configName: Mirror - Flip
 
   - stepType: sendLSLEvent
     startTime: 1568

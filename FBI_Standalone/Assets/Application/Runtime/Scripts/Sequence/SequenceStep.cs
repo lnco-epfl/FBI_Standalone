@@ -243,6 +243,8 @@ public class DisplayCamerasStep : SequenceStep
 
     public RigInterpolationData rigInterpolation;
 
+    [NonSerialized] public List<PointCloud> ownedPointClouds = new List<PointCloud>();
+
     public override float GetDuration() => displayTime;
     public override string GetStateName() => "DisplayCameras";
     public override string GetDisplayName() => $"Display Cameras {camerasData.Count} for {displayTime}";

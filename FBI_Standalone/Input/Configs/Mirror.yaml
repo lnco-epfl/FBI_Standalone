@@ -1,6 +1,6 @@
 configName: Mirror
 createdAt: 2026-06-11 13:58:00
-lastModified: 2026-07-02 09:40:07
+lastModified: 2026-07-07 08:35:20
 stimulusDisplay:
   position:
     x: 0
@@ -22,12 +22,12 @@ stimulusDisplay:
 pointClouds:
 - iD: 1
   position:
-    x: 0.09999999
+    x: -0.01
     y: 1.57
-    z: 0
+    z: 0.39
   rotation:
     x: 41.57001
-    y: 5.440004
+    y: 5.440005
     z: 4.65756
   scale:
     x: -1

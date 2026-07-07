@@ -21,7 +21,7 @@ public class RenderTextureContainer
     }
 }
 
-public class  ConditionRenderTextureContainer
+public class ConditionRenderTextureContainer
 {
     public RenderTextureContainer realtimeTextures;
     public RenderTextureContainer delayTextures;
@@ -35,6 +35,8 @@ public class PointCloudManager : MonoBehaviour
 
     private Dictionary<int, ConditionRenderTextureContainer> renderTextureDictionary = new Dictionary<int, ConditionRenderTextureContainer>();
 
+    // Global tracking list — read-only reference, not used for ownership.
+    // Ownership of spawned point clouds belongs to whichever state spawned them (via the list returned by SpawnPointCloud).
     private List<PointCloud> spawnedPointClouds = new List<PointCloud>();
 
     private static PointCloudManager instance;
@@ -48,7 +50,7 @@ public class PointCloudManager : MonoBehaviour
 
     private void Start()
     {
-        if(KinectManager.Instance.IsInitialized())
+        if (KinectManager.Instance.IsInitialized())
         {
             var cameraCount = KinectManager.Instance.GetSensorCount();
 
@@ -70,27 +72,15 @@ public class PointCloudManager : MonoBehaviour
 
                     var replayBuffer = sensorInterface.GetComponent<PointCloudReplayBuffer>();
 
-                    if(replayBuffer.replayColorTexture != null && replayBuffer.replayVertexTexture != null)
+                    if (replayBuffer.replayColorTexture != null && replayBuffer.replayVertexTexture != null)
                     {
                         conditionRenderTexture.delayTextures = new RenderTextureContainer(replayBuffer.replayColorTexture, replayBuffer.replayVertexTexture);
                     }
 
-                    renderTextureDictionary.Add(i+1, conditionRenderTexture);
+                    renderTextureDictionary.Add(i + 1, conditionRenderTexture);
                 }
             }
         }
-
-      
-    }
-
-    private void OnEnable()
-    {
-
-    }
-
-    private void OnDisable()
-    {
-
     }
 
     public PointCloud SpawnPointCloud(int cameraID, float delay, ConfigFile configFile)
@@ -101,7 +91,7 @@ public class PointCloudManager : MonoBehaviour
             return null;
         }
 
-        bool isDelay = delay > 0.0f ? true : false;
+        bool isDelay = delay > 0.0f;
 
         var pointcloudGO = Instantiate(pointCloudPrefab, transform);
 
@@ -118,7 +108,6 @@ public class PointCloudManager : MonoBehaviour
 
         if (renderTextureDictionary.Count > 0)
         {
-
             if (isDelay)
             {
                 pointcloud.SetRenderTextures(renderTextureDictionary[cameraID].delayTextures.colorTexture, renderTextureDictionary[cameraID].delayTextures.vertexTexture);
@@ -126,9 +115,9 @@ public class PointCloudManager : MonoBehaviour
             else
             {
                 pointcloud.SetRenderTextures(renderTextureDictionary[cameraID].realtimeTextures.colorTexture, renderTextureDictionary[cameraID].realtimeTextures.vertexTexture);
-
             }
-        }else
+        }
+        else
         {
             Debug.LogError("No render textures found for any camera.");
         }
@@ -150,12 +139,10 @@ public class PointCloudManager : MonoBehaviour
         spawnedPointClouds.Add(pointcloud);
 
         return pointcloud;
-
     }
 
     public void SetPointcloudConfig(PointCloud pointCloud, ConfigFile configFile)
     {
-
         var cameraID = pointCloud.Id;
 
         if (configFile != null)
@@ -173,40 +160,46 @@ public class PointCloudManager : MonoBehaviour
             pointCloud.SetTransform(position, rotation, scale);
             pointCloud.SetCameraDeptValues(depthMin, depthMax);
             pointCloud.SetClampValues(clampXMin, clampXMax, clampYMin, clampYMax);
-
         }
     }
 
-    public void DespawnPointClouds()
+
+    public void DespawnPointClouds(List<PointCloud> pointClouds)
     {
-        //Waiting for pointcloud to be fully displayed before destroying
+        Debug.Log($"DespawnPointClouds count:{pointClouds.Count}");
+
+        var toDestroy = new List<PointCloud>(pointClouds);
+
+        pointClouds.Clear();
+
         Tween.Delay(0.5f).OnComplete(() =>
         {
-            for (int i = spawnedPointClouds.Count - 1; i >= 0; i--)
+            Debug.Log($"DespawnPointClouds destroying:{toDestroy.Count}");
+
+            foreach (var pointCloud in toDestroy)
             {
-                if (spawnedPointClouds[i].isMainVFXVisible)
+                if (pointCloud != null)
                 {
-                    Destroy(spawnedPointClouds[i].gameObject);
+                    spawnedPointClouds.Remove(pointCloud);
+                    Destroy(pointCloud.gameObject);
                 }
-
             }
-
-            spawnedPointClouds.Clear();
         });
-
     }
 
-    public void DisplaySpawnedPointClouds()
+    public void DisplaySpawnedPointClouds(List<PointCloud> pointClouds)
     {
-        foreach (var pointCloud in spawnedPointClouds)
+        foreach (var pointCloud in pointClouds)
         {
             pointCloud.DisplayMain();
         }
     }
 
-    public void HideSpawnedPointClouds()
+    public void HideSpawnedPointClouds(List<PointCloud> pointClouds)
     {
-        foreach (var pointCloud in spawnedPointClouds)
+        Debug.Log($"HideSpawnedPointClouds count:{pointClouds.Count}");
+
+        foreach (var pointCloud in pointClouds)
         {
             pointCloud.HideMain();
             pointCloud.HideDissolution();
@@ -215,15 +208,13 @@ public class PointCloudManager : MonoBehaviour
 
     public PointCloud GetPointCloud(int cameraID)
     {
-        foreach(var pointCloud in spawnedPointClouds)
+        foreach (var pointCloud in spawnedPointClouds)
         {
-            if(pointCloud.Id == cameraID)
+            if (pointCloud.Id == cameraID)
             {
                 return pointCloud;
             }
         }
         return null;
     }
-
-
 }
