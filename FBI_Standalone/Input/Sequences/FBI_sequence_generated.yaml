@@ -333,8 +333,6 @@ steps:
     startTime: 510
     soundPath: NoM_Phase1
 
-  # settle: hold previous-phase config before interpolation
-
   - stepType: displayCameras
     startTime: 510
     duration: 4.0

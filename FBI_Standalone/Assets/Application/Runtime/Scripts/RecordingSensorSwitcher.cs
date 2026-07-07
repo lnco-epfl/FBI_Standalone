@@ -1,4 +1,5 @@
 using com.rfilkov.kinect;
+using System.Collections;
 using System.IO;
 using UnityEngine;
 
@@ -6,12 +7,13 @@ public class RecordingSensorSwitcher : MonoBehaviour
 {
 
     public string fileName;
+    private Kinect4AzureInterface azureInterface;
 
     private void Awake()
     {
 
 
-       var azureInterface = GetComponent<Kinect4AzureInterface>();
+       azureInterface = GetComponent<Kinect4AzureInterface>();
 
 #if CONNECTED_SENSOR
         azureInterface.deviceStreamingMode = KinectInterop.DeviceStreamingMode.ConnectedSensor;
@@ -23,6 +25,17 @@ public class RecordingSensorSwitcher : MonoBehaviour
         string path = Path.Combine(Application.streamingAssetsPath, "Recordings", fileName);
         path = path.Replace("\\", "/");
         azureInterface.recordingFile = path;
+
+    }
+
+
+    private IEnumerator Start()
+    {
+        yield return new WaitUntil(() => KinectManager.Instance.IsInitialized());
+        {
+            Transform sensorTrans = KinectManager.Instance.GetSensorTransform(azureInterface.deviceIndex);
+            Debug.Log($"Sensor {azureInterface.deviceIndex} pos: {sensorTrans.position}, rot: {sensorTrans.rotation.eulerAngles}");
+        }
 
     }
 }
