@@ -347,10 +347,12 @@ Plays an audio file from the `Input/Audio/` folder.
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `soundPath` | string | Audio filename without extension |
+| `subtitle` | bool |  If `true`, displays the corresponding `.srt` subtitle file (if present in `Input/Audios/`) while the sound plays. Default: `false` |
 
 ```yaml
 - stepType: playSound
   soundPath: "bell-sfx"
+  subtitle: false
 ```
 
 ---
@@ -365,6 +367,7 @@ Plays a video file from the `Input/Videos/` folder. Supported formats: MP4, WEBM
 | `looping` | bool | If `true`, the video loops until the duration timeout. Default: `false` |
 | `muteAudio` | bool | If `true`, the video plays without audio. Default: `false` |
 | `duration` | float | Fallback timeout in seconds, used when looping or if the video duration cannot be read |
+| `subtitle` | bool | If `true`, displays the corresponding `.srt` subtitle file (if present in `Input/Videos/`) during playback. Default: `true` |
 
 ```yaml
 # Play a video once (ends automatically when finished)
@@ -373,13 +376,15 @@ Plays a video file from the `Input/Videos/` folder. Supported formats: MP4, WEBM
   looping: false
   muteAudio: false
   duration: 60.0
+  subtitle: true
 
-# Loop a video for 30 seconds
+# Loop a video for 30 seconds, without subtitles
 - stepType: displayVideo
   videoName: "background"
   looping: true
   muteAudio: true
   duration: 30.0
+  subtitle: false
 ```
 
 ---
