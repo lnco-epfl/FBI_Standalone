@@ -21,6 +21,21 @@ public class SubtitleReader : MonoBehaviour
     private bool audioSubtitlesActive = false;
     private float audioElapsed = 0f;
 
+    private bool videoSubtitlesEnabled = true;
+    private bool audioSubtitlesEnabled = true;
+
+    private static SubtitleReader instance;
+    public static SubtitleReader Instance => instance;
+
+    private void Awake()
+    {
+        if (instance != null && instance != this) { Destroy(this.gameObject); }
+        else
+        {
+            instance = this;
+        }
+    }
+
     void Start()
     {
 
@@ -116,6 +131,14 @@ public class SubtitleReader : MonoBehaviour
 
     private void VideoStarted(VideoPlayer source)
     {
+        if (!videoSubtitlesEnabled)
+        {
+            subtitlesLoaded = false;
+            subtitles.Clear();
+            textAutoSizer.SetText(string.Empty);
+            return;
+        }
+
         var path = source.url;
 
         if (path.StartsWith("file:///"))
@@ -156,6 +179,15 @@ public class SubtitleReader : MonoBehaviour
 
     private void AudioSfxStarted(AudioSource source)
     {
+
+        if (!audioSubtitlesEnabled)
+        {
+            audioSubtitles = new List<Subtitle>();
+            currentAudioSubtitle = null;
+            audioSubtitlesActive = false;
+            return;
+        }
+
         string filePath = Path.Combine(AssetsManager.Instance.AudiosPath, source.clip.name + ".srt");
         List<Subtitle> loaded = SrtParser.ParseFile(filePath);
 
@@ -198,5 +230,15 @@ public class SubtitleReader : MonoBehaviour
         }
 
         textAutoSizer.SetText(string.Empty);
+    }
+
+    public void SetVideoSubtitlesEnabled(bool enabled)
+    {
+        videoSubtitlesEnabled = enabled;
+    }
+
+    public void SetAudioSubtitlesEnabled(bool enabled)
+    {
+        audioSubtitlesEnabled = enabled;
     }
 }

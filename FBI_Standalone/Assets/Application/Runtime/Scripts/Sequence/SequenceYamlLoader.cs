@@ -155,6 +155,7 @@ public class SequenceYamlLoader
                 {
                     startTime = data.startTime,
                     blocking = data.blocking,
+                    subtitle = data.subtitle,
                     sound = LoadAudioClip(data.soundPath)
                 };
 
@@ -166,6 +167,7 @@ public class SequenceYamlLoader
                     videoName = data.videoName,
                     looping = data.looping,
                     muteAudio = data.muteAudio,
+                    subtitle = data.subtitle,
                 };
 
             case SequenceStepWrapper.StepType.DisplayCameras:
@@ -282,6 +284,8 @@ public class StepData
     // Video
     public bool looping;
     public bool muteAudio;
+
+    public bool subtitle;
 
     // LSL Event
     public string eventName;

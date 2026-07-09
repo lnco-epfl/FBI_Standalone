@@ -16,6 +16,8 @@ public class PlaySoundState : IState
     {
         EventFileManager.Log($"[PlaySoundState] Play Sound {step.sound.name} for {step.GetDuration()} seconds");
 
+        SubtitleReader.Instance.SetAudioSubtitlesEnabled(step.subtitle);
+
         audioSource = AudioManager.instance.Play2DSFX(step.sound);
 
         yield return new WaitForSeconds(step.GetDuration());

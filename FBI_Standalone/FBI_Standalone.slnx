@@ -1,5 +1,6 @@
 ﻿<Solution>
   <Project Path="Application.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="AzureKinectExamples.csproj" />
   <Project Path="PrimeTween.Demo.csproj" />
   <Project Path="SFB.csproj" />
@@ -11,7 +12,6 @@
   <Project Path="FlexibleColorPicker.csproj" />
   <Project Path="PrimeTween.Debug.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Config.Editor.Tests.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="PrimeTween.Installer.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Config.Runtime.csproj" />
 </Solution>

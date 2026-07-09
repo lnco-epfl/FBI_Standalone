@@ -23,6 +23,8 @@ public class DisplayVideoState : IState
             yield break;
         }
 
+        SubtitleReader.Instance?.SetVideoSubtitlesEnabled(step.subtitle);
+
         float timeout = step.displayDuration;
 
         WorldUIManager.Instance.DisplayVideo(videoPath, step.looping, step.muteAudio,

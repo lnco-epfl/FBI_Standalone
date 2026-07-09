@@ -171,6 +171,8 @@ public class DisplayQuestionStep : SequenceStep
 public class PlaySoundStep : SequenceStep
 {
     public AudioClip sound;
+
+    public bool subtitle = false;
     public override float GetDuration()
     {
         return sound != null ? sound.length : 0.0f;
@@ -259,6 +261,7 @@ public class DisplayVideoStep : SequenceStep
     
     public bool looping = false;
     public bool muteAudio = false;
+    public bool subtitle = true;
 
     public float displayDuration = 10f;
 
