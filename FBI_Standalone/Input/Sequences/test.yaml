@@ -26,6 +26,10 @@ steps:
     startTime: 15.0
     eventName: "test"
 
+  - stepType: sendLSLEvent
+    startTime: 15.0
+    eventName: "test2"
+
   - stepType: playSound
     startTime: 12.0
     soundPath: "NoM_Phase1"
@@ -46,6 +50,17 @@ steps:
         dissolution:
           duration: 5.0
           delay: 5.0
+
+  - stepType: displayCameras
+    startTime: 10
+    duration: 5.0
+    cameraDatas:
+      - id: "1"
+        delay: 0.0
+        configName: 3PP
+        dissolution:
+          duration: 3.0
+          delay: 1.0
 
   - stepType: wait
     startTime: 37.0

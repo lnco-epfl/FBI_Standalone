@@ -9,7 +9,7 @@ public class SequenceStateMachine : MonoBehaviour
     private Sequence sequence;
     private string currentSequenceName;
 
-    private Dictionary<string, IState> states;
+    private Dictionary<string, Func<IState>> stateFactories;
     private Coroutine currentSequenceCoroutine;
     private List<Coroutine> activeStepCoroutines = new List<Coroutine>();
     private Dictionary<int, IState> activeStates = new Dictionary<int, IState>();
@@ -37,20 +37,20 @@ public class SequenceStateMachine : MonoBehaviour
 
     void InitializeStates()
     {
-        states = new Dictionary<string, IState>
+        stateFactories = new Dictionary<string, Func<IState>>
         {
-            { "Wait",               new WaitState() },
-            { "DisplayText",        new DisplayTextState() },
-            { "LoadScene",          new LoadSceneState() },
-            { "LoadConfig",         new LoadConfigState() },
-            { "DisplayLikertScale", new DisplayLikertScaleState() },
-            { "Break",              new BreakState() },
-            { "DisplayImage",       new DisplayImageState() },
-            { "DisplayQuestion",    new DisplayQuestionState() },
-            { "PlaySound",          new PlaySoundState() },
-            { "DisplayCameras",     new DisplayCamerasState() },
-            { "DisplayVideo",       new DisplayVideoState() },
-            { "SendLSLEvent",       new SendLSLEventState() },
+            { "Wait",               () => new WaitState() },
+            { "DisplayText",        () => new DisplayTextState() },
+            { "LoadScene",          () => new LoadSceneState() },
+            { "LoadConfig",         () => new LoadConfigState() },
+            { "DisplayLikertScale", () => new DisplayLikertScaleState() },
+            { "Break",              () => new BreakState() },
+            { "DisplayImage",       () => new DisplayImageState() },
+            { "DisplayQuestion",    () => new DisplayQuestionState() },
+            { "PlaySound",          () => new PlaySoundState() },
+            { "DisplayCameras",     () => new DisplayCamerasState() },
+            { "DisplayVideo",       () => new DisplayVideoState() },
+            { "SendLSLEvent",       () => new SendLSLEventState() },
         };
     }
 
@@ -237,12 +237,13 @@ public class SequenceStateMachine : MonoBehaviour
 
     private IEnumerator RunStep(int index, SequenceStep stepData)
     {
-        if (!states.TryGetValue(stepData.GetStateName(), out IState state))
+        if (!stateFactories.TryGetValue(stepData.GetStateName(), out Func<IState> factory))
         {
             Debug.LogWarning($"State '{stepData.GetStateName()}' not found");
             yield break;
         }
 
+        IState state = factory();
         activeStates[index] = state;
         state.Enter(stepData);
 
