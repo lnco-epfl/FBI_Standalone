@@ -2,6 +2,7 @@ using com.rfilkov.kinect;
 using PrimeTween;
 using System.Collections;
 using System.Text;
+using Unity.Multiplayer.PlayMode;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
@@ -185,7 +186,7 @@ public class DisplayCamerasState : IState
             var rigData = step.rigInterpolation;
             var origin = PlayerManager.Instance.transform;
 
-            displayText.Append($" | Rig interpolation from {rigData.startPosition} to {rigData.endPosition}");
+            displayText.Append($" with Rig interpolation from {rigData.startPosition} to {rigData.endPosition}");
 
             rigPositionTween = Tween.Position(target: origin, startValue: rigData.startPosition, endValue: rigData.endPosition, duration: rigData.duration, ease: rigData.ease);
 
@@ -201,7 +202,7 @@ public class DisplayCamerasState : IState
                 sequence.Insert(atTime: rigData.delay, rigRotationTween);
             }
 
-            afterRigInterpolationMaxWait = Mathf.Max(step.displayTime - rigData.duration - rigData.delay, afterRigInterpolationMaxWait);
+            afterRigInterpolationMaxWait = Mathf.Max(step.displayTime - rigData.delay, afterRigInterpolationMaxWait);
         }
 
         cameradelays.Append("]");
@@ -227,6 +228,15 @@ public class DisplayCamerasState : IState
         if (asInterpolation || asDissolution || asFade || step.rigInterpolation != null)
         {
             yield return sequence.ToYieldInstruction();
+
+            var currentWait = 0.0f;
+
+            if(afterDissolutionMaxWait > 0)
+            {
+                currentWait = Mathf.Max(afterDissolutionMaxWait)    ;
+            }
+
+
 
             yield return new WaitForSeconds(Mathf.Max(afterDissolutionMaxWait, afterInterpolationMaxWait, afterRigInterpolationMaxWait, afterFadeMaxWait));
         }

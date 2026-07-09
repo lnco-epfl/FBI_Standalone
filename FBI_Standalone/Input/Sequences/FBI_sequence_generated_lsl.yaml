@@ -365,7 +365,7 @@ steps:
     eventName: phase1_avatar_change_to_1PP_done
 
   - stepType: sendLSLEvent
-    startTime: 586
+    startTime: 585.208
     eventName: phase1_audio_NoM_Phase1_end
 
   - stepType: sendLSLEvent
@@ -499,7 +499,7 @@ steps:
     eventName: phase2_avatar_change_to_3PP_done
 
   - stepType: sendLSLEvent
-    startTime: 680
+    startTime: 679.456
     eventName: phase2_audio_NoM_Phase2_end
 
   - stepType: sendLSLEvent
@@ -633,7 +633,7 @@ steps:
     eventName: phase3_avatar_change_to_1PP_Flip_done
 
   - stepType: sendLSLEvent
-    startTime: 810
+    startTime: 809.68
     eventName: phase3_audio_NoM_Phase3_end
 
   - stepType: sendLSLEvent
@@ -765,7 +765,7 @@ steps:
         startConfigName: 1PP - Flip
 
   - stepType: sendLSLEvent
-    startTime: 1008
+    startTime: 1007.528
     eventName: phase4_audio_NoM_Phase4_end
 
   - stepType: sendLSLEvent
@@ -881,7 +881,7 @@ steps:
     duration: 173.0
 
   - stepType: sendLSLEvent
-    startTime: 1168
+    startTime: 1167.248
     eventName: phase5_audio_NoM_Phase5_end
 
   - stepType: wait
