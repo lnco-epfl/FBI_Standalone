@@ -1,6 +1,8 @@
 using com.rfilkov.kinect;
 using PrimeTween;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Unity.Multiplayer.PlayMode;
 using UnityEngine;
@@ -229,16 +231,29 @@ public class DisplayCamerasState : IState
         {
             yield return sequence.ToYieldInstruction();
 
-            var currentWait = 0.0f;
+            List<float> afterWaits = new List<float>();
 
             if(afterDissolutionMaxWait > 0)
             {
-                currentWait = Mathf.Max(afterDissolutionMaxWait)    ;
+                afterWaits.Add(afterDissolutionMaxWait);
             }
 
+            if (afterInterpolationMaxWait > 0)
+            {
+                afterWaits.Add(afterInterpolationMaxWait);
+            }
 
+            if (afterRigInterpolationMaxWait > 0)
+            {
+                afterWaits.Add(afterRigInterpolationMaxWait);
+            }
 
-            yield return new WaitForSeconds(Mathf.Max(afterDissolutionMaxWait, afterInterpolationMaxWait, afterRigInterpolationMaxWait, afterFadeMaxWait));
+            if (afterFadeMaxWait > 0)
+            {
+                afterWaits.Add(afterFadeMaxWait);
+            }
+
+            yield return new WaitForSeconds(afterWaits.Min());
         }
         else
         {
