@@ -4,6 +4,7 @@ using PrimeTween;
 using System;
 using UnityEngine;
 using UnityEngine.VFX;
+using YamlDotNet.Core.Tokens;
 
 public class PointCloud : MonoBehaviour
 {
@@ -47,6 +48,8 @@ public class PointCloud : MonoBehaviour
         mainVisualEffect.enabled = true;
         mainVisualEffect.SetFloat("Alpha", 0.0f);
 
+        Debug.Log($"pointcloud {this.name} DisplayMain");
+
         if (fadeTween.isAlive)
         {
             fadeTween.Stop();
@@ -65,6 +68,8 @@ public class PointCloud : MonoBehaviour
             fadeTween.Stop();
         }
 
+        Debug.Log($"pointcloud {this.name} HideMain");
+
         fadeTween = Tween.Custom(startValue: 1.0f, endValue: 0.0f, duration: fadeDuration, ease: Ease.InOutSine, onValueChange: (float value) =>
         {
             mainVisualEffect.SetFloat("Alpha", value);
@@ -76,12 +81,14 @@ public class PointCloud : MonoBehaviour
 
     public void HideDissolution()
     {
+        Debug.Log($"pointcloud {this.name} HideDissolution");
         dissolutionVisualEffect.enabled = false;
     }
 
 
     public void SetDissolutionDuration(float duration)
     {
+        Debug.Log($"pointcloud {this.name} SetDissolutionDuration {duration}");
         dissolutionVisualEffect.SetFloat("Duration", duration);
     }
 
@@ -99,6 +106,8 @@ public class PointCloud : MonoBehaviour
     [ContextMenu("StartDissolution")]
     public void StartDissolution()
     {
+        Debug.Log($"pointcloud {this.name} StartDissolution");
+
         mainVisualEffect.enabled = true;
         dissolutionVisualEffect.enabled = true;
 
@@ -106,6 +115,7 @@ public class PointCloud : MonoBehaviour
 
         Tween.Custom(startValue: 1.0f, endValue: 0.0f, duration: 0.5f, ease: Ease.Linear, onValueChange: (float value) =>
         {
+            Debug.Log($"pointcloud {this.name} mainVisualEffect.SetFloat {value}");
             mainVisualEffect.SetFloat("Alpha", value);
         }).OnComplete(() =>
         {

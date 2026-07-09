@@ -441,7 +441,7 @@ steps:
 
   - stepType: displayCameras
     startTime: 600
-    duration: 4
+    duration: 5.0
     cameraDatas:
     - id: '1'
       delay: 0.0

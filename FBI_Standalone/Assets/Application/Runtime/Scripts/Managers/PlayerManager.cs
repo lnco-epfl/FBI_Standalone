@@ -13,6 +13,8 @@ public class PlayerManager : MonoBehaviour
     private static PlayerManager instance;
     public static PlayerManager Instance { get { return instance; } }
 
+    private Vector3 lastPosition;
+
     private void Awake()
     {
         if (instance != null && instance != this) { Destroy(this.gameObject); } else { instance = this; }
@@ -23,6 +25,21 @@ public class PlayerManager : MonoBehaviour
         DisplayAvatar(false);
         DisplayControllers(false);
     }
+
+    private void LateUpdate()
+    {
+ 
+        Vector3 delta = transform.position - lastPosition;
+
+        if (delta != Vector3.zero && WorldUIManager.Instance != null)
+        {
+            WorldUIManager.Instance.Position += delta;
+        }
+
+        lastPosition = transform.position;
+    }
+
+
 
     public void DisplayAvatar(bool isDisplay)
     {

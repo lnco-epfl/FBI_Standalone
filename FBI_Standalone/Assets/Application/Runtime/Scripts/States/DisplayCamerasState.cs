@@ -157,7 +157,7 @@ public class DisplayCamerasState : IState
 
                 sequence.Insert(atTime: 0, Tween.Delay(duration: cameraData.dissolution.delay).OnComplete(() => capturedPointCloud.StartDissolution()));
 
-                afterDissolutionMaxWait = Mathf.Max(step.displayTime - cameraData.dissolution.duration - cameraData.dissolution.delay, afterDissolutionMaxWait);
+                afterDissolutionMaxWait = Mathf.Max(step.displayTime - cameraData.dissolution.delay, afterDissolutionMaxWait);
 
             }
 
@@ -171,7 +171,7 @@ public class DisplayCamerasState : IState
 
                 sequence.Insert(atTime: 0, Tween.Delay(duration: cameraData.fade.delay).OnComplete(() => capturedPointCloud.StartFadeOut(cameraData.fade.duration)));
 
-                afterFadeMaxWait = Mathf.Max(step.displayTime - cameraData.fade.duration - cameraData.fade.delay, afterFadeMaxWait);
+                afterFadeMaxWait = Mathf.Max(step.displayTime - cameraData.fade.delay, afterFadeMaxWait);
 
             }
 
@@ -235,6 +235,8 @@ public class DisplayCamerasState : IState
             yield return new WaitForSeconds(step.displayTime);
         }
 
+
+        Debug.Log($"DisplayCamerasState execute {step.startTime}");
         PointCloudManager.Instance.HideSpawnedPointClouds(step.ownedPointClouds);
 
         for (int i = 0; i < step.camerasData.Count; i++)
@@ -284,6 +286,7 @@ public class DisplayCamerasState : IState
             }
         }
 
+        Debug.Log($"DisplayCamerasState Exit {step.startTime}");
         PointCloudManager.Instance.HideSpawnedPointClouds(step.ownedPointClouds);
 
         PointCloudManager.Instance.DespawnPointClouds(step.ownedPointClouds);

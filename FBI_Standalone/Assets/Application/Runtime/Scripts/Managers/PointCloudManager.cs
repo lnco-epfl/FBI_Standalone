@@ -189,6 +189,8 @@ public class PointCloudManager : MonoBehaviour
 
     public void DisplaySpawnedPointClouds(List<PointCloud> pointClouds)
     {
+
+        Debug.Log($"DisplaySpawnedPointClouds count:{pointClouds.Count}");
         foreach (var pointCloud in pointClouds)
         {
             pointCloud.DisplayMain();

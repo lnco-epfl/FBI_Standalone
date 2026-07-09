@@ -35,8 +35,8 @@ steps:
     soundPath: "NoM_Phase1"
 
   - stepType: displayCameras
-    startTime: 12.0
-    duration: 20
+    startTime: 15.0
+    duration: 5
     cameraDatas:
 #      - id: "1"
 #        delay: 0.0
@@ -47,9 +47,9 @@ steps:
       - id: "1"
         delay: 0.0
         configName: Mirror
-        dissolution:
+        fade:
           duration: 5.0
-          delay: 5.0
+          delay: 1.0
 
   - stepType: displayCameras
     startTime: 10
@@ -58,7 +58,7 @@ steps:
       - id: "1"
         delay: 0.0
         configName: 3PP
-        dissolution:
+        fade:
           duration: 3.0
           delay: 1.0
 
