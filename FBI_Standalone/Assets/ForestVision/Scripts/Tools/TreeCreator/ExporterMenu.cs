@@ -124,7 +124,7 @@ namespace UnityFBXExporter
             {
                 if (oldPath.StartsWith("/Assets"))
                 {
-                    oldPath = Application.dataPath.Remove(Application.dataPath.LastIndexOf("/Assets"), 7) + oldPath;
+                    oldPath = UnityEngine.Application.dataPath.Remove(UnityEngine.Application.dataPath.LastIndexOf("/Assets"), 7) + oldPath;
                     oldPath = oldPath.Remove(oldPath.LastIndexOf('/'), oldPath.Length - oldPath.LastIndexOf('/'));
                 }
                 newPath = EditorUtility.SaveFilePanel("Export FBX File", oldPath, name + ".fbx", "fbx");

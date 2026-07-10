@@ -80,7 +80,7 @@ public class FV_Collapse : EditorWindow
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.TextField(optimizedPath, GUILayout.ExpandWidth(false));
                 if (GUILayout.Button("Browse", GUILayout.ExpandWidth(false)))
-                    optimizedPath = GetRelativePath(EditorUtility.SaveFolderPanel("Path to Save Tree", optimizedPath, Application.persistentDataPath));
+                    optimizedPath = GetRelativePath(EditorUtility.SaveFolderPanel("Path to Save Tree", optimizedPath, UnityEngine.Application.persistentDataPath));
                 EditorGUILayout.EndHorizontal();
 
 

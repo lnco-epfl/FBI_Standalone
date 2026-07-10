@@ -34,7 +34,7 @@ namespace ForestVision.FV_TreeEditor
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.TextField(path, GUILayout.ExpandWidth(false));
             if (GUILayout.Button("Browse", GUILayout.ExpandWidth(false)))
-                path = EditorUtility.SaveFolderPanel("Path to Save Images", path, Application.dataPath);
+                path = EditorUtility.SaveFolderPanel("Path to Save Images", path, UnityEngine.Application.dataPath);
             EditorGUILayout.EndHorizontal();
 
 
@@ -98,7 +98,7 @@ namespace ForestVision.FV_TreeEditor
             {
                 if (path == "")
                 {
-                    path = EditorUtility.SaveFolderPanel("Path to Save Images", path, Application.dataPath);
+                    path = EditorUtility.SaveFolderPanel("Path to Save Images", path, UnityEngine.Application.dataPath);
                     Debug.Log("Path Set");
                     TakeHiResShot();
                 }
@@ -111,7 +111,7 @@ namespace ForestVision.FV_TreeEditor
             if (GUILayout.Button("Open Screenshot \nLocation", GUILayout.MinHeight(70), GUILayout.MaxWidth(130)))
             {
 
-                Application.OpenURL("file://" + path);
+                UnityEngine.Application.OpenURL("file://" + path);
             }
 
             EditorGUILayout.EndHorizontal();
@@ -144,7 +144,7 @@ namespace ForestVision.FV_TreeEditor
 
                 System.IO.File.WriteAllBytes(filename, bytes);
                 Debug.Log(string.Format("Took screenshot to: {0}", filename));
-                Application.OpenURL(filename);
+                UnityEngine.Application.OpenURL(filename);
                 takeHiResShot = false;
             }
 

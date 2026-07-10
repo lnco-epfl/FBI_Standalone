@@ -99,7 +99,7 @@ public class FV_Prefabber : EditorWindow
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.TextField(prefabPath, GUILayout.ExpandWidth(false));
                 if (GUILayout.Button("Browse", GUILayout.ExpandWidth(false)))
-                    prefabPath = GetRelativePath(EditorUtility.SaveFolderPanel("Path to Save Prefab", prefabPath, Application.persistentDataPath));
+                    prefabPath = GetRelativePath(EditorUtility.SaveFolderPanel("Path to Save Prefab", prefabPath, UnityEngine.Application.persistentDataPath));
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.Space();
             }

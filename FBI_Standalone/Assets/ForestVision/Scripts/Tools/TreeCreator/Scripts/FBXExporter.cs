@@ -180,7 +180,7 @@ namespace UnityFBXExporter
 			sb.AppendLine("\t\tProperties70:  {");
 
 			// Information on how this item was originally generated
-			string documentInfoPaths = Application.dataPath + newPath + ".fbx";
+			string documentInfoPaths = UnityEngine.Application.dataPath + newPath + ".fbx";
 			sb.AppendLine("\t\t\tP: \"DocumentUrl\", \"KString\", \"Url\", \"\", \"" + documentInfoPaths + "\"");
 			sb.AppendLine("\t\t\tP: \"SrcDocumentUrl\", \"KString\", \"Url\", \"\", \"" + documentInfoPaths + "\"");
 			sb.AppendLine("\t\t\tP: \"Original\", \"Compound\", \"\", \"\"");

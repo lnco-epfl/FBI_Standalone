@@ -262,7 +262,7 @@ namespace UnityFBXExporter
 			connections = "";
 			return false;
 #endif
-			string fullDataFolderPath = Application.dataPath;
+			string fullDataFolderPath = UnityEngine.Application.dataPath;
 			string textureFilePathFullName = originalAssetPath;
 			string textureFileName = originalAssetPath.Remove(0, originalAssetPath.LastIndexOf('/') + 1); // Removes the path and gives the file name
 			string textureName = textureFileName.Remove(textureFileName.LastIndexOf('.'), textureFileName.Length - textureFileName.LastIndexOf('.'));
