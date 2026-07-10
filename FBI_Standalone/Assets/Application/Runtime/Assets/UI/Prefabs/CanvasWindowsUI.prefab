@@ -812,8 +812,13 @@ MonoBehaviour:
   canvaUIRotationYInputField: {fileID: 0}
   canvaUIRotationZInputField: {fileID: 0}
   flexibleColorPickerPrefab: {fileID: 0}
+  scene:
+    asset: {fileID: 0}
+    guid: 00000000000000000000000000000000
   sceneDropdown: {fileID: 0}
   availableScenes: []
+  worldSpaceCanvasPrefab: {fileID: 0}
+  worldCanvasEditToggle: {fileID: 0}
   references:
     version: 2
     RefIds: []

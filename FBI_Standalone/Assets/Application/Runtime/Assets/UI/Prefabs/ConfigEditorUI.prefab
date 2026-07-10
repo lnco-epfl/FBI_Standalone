@@ -14305,7 +14305,7 @@ PrefabInstance:
       objectReference: {fileID: 3549997185587298545, guid: fddd540d98cfd3646b1a1741e47ab04b, type: 3}
     - target: {fileID: 1907364733944234094, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: availableScenes.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1907364733944234094, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: canvaUIPositionXInputField
@@ -14348,6 +14348,10 @@ PrefabInstance:
       value: fac26edd139e6c7479b236ef8f6aefbe
       objectReference: {fileID: 0}
     - target: {fileID: 1907364733944234094, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
+      propertyPath: availableScenes.Array.data[4].guid
+      value: 3869b54f7a91c024e91fe6c0f41bb122
+      objectReference: {fileID: 0}
+    - target: {fileID: 1907364733944234094, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: availableScenes.Array.data[0].asset
       value: 
       objectReference: {fileID: 102900000, guid: 1124e634fc283304d876957226301a9e, type: 3}
@@ -14363,6 +14367,10 @@ PrefabInstance:
       propertyPath: availableScenes.Array.data[3].asset
       value: 
       objectReference: {fileID: 102900000, guid: fac26edd139e6c7479b236ef8f6aefbe, type: 3}
+    - target: {fileID: 1907364733944234094, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
+      propertyPath: availableScenes.Array.data[4].asset
+      value: 
+      objectReference: {fileID: 102900000, guid: 3869b54f7a91c024e91fe6c0f41bb122, type: 3}
     - target: {fileID: 3031714689053096085, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: m_Type
       value: 0
@@ -14457,7 +14465,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4726481016543159768, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: m_PresetInfoIsWorld
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5122322001564028188, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: m_SizeDelta.x
