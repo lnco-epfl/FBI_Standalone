@@ -63,11 +63,17 @@ public class DisplayCamerasState : IState
 
             displayText.AppendLine("");
 
-            cameradelays.Append(cameraData.id);
-            cameradelays.Append(",");
-
+            cameradelays.Append(cameraData.delay);
+            if(step.camerasData.Count >= 1 && step.camerasData.Count -1 > i)
+            {
+                cameradelays.Append(",");
+            }
+         
             cameraIDs.Append(pointCloudID);
-            cameraIDs.Append(",");
+            if (step.camerasData.Count >= 1 && step.camerasData.Count -1 > i)
+            {
+                cameraIDs.Append(",");
+            }
 
             ConfigFile configFile = null;
             ConfigFile startConfigFile = null;

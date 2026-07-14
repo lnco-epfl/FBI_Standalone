@@ -5,7 +5,7 @@ stimulusDisplay:
   position:
     x: 0
     y: 0.9
-    z: 2
+    z: 0.5
   rotation:
     x: 0
     y: 0

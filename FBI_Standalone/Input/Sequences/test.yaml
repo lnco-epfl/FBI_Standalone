@@ -66,67 +66,70 @@ steps:
     startTime: 37.0
     duration: 2.0
 
-  - stepType: DisplayCameras
-    startTime: 39
-    duration: 60
+  - stepType: displayCameras
+    startTime: 38
+    duration: 20
     cameraDatas:
-      - id: "1"
-        delay: 0.0
-        configName: "1PP"
-        fade:
-          duration: 1.5
-          delay: 2.8
-
-      - id: "2"
-        delay: 0.0
-        configName: "3PP - Back"
-
+    - id: '1'
+      delay: 0.0
+      configName: 1PP
+      fade:
+        duration: 1.5
+        delay: 10
+    - id: '2'
+      delay: 0.0
+      configName: 3PP - Back
     rigInterpolation:
-      startPosition: { x: 0.0, y: 0.0, z: 0.0 }
-      endPosition: { x: 0.0, y: 0.0, z: -1.5 }
+      startPosition:
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      endPosition:
+        x: 0.0
+        y: 0.0
+        z: -1.5
       startYaw: 0.0
       endYaw: 0.0
-      delay: 1.0       
-      duration: 10.0    
-      ease: InOutSine  
+      delay: 0.0
+      duration: 5.0
+      ease: InOutSine
+
+  - stepType: displayCameras
+    startTime: 60
+    duration: 5
+    cameraDatas:
+    - id: '2'
+      delay: 0.0
+      configName: 3PP - Back
+
+  - stepType: displayCameras
+    startTime: 70
+    duration: 20
+    cameraDatas:
+    - id: '1'
+      delay: 0.0
+      configName: 1PP - Flip
+    - id: '2'
+      delay: 0.0
+      configName: 3PP - Back
+      fade:
+        duration: 1.5
+        delay: 5
+    rigInterpolation:
+      startPosition:
+        x: 0.0
+        y: 0.0
+        z: -1.5
+      endPosition:
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      startYaw: 0.0
+      endYaw: 0.0
+      delay: 0.0
+      duration: 5.0
+      ease: InOutSine
       
-
- #- stepType: displayCameras
- #  startTime: 39.0
- #  duration: 20
- #  cameraDatas:
- #    - id: "1"
- #      delay: 0.0
- #      configName: 1PP
- #      interpolation:
- #        duration: 3.0
- #        delay: 5.0
- #        ease: InOutQuad
- #        startConfigName: Mirror
-
-  - stepType: displayCameras
-    startTime: 59.0
-    duration: 20.0
-    cameraDatas:
-      - id: "1"
-        delay: 0.5
-        configName: 1PP
-
-  - stepType: loadConfig
-    startTime: 79.0
-    configName: 3PP2
-
-  - stepType: wait
-    startTime: 80.0
-    duration: 2.0
-
-  - stepType: displayCameras
-    startTime: 82.0
-    duration: 20.0
-    cameraDatas:
-      - id: "2"
-        delay: 0.0
-
   - stepType: wait
     startTime: 102.0
     duration: 2.0

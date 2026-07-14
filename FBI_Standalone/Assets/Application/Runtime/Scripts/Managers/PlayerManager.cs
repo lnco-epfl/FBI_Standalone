@@ -29,14 +29,14 @@ public class PlayerManager : MonoBehaviour
     private void LateUpdate()
     {
  
-        Vector3 delta = transform.position - lastPosition;
+        /*Vector3 delta = transform.position - lastPosition;
 
         if (delta != Vector3.zero && WorldUIManager.Instance != null)
         {
             WorldUIManager.Instance.Position += delta;
         }
 
-        lastPosition = transform.position;
+        lastPosition = transform.position;*/
     }
 
 
