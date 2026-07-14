@@ -35,6 +35,13 @@ public class BreakState : IState
             currentValue--;
         }
 
+        if(skipFromUser)
+        {
+            var nextStepTime = step.startTime + step.duration;
+
+            ExperimentManager.Instance.SeekTime(nextStepTime);
+        }
+
         WorldUIManager.Instance.HideBreak();
 
     }

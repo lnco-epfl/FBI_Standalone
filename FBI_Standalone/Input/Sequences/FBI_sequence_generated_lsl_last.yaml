@@ -332,7 +332,7 @@ steps:
 
   - stepType: loadScene
     startTime: 519.984
-    scenePath: EmptyRoom
+    scenePath: ForestScene
 
   # settle: hold config before the phase starts
 
@@ -796,7 +796,7 @@ steps:
 
   - stepType: loadScene
     startTime: 1267.984
-    scenePath: EmptyRoom
+    scenePath: ForestScene
 
   # settle: 'the situation from before' - both avatars visible again
 

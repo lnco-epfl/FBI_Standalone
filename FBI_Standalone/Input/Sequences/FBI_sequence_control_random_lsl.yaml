@@ -1,0 +1,691 @@
+# =========================================================================
+# FBI Standalone - CONTROL Sequence (GENERATED - do not edit by hand)
+# Random-order FBI (pre + post) with a meditation gap of 1200 s (20 min)
+#
+# Randomization: seed 42
+# Pre  FBI condition order: back-sync, front-async, back-async, front-sync
+# Post FBI condition order: back-async, back-sync, front-sync, front-async
+#
+# Camera mapping (per lab convention):
+#   id "1" = 1PP / 3PP FRONT view
+#   id "2" = 3PP BACK view
+# =========================================================================
+
+steps:
+
+
+  # =========================================================================
+  # PRE FBI MEASUREMENT (random order: back-sync, front-async, back-async, front-sync)
+  # =========================================================================
+
+  - stepType: loadScene
+    startTime: 0
+    scenePath: BlackScene
+
+  - stepType: displayText
+    startTime: 1
+    text: You will now see a body in front of you and feel a touch in the back and on your shoulders. Then we will ask you some questions and all this will be repeated four times.
+    duration: 17.904
+
+  - stepType: playSound
+    startTime: 1
+    soundPath: FBI_instructions_audio
+
+  # --- Back Sync / SYNC stroking (delay 0.0 s) ---
+
+  - stepType: wait
+    startTime: 18.904
+    duration: 1
+
+  - stepType: sendLSLEvent
+    startTime: 19.904
+    eventName: config_loaded_3PP
+
+  - stepType: loadConfig
+    startTime: 19.904
+    configName: 3PP
+
+  - stepType: displayImage
+    startTime: 20.904
+    imagePath: plus
+    scale: 0.3
+    duration: 3.0
+
+  - stepType: sendLSLEvent
+    startTime: 23.904
+    eventName: fbi_back_sync_cue_audio_start
+
+  - stepType: playSound
+    startTime: 23.904
+
+  - stepType: sendLSLEvent
+    startTime: 23.904
+    eventName: fbi_back_sync_avatar_on
+
+  - stepType: displayCameras
+    startTime: 23.904
+    duration: 90
+    cameraDatas:
+    - id: '2'
+      delay: 0.0
+      configName: 3PP
+
+  - stepType: sendLSLEvent
+    startTime: 113.904
+    eventName: fbi_back_sync_avatar_off
+
+  - stepType: wait
+    startTime: 113.904
+    duration: 1
+
+  - stepType: displayLikertScale
+    startTime: 114.904
+    blocking: true
+    question: I felt that the body I saw was my body.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 115.904
+    blocking: true
+    question: I felt that the touch I felt was located where I saw the stroking.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 116.904
+    blocking: true
+    question: I felt as if I have three bodies.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  # --- Front Async / ASYNC stroking (delay 0.5 s) ---
+
+  - stepType: wait
+    startTime: 117.904
+    duration: 1
+
+  - stepType: sendLSLEvent
+    startTime: 118.904
+    eventName: config_loaded_Mirror_Flip
+
+  - stepType: loadConfig
+    startTime: 118.904
+    configName: Mirror - Flip
+
+  - stepType: displayImage
+    startTime: 119.904
+    imagePath: plus
+    scale: 0.3
+    duration: 3.0
+
+  - stepType: sendLSLEvent
+    startTime: 122.904
+    eventName: fbi_front_async_cue_audio_start
+
+  - stepType: playSound
+    startTime: 122.904
+
+  - stepType: sendLSLEvent
+    startTime: 122.904
+    eventName: fbi_front_async_avatar_on
+
+  - stepType: displayCameras
+    startTime: 122.904
+    duration: 90
+    cameraDatas:
+    - id: '1'
+      delay: 0.5
+      configName: Mirror - Flip
+
+  - stepType: sendLSLEvent
+    startTime: 212.904
+    eventName: fbi_front_async_avatar_off
+
+  - stepType: wait
+    startTime: 212.904
+    duration: 1
+
+  - stepType: displayLikertScale
+    startTime: 213.904
+    blocking: true
+    question: I felt that the body I saw was my body.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 214.904
+    blocking: true
+    question: I felt that the touch I felt was located where I saw the stroking.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 215.904
+    blocking: true
+    question: I felt as if I have three bodies.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  # --- Back Async / ASYNC stroking (delay 0.5 s) ---
+
+  - stepType: wait
+    startTime: 216.904
+    duration: 1
+
+  - stepType: sendLSLEvent
+    startTime: 217.904
+    eventName: config_loaded_3PP
+
+  - stepType: loadConfig
+    startTime: 217.904
+    configName: 3PP
+
+  - stepType: displayImage
+    startTime: 218.904
+    imagePath: plus
+    scale: 0.3
+    duration: 3.0
+
+  - stepType: sendLSLEvent
+    startTime: 221.904
+    eventName: fbi_back_async_cue_audio_start
+
+  - stepType: playSound
+    startTime: 221.904
+
+  - stepType: sendLSLEvent
+    startTime: 221.904
+    eventName: fbi_back_async_avatar_on
+
+  - stepType: displayCameras
+    startTime: 221.904
+    duration: 90
+    cameraDatas:
+    - id: '2'
+      delay: 0.5
+      configName: 3PP
+
+  - stepType: sendLSLEvent
+    startTime: 311.904
+    eventName: fbi_back_async_avatar_off
+
+  - stepType: wait
+    startTime: 311.904
+    duration: 1
+
+  - stepType: displayLikertScale
+    startTime: 312.904
+    blocking: true
+    question: I felt that the body I saw was my body.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 313.904
+    blocking: true
+    question: I felt that the touch I felt was located where I saw the stroking.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 314.904
+    blocking: true
+    question: I felt as if I have three bodies.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  # --- Front Sync / SYNC stroking (delay 0.0 s) ---
+
+  - stepType: wait
+    startTime: 315.904
+    duration: 1
+
+  - stepType: sendLSLEvent
+    startTime: 316.904
+    eventName: config_loaded_Mirror_Flip
+
+  - stepType: loadConfig
+    startTime: 316.904
+    configName: Mirror - Flip
+
+  - stepType: displayImage
+    startTime: 317.904
+    imagePath: plus
+    scale: 0.3
+    duration: 3.0
+
+  - stepType: sendLSLEvent
+    startTime: 320.904
+    eventName: fbi_front_sync_avatar_on
+
+  - stepType: displayCameras
+    startTime: 320.904
+    duration: 90
+    cameraDatas:
+    - id: '1'
+      delay: 0.0
+      configName: Mirror - Flip
+
+  - stepType: sendLSLEvent
+    startTime: 410.904
+    eventName: fbi_front_sync_avatar_off
+
+  - stepType: wait
+    startTime: 410.904
+    duration: 1
+
+  - stepType: displayLikertScale
+    startTime: 411.904
+    blocking: true
+    question: I felt that the body I saw was my body.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 412.904
+    blocking: true
+    question: I felt that the touch I felt was located where I saw the stroking.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 413.904
+    blocking: true
+    question: I felt as if I have three bodies.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: break
+    startTime: 414.904
+    text: Baseline measurement complete. Please take a short break.
+    duration: 30
+
+  # =========================================================================
+  # MEDITATION - 1200 s (20 min)
+  # =========================================================================
+
+  - stepType: sendLSLEvent
+    startTime: 444.904
+    eventName: start_meditation
+
+  - stepType: wait
+    startTime: 444.904
+    duration: 1200
+
+  - stepType: sendLSLEvent
+    startTime: 1644.904
+    eventName: end_meditation
+
+  - stepType: break
+    startTime: 1644.904
+    text: This concludes the meditative phase. The following is the final measurement.
+    duration: 60
+
+  # =========================================================================
+  # POST FBI MEASUREMENT (random order: back-async, back-sync, front-sync, front-async)
+  # =========================================================================
+
+  - stepType: loadScene
+    startTime: 1704.904
+    scenePath: BlackScene
+
+  - stepType: displayText
+    startTime: 1705.904
+    text: Welcome to Full Body Illusion experiment
+    duration: 4
+
+  - stepType: displayText
+    startTime: 1709.904
+    text: You will now see a body in front of you and feel a touch in the back and on your shoulders. Then we will ask you some questions and all this will be repeated four times.
+    duration: 17.904
+
+  - stepType: playSound
+    startTime: 1709.904
+    soundPath: FBI_instructions_audio
+
+  # --- Back Async / ASYNC stroking (delay 0.5 s) ---
+
+  - stepType: wait
+    startTime: 1727.808
+    duration: 1
+
+  - stepType: sendLSLEvent
+    startTime: 1728.808
+    eventName: config_loaded_3PP
+
+  - stepType: loadConfig
+    startTime: 1728.808
+    configName: 3PP
+
+  - stepType: displayImage
+    startTime: 1729.808
+    imagePath: plus
+    scale: 0.3
+    duration: 3.0
+
+  - stepType: sendLSLEvent
+    startTime: 1732.808
+    eventName: fbi_back_async_cue_audio_start
+
+  - stepType: playSound
+    startTime: 1732.808
+
+  - stepType: sendLSLEvent
+    startTime: 1732.808
+    eventName: fbi_back_async_avatar_on
+
+  - stepType: displayCameras
+    startTime: 1732.808
+    duration: 90
+    cameraDatas:
+    - id: '2'
+      delay: 0.5
+      configName: 3PP
+
+  - stepType: sendLSLEvent
+    startTime: 1822.808
+    eventName: fbi_back_async_avatar_off
+
+  - stepType: wait
+    startTime: 1822.808
+    duration: 1
+
+  - stepType: displayLikertScale
+    startTime: 1823.808
+    blocking: true
+    question: I felt that the body I saw was my body.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 1824.808
+    blocking: true
+    question: I felt that the touch I felt was located where I saw the stroking.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 1825.808
+    blocking: true
+    question: I felt as if I have three bodies.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  # --- Back Sync / SYNC stroking (delay 0.0 s) ---
+
+  - stepType: wait
+    startTime: 1826.808
+    duration: 1
+
+  - stepType: sendLSLEvent
+    startTime: 1827.808
+    eventName: config_loaded_3PP
+
+  - stepType: loadConfig
+    startTime: 1827.808
+    configName: 3PP
+
+  - stepType: displayImage
+    startTime: 1828.808
+    imagePath: plus
+    scale: 0.3
+    duration: 3.0
+
+  - stepType: sendLSLEvent
+    startTime: 1831.808
+    eventName: fbi_back_sync_cue_audio_start
+
+  - stepType: playSound
+    startTime: 1831.808
+
+  - stepType: sendLSLEvent
+    startTime: 1831.808
+    eventName: fbi_back_sync_avatar_on
+
+  - stepType: displayCameras
+    startTime: 1831.808
+    duration: 90
+    cameraDatas:
+    - id: '2'
+      delay: 0.0
+      configName: 3PP
+
+  - stepType: sendLSLEvent
+    startTime: 1921.808
+    eventName: fbi_back_sync_avatar_off
+
+  - stepType: wait
+    startTime: 1921.808
+    duration: 1
+
+  - stepType: displayLikertScale
+    startTime: 1922.808
+    blocking: true
+    question: I felt that the body I saw was my body.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 1923.808
+    blocking: true
+    question: I felt that the touch I felt was located where I saw the stroking.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 1924.808
+    blocking: true
+    question: I felt as if I have three bodies.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  # --- Front Sync / SYNC stroking (delay 0.0 s) ---
+
+  - stepType: wait
+    startTime: 1925.808
+    duration: 1
+
+  - stepType: sendLSLEvent
+    startTime: 1926.808
+    eventName: config_loaded_Mirror_Flip
+
+  - stepType: loadConfig
+    startTime: 1926.808
+    configName: Mirror - Flip
+
+  - stepType: displayImage
+    startTime: 1927.808
+    imagePath: plus
+    scale: 0.3
+    duration: 3.0
+
+  - stepType: sendLSLEvent
+    startTime: 1930.808
+    eventName: fbi_front_sync_avatar_on
+
+  - stepType: displayCameras
+    startTime: 1930.808
+    duration: 90
+    cameraDatas:
+    - id: '1'
+      delay: 0.0
+      configName: Mirror - Flip
+
+  - stepType: sendLSLEvent
+    startTime: 2020.808
+    eventName: fbi_front_sync_avatar_off
+
+  - stepType: wait
+    startTime: 2020.808
+    duration: 1
+
+  - stepType: displayLikertScale
+    startTime: 2021.808
+    blocking: true
+    question: I felt that the body I saw was my body.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 2022.808
+    blocking: true
+    question: I felt that the touch I felt was located where I saw the stroking.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 2023.808
+    blocking: true
+    question: I felt as if I have three bodies.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  # --- Front Async / ASYNC stroking (delay 0.5 s) ---
+
+  - stepType: wait
+    startTime: 2024.808
+    duration: 1
+
+  - stepType: sendLSLEvent
+    startTime: 2025.808
+    eventName: config_loaded_Mirror_Flip
+
+  - stepType: loadConfig
+    startTime: 2025.808
+    configName: Mirror - Flip
+
+  - stepType: displayImage
+    startTime: 2026.808
+    imagePath: plus
+    scale: 0.3
+    duration: 3.0
+
+  - stepType: sendLSLEvent
+    startTime: 2029.808
+    eventName: fbi_front_async_cue_audio_start
+
+  - stepType: playSound
+    startTime: 2029.808
+
+  - stepType: sendLSLEvent
+    startTime: 2029.808
+    eventName: fbi_front_async_avatar_on
+
+  - stepType: displayCameras
+    startTime: 2029.808
+    duration: 90
+    cameraDatas:
+    - id: '1'
+      delay: 0.5
+      configName: Mirror - Flip
+
+  - stepType: sendLSLEvent
+    startTime: 2119.808
+    eventName: fbi_front_async_avatar_off
+
+  - stepType: wait
+    startTime: 2119.808
+    duration: 1
+
+  - stepType: displayLikertScale
+    startTime: 2120.808
+    blocking: true
+    question: I felt that the body I saw was my body.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 2121.808
+    blocking: true
+    question: I felt that the touch I felt was located where I saw the stroking.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 2122.808
+    blocking: true
+    question: I felt as if I have three bodies.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: wait
+    startTime: 2123.808
+    duration: 1
+
+  - stepType: displayText
+    startTime: 2124.808
+    text: Thank you for participating in the experiment!
+    duration: 3

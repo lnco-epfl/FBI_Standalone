@@ -1,6 +1,6 @@
 configName: 1PP - Flip
 createdAt: 2026-04-23 15:35:05
-lastModified: 2026-07-07 08:32:10
+lastModified: 2026-07-14 15:06:31
 stimulusDisplay:
   position:
     x: 0
@@ -24,19 +24,19 @@ pointClouds:
   position:
     x: 0.07
     y: 1.62
-    z: 1.28
+    z: 0.84
   rotation:
-    x: 44.57001
-    y: 186.81
-    z: 1.840001
+    x: 44.77001
+    y: 185.25
+    z: 4.967257
   scale:
     x: -1
     y: 1
     z: 1
-  depthMax: 2.537773
-  depthMin: 1.235421
+  depthMax: 3.877128
+  depthMin: 0.6714821
   clampXMin: 0.3427096
-  clampXMax: 1
+  clampXMax: 0.6636928
   clampYMin: 0
   clampYMax: 1
 - iD: 2

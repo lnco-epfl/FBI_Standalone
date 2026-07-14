@@ -307,7 +307,7 @@ public class DisplayCamerasState : IState
         if (step.rigInterpolation != null && rigInterpolationStarted)
         {
             var rigData = step.rigInterpolation;
-            var origin = ResetXROrigin.Instance.origin;
+            var origin = PlayerManager.Instance.transform;
 
             origin.position = rigData.endPosition;
 
