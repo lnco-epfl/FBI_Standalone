@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -334,7 +335,10 @@ public class UIManager : MonoBehaviour
 
     private void OnStartSetupButtonPress()
     {
-        CreateSetupPointCloudUI();
+
+        ExperimentManager.Instance.StopExperiment();
+
+        StartCoroutine(WaitForNeutralScene(CreateSetupPointCloudUI));
     }
 
     private void OnConfigDropDownChanged(int index)
@@ -620,11 +624,20 @@ public class UIManager : MonoBehaviour
     public void CreateSetupPointCloudUI()
     {
 
+     
+
         var canvasUI = Instantiate(canvasSetupPointCloudUIPrefab, canvasDesktopGroup.transform);
         currentCanvasGraphUIs.Add(canvasUI);
 
         canvasUI.OnCanvasSetupPointCloudUIDestroy += OnCanvasSetupPointCloudUIDestroy;
 
+    }
+
+    private IEnumerator WaitForNeutralScene(Action callback)
+    {
+        yield return new WaitWhile(() => SceneLoaderManager.Instance.CurrentScene.name != "Neutral");
+
+        callback.Invoke();
     }
 
     private void OnCanvasSetupPointCloudUIDestroy(CanvasSetupPointCloudUI canvasSetupPointCloudUI)
