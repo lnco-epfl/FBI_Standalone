@@ -30,6 +30,7 @@ public class OutputFileData
     public double LikertResponseTime { get; set; }
 
     public string QuestionResponse { get; set; }
+    public string QuestionResponseIndex { get; internal set; }
     public double QuestionResponseTime { get; set; }
 
 
@@ -61,6 +62,8 @@ public class OutputFileData
 
         QuestionResponse = string.Empty;
         QuestionResponseTime = 0f;
+        QuestionResponseIndex = string.Empty;
+
     }
 
     public void Reset()

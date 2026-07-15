@@ -57,12 +57,12 @@ public class GazeReticle : MonoBehaviour
 
     public void DisplayGazeCursor()
     {
-        FadeCanvasGroup(canvasGroup, 0.25f, 1.0f);
+        FadeCanvasGroup(canvasGroup, 0.25f, 1.0f, () => gazeInteractor.enabled = true);
     }
 
     public void HideGazeCursor()
     {
-        FadeCanvasGroup(canvasGroup, 0.25f, 0.0f); 
+        FadeCanvasGroup(canvasGroup, 0.25f, 0.0f, () => gazeInteractor.enabled = false); 
     }
 
 
@@ -90,8 +90,6 @@ public class GazeReticle : MonoBehaviour
         if (!string.IsNullOrEmpty(interactiveTag) && args.uiObject.CompareTag(interactiveTag))
         {
             isGazing = false;
-
-
             progressRing.color = Color.white;
         }
     }

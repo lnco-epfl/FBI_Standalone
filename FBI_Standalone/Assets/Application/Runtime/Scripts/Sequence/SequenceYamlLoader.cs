@@ -148,6 +148,7 @@ public class SequenceYamlLoader
                     blocking = data.blocking,
                     question = data.question,
                     responseOptions = data.options,
+                    allowMultipleResponses = data.allowMultipleResponses
                 };
 
             case SequenceStepWrapper.StepType.PlaySound:
@@ -255,6 +256,9 @@ public class StepData
     public string question;
     public string leftLabel;
     public string rightLabel;
+
+    //questions
+    public bool allowMultipleResponses;
     public List<string> options;
 
     // Likert

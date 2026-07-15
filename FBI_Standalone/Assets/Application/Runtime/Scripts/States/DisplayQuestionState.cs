@@ -1,6 +1,9 @@
 using NUnit.Framework.Internal;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
@@ -9,15 +12,20 @@ using UnityEngine.Localization.Tables;
 public enum QuestionAnswer
 {
     None = -1,
-    Left = 0,
-    Right = 1
+    One = 1,
+    Two = 2,
+    Three = 3,
+    Four = 4,
+    Five = 5,
+    Six = 6,
+
 }
 
 public class DisplayQuestionState : IState
 {
     private DisplayQuestionStep step;
 
-    private QuestionAnswer questionValue = QuestionAnswer.None;
+    private List<QuestionAnswer> questionValue = new List<QuestionAnswer>();
 
     public void Enter(SequenceStep sequenceStep)
     {
@@ -29,7 +37,7 @@ public class DisplayQuestionState : IState
     public IEnumerator Execute()
     {
 
-        questionValue = QuestionAnswer.None;
+        questionValue = new List<QuestionAnswer>();
 
         OutputFileManager.Instance.OutputFileData.TimeSinceStart = ExperimentManager.Instance.ElaspedTimeSinceStart;
 
@@ -38,19 +46,29 @@ public class DisplayQuestionState : IState
 
         EventFileManager.Log($"[DisplayQuestionState] DisplayQuestion \"{step.question} \"with anwsers \"{string.Join(",", step.responseOptions)}\"");
 
-        WorldUIManager.Instance.DisplayQuestion(step.question, step.responseOptions);
+        WorldUIManager.Instance.DisplayQuestion(step.question, step.responseOptions, step.allowMultipleResponses);
 
         float startTime = Time.time;
 
-        yield return new WaitUntil(() => questionValue != QuestionAnswer.None);
+        yield return new WaitUntil(() => questionValue.Count != 0);
 
         float endTime = Time.time;
         float responseTime = endTime - startTime;
 
-        OutputFileManager.Instance.OutputFileData.QuestionResponseTime = responseTime;
-        OutputFileManager.Instance.OutputFileData.QuestionResponse = questionValue.ToString();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < questionValue.Count; i++)
+        {
+            stringBuilder.Append(step.responseOptions[(int)questionValue[i] - 1]);
 
-        EventFileManager.Log($"[DisplayQuestionState] Question Answer {questionValue} in {responseTime}");
+            if(questionValue.Count >= 1 && questionValue.Count - 1 > i)
+            stringBuilder.Append(",");
+        }
+
+        OutputFileManager.Instance.OutputFileData.QuestionResponseTime = responseTime;
+        OutputFileManager.Instance.OutputFileData.QuestionResponse = stringBuilder.ToString();
+        OutputFileManager.Instance.OutputFileData.QuestionResponseIndex = string.Join(",", questionValue);
+
+        EventFileManager.Log($"[DisplayQuestionState] Question Answer \"{stringBuilder.ToString()}\" at index {string.Join(",", questionValue)} in {responseTime}");
 
         OutputFileManager.Instance.SaveOutputEntry();
 
@@ -68,9 +86,9 @@ public class DisplayQuestionState : IState
 
     }
 
-    private void OnQuestionValidated(QuestionAnswer value)
+    private void OnQuestionValidated(List<QuestionAnswer> answers)
     {
-        questionValue = value;
-
+        questionValue = answers;
     }
+
 }

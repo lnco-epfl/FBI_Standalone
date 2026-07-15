@@ -157,6 +157,8 @@ public class DisplayQuestionStep : SequenceStep
     public string question;
     
     public List<string> responseOptions = new List<string>();
+
+    public bool allowMultipleResponses = false;
     public override float GetDuration() => 10f;
     public override string GetStateName() => "DisplayQuestion";
     public override string GetDisplayName()

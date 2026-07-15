@@ -149,7 +149,18 @@ steps:
     startTime: 126.0
     imagePath: "plus"
     scale: 0.3
-    duration: 5.0
+    duration: 1.0
+
+  - stepType: displayText
+    startTime: 127
+    text: Welcome to Full Body Illusion experiment
+    duration: 0.9
+
+  - stepType: displayText
+    startTime: 128
+    text: You will now see a body in front of you and feel a touch in the back and on your shoulders. Then we will ask you some questions and all this will be repeated four times.
+    duration: 1.0
+
 
   - stepType: playSound
     startTime: 131.0
@@ -165,9 +176,57 @@ steps:
       - "option 3"
       - "option 4"
 
+  - stepType: displayQuestion
+    blocking: true 
+    startTime: 133.5
+    question: "question 2"
+    options:
+      - "option 1"
+      - "option 2"
+    allowMultipleResponses: true
+
   - stepType: displayLikertScale
     blocking: true 
     startTime: 135.5
+    question: "satisfaction question"
+    leftLabel: "not satisfied"
+    rightLabel: "very satisfied"
+    min: 1
+    max: 5
+    randomCursorPosition: true
+
+  - stepType: displayQuestion
+    blocking: true 
+    startTime: 133.5
+    question: "question 2"
+    options:
+      - "option 1"
+      - "option 2"
+    allowMultipleResponses: true
+
+  - stepType: displayLikertScale
+    blocking: true 
+    startTime: 136.5
+    question: "satisfaction question"
+    leftLabel: "not satisfied"
+    rightLabel: "very satisfied"
+    min: 1
+    max: 5
+    randomCursorPosition: true
+
+
+  - stepType: displayQuestion
+    blocking: true 
+    startTime: 137.5
+    question: "question 2"
+    options:
+      - "option 1"
+      - "option 2"
+    allowMultipleResponses: true
+
+  - stepType: displayLikertScale
+    blocking: true 
+    startTime: 138.5
     question: "satisfaction question"
     leftLabel: "not satisfied"
     rightLabel: "very satisfied"

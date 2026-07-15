@@ -606,6 +606,18 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6861463710366057662, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_Color.b
+      value: 0.78867924
+      objectReference: {fileID: 0}
+    - target: {fileID: 6861463710366057662, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_Color.g
+      value: 0.78867924
+      objectReference: {fileID: 0}
+    - target: {fileID: 6861463710366057662, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_Color.r
+      value: 0.78867924
+      objectReference: {fileID: 0}
     - target: {fileID: 7767452175841115786, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.273
@@ -613,13 +625,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4740597248641314406, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2124705233267408117}
   m_SourcePrefab: {fileID: 100100000, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
 --- !u!4 &362208628852447528 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6014667590846945145, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
   m_PrefabInstance: {fileID: 6232619710008544849}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1708916557614014519 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4740597248641314406, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+  m_PrefabInstance: {fileID: 6232619710008544849}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2124705233267408117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708916557614014519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 0.5, y: 0.5}
+  m_UseGraphicAlpha: 1
 --- !u!4 &2019329133508235343 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5366232192436624926, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}

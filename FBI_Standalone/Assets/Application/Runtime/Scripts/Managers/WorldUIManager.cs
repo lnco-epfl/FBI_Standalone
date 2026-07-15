@@ -21,6 +21,8 @@ public class WorldUIManager : MonoBehaviour
     private TMP_Text tmpTextContainer;
     private CanvasGroup canvasGroupTextContainer;
 
+    private bool isTextDisplay = false;
+
 
     [Header("Likert Scale")]
     [SerializeField] private Transform likertScaleContainer;
@@ -40,6 +42,8 @@ public class WorldUIManager : MonoBehaviour
 
     [SerializeField] private int sliderStepValue = 1;
 
+    private bool isLikertScaleDisplay = false;
+
     public event Action<int> OnLikertScaleValidated;
 
     [Header("Break")]
@@ -52,6 +56,8 @@ public class WorldUIManager : MonoBehaviour
     private Image holdmaskButtonBreakContainer;
     private Tween holdTween;
 
+    private bool isBreakDisplay = false;
+
     [Header("Image")]
     [SerializeField] private Transform imageContainer;
     private Image imageContainerBackground;
@@ -60,6 +66,8 @@ public class WorldUIManager : MonoBehaviour
     private Transform imageImageTransform;
 
     public event Action OnSkipHoldValidated;
+
+    private bool isImageDisplay = false;
 
     [Header("Video")]
     [SerializeField] private Transform videoContainer;
@@ -72,6 +80,8 @@ public class WorldUIManager : MonoBehaviour
 
     private Action<float> onReadyCallback;
 
+    private bool isVideoDisplay = false;
+
     [Header("Question")]
     [SerializeField] private Transform questionContainer;
     [SerializeField] private Button responceButtonPrefab;
@@ -80,8 +90,13 @@ public class WorldUIManager : MonoBehaviour
     private TMP_Text questionTextQuestionContainer;
     private Transform reponseButtonsTransform; 
     private List<Button> responseButtonsList = new List<Button>();
+    private Button validationButtonQuestionContainer;
 
-    public event Action<QuestionAnswer> OnQuestionValidated;
+    private bool isQuestionDisplay = false;
+
+    private bool allowMultipleResponses;
+
+    public event Action<List<QuestionAnswer>> OnQuestionValidated;
 
     public event Action<bool> OnDisplayGazeCursor;
 
@@ -101,6 +116,8 @@ public class WorldUIManager : MonoBehaviour
 
     private Color backgroundColor = Color.black;
     private Image currentBackground;
+
+
 
     public Color BackgroundColor { get => backgroundColor; set => backgroundColor = value; }
 
@@ -154,6 +171,7 @@ public class WorldUIManager : MonoBehaviour
         questionTextQuestionContainer = questionContainer.Find("Question").GetComponent<TMP_Text>();
         reponseButtonsTransform = questionContainer.Find("ResponseButtons");
         questionContainerBackground = questionContainer.transform.Find("Background").GetComponent<Image>();
+        validationButtonQuestionContainer = questionContainer.Find("ValidationButton").GetComponent<Button>();
     }
 
     private void Start()
@@ -196,6 +214,8 @@ public class WorldUIManager : MonoBehaviour
 
         skipHoldButtonBreakContainer.onClick.AddListener(OnSkipHoldButtonPressed);
 
+        validationButtonQuestionContainer.onClick.AddListener(OnValidationQuestionButtonPressed);
+
         ConfigFileManager.Instance.OnConfigLoaded += OnConfigLoaded;
 
     }
@@ -208,6 +228,8 @@ public class WorldUIManager : MonoBehaviour
         validationButtonLikertScaleContrainer.onClick.RemoveListener(OnValidationLikertButtonPressed);
 
         skipHoldButtonBreakContainer.onClick.RemoveListener(OnSkipHoldButtonPressed);
+
+        validationButtonQuestionContainer.onClick.RemoveListener(OnValidationQuestionButtonPressed);
 
         ConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
     }
@@ -230,7 +252,7 @@ public class WorldUIManager : MonoBehaviour
 
     private void OnSliderValueChanged(float value)
     {
-        DisplayValidationButton(true);
+        DisplayValidationButtonLikertScaleContrainer(true);
     }
 
     private void OnValidationLikertButtonPressed()
@@ -241,10 +263,35 @@ public class WorldUIManager : MonoBehaviour
         }
     }
 
-    public void DisplayValidationButton(bool isDisplay)
+    private void OnValidationQuestionButtonPressed()
+    {
+        if (validationButtonQuestionContainer.gameObject.activeSelf)
+        {
+            List<QuestionAnswer> answers = new List<QuestionAnswer>();
+            for (int i = 0; responseButtonsList.Count > i; i++)
+            {
+                var button = responseButtonsList[i];
+
+                if (button.targetGraphic.color == button.colors.selectedColor)
+                {
+                    answers.Add((QuestionAnswer)i + 1);
+                }
+            }
+
+            OnQuestionValidated?.Invoke(answers);
+        }
+    }
+
+    public void DisplayValidationButtonLikertScaleContrainer(bool isDisplay)
     {
         validationButtonLikertScaleContrainer.gameObject.SetActive(isDisplay);
     }
+
+    public void DisplayValidationButtonQuestionContainer(bool isDisplay)
+    {
+        validationButtonQuestionContainer.gameObject.SetActive(isDisplay);
+    }
+
 
     private void OnSkipHoldButtonPressed()
     {
@@ -252,9 +299,24 @@ public class WorldUIManager : MonoBehaviour
     }
 
  
-    private void OnButtonQuestionPressed()
+    private void OnButtonQuestionPressed(Button button)
     {
-        OnQuestionValidated?.Invoke(QuestionAnswer.Right);
+        if(!validationButtonQuestionContainer.gameObject.activeSelf)
+        {
+            DisplayValidationButtonQuestionContainer(true);
+        }
+
+
+        if (!allowMultipleResponses)
+        {
+            for (int i = 0; i < responseButtonsList.Count; i++)
+            {
+                responseButtonsList[i].targetGraphic.color = button.colors.normalColor;
+            }
+        }
+
+        button.targetGraphic.color = button.colors.selectedColor;
+
     }
 
     private void FadeCanvasGroup(CanvasGroup canvasGroup, float endValue, Action value = null)
@@ -272,25 +334,34 @@ public class WorldUIManager : MonoBehaviour
         currentBackground = textContainerBackground;
 
         tmpTextContainer.text = text;
+
+        isTextDisplay = true;
         FadeCanvasGroup(canvasGroupTextContainer, 1);
     }
 
     public void HideText()
     {
-        canvasGroupTextContainer.interactable = false;
-        canvasGroupTextContainer.blocksRaycasts = false;
-
-        currentBackground = null;
-
-        FadeCanvasGroup(canvasGroupTextContainer, 0, () =>
+        if(isTextDisplay)
         {
+
+            isTextDisplay = false;
+
+            canvasGroupTextContainer.interactable = false;
+            canvasGroupTextContainer.blocksRaycasts = false;
+
+            currentBackground = null;
+
             tmpTextContainer.text = string.Empty;
-   
-        });
+
+            FadeCanvasGroup(canvasGroupTextContainer, 0);
+        }
+       
     }
 
     public void DisplayLikertScale(string question, string labelLeft, string labelRight, int min, int max, bool randomCursorPosition)
     {
+
+        isLikertScaleDisplay = true;
         questionTextLikertScaleContainer.text = question;
         labelBottomLeftTextLikertScaleContainer.text = labelLeft;
         labelBottomRightTextLikertScaleContainer.text = labelRight;
@@ -318,7 +389,7 @@ public class WorldUIManager : MonoBehaviour
             sliderLikertScaleContainer.SetValueWithoutNotify(centerValue);
         }
 
-        DisplayValidationButton(false);
+        DisplayValidationButtonLikertScaleContrainer(false);
 
         canvasGroupLikertScaleContainer.interactable = true;
         canvasGroupLikertScaleContainer.blocksRaycasts = true;
@@ -331,19 +402,27 @@ public class WorldUIManager : MonoBehaviour
 
     public void HideLikertScale()
     {
+        if(isLikertScaleDisplay)
+        {
 
-        canvasGroupLikertScaleContainer.interactable = false;
-        canvasGroupLikertScaleContainer.blocksRaycasts = false;
+            isLikertScaleDisplay = false;
 
-        currentBackground = null;
+            canvasGroupLikertScaleContainer.interactable = false;
+            canvasGroupLikertScaleContainer.blocksRaycasts = false;
 
-        OnDisplayGazeCursor?.Invoke(false);
+            currentBackground = null;
 
-        FadeCanvasGroup(canvasGroupLikertScaleContainer, 0);
+            OnDisplayGazeCursor?.Invoke(false);
+
+            FadeCanvasGroup(canvasGroupLikertScaleContainer, 0);
+        }
+
     }
 
     public void DisplayBreak(string instruction)
     {
+
+        isBreakDisplay = true;
         canvasGroupBreakContainer.alpha = 0;
 
         breakContainerBackground.color = backgroundColor;
@@ -368,18 +447,25 @@ public class WorldUIManager : MonoBehaviour
     public void HideBreak()
     {
 
-        canvasGroupBreakContainer.interactable = false;
-        canvasGroupBreakContainer.blocksRaycasts = false;
+        if(isBreakDisplay)
+        {
+            isBreakDisplay = false;
 
-        currentBackground = null;
+            canvasGroupBreakContainer.interactable = false;
+            canvasGroupBreakContainer.blocksRaycasts = false;
 
-        OnDisplayGazeCursor?.Invoke(false);
+            currentBackground = null;
 
-        FadeCanvasGroup(canvasGroupBreakContainer, 0);
+            OnDisplayGazeCursor?.Invoke(false);
+
+            FadeCanvasGroup(canvasGroupBreakContainer, 0);
+        }
+
     }
 
     public void DisplayImage(Sprite image, float scale)
     {
+        isImageDisplay = true;
         canvasImageContainer.alpha = 0;
 
         imageContainerBackground.color = backgroundColor;
@@ -398,21 +484,30 @@ public class WorldUIManager : MonoBehaviour
 
     public void HideImage()
     {
-        canvasImageContainer.interactable = false;
-        canvasImageContainer.blocksRaycasts = false;
-
-        currentBackground = null;
-
-        FadeCanvasGroup(canvasImageContainer, 0, () =>
+        if(isImageDisplay)
         {
-            imageImageContainer.sprite = null;
+            canvasImageContainer.interactable = false;
+            canvasImageContainer.blocksRaycasts = false;
 
-        });
+            currentBackground = null;
+
+            isImageDisplay = false;
+
+            FadeCanvasGroup(canvasImageContainer, 0, () =>
+            {
+                imageImageContainer.sprite = null;
+
+            });
+        }
+
 
     }
 
-    public void DisplayQuestion(string question, List<string> responseOptions)
+    public void DisplayQuestion(string question, List<string> responseOptions, bool allowMultipleResponses)
     {
+
+        isQuestionDisplay = true;
+
         canvasGroupQuestionContainer.alpha = 0;
 
         questionContainerBackground.color = backgroundColor;
@@ -422,12 +517,20 @@ public class WorldUIManager : MonoBehaviour
 
         ClearChildren(reponseButtonsTransform);
 
+        this.allowMultipleResponses = allowMultipleResponses;
+
+        responseButtonsList.Clear();
+
         for (int i = 0; i < responseOptions.Count; i++)
         {
             var button = GameObject.Instantiate(responceButtonPrefab, reponseButtonsTransform);
             button.GetComponentInChildren<TMP_Text>().text = responseOptions[i];
-            button.onClick.AddListener(OnButtonQuestionPressed);
+            button.onClick.AddListener( () => OnButtonQuestionPressed(button));
+
+            responseButtonsList.Add(button);
         }
+
+        DisplayValidationButtonQuestionContainer(false);
 
         canvasGroupQuestionContainer.interactable = true;
         canvasGroupQuestionContainer.blocksRaycasts = true;
@@ -449,26 +552,35 @@ public class WorldUIManager : MonoBehaviour
     public void HideQuestion()
     {
 
-        canvasGroupQuestionContainer.interactable = false;
-        canvasGroupQuestionContainer.blocksRaycasts = false;
-
-        currentBackground = null;
-
-        OnDisplayGazeCursor?.Invoke(false);
-
-        FadeCanvasGroup(canvasGroupQuestionContainer, 0, () =>
+        if (isQuestionDisplay)
         {
+
+            isQuestionDisplay = false;
+            allowMultipleResponses = false;
+
+            canvasGroupQuestionContainer.interactable = false;
+            canvasGroupQuestionContainer.blocksRaycasts = false;
+
+            currentBackground = null;
+
+            OnDisplayGazeCursor?.Invoke(false);
+
             questionTextQuestionContainer.text = string.Empty;
-            
+
             for (int i = 0; i < responseButtonsList.Count; i++)
             {
                 responseButtonsList[i].GetComponentInChildren<TMP_Text>().text = string.Empty;
             }
-        });
+
+            FadeCanvasGroup(canvasGroupQuestionContainer, 0);
+        }
+
     }
 
     public void DisplayVideo(string filePath, bool loop, bool mute, Action onFinished = null, Action<float> onReady = null)
     {
+
+        isVideoDisplay = true;
         canvasGroupVideoContainer.alpha = 0;
 
         videoContainerBackground.color = backgroundColor;
@@ -515,13 +627,15 @@ public class WorldUIManager : MonoBehaviour
 
     public void HideVideo()
     {
-        canvasGroupVideoContainer.interactable = false;
-        canvasGroupVideoContainer.blocksRaycasts = false;
 
-        currentBackground = null;
-
-        FadeCanvasGroup(canvasGroupVideoContainer, 0, () =>
+        if(isVideoDisplay)
         {
+            isVideoDisplay = false;
+            canvasGroupVideoContainer.interactable = false;
+            canvasGroupVideoContainer.blocksRaycasts = false;
+
+            currentBackground = null;
+
             videoPlayer.Stop();
             videoRawImage.texture = null;
 
@@ -529,8 +643,11 @@ public class WorldUIManager : MonoBehaviour
             {
                 videoRenderTexture.Release();
                 videoRenderTexture = null;
+
             }
-        });
+            FadeCanvasGroup(canvasGroupVideoContainer, 0);
+        }
+
     }
 
     public void SetCurrentBackgoundColor(Color color)
