@@ -29,7 +29,7 @@ public class ConfigFileManager : MonoBehaviour
         System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
 
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
-        Instance = this;;
+        Instance = this; ;
 
         serializer = new SerializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).Build();
         deserializer = new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).IgnoreUnmatchedProperties().Build();
@@ -216,12 +216,21 @@ public class ConfigFileManager : MonoBehaviour
             return null;
         }
 
+        if (CurrentConfig == null)
+        {
+            EventFileManager.Log("[ConfigFileManager] No active config to paste into.");
+            return null;
+        }
+
         try
         {
-            var config = deserializer.Deserialize<ConfigFile>(yaml);
-            CurrentConfig = config;
+            var pasted = deserializer.Deserialize<ConfigFile>(yaml);
+
+            CurrentConfig.pointClouds = pasted.pointClouds;
+            CurrentConfig.stimulusDisplay = pasted.stimulusDisplay;
+
             OnConfigLoaded?.Invoke(CurrentConfig);
-            EventFileManager.Log("[ConfigFileManager] Config pasted from clipboard.");
+            EventFileManager.Log("[ConfigFileManager] pointClouds/stimulusDisplay pasted from clipboard.");
             return CurrentConfig;
         }
         catch (Exception e)
