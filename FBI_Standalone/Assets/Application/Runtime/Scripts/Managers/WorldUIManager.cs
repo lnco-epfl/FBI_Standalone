@@ -272,7 +272,7 @@ public class WorldUIManager : MonoBehaviour
             {
                 var button = responseButtonsList[i];
 
-                if (button.targetGraphic.color == button.colors.selectedColor)
+                if (button.targetGraphic.color == Color.green)
                 {
                     answers.Add((QuestionAnswer)i + 1);
                 }
@@ -313,9 +313,23 @@ public class WorldUIManager : MonoBehaviour
             {
                 responseButtonsList[i].targetGraphic.color = button.colors.normalColor;
             }
+
+            button.targetGraphic.color = Color.green;
+        }
+        else
+        {
+            if (button.targetGraphic.color == button.colors.normalColor)
+            {
+                button.targetGraphic.color = Color.green;
+            }
+            else
+            {
+                button.targetGraphic.color = button.colors.normalColor;
+            }
+            
         }
 
-        button.targetGraphic.color = button.colors.selectedColor;
+       
 
     }
 
