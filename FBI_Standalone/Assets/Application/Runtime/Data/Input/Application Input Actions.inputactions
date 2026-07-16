@@ -3037,6 +3037,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Debug Dissolution",
+                    "type": "Button",
+                    "id": "447e50d8-f746-4f95-bae0-97820b4c479b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -3125,6 +3134,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Mute",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "360d5f90-f6bc-45a7-b18a-02a394f79702",
+                    "path": "<XRController>{RightHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Debug Dissolution",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

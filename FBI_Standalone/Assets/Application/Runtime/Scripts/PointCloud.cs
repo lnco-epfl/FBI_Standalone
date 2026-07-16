@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using PrimeTween;
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.VFX;
 using YamlDotNet.Core.Tokens;
 
@@ -17,6 +18,8 @@ public class PointCloud : MonoBehaviour
     [Header("Fade")]
     [SerializeField] private float fadeDuration = 0.25f;
 
+    [Header("Debug")]
+    [SerializeField] private InputActionReference debugDissolution;
 
     [SerializeField] private Transform startT;
     [SerializeField] private Transform endT;
@@ -30,6 +33,23 @@ public class PointCloud : MonoBehaviour
     public int Id { get => id;  }
 
     public bool isMainVFXVisible => mainVisualEffect.enabled;
+
+    private void OnEnable()
+    {
+        debugDissolution.action.performed += OnDebugDissolutionPerformed;
+    }
+
+
+
+    private void OnDisable()
+    {
+        debugDissolution.action.performed -= OnDebugDissolutionPerformed;
+    }
+
+    private void OnDebugDissolutionPerformed(InputAction.CallbackContext obj)
+    {
+        StartDissolution();
+    }
 
     public void Init(int ID)
     {
@@ -185,6 +205,9 @@ public class PointCloud : MonoBehaviour
         dissolutionVisualEffect.SetFloat("Clamp Y Min", yMin);
         dissolutionVisualEffect.SetFloat("Clamp Y Max", yMax);
     }
+
+ 
+   
 
 
 }

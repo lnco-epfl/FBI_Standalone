@@ -571,5 +571,6 @@ MonoBehaviour:
   dissolutionVisualEffect: {fileID: 3353743081506591614}
   interpolationVisualEffect: {fileID: 100271825090298601}
   fadeDuration: 0.25
+  debugDissolution: {fileID: -7743984251989885545, guid: 9df9307e5230e5949b946ada28151914, type: 3}
   startT: {fileID: 4300320909914285992}
   endT: {fileID: 7124011741950907301}
