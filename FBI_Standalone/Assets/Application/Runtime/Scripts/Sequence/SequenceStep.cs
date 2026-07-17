@@ -1,4 +1,3 @@
-
 using Eflatun.SceneReference;
 using PrimeTween;
 using System;
@@ -85,6 +84,27 @@ public class LoadConfigStep : SequenceStep
 }
 
 [System.Serializable]
+public class LoadDisplayConfigStep : SequenceStep
+{
+
+    public string configName;
+
+    public SerializableVector3 positionOverride;
+    public SerializableVector3 rotationOverride;
+    public SerializableVector3 scaleOverride;
+    public SerializableColor backgroundColorOverride;
+
+    public override float GetDuration() => 0f;
+    public override string GetStateName() => "LoadDisplayConfig";
+    public override string GetDisplayName()
+    {
+        var name = string.IsNullOrEmpty(configName) ? "(overrides only)" : configName;
+        return $"Load Display Config {name}";
+    }
+    public override Color GetColor() => Color.brown;
+}
+
+[System.Serializable]
 public class DisplayLikertScaleStep : SequenceStep
 {
     public string question;
@@ -93,12 +113,12 @@ public class DisplayLikertScaleStep : SequenceStep
 
     public string rightLabel;
 
-    public int min; 
+    public int min;
 
     public int max;
 
     public bool randomCursorPosition;
-    
+
     public override float GetDuration() => 10f;
     public override string GetStateName() => "DisplayLikertScale";
     public override string GetDisplayName()
@@ -155,7 +175,7 @@ public class DisplayImageStep : SequenceStep
 public class DisplayQuestionStep : SequenceStep
 {
     public string question;
-    
+
     public List<string> responseOptions = new List<string>();
 
     public bool allowMultipleResponses = false;
@@ -259,8 +279,8 @@ public class DisplayCamerasStep : SequenceStep
 [System.Serializable]
 public class DisplayVideoStep : SequenceStep
 {
-    public string videoName;    
-    
+    public string videoName;
+
     public bool looping = false;
     public bool muteAudio = false;
     public bool subtitle = true;
@@ -304,7 +324,7 @@ public class SequenceStepWrapper
 
     public enum StepType
     {
-        DisplayText, Wait, SpawnObject, LoadScene, LoadConfig, DisplayLikertScale, Break, DisplayImage, DisplayQuestion, PlaySound, DisplayCameras, DisplayVideo, SendLSLEvent
+        DisplayText, Wait, SpawnObject, LoadScene, LoadConfig, LoadDisplayConfig, DisplayLikertScale, Break, DisplayImage, DisplayQuestion, PlaySound, DisplayCameras, DisplayVideo, SendLSLEvent
     }
 
     public SequenceStepWrapper()
@@ -321,6 +341,7 @@ public class SequenceStepWrapper
             case StepType.Wait: step = new WaitStep(); break;
             case StepType.LoadScene: step = new LoadSceneStep(); break;
             case StepType.LoadConfig: step = new LoadConfigStep(); break;
+            case StepType.LoadDisplayConfig: step = new LoadDisplayConfigStep(); break;
             case StepType.DisplayLikertScale: step = new DisplayLikertScaleStep(); break;
             case StepType.Break: step = new BreakStep(); break;
             case StepType.DisplayImage: step = new DisplayImageStep(); break;

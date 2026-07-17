@@ -1,4 +1,5 @@
 using CsvHelper;
+using Intel.RealSense;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -128,11 +129,27 @@ public class ConfigFile
     public string createdAt = "";
     public string lastModified = "";
 
-    public UITransformData stimulusDisplay;
     public List<ObjectTransformData> pointClouds = new List<ObjectTransformData>();
 
     public override string ToString()
     {
-        return $"ConfigFile(configName={configName}, createdAt={createdAt}, lastModified={lastModified}, UICanvas=[{stimulusDisplay}], pointClouds=[{string.Join(", ", pointClouds)}])";
+        return $"ConfigFile(configName={configName}, createdAt={createdAt}, lastModified={lastModified}, pointClouds=[{string.Join(", ", pointClouds)}])";
     }
 }
+
+[Serializable]
+public class DisplayConfigFile
+{
+    public string configName;
+    public string createdAt;
+    public string lastModified;
+
+    public UITransformData stimulusDisplay;
+
+    public override string ToString()
+    {
+        return $"ConfigFile(configName={configName}, createdAt={createdAt}, lastModified={lastModified}, UICanvas=[{stimulusDisplay}])";
+    }
+}
+
+

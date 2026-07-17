@@ -51,6 +51,7 @@ public class SequenceStateMachine : MonoBehaviour
             { "DisplayCameras",     () => new DisplayCamerasState() },
             { "DisplayVideo",       () => new DisplayVideoState() },
             { "SendLSLEvent",       () => new SendLSLEventState() },
+            { "LoadDisplayConfig",  () => new LoadDisplayConfigState() }
         };
     }
 

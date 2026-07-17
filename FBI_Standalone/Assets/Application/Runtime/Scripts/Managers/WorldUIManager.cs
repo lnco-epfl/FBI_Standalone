@@ -216,7 +216,7 @@ public class WorldUIManager : MonoBehaviour
 
         validationButtonQuestionContainer.onClick.AddListener(OnValidationQuestionButtonPressed);
 
-        ConfigFileManager.Instance.OnConfigLoaded += OnConfigLoaded;
+        DisplayConfigFileManager.Instance.OnConfigLoaded += OnConfigLoaded;
 
     }
 
@@ -231,10 +231,10 @@ public class WorldUIManager : MonoBehaviour
 
         validationButtonQuestionContainer.onClick.RemoveListener(OnValidationQuestionButtonPressed);
 
-        ConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
+        DisplayConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
     }
 
-    private void OnConfigLoaded(ConfigFile configFile)
+    private void OnConfigLoaded(DisplayConfigFile configFile)
     {
         if(configFile.stimulusDisplay != null)
         {

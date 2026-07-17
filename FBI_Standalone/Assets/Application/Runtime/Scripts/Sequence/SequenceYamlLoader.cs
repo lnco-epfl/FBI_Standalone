@@ -189,6 +189,18 @@ public class SequenceYamlLoader
                     eventName = data.eventName,
                 };
 
+            case SequenceStepWrapper.StepType.LoadDisplayConfig:
+                return new LoadDisplayConfigStep
+                {
+                    startTime = data.startTime,
+                    blocking = data.blocking,
+                    configName = data.configName,
+                    positionOverride = data.positionOverride,
+                    rotationOverride = data.rotationOverride,
+                    scaleOverride = data.scaleOverride,
+                    backgroundColorOverride = data.backgroundColorOverride
+                };
+
             default:
                 return new WaitStep();
         }
@@ -281,6 +293,14 @@ public class StepData
 
     // Config
     public string configName;
+
+    //Display config 
+    public SerializableVector3 positionOverride;
+    public SerializableVector3 rotationOverride;
+    public SerializableVector3 scaleOverride;
+    public SerializableColor backgroundColorOverride;
+
+
 
     // Image
     public float scale;

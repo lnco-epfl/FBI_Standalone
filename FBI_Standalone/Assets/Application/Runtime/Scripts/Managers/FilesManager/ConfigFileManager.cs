@@ -216,21 +216,12 @@ public class ConfigFileManager : MonoBehaviour
             return null;
         }
 
-        if (CurrentConfig == null)
-        {
-            EventFileManager.Log("[ConfigFileManager] No active config to paste into.");
-            return null;
-        }
-
         try
         {
-            var pasted = deserializer.Deserialize<ConfigFile>(yaml);
-
-            CurrentConfig.pointClouds = pasted.pointClouds;
-            CurrentConfig.stimulusDisplay = pasted.stimulusDisplay;
-
+            var config = deserializer.Deserialize<ConfigFile>(yaml);
+            CurrentConfig = config;
             OnConfigLoaded?.Invoke(CurrentConfig);
-            EventFileManager.Log("[ConfigFileManager] pointClouds/stimulusDisplay pasted from clipboard.");
+            EventFileManager.Log("[ConfigFileManager] Config pasted from clipboard.");
             return CurrentConfig;
         }
         catch (Exception e)
@@ -352,20 +343,6 @@ public class ConfigFileManager : MonoBehaviour
         if (saveImmediately) Save();
     }
 
-    public void SaveUICanvas(Transform t, Color backgroundColor, bool saveImmediately = true)
-    {
-        if (CurrentConfig == null) { EventFileManager.Log("[ConfigFileManager] No active config."); return; }
-
-        CurrentConfig.stimulusDisplay = new UITransformData(t);
-        CurrentConfig.stimulusDisplay.backgroundColor = new SerializableColor(backgroundColor);
-
-        if (saveImmediately) Save();
-    }
-
-    /// <summary>
-    /// Returns the root folder path where configs are stored.
-    /// Used to open StandaloneFileBrowser dialogs in the right location.
-    /// </summary>
     public string GetRootPath() => RootPath;
 
     private string GetPath(string configName) =>
