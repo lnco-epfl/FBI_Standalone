@@ -17,22 +17,23 @@
 
 # Description
 
-This application has been created with Unity (version 6000.3.11f1). The project uses Femto Bolt cameras to capture and display real-time point clouds of participants as point clouds.
+The application is designed for behavioral research experiments based on the full-body illusion (FBI) by [Lenggenhager et al. (2007)](https://www.science.org/doi/10.1126/science.1143439). In a typical setup, participants immersed in VR will see a 3D representation of their own body under different conditions, e.g., from a first-person or a third-person perspective, or with or without delay. The software allows researchers to connect and setup multiple depth cameras and to develop a configurable experiment sequence. The experiment flow is defined through YAML sequence files and supports a variety of step types including camera display, text, images, videos, sounds, questionnaires, and Likert scales for participants feedback.
 
-The application is designed for research experiments involving point cloud visualizations. It allows researchers to display live or delayed point cloud feeds from multiple cameras as part of a configurable experiment sequence. The experiment flow is defined through YAML sequence files and supports a variety of step types including camera display, text, images, questions, and Likert scales.
+This application has been created with Unity (version 6000.3.11f1). The project uses Femto Bolt cameras to capture image and depth and to display in real-time the subjects as point clouds. It is provided 'as is', without waranty of any kind, by the [EPFL Blanke Lab](https://www.epfl.ch/labs/lnco/) under GPL3+ licence.
 
 # Requirements
 
 ## Hardware
 
-* **Laptop:** High-end GPU gaming laptop, 32 GB RAM minimum recommended
-* **VR Headset:** [Meta Quest 3 / 3S](https://www.meta.com/quest/quest-3s/), connected to the laptop via USB-C cable
+The system has been designed for the following hardware:
+
+* **Laptop:** High-end GPU gaming PC/laptop, 32 GB RAM minimum recommended. Windows 11.
+* **VR Headset:** [Meta Quest 3 / 3S](https://www.meta.com/quest/quest-3s/), connected to the PC/laptop via USB-C cable
 * **RGBD Cameras:** [ORBBEC Femto Bolt](https://www.orbbec.com/products/tof-camera/femto-bolt/), one or more, each connected via USB-C data cable + external power supply
-* **Tripod(s):** One per camera
 
 ## Software
 
-The following software must be installed on the laptop before running the application.
+The following software must be installed on the computer before running the application.
 
 ### Meta Horizon Link
 
@@ -40,9 +41,9 @@ The following software must be installed on the laptop before running the applic
 
 ### Orbbec SDK & Drivers (for Femto Bolt cameras)
 
-The Femto Bolt cameras are developed by Orbbec in partnership with Microsoft as a direct replacement for Azure Kinect cameras. They are compatible with the Azure Kinect SDK via an Orbbec wrapper.
+The Femto Bolt cameras are developed by [ORBBEC](https://www.orbbec.com) in partnership with Microsoft as a direct replacement for Azure Kinect cameras. 
 
-> ℹ️ The Unity project uses the [Azure Kinect and Femto Bolt Examples for Unity](https://assetstore.unity.com/packages/tools/integration/azure-kinect-and-femto-bolt-examples-for-unity-149700) asset with the OrbbecFemtoWrapper already imported, no additional Unity-side camera setup is required. For the full setup guide, refer to the [official plugin documentation](https://rfilkov.com/2019/08/26/azure-kinect-tips-tricks/#t19).
+> ℹ️ The Unity project uses the [Azure Kinect and Femto Bolt Examples for Unity](https://assetstore.unity.com/packages/tools/integration/azure-kinect-and-femto-bolt-examples-for-unity-149700) asset by [RF Solutions](http://rfilkov.com/) with the OrbbecFemtoWrapper already imported, no additional Unity-side camera setup is required. For the full setup guide, refer to the [official plugin documentation](https://rfilkov.com/2019/08/26/azure-kinect-tips-tricks/#t19).
 
 Before first use, follow these steps:
 
@@ -846,6 +847,5 @@ Additional controls in the preview panel:
 
 # Authors
 
-Developed by Arnaud Droxler, Haotian Yao.
-
-With the help and advice of Bruno Herbelin, Idil Sezer, Olaf Blanke.
+Development Arnaud Droxler, Haotian Yao.
+Supervision Bruno Herbelin, Idil Sezer, Olaf Blanke.
