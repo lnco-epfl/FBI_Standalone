@@ -1,6 +1,8 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.XR;
 
 public class ResetXROrigin : MonoBehaviour
 {
@@ -39,11 +41,17 @@ public class ResetXROrigin : MonoBehaviour
 
     private void Start()
     {
-        //ResetOrigin();
+
     }
 
     private void OnSceneLoaded(Scene scene)
     {
+        StartCoroutine(ResetOriginDelayed());
+    }
+
+    private IEnumerator ResetOriginDelayed()
+    {
+        yield return new WaitForEndOfFrame();
         ResetOrigin();
     }
 
