@@ -16,7 +16,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private CanvasGroup canvasFullScreenGroup;
 
     [Header("Canvas Prefabs")]
-    [SerializeField] private CanvasSetupPointCloudUI canvasSetupPointCloudUIPrefab;
+    [SerializeField] private ConfigEditorUI configEditorPrefab;
 
     [Header("Sound")]
     [SerializeField] private Slider soundSlider;
@@ -75,7 +75,7 @@ public class UIManager : MonoBehaviour
     private static UIManager instance;
     public static UIManager Instance { get { return instance; } }
 
-    private List<CanvasSetupPointCloudUI> currentCanvasGraphUIs = new List<CanvasSetupPointCloudUI>();
+    private List<ConfigEditorUI> currentCanvasGraphUIs = new List<ConfigEditorUI>();
     private List<string> configs;
     private string selectedConfig;
     private bool lastFullScreen = true;
@@ -293,7 +293,7 @@ public class UIManager : MonoBehaviour
 
     private void InitConfigDropDown()
     {
-        configs = ConfigFileManager.Instance.GetAvailableConfigs();
+        configs = CameraConfigFileManager.Instance.GetAvailableConfigs();
 
 
         configDropdown.ClearOptions();
@@ -344,7 +344,7 @@ public class UIManager : MonoBehaviour
     private void OnConfigDropDownChanged(int index)
     {
         selectedConfig = configs[index];
-        ConfigFileManager.Instance.Load(selectedConfig);
+        CameraConfigFileManager.Instance.Load(selectedConfig);
     }
 
     private void OnExperimentStarted()
@@ -624,12 +624,10 @@ public class UIManager : MonoBehaviour
     public void CreateSetupPointCloudUI()
     {
 
-     
-
-        var canvasUI = Instantiate(canvasSetupPointCloudUIPrefab, canvasDesktopGroup.transform);
+        var canvasUI = Instantiate(configEditorPrefab, canvasDesktopGroup.transform);
         currentCanvasGraphUIs.Add(canvasUI);
 
-        canvasUI.OnCanvasSetupPointCloudUIDestroy += OnCanvasSetupPointCloudUIDestroy;
+        canvasUI.OnConfigEditorDestroy += OnConfigEditorDestroy;
 
     }
 
@@ -640,7 +638,7 @@ public class UIManager : MonoBehaviour
         callback.Invoke();
     }
 
-    private void OnCanvasSetupPointCloudUIDestroy(CanvasSetupPointCloudUI canvasSetupPointCloudUI)
+    private void OnConfigEditorDestroy(ConfigEditorUI canvasSetupPointCloudUI)
     {
         currentCanvasGraphUIs.Remove(canvasSetupPointCloudUI);
         Destroy(canvasSetupPointCloudUI.gameObject);

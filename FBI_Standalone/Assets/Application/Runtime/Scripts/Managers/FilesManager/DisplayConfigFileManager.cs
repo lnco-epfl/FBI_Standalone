@@ -8,11 +8,9 @@ using YamlDotNet.Serialization.NamingConventions;
 
 public class DisplayConfigFileManager : MonoBehaviour
 {
-    public static DisplayConfigFileManager Instance { get; private set; }
 
-    private string configFolder = "DisplayConfigs";
 
-    private string RootPath => Path.Combine(Application.dataPath, "..", "Input", configFolder);
+    private string RootPath => Path.Combine(Application.dataPath, "..", "Input", "Configs", "Display");
 
     private ISerializer serializer;
     private IDeserializer deserializer;
@@ -24,8 +22,7 @@ public class DisplayConfigFileManager : MonoBehaviour
     public event Action<DisplayConfigFile> OnConfigSaved;
     public event Action<List<string>> OnFileListRefreshed;
 
-    public string GetRootPath() => RootPath;
-    private string GetPath(string configName) => Path.Combine(RootPath, $"{configName}.yaml");
+    public static DisplayConfigFileManager Instance { get; private set; }
 
     private void Awake()
     {
@@ -219,6 +216,7 @@ public class DisplayConfigFileManager : MonoBehaviour
     {
         if (CurrentConfig == null)
         {
+
             CurrentConfig = new DisplayConfigFile
             {
                 configName = "Untitled",
@@ -240,7 +238,7 @@ public class DisplayConfigFileManager : MonoBehaviour
 
         if (!string.IsNullOrEmpty(step.configName))
         {
-
+            // configName given: it becomes the base, applied fully first.
             Load(step.configName);
             CurrentConfig?.stimulusDisplay?.ApplyTo(canvasTransform);
 
@@ -256,6 +254,8 @@ public class DisplayConfigFileManager : MonoBehaviour
             EventFileManager.Log("[DisplayConfigFileManager] LoadDisplayConfig step has no configName and no overrides — nothing to apply.");
             return;
         }
+
+        // Overrides (if any) are applied on top, field by field, whether or not a configName was given.
         if (step.positionOverride != null) canvasTransform.position = step.positionOverride.ToVector3();
         if (step.rotationOverride != null) canvasTransform.eulerAngles = step.rotationOverride.ToVector3();
         if (step.scaleOverride != null) canvasTransform.localScale = step.scaleOverride.ToVector3();
@@ -268,5 +268,8 @@ public class DisplayConfigFileManager : MonoBehaviour
         }
     }
 
+    public string GetRootPath() => RootPath;
 
+    private string GetPath(string configName) =>
+        Path.Combine(RootPath, $"{configName}.yaml");
 }

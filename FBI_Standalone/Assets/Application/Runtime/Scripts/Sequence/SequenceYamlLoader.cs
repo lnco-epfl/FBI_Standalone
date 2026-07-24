@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Rendering;
+using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -45,9 +46,22 @@ public class SequenceYamlLoader
 
             return ConvertToSequence(sequenceData);
         }
-        catch (Exception e)
+        catch (YamlException ex)
         {
-            Debug.LogError($"Error loading YAML sequence: {e.Message}");
+            var lines = File.ReadAllLines(filePath);
+
+            string faultyLine = "";
+            if (ex.Start.Line - 1 < lines.Length && ex.Start.Line > 0)
+                faultyLine = lines[ex.Start.Line - 1];
+
+            Debug.LogError(
+                $"YAML Error\n" +
+                $"File   : {filePath}\n" +
+                $"Line   : {ex.Start.Line}\n" +
+                $"Column : {ex.Start.Column}\n" +
+                $"Content: {faultyLine}\n" +
+                $"{ex.Message}");
+
             return null;
         }
     }
@@ -101,8 +115,8 @@ public class SequenceYamlLoader
                     scene = LoadSceneReference(data.scenePath),
                 };
 
-            case SequenceStepWrapper.StepType.LoadConfig:
-                return new LoadConfigStep
+            case SequenceStepWrapper.StepType.LoadCameraConfig:
+                return new LoadCameraConfigStep
                 {
                     startTime = data.startTime,
                     blocking = data.blocking,

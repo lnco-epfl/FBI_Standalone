@@ -270,6 +270,14 @@ MonoBehaviour:
     m_Localized: Z
     m_Metadata:
       m_Items: []
+  - m_Id: 141846070613237760
+    m_Localized: Cameras config
+    m_Metadata:
+      m_Items: []
+  - m_Id: 141846107242094592
+    m_Localized: Display config
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

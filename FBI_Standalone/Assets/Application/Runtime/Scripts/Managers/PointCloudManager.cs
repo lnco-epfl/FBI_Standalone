@@ -83,7 +83,7 @@ public class PointCloudManager : MonoBehaviour
         }
     }
 
-    public PointCloud SpawnPointCloud(int cameraID, float delay, ConfigFile configFile)
+    public PointCloud SpawnPointCloud(int cameraID, float delay, CameraConfigFile configFile)
     {
         if (!pointCloudPrefab)
         {
@@ -141,7 +141,7 @@ public class PointCloudManager : MonoBehaviour
         return pointcloud;
     }
 
-    public void SetPointcloudConfig(PointCloud pointCloud, ConfigFile configFile)
+    public void SetPointcloudConfig(PointCloud pointCloud, CameraConfigFile configFile)
     {
         var cameraID = pointCloud.Id;
 

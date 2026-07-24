@@ -168,8 +168,8 @@ public class PointCloudUIEntry : MonoBehaviour
 
         if (kinectInerface != null)
         {
-            ConfigFileManager.Instance.SaveDepthMax(CameraId, kinectInerface.maxDepthDistance, saveImmediately: false);
-            ConfigFileManager.Instance.SaveDepthMin(CameraId, kinectInerface.minDepthDistance, saveImmediately: false);
+            CameraConfigFileManager.Instance.SaveDepthMax(CameraId, kinectInerface.maxDepthDistance, saveImmediately: false);
+            CameraConfigFileManager.Instance.SaveDepthMin(CameraId, kinectInerface.minDepthDistance, saveImmediately: false);
         }
 
         var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
@@ -178,9 +178,9 @@ public class PointCloudUIEntry : MonoBehaviour
             return;
         }
         var t = pointCloud.transform;
-        ConfigFileManager.Instance.SaveFlip(CameraId, t.localScale.x < 0, t.localScale.y < 0, saveImmediately: false);
+        CameraConfigFileManager.Instance.SaveFlip(CameraId, t.localScale.x < 0, t.localScale.y < 0, saveImmediately: false);
 
-        ConfigFileManager.Instance.SaveClamp(CameraId,
+        CameraConfigFileManager.Instance.SaveClamp(CameraId,
             clampXMinSlider != null ? clampXMinSlider.value : 0f,
             clampXMaxSlider != null ? clampXMaxSlider.value : 1f,
             clampYMinSlider != null ? clampYMinSlider.value : 0f,
@@ -194,7 +194,7 @@ public class PointCloudUIEntry : MonoBehaviour
         t.position = Position;
         t.rotation = Quaternion.Euler(Rotation);
 
-        ConfigFileManager.Instance.SaveObjectTransform(CameraId, t);
+        CameraConfigFileManager.Instance.SaveObjectTransform(CameraId, t);
         OnTransformChanged?.Invoke(CameraId, Position, Rotation);
     }
 
@@ -251,7 +251,7 @@ public class PointCloudUIEntry : MonoBehaviour
         {
             kinectInerface.maxDepthDistance = value;
         }
-        ConfigFileManager.Instance.SaveDepthMax(CameraId, value);
+        CameraConfigFileManager.Instance.SaveDepthMax(CameraId, value);
         OnMaxDepthChanged?.Invoke(CameraId, value);
     }
 
@@ -261,7 +261,7 @@ public class PointCloudUIEntry : MonoBehaviour
         {
             kinectInerface.minDepthDistance = value;
         }
-        ConfigFileManager.Instance.SaveDepthMin(CameraId, value);
+        CameraConfigFileManager.Instance.SaveDepthMin(CameraId, value);
         OnMinDepthChanged?.Invoke(CameraId, value);
     }
 
@@ -288,14 +288,14 @@ public class PointCloudUIEntry : MonoBehaviour
     private void OnFlipXChanged(bool isOn)
     {
         ApplyFlip(isOn, flipYToggle.isOn);
-        ConfigFileManager.Instance.SaveFlip(CameraId, isOn, flipYToggle.isOn);
+        CameraConfigFileManager.Instance.SaveFlip(CameraId, isOn, flipYToggle.isOn);
         OnFlipChanged?.Invoke(CameraId, isOn, flipYToggle.isOn);
     }
 
     private void OnFlipYChanged(bool isOn)
     {
         ApplyFlip(flipXToggle.isOn, isOn);
-        ConfigFileManager.Instance.SaveFlip(CameraId, flipXToggle.isOn, isOn);
+        CameraConfigFileManager.Instance.SaveFlip(CameraId, flipXToggle.isOn, isOn);
         OnFlipChanged?.Invoke(CameraId, flipXToggle.isOn, isOn);
     }
 
@@ -328,7 +328,7 @@ public class PointCloudUIEntry : MonoBehaviour
         float yMax = clampYMaxSlider != null ? clampYMaxSlider.value : 1f;
 
         ApplyClampToVFX(xMin, xMax, yMin, yMax);
-        ConfigFileManager.Instance.SaveClamp(CameraId, xMin, xMax, yMin, yMax);
+        CameraConfigFileManager.Instance.SaveClamp(CameraId, xMin, xMax, yMin, yMax);
         OnClampChanged?.Invoke(CameraId, xMin, xMax, yMin, yMax);
     }
 

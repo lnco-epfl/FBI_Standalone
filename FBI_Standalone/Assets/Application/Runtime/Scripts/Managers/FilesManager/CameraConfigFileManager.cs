@@ -5,22 +5,20 @@ using UnityEngine;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-public class ConfigFileManager : MonoBehaviour
+public class CameraConfigFileManager : MonoBehaviour
 {
-    public static ConfigFileManager Instance { get; private set; }
+    public static CameraConfigFileManager Instance { get; private set; }
 
-    private string configFolder = "Configs";
-
-    private string RootPath => Path.Combine(Application.dataPath, "..", "Input", configFolder);
+    private string RootPath => Path.Combine(Application.dataPath, "..", "Input", "Configs", "Camera");
 
     private ISerializer serializer;
     private IDeserializer deserializer;
-    private ConfigFile currentConfig;
+    private CameraConfigFile currentConfig;
 
-    public ConfigFile CurrentConfig { get => currentConfig; private set => currentConfig = value; }
+    public CameraConfigFile CurrentConfig { get => currentConfig; private set => currentConfig = value; }
 
-    public event Action<ConfigFile> OnConfigLoaded;
-    public event Action<ConfigFile> OnConfigSaved;
+    public event Action<CameraConfigFile> OnConfigLoaded;
+    public event Action<CameraConfigFile> OnConfigSaved;
     public event Action<List<string>> OnFileListRefreshed;
 
     private void Awake()
@@ -54,7 +52,7 @@ public class ConfigFileManager : MonoBehaviour
 
     public bool IsValideConfigName(string name)
     {
-        var configs = ConfigFileManager.Instance.GetAvailableConfigs();
+        var configs = CameraConfigFileManager.Instance.GetAvailableConfigs();
 
         if (configs.Contains(name))
         {
@@ -65,9 +63,9 @@ public class ConfigFileManager : MonoBehaviour
 
     }
 
-    public ConfigFile CreateNew(string configName)
+    public CameraConfigFile CreateNew(string configName)
     {
-        var cfg = new ConfigFile
+        var cfg = new CameraConfigFile
         {
             configName = configName,
             createdAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
@@ -77,27 +75,27 @@ public class ConfigFileManager : MonoBehaviour
         return cfg;
     }
 
-    public ConfigFile Load(string configName)
+    public CameraConfigFile Load(string configName)
     {
 
         string path = GetPath(configName);
         if (!File.Exists(path))
         {
-            EventFileManager.Log($"[ConfigFileManager] File not found: {path}");
+            EventFileManager.Log($"[CameraConfigFileManager] File not found: {path}");
             return null;
         }
 
         try
         {
             string yaml = File.ReadAllText(path);
-            CurrentConfig = deserializer.Deserialize<ConfigFile>(yaml);
-            EventFileManager.Log($"[ConfigFileManager] Loaded: {path}");
+            CurrentConfig = deserializer.Deserialize<CameraConfigFile>(yaml);
+            EventFileManager.Log($"[CameraConfigFileManager] Loaded: {path}");
             OnConfigLoaded?.Invoke(CurrentConfig);
             return CurrentConfig;
         }
         catch (Exception e)
         {
-            EventFileManager.Log($"[ConfigFileManager] Load error: {e.Message}\n{e.StackTrace}\n{e.InnerException?.Message}");
+            EventFileManager.Log($"[CameraConfigFileManager] Load error: {e.Message}\n{e.StackTrace}\n{e.InnerException?.Message}");
             return null;
         }
     }
@@ -105,34 +103,34 @@ public class ConfigFileManager : MonoBehaviour
     /// <summary>
     /// Loads a config directly from a full file path (used with StandaloneFileBrowser).
     /// </summary>
-    public ConfigFile LoadFromPath(string fullPath)
+    public CameraConfigFile LoadFromPath(string fullPath)
     {
         if (!File.Exists(fullPath))
         {
-            EventFileManager.Log($"[ConfigFileManager] File not found: {fullPath}");
+            EventFileManager.Log($"[CameraConfigFileManager] File not found: {fullPath}");
             return null;
         }
 
         try
         {
             string yaml = File.ReadAllText(fullPath);
-            CurrentConfig = deserializer.Deserialize<ConfigFile>(yaml);
+            CurrentConfig = deserializer.Deserialize<CameraConfigFile>(yaml);
             CurrentConfig.configName = Path.GetFileNameWithoutExtension(fullPath);
-            EventFileManager.Log($"[ConfigFileManager] Loaded from path: {fullPath}");
+            EventFileManager.Log($"[CameraConfigFileManager] Loaded from path: {fullPath}");
             OnConfigLoaded?.Invoke(CurrentConfig);
             return CurrentConfig;
         }
         catch (Exception e)
         {
-            EventFileManager.Log($"[ConfigFileManager] Load error: {e.Message}\n{e.StackTrace}\n{e.InnerException?.Message}");
+            EventFileManager.Log($"[CameraConfigFileManager] Load error: {e.Message}\n{e.StackTrace}\n{e.InnerException?.Message}");
             return null;
         }
     }
 
-    public bool Save(ConfigFile config = null)
+    public bool Save(CameraConfigFile config = null)
     {
         config ??= CurrentConfig;
-        if (config == null) { EventFileManager.Log("[ConfigFileManager] No config to save."); return false; }
+        if (config == null) { EventFileManager.Log("[CameraConfigFileManager] No config to save."); return false; }
 
         config.lastModified = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
@@ -145,7 +143,7 @@ public class ConfigFileManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            EventFileManager.Log($"[ConfigFileManager] Save error: {e.Message}");
+            EventFileManager.Log($"[CameraConfigFileManager] Save error: {e.Message}");
             return false;
         }
     }
@@ -154,10 +152,10 @@ public class ConfigFileManager : MonoBehaviour
     /// Saves the current config to a specific full path (used with StandaloneFileBrowser Save As dialog).
     /// Updates the current config name to the new file name.
     /// </summary>
-    public bool SaveAs(string fullPath, ConfigFile config = null)
+    public bool SaveAs(string fullPath, CameraConfigFile config = null)
     {
         config ??= CurrentConfig;
-        if (config == null) { EventFileManager.Log("[ConfigFileManager] No config to save."); return false; }
+        if (config == null) { EventFileManager.Log("[CameraConfigFileManager] No config to save."); return false; }
 
         try
         {
@@ -169,12 +167,12 @@ public class ConfigFileManager : MonoBehaviour
             File.WriteAllText(fullPath, yaml);
             CurrentConfig = config;
             OnConfigSaved?.Invoke(config);
-            EventFileManager.Log($"[ConfigFileManager] Saved as: {fullPath}");
+            EventFileManager.Log($"[CameraConfigFileManager] Saved as: {fullPath}");
             return true;
         }
         catch (Exception e)
         {
-            EventFileManager.Log($"[ConfigFileManager] SaveAs error: {e.Message}");
+            EventFileManager.Log($"[CameraConfigFileManager] SaveAs error: {e.Message}");
             return false;
         }
     }
@@ -182,21 +180,21 @@ public class ConfigFileManager : MonoBehaviour
     /// <summary>
     /// Copies the current config serialized as YAML to the system clipboard.
     /// </summary>
-    public bool CopyToClipboard(ConfigFile config = null)
+    public bool CopyToClipboard(CameraConfigFile config = null)
     {
         config ??= CurrentConfig;
-        if (config == null) { EventFileManager.Log("[ConfigFileManager] No config to copy."); return false; }
+        if (config == null) { EventFileManager.Log("[CameraConfigFileManager] No config to copy."); return false; }
 
         try
         {
             string yaml = serializer.Serialize(config);
             GUIUtility.systemCopyBuffer = yaml;
-            EventFileManager.Log("[ConfigFileManager] Config copied to clipboard.");
+            EventFileManager.Log("[CameraConfigFileManager] Config copied to clipboard.");
             return true;
         }
         catch (Exception e)
         {
-            EventFileManager.Log($"[ConfigFileManager] CopyToClipboard error: {e.Message}");
+            EventFileManager.Log($"[CameraConfigFileManager] CopyToClipboard error: {e.Message}");
             return false;
         }
     }
@@ -206,27 +204,27 @@ public class ConfigFileManager : MonoBehaviour
     /// Does NOT save to disk automatically — call Save() afterwards if needed.
     /// Returns null if the clipboard is empty or contains invalid data.
     /// </summary>
-    public ConfigFile PasteFromClipboard()
+    public CameraConfigFile PasteFromClipboard()
     {
         string yaml = GUIUtility.systemCopyBuffer;
 
         if (string.IsNullOrWhiteSpace(yaml))
         {
-            EventFileManager.Log("[ConfigFileManager] Clipboard is empty.");
+            EventFileManager.Log("[CameraConfigFileManager] Clipboard is empty.");
             return null;
         }
 
         try
         {
-            var config = deserializer.Deserialize<ConfigFile>(yaml);
+            var config = deserializer.Deserialize<CameraConfigFile>(yaml);
             CurrentConfig = config;
             OnConfigLoaded?.Invoke(CurrentConfig);
-            EventFileManager.Log("[ConfigFileManager] Config pasted from clipboard.");
+            EventFileManager.Log("[CameraConfigFileManager] Config pasted from clipboard.");
             return CurrentConfig;
         }
         catch (Exception e)
         {
-            EventFileManager.Log($"[ConfigFileManager] PasteFromClipboard error (invalid content): {e.Message}");
+            EventFileManager.Log($"[CameraConfigFileManager] PasteFromClipboard error (invalid content): {e.Message}");
             return null;
         }
     }
@@ -242,7 +240,7 @@ public class ConfigFileManager : MonoBehaviour
 
     public void SaveObjectTransform(int cameraID, Transform t, bool saveImmediately = true)
     {
-        if (CurrentConfig == null) { EventFileManager.Log("[ConfigFileManager] No active config."); return; }
+        if (CurrentConfig == null) { EventFileManager.Log("[CameraConfigFileManager] No active config."); return; }
 
         var existing = CurrentConfig.pointClouds.Find(o => o.ID == cameraID);
         if (existing != null)
@@ -261,7 +259,7 @@ public class ConfigFileManager : MonoBehaviour
 
     public void SaveDepthMax(int cameraID, float value, bool saveImmediately = true)
     {
-        if (CurrentConfig == null) { EventFileManager.Log("[ConfigFileManager] No active config."); return; }
+        if (CurrentConfig == null) { EventFileManager.Log("[CameraConfigFileManager] No active config."); return; }
 
         var existing = CurrentConfig.pointClouds.Find(o => o.ID == cameraID);
         if (existing != null)
@@ -280,7 +278,7 @@ public class ConfigFileManager : MonoBehaviour
 
     public void SaveDepthMin(int cameraID, float value, bool saveImmediately = true)
     {
-        if (CurrentConfig == null) { EventFileManager.Log("[ConfigFileManager] No active config."); return; }
+        if (CurrentConfig == null) { EventFileManager.Log("[CameraConfigFileManager] No active config."); return; }
 
         var existing = CurrentConfig.pointClouds.Find(o => o.ID == cameraID);
         if (existing != null)
@@ -299,7 +297,7 @@ public class ConfigFileManager : MonoBehaviour
 
     public void SaveFlip(int cameraID, bool flipX, bool flipY, bool saveImmediately = true)
     {
-        if (CurrentConfig == null) { EventFileManager.Log("[ConfigFileManager] No active config."); return; }
+        if (CurrentConfig == null) { EventFileManager.Log("[CameraConfigFileManager] No active config."); return; }
 
         var existing = CurrentConfig.pointClouds.Find(o => o.ID == cameraID);
         if (existing != null)
@@ -320,7 +318,7 @@ public class ConfigFileManager : MonoBehaviour
 
     public void SaveClamp(int cameraID, float xMin, float xMax, float yMin, float yMax, bool saveImmediately = true)
     {
-        if (CurrentConfig == null) { EventFileManager.Log("[ConfigFileManager] No active config."); return; }
+        if (CurrentConfig == null) { EventFileManager.Log("[CameraConfigFileManager] No active config."); return; }
 
         var existing = CurrentConfig.pointClouds.Find(o => o.ID == cameraID);
         if (existing != null)
@@ -343,6 +341,14 @@ public class ConfigFileManager : MonoBehaviour
         if (saveImmediately) Save();
     }
 
+    // NOTE: the stimulus display canvas (position/rotation/color) is no longer part of
+    // CameraConfigFile. It now lives in its own DisplayConfigFile, managed by DisplayConfigFileManager.
+    // See DisplayConfigFileManager.SaveUICanvas().
+
+    /// <summary>
+    /// Returns the root folder path where configs are stored.
+    /// Used to open StandaloneFileBrowser dialogs in the right location.
+    /// </summary>
     public string GetRootPath() => RootPath;
 
     private string GetPath(string configName) =>

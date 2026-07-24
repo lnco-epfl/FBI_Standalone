@@ -175,8 +175,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         canvaUIRotationYInputField.onValueChanged.AddListener((str) => SetWorldUIRotation());
         canvaUIRotationZInputField.onValueChanged.AddListener((str) => SetWorldUIRotation());
 
-        ConfigFileManager.Instance.OnConfigLoaded += OnConfigLoaded;
-        ConfigFileManager.Instance.OnConfigSaved += OnConfigSaved;
+        CameraConfigFileManager.Instance.OnConfigLoaded += OnConfigLoaded;
+        CameraConfigFileManager.Instance.OnConfigSaved += OnConfigSaved;
         SceneLoaderManager.Instance.OnSceneLoaded += OnSceneLoaded;
 
         sceneDropdown.onValueChanged.AddListener(OnSceneDropdownValueChanged);
@@ -232,8 +232,8 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         canvaUIRotationYInputField.onValueChanged.RemoveAllListeners();
         canvaUIRotationZInputField.onValueChanged.RemoveAllListeners();
 
-        ConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
-        ConfigFileManager.Instance.OnConfigSaved -= OnConfigSaved;
+        CameraConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
+        CameraConfigFileManager.Instance.OnConfigSaved -= OnConfigSaved;
         SceneLoaderManager.Instance.OnSceneLoaded -= OnSceneLoaded;
 
         sceneDropdown.onValueChanged.RemoveListener(OnSceneDropdownValueChanged);
@@ -299,7 +299,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         var bridgeGo = new GameObject("PointCloudUIBridge");
 
         bridge = bridgeGo.AddComponent<PointCloudUIBridge>();
-        bridge.Initialize(this, worldSpaceUI, switchDelay);
+        //bridge.Initialize(this, worldSpaceUI, switchDelay);
 
         worldSpaceUI.SetBridge(bridge);
         worldSpaceUI.gameObject.SetActive(false);
@@ -318,7 +318,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void OnNewConfigButtonClick()
     {
-        FileBrowserService.SaveFile("New config", ConfigFileManager.Instance.GetRootPath(), "new_config", "yaml", (paths) =>
+        FileBrowserService.SaveFile("New config", CameraConfigFileManager.Instance.GetRootPath(), "new_config", "yaml", (paths) =>
         {
             if (string.IsNullOrEmpty(paths))
             {
@@ -328,7 +328,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             }
 
             string configName = System.IO.Path.GetFileNameWithoutExtension(paths);
-            ConfigFileManager.Instance.CreateNew(configName);
+            CameraConfigFileManager.Instance.CreateNew(configName);
 
             foreach (var entry in pointCloudEntries)
             {
@@ -339,7 +339,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             foreach (var entry in pointCloudEntries)
                 entry.ForceApplyAndSave();
 
-            bool saved = ConfigFileManager.Instance.SaveAs(paths);
+            bool saved = CameraConfigFileManager.Instance.SaveAs(paths);
 
             if (saved)
             {
@@ -362,7 +362,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void OnOpenConfigButtonClick()
     {
-        FileBrowserService.OpenFile("Open config", ConfigFileManager.Instance.GetRootPath(), "yaml", (path) =>
+        FileBrowserService.OpenFile("Open config", CameraConfigFileManager.Instance.GetRootPath(), "yaml", (path) =>
         {
             if (path == null || path.Length == 0 || string.IsNullOrEmpty(path))
             {
@@ -371,7 +371,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
                 return;
             }
 
-            var config = ConfigFileManager.Instance.LoadFromPath(path);
+            var config = CameraConfigFileManager.Instance.LoadFromPath(path);
 
             if (config != null)
             {
@@ -400,14 +400,14 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void OnSaveButtonClick()
     {
-        if (ConfigFileManager.Instance.CurrentConfig == null)
+        if (CameraConfigFileManager.Instance.CurrentConfig == null)
         {
             SetStatus("No config loaded.", Color.grey);
             bridge?.MirrorStatus("No config loaded.", Color.grey);
             return;
         }
 
-        bool saved = ConfigFileManager.Instance.Save();
+        bool saved = CameraConfigFileManager.Instance.Save();
         string msg = saved ? $"Saved {selectedConfig}" : "Failed to save file.";
         Color col = saved ? Color.green : Color.red;
         SetStatus(msg, col);
@@ -416,7 +416,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void OnSaveAsButtonClick()
     {
-        if (ConfigFileManager.Instance.CurrentConfig == null)
+        if (CameraConfigFileManager.Instance.CurrentConfig == null)
         {
             SetStatus("No config loaded.", Color.grey);
             bridge?.MirrorStatus("No config loaded.", Color.grey);
@@ -424,7 +424,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         }
 
         string defaultName = selectedConfig ?? "config";
-        FileBrowserService.SaveFile("Save config as", ConfigFileManager.Instance.GetRootPath(), defaultName, "yaml", (path) =>
+        FileBrowserService.SaveFile("Save config as", CameraConfigFileManager.Instance.GetRootPath(), defaultName, "yaml", (path) =>
         {
             if (string.IsNullOrEmpty(path))
             {
@@ -433,7 +433,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
                 return;
             }
 
-            bool saved = ConfigFileManager.Instance.SaveAs(path);
+            bool saved = CameraConfigFileManager.Instance.SaveAs(path);
 
             if (saved)
             {
@@ -456,7 +456,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void OnCopyConfigButtonClick()
     {
-        bool copied = ConfigFileManager.Instance.CopyToClipboard();
+        bool copied = CameraConfigFileManager.Instance.CopyToClipboard();
         string msg = copied ? "Config copied to clipboard." : "No config loaded.";
         Color col = copied ? Color.green : Color.grey;
         SetStatus(msg, col);
@@ -472,7 +472,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
             return;
         }
 
-        var config = ConfigFileManager.Instance.PasteFromClipboard();
+        var config = CameraConfigFileManager.Instance.PasteFromClipboard();
 
         if (config != null)
         {
@@ -792,9 +792,9 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         OnCanvasSetupPointCloudUIDestroy.Invoke(this);
     }
 
-    private void OnConfigSaved(ConfigFile file) { }
+    private void OnConfigSaved(CameraConfigFile file) { }
 
-    private void OnConfigLoaded(ConfigFile file)
+    private void OnConfigLoaded(CameraConfigFile file)
     {
         for (int i = 0; i < pointCloudEntries.Count; i++)
         {

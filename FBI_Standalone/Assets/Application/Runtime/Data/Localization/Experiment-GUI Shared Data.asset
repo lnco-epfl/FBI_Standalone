@@ -263,6 +263,14 @@ MonoBehaviour:
     m_Key: rotation-z
     m_Metadata:
       m_Items: []
+  - m_Id: 141846070613237760
+    m_Key: cameras-config
+    m_Metadata:
+      m_Items: []
+  - m_Id: 141846107242094592
+    m_Key: display-config
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

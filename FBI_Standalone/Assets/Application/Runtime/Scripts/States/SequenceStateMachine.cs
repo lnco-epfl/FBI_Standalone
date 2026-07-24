@@ -42,7 +42,8 @@ public class SequenceStateMachine : MonoBehaviour
             { "Wait",               () => new WaitState() },
             { "DisplayText",        () => new DisplayTextState() },
             { "LoadScene",          () => new LoadSceneState() },
-            { "LoadConfig",         () => new LoadConfigState() },
+            { "LoadCameraConfig",   () => new LoadCameraConfigState() },
+            { "LoadDisplayConfig",  () => new LoadDisplayConfigState() },
             { "DisplayLikertScale", () => new DisplayLikertScaleState() },
             { "Break",              () => new BreakState() },
             { "DisplayImage",       () => new DisplayImageState() },
@@ -50,8 +51,7 @@ public class SequenceStateMachine : MonoBehaviour
             { "PlaySound",          () => new PlaySoundState() },
             { "DisplayCameras",     () => new DisplayCamerasState() },
             { "DisplayVideo",       () => new DisplayVideoState() },
-            { "SendLSLEvent",       () => new SendLSLEventState() },
-            { "LoadDisplayConfig",  () => new LoadDisplayConfigState() }
+            { "SendLSLEvent",       () => new SendLSLEventState() }
         };
     }
 

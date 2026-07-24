@@ -1,13 +1,13 @@
 using System.Collections;
 using UnityEngine;
 
-public class LoadConfigState : IState
+public class LoadCameraConfigState : IState
 {
-    private LoadConfigStep step;
+    private LoadCameraConfigStep step;
 
     public void Enter(SequenceStep sequenceStep)
     {
-        step = sequenceStep as LoadConfigStep;
+        step = sequenceStep as LoadCameraConfigStep;
     }
 
     public IEnumerator Execute()
@@ -15,11 +15,11 @@ public class LoadConfigState : IState
 
         EventFileManager.Log($"[LoadConfigState] Load condig file {step.fileName}");
 
-        var configs = ConfigFileManager.Instance.GetAvailableConfigs();
+        var configs = CameraConfigFileManager.Instance.GetAvailableConfigs();
 
         if(configs.Contains(step.fileName))
         {
-            ConfigFileManager.Instance.Load(step.fileName);
+            CameraConfigFileManager.Instance.Load(step.fileName);
         }
         else
         {

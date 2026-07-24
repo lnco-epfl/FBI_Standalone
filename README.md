@@ -1,4 +1,3 @@
-
 # FBI Standalone
 
 # Summary
@@ -8,7 +7,8 @@
 * [How to use](#how-to-use)
 * [Input Files](#input-files)
 * [Sequence Files](#sequence-files)
-* [Config Files](#config-files)
+* [Camera Config Files](#camera-config-files)
+* [Display Config Files](#display-config-files)
 * [Output Files](#output-files)
 * [Config Editor](#config-editor)
 * [GUI](#gui)
@@ -65,7 +65,7 @@ To run the application:
 * Connect the Quest 3 / 3S to the laptop with the USB-C cable and start Meta Horizon Link. Validate the Quest Link connection from inside the headset.
 * Run `FBI Standalone.exe`
 * Enter the participant data (age, gender) and select a sequence file.
-* Create or edit a config file (which defines camera positions, depth values, etc.)
+* Create or edit a config file (which defines camera positions, depth values, etc.) and a display config file (which defines the stimulus canvas position and appearance)
 * Press the **Start** button to begin the experiment.
 
 # Input Files
@@ -75,7 +75,9 @@ All input files are located in the `Input/` folder at the root of the executable
 ```
 Input/
 ├── Sequences/       ← YAML sequence files
-├── Configs/         ← YAML camera configuration files
+├── Config/
+│   ├── Camera/      ← YAML camera configuration files
+│   └── Display/     ← YAML stimulus display configuration files
 ├── Images/          ← Image assets (PNG, JPG, BMP, TGA)
 ├── Videos/          ← Video assets (MP4 + SRT)
 └── Audios/           ← Audio assets (WAV, OGG, MP3)
@@ -133,18 +135,56 @@ Available scenes:
 
 ---
 
-### LoadConfig
+### LoadCameraConfig
 
-Loads a camera configuration file by name.
+Loads a camera configuration file by name. This only affects camera/point cloud settings (`pointClouds`) — it has no effect on the stimulus display canvas, which is managed separately by [`LoadDisplayConfig`](#loaddisplayconfig).
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `configName` | string | Name of the config file to load (without extension) |
+| `configName` | string | Name of the camera config file to load (without extension) |
 
 ```yaml
-- stepType: loadConfig
+- stepType: loadCameraConfig
   configName: Bruno
 ```
+
+---
+
+### LoadDisplayConfig
+
+Loads a display configuration file by name, and/or applies one-off overrides to the stimulus display canvas (position, rotation, scale, background color). Useful for switching the canvas layout mid-experiment, or for tweaking a single value without maintaining a dedicated file.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `configName` | string | *(Optional)* Name of a display config file to load (without extension). If omitted, the currently active stimulus display settings are used as the base |
+| `positionOverride` | Vector3 | *(Optional)* Overrides the canvas position. If omitted, keeps the loaded/current value |
+| `rotationOverride` | Vector3 | *(Optional)* Overrides the canvas Euler rotation. If omitted, keeps the loaded/current value |
+| `scaleOverride` | Vector3 | *(Optional)* Overrides the canvas scale. If omitted, keeps the loaded/current value |
+| `backgroundColorOverride` | Color (r,g,b,a) | *(Optional)* Overrides the canvas background color. If omitted, keeps the loaded/current value |
+
+```yaml
+# Load a display config file as-is
+- stepType: loadDisplayConfig
+  configName: MainDisplay
+
+# Load a display config file, but override the background color for this step only
+- stepType: loadDisplayConfig
+  configName: MainDisplay
+  backgroundColorOverride:
+    r: 1
+    g: 1
+    b: 1
+    a: 1
+
+# No config file — just nudge the currently active canvas position
+- stepType: loadDisplayConfig
+  positionOverride:
+    x: 0.0
+    y: 1.2
+    z: 2.0
+```
+
+> ⚠️ If neither `configName` nor any override field is set, the step has no effect.
 
 ---
 
@@ -195,7 +235,7 @@ Each entry in `cameraDatas` supports the following fields:
 |-------|------|-------------|
 | `id` | string | ID of the camera to display (`"1"`, `"2"`, etc.) |
 | `delay` | float | Temporal delay in seconds. `0.0` = real-time display |
-| `configName` | string | *(Optional)* Name of a config file to load for this camera (without extension). If omitted, the currently loaded config is used |
+| `configName` | string | *(Optional)* Name of a camera config file to load for this camera (without extension). If omitted, the currently loaded config is used |
 | | | |
 | `interpolation` | object | *(Optional)* Smoothly animates the point cloud transform from a start config to the target config |
 | `interpolation.duration` | float | Duration of the interpolation animation in seconds |
@@ -478,8 +518,13 @@ steps:
     startTime: 0
     blocking: true
 
-  - stepType: loadConfig
+  - stepType: loadCameraConfig
     configName: DefaultConfig
+    startTime: 1
+    blocking: true
+
+  - stepType: loadDisplayConfig
+    configName: MainDisplay
     startTime: 1
     blocking: true
 
@@ -575,32 +620,14 @@ steps:
     blocking: true
 ```
 
-# Config Files
+# Camera Config Files
 
-Config files are YAML files located in `Input/Configs/`. They define the spatial configuration, depth settings, and clipping boundaries for each camera's point cloud, as well as the position and appearance of the stimulus display canvas. Config files can be created and edited through the Config Editor.
+Camera config files are YAML files located in `Input/Config/Camera/`. They define the spatial configuration, depth settings, and clipping boundaries for each camera's point cloud. Camera config files can be created and edited through the **Cameras** tab of the Config Editor.
 
 ```yaml
 configName: DefaultConfig
 createdAt: 2026-04-02 15:20:45
 lastModified: 2026-04-10 12:26:32
-stimulusDisplay:
-  position:
-    x: 0.11
-    y: 0.68
-    z: 2.47
-  rotation:
-    x: 0
-    y: 23.2
-    z: 0
-  scale:
-    x: 1
-    y: 1
-    z: 1
-  backgroundColor:
-    r: 0
-    g: 0
-    b: 0
-    a: 1
 pointClouds:
   - iD: 1
     position:
@@ -623,17 +650,6 @@ pointClouds:
     clampYMax: 1.0
 ```
 
-## Stimulus Display
-
-The `stimulusDisplay` block defines the position, orientation and background color of the in-world UI panel displayed during the experiment.
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `position` | Vector3 | Position of the display in the scene |
-| `rotation` | Vector3 | Euler rotation of the display |
-| `scale` | Vector3 | Scale of the display |
-| `backgroundColor` | Color (r,g,b,a) | Background color of the display. Values are normalized floats between `0` and `1` |
-
 ## Point Clouds
 
 The `pointClouds` list defines the spatial configuration, depth settings and spatial clipping for each camera.
@@ -650,6 +666,45 @@ The `pointClouds` list defines the spatial configuration, depth settings and spa
 | `clampXMax` | float | Right boundary of the visible area, normalized between `0` and `1` |
 | `clampYMin` | float | Bottom boundary of the visible area, normalized between `0` and `1` |
 | `clampYMax` | float | Top boundary of the visible area, normalized between `0` and `1` |
+
+# Display Config Files
+
+Display config files are YAML files located in `Input/Config/Display/`. They define the position and appearance of the stimulus display canvas — the in-world UI panel used to display text, images, questions, and other stimuli to the participant. They are entirely independent from [Camera Config Files](#camera-config-files): loading, saving, or switching one has no effect on the other. Display config files can be created and edited through the **Stimulus Display** tab of the Config Editor, and loaded during an experiment with the [`LoadDisplayConfig`](#loaddisplayconfig) step.
+
+```yaml
+configName: MainDisplay
+createdAt: 2026-04-02 15:20:45
+lastModified: 2026-04-10 12:26:32
+stimulusDisplay:
+  position:
+    x: 0.11
+    y: 0.68
+    z: 2.47
+  rotation:
+    x: 0
+    y: 23.2
+    z: 0
+  scale:
+    x: 1
+    y: 1
+    z: 1
+  backgroundColor:
+    r: 0
+    g: 0
+    b: 0
+    a: 1
+```
+
+## Stimulus Display
+
+The `stimulusDisplay` block defines the position, orientation and background color of the in-world UI panel displayed during the experiment.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `position` | Vector3 | Position of the display in the scene |
+| `rotation` | Vector3 | Euler rotation of the display |
+| `scale` | Vector3 | Scale of the display |
+| `backgroundColor` | Color (r,g,b,a) | Background color of the display. Values are normalized floats between `0` and `1` |
 
 # Output Files
 
@@ -668,7 +723,8 @@ There are two types of output files:
 | `Age` | int | Participant's age |
 | `Language` | string | Language used during the experiment |
 | `SequenceFile` | string | Name of the sequence file used |
-| `ConfigFile` | string | Name of the config file loaded |
+| `ConfigFile` | string | Name of the camera config file loaded |
+| `DisplayConfigFile` | string | Name of the display config file loaded |
 | `TimeSinceStart` | double | Time elapsed since experiment start (seconds) |
 | `StepType` | string | Type of the current step (e.g. `DisplayCameras`) |
 | `StepCount` | int | Current step index |
@@ -684,11 +740,24 @@ There are two types of output files:
 
 # Config Editor
 
-The Config Editor is a dedicated interface for creating and editing camera configuration files. It can be opened from the main GUI and provides a real-time preview of the scene from the participant's perspective.
+The Config Editor is a dedicated interface for creating and editing camera and display configuration files. It can be opened from the main GUI and provides a real-time preview of the scene from the participant's perspective.
 
 <img width="1932" height="1098" alt="Config Editor" src="https://github.com/user-attachments/assets/fa9f5c5f-4c59-4a78-8a3d-d2e0d53dd35c" />
 
+## Tabs
+
+The editor is split into two independent tabs, each with its own toolbar, its own currently-loaded file, and its own status indicator, since camera configs and display configs are separate files:
+
+| Tab | Edits | Saved to |
+|-----|-------|----------|
+| **Cameras** | [Camera Panels](#camera-panels-camera-1-camera-2-) — point cloud position, depth, clamp and mirror settings per camera | `Input/Config/Camera/` |
+| **Stimulus Display** | [Stimulus Display](#stimulus-display-1) panel — position, rotation and background color of the in-world UI canvas | `Input/Config/Display/` |
+
+Switching tabs only changes which panel and toolbar are shown — it does not close or discard the file open in the other tab.
+
 ## Toolbar
+
+Each tab has its own toolbar with the same set of controls, operating on that tab's file only:
 
 | Button | Description |
 |--------|-------------|
@@ -699,7 +768,7 @@ The Config Editor is a dedicated interface for creating and editing camera confi
 | **≡** (menu) | Opens a menu with clipboard options: **Copy** to copy the current configuration as YAML to the clipboard, and **Paste** to load a configuration from the clipboard |
 | **Scene** | Dropdown to select which Unity scene to load in the preview (e.g. `EmptyRoom`) |
 
-On the left of the status indicator, the name of the currently loaded config file is displayed. The status indicator shows a message reflecting the current state of the editor:
+On the left of the status indicator, the name of the currently loaded file (for that tab) is displayed. The status indicator shows a message reflecting the current state of the active tab's editor:
 
 | Message | Color | Description |
 |---------|-------|-------------|
@@ -762,7 +831,7 @@ Flips the point cloud along a given axis.
 
 ## Stimulus Display
 
-The **Stimulus Display** section controls the position and appearance of the in-world UI canvas — the panel used to display text, images, questions, and other stimuli to the participant.
+Shown under the **Stimulus Display** tab. This section controls the position and appearance of the in-world UI canvas — the panel used to display text, images, questions, and other stimuli to the participant. Changes here are saved to a [Display Config File](#display-config-files), independent from the camera config open in the **Cameras** tab.
 
 | Control | Description |
 |---------|-------------|

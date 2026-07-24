@@ -123,9 +123,9 @@ public class ObjectTransformData
 }
 
 [Serializable]
-public class ConfigFile
+public class CameraConfigFile
 {
-    public string configName = "NewConfig";
+    public string configName = "NewCameraConfig";
     public string createdAt = "";
     public string lastModified = "";
 
@@ -140,9 +140,9 @@ public class ConfigFile
 [Serializable]
 public class DisplayConfigFile
 {
-    public string configName;
-    public string createdAt;
-    public string lastModified;
+    public string configName = "NewDisplayConfig";
+    public string createdAt = "";
+    public string lastModified = "";
 
     public UITransformData stimulusDisplay;
 

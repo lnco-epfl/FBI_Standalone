@@ -3,7 +3,7 @@ steps:
     startTime: 0
     scenePath: "EmptyRoom"
 
-  - stepType: loadConfig
+  - stepType: LoadCameraConfig
     startTime: 1.0
     configName: 1PP
 
@@ -74,7 +74,7 @@ steps:
         delay: 0.5
         configName: 1PP
 
-  - stepType: loadConfig
+  - stepType: LoadCameraConfig
     startTime: 79.0
     configName: interpolation2
 

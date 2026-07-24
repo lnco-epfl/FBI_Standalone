@@ -107,7 +107,7 @@ public class OutputFileManager : MonoBehaviour
     private void OnEnable()
     {
         ExperimentManager.Instance.OnInitialized += OnExperiementInitialize;
-        ConfigFileManager.Instance.OnConfigLoaded += OnConfigLoaded;
+        CameraConfigFileManager.Instance.OnConfigLoaded += OnConfigLoaded;
     }
 
 
@@ -115,7 +115,7 @@ public class OutputFileManager : MonoBehaviour
     private void OnDisable()
     {
         ExperimentManager.Instance.OnInitialized -= OnExperiementInitialize;
-        ConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
+        CameraConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
     }
 
     private void OnExperiementInitialize(bool isInitialize, Sequence sequence)
@@ -128,7 +128,7 @@ public class OutputFileManager : MonoBehaviour
             OutputFileData.Age = UIManager.Instance.SelectedAge;
         }
     }
-    private void OnConfigLoaded(ConfigFile file)
+    private void OnConfigLoaded(CameraConfigFile file)
     {
         OutputFileData.ConfigFile = file.configName;
     }

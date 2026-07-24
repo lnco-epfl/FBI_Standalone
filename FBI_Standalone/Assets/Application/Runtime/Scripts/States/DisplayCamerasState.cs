@@ -75,8 +75,8 @@ public class DisplayCamerasState : IState
                 cameraIDs.Append(",");
             }
 
-            ConfigFile configFile = null;
-            ConfigFile startConfigFile = null;
+            CameraConfigFile configFile = null;
+            CameraConfigFile startConfigFile = null;
 
             if (cameraData.delay > 0.0f)
             {
@@ -95,11 +95,11 @@ public class DisplayCamerasState : IState
 
             if (!string.IsNullOrEmpty(cameraData.configName))
             {
-                if (ConfigFileManager.Instance.IsValideConfigName(cameraData.configName))
+                if (CameraConfigFileManager.Instance.IsValideConfigName(cameraData.configName))
                 {
-                    if (ConfigFileManager.Instance.CurrentConfig == null || ConfigFileManager.Instance.CurrentConfig.configName != cameraData.configName)
+                    if (CameraConfigFileManager.Instance.CurrentConfig == null || CameraConfigFileManager.Instance.CurrentConfig.configName != cameraData.configName)
                     {
-                        configFile = ConfigFileManager.Instance.Load(cameraData.configName);
+                        configFile = CameraConfigFileManager.Instance.Load(cameraData.configName);
                     }
                 }
                 else
@@ -110,7 +110,7 @@ public class DisplayCamerasState : IState
 
             if (configFile == null)
             {
-                configFile = ConfigFileManager.Instance.CurrentConfig;
+                configFile = CameraConfigFileManager.Instance.CurrentConfig;
             }
 
             PointCloud pointCloud = null;
@@ -134,9 +134,9 @@ public class DisplayCamerasState : IState
 
                 if (!string.IsNullOrEmpty(cameraData.interpolation.startConfigName))
                 {
-                    if (ConfigFileManager.Instance.IsValideConfigName(cameraData.interpolation.startConfigName) && ConfigFileManager.Instance.CurrentConfig.configName != cameraData.interpolation.startConfigName)
+                    if (CameraConfigFileManager.Instance.IsValideConfigName(cameraData.interpolation.startConfigName) && CameraConfigFileManager.Instance.CurrentConfig.configName != cameraData.interpolation.startConfigName)
                     {
-                        startConfigFile = ConfigFileManager.Instance.Load(cameraData.interpolation.startConfigName);
+                        startConfigFile = CameraConfigFileManager.Instance.Load(cameraData.interpolation.startConfigName);
 
                         pointCloud.SetTransform(startConfigFile.pointClouds[pointCloudID - 1].position.ToVector3(), startConfigFile.pointClouds[pointCloudID - 1].rotation.ToVector3(), startConfigFile.pointClouds[pointCloudID - 1].scale.ToVector3());
                     }

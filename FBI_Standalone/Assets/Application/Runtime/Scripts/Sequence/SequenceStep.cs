@@ -69,13 +69,13 @@ public class LoadSceneStep : SequenceStep
 }
 
 [System.Serializable]
-public class LoadConfigStep : SequenceStep
+public class LoadCameraConfigStep : SequenceStep
 {
 
     public string fileName;
 
     public override float GetDuration() => 1.0f;
-    public override string GetStateName() => "LoadConfig";
+    public override string GetStateName() => "LoadCameraConfig";
     public override string GetDisplayName()
     {
         return $"Load Scene {fileName}";
@@ -86,7 +86,6 @@ public class LoadConfigStep : SequenceStep
 [System.Serializable]
 public class LoadDisplayConfigStep : SequenceStep
 {
-
     public string configName;
 
     public SerializableVector3 positionOverride;
@@ -324,7 +323,7 @@ public class SequenceStepWrapper
 
     public enum StepType
     {
-        DisplayText, Wait, SpawnObject, LoadScene, LoadConfig, LoadDisplayConfig, DisplayLikertScale, Break, DisplayImage, DisplayQuestion, PlaySound, DisplayCameras, DisplayVideo, SendLSLEvent
+        DisplayText, Wait, SpawnObject, LoadScene, LoadCameraConfig, LoadDisplayConfig, DisplayLikertScale, Break, DisplayImage, DisplayQuestion, PlaySound, DisplayCameras, DisplayVideo, SendLSLEvent
     }
 
     public SequenceStepWrapper()
@@ -340,7 +339,7 @@ public class SequenceStepWrapper
             case StepType.DisplayText: step = new DisplayTextStep(); break;
             case StepType.Wait: step = new WaitStep(); break;
             case StepType.LoadScene: step = new LoadSceneStep(); break;
-            case StepType.LoadConfig: step = new LoadConfigStep(); break;
+            case StepType.LoadCameraConfig: step = new LoadCameraConfigStep(); break;
             case StepType.LoadDisplayConfig: step = new LoadDisplayConfigStep(); break;
             case StepType.DisplayLikertScale: step = new DisplayLikertScaleStep(); break;
             case StepType.Break: step = new BreakStep(); break;

@@ -176,7 +176,7 @@ steps:
     startTime: 280
     eventName: config_loaded_3PP
 
-  - stepType: loadConfig
+  - stepType: LoadCameraConfig
     startTime: 280
     configName: 3PP
 
@@ -970,7 +970,7 @@ steps:
     startTime: 1374
     eventName: config_loaded_Mirror_Flip
 
-  - stepType: loadConfig
+  - stepType: LoadCameraConfig
     startTime: 1374
     configName: Mirror
 
@@ -1109,7 +1109,7 @@ steps:
     startTime: 1575
     eventName: config_loaded_3PP
 
-  - stepType: loadConfig
+  - stepType: LoadCameraConfig
     startTime: 1575
     configName: 3PP
 

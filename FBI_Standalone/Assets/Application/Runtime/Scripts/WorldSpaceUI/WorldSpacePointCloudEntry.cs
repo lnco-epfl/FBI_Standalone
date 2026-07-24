@@ -159,20 +159,20 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
         t.position = Position;
         t.rotation = Quaternion.Euler(Rotation);
 
-        ConfigFileManager.Instance.SaveObjectTransform(CameraId, t);
+        CameraConfigFileManager.Instance.SaveObjectTransform(CameraId, t);
     }
 
     private void OnDepthMaxChanged(float value)
     {
         if (kinectInterface != null) kinectInterface.maxDepthDistance = value;
-        ConfigFileManager.Instance.SaveDepthMax(CameraId, value);
+        CameraConfigFileManager.Instance.SaveDepthMax(CameraId, value);
         pairedOverlayEntry?.SetMaxDepth(value);
     }
 
     private void OnDepthMinChanged(float value)
     {
         if (kinectInterface != null) kinectInterface.minDepthDistance = value;
-        ConfigFileManager.Instance.SaveDepthMin(CameraId, value);
+        CameraConfigFileManager.Instance.SaveDepthMin(CameraId, value);
         pairedOverlayEntry?.SetMinDepth(value);
     }
 
@@ -180,7 +180,7 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
     {
         bool flipY = flipYToggle != null && flipYToggle.isOn;
         ApplyFlip(isOn, flipY);
-        ConfigFileManager.Instance.SaveFlip(CameraId, isOn, flipY);
+        CameraConfigFileManager.Instance.SaveFlip(CameraId, isOn, flipY);
         pairedOverlayEntry?.SetFlip(isOn, flipY);
     }
 
@@ -188,7 +188,7 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
     {
         bool flipX = flipXToggle != null && flipXToggle.isOn;
         ApplyFlip(flipX, isOn);
-        ConfigFileManager.Instance.SaveFlip(CameraId, flipX, isOn);
+        CameraConfigFileManager.Instance.SaveFlip(CameraId, flipX, isOn);
         pairedOverlayEntry?.SetFlip(flipX, isOn);
     }
 
@@ -198,7 +198,7 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
         float xMax = clampXMaxSlider != null ? clampXMaxSlider.value : 1f;
         float yMin = clampYMinSlider != null ? clampYMinSlider.value : 0f;
         float yMax = clampYMaxSlider != null ? clampYMaxSlider.value : 1f;
-        ConfigFileManager.Instance.SaveClamp(CameraId, xMin, xMax, yMin, yMax);
+        CameraConfigFileManager.Instance.SaveClamp(CameraId, xMin, xMax, yMin, yMax);
         pairedOverlayEntry?.SetClamp(xMin, xMax, yMin, yMax);
     }
 

@@ -3,7 +3,7 @@ steps:
     startTime: 0
     scenePath: "EmptyRoom"
 
-  - stepType: LoadConfig
+  - stepType: LoadCameraConfig
     startTime: 1.0
     configName: 3PP
 

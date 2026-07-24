@@ -41,7 +41,7 @@ steps:
     startTime: 19.904
     eventName: config_loaded_3PP
 
-  - stepType: loadConfig
+  - stepType: LoadCameraConfig
     startTime: 19.904
     configName: 3PP
 
@@ -118,7 +118,7 @@ steps:
     startTime: 118.904
     eventName: config_loaded_Mirror_Flip
 
-  - stepType: loadConfig
+  - stepType: LoadCameraConfig
     startTime: 118.904
     configName: Mirror - Flip
 
@@ -195,7 +195,7 @@ steps:
     startTime: 217.904
     eventName: config_loaded_3PP
 
-  - stepType: loadConfig
+  - stepType: LoadCameraConfig
     startTime: 217.904
     configName: 3PP
 
@@ -272,7 +272,7 @@ steps:
     startTime: 316.904
     eventName: config_loaded_Mirror_Flip
 
-  - stepType: loadConfig
+  - stepType: LoadCameraConfig
     startTime: 316.904
     configName: Mirror - Flip
 
@@ -390,7 +390,7 @@ steps:
     startTime: 1728.808
     eventName: config_loaded_3PP
 
-  - stepType: loadConfig
+  - stepType: LoadCameraConfig
     startTime: 1728.808
     configName: 3PP
 
@@ -467,7 +467,7 @@ steps:
     startTime: 1827.808
     eventName: config_loaded_3PP
 
-  - stepType: loadConfig
+  - stepType: LoadCameraConfig
     startTime: 1827.808
     configName: 3PP
 
@@ -544,7 +544,7 @@ steps:
     startTime: 1926.808
     eventName: config_loaded_Mirror_Flip
 
-  - stepType: loadConfig
+  - stepType: LoadCameraConfig
     startTime: 1926.808
     configName: Mirror - Flip
 
@@ -614,7 +614,7 @@ steps:
     startTime: 2025.808
     eventName: config_loaded_Mirror_Flip
 
-  - stepType: loadConfig
+  - stepType: LoadCameraConfig
     startTime: 2025.808
     configName: Mirror - Flip
 

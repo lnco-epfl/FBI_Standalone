@@ -10,7 +10,7 @@ using UnityEngine;
 /// </summary>
 public class PointCloudUIBridge : MonoBehaviour
 {
-    private CanvasSetupPointCloudUI overlayUI;
+    private ConfigEditorUI overlayUI;
     private WorldSpacePointCloudUI worldSpaceUI;
     private float switchDelay = 1.5f;
 
@@ -23,9 +23,9 @@ public class PointCloudUIBridge : MonoBehaviour
 
     // ── Init ──────────────────────────────────────────────────────────────────
 
-    public void Initialize(CanvasSetupPointCloudUI overlay, WorldSpacePointCloudUI ws, float switchDelay)
+    public void Initialize(ConfigEditorUI configEditor, WorldSpacePointCloudUI ws, float switchDelay)
     {
-        this.overlayUI = overlay;
+        this.overlayUI = configEditor;
         this.worldSpaceUI = ws;
         this.switchDelay = switchDelay;
         Debug.Log("[PointCloudUIBridge] Initialize.");
@@ -93,7 +93,7 @@ public class PointCloudUIBridge : MonoBehaviour
 
     public void RequestSave()
     {
-        ConfigFileManager.Instance.Save();
+        CameraConfigFileManager.Instance.Save();
         MirrorStatus("Saved", Color.green);
     }
 
