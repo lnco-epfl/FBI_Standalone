@@ -562,6 +562,90 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ray Interactor
       objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_PositionAction.m_Id
+      value: d4761928-e47b-4d69-9f41-ccdaaeb77508
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_RotationAction.m_Id
+      value: d79cea50-796b-4c3e-a284-52fda1f64ae1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_EditorClassIdentifier
+      value: Unity.InputSystem::UnityEngine.InputSystem.XR.TrackedPoseDriver
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_PositionAction.m_Name
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_RotationAction.m_Name
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_PositionInput.m_Reference
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_RotationInput.m_Reference
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_PositionInput.m_Action.m_Id
+      value: c6f8a92e-1672-4d86-aa25-94124c401736
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_RotationInput.m_Action.m_Id
+      value: 192ab7b7-526f-49b0-bd4a-20d8849a8c25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_PositionInput.m_UseReference
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_RotationInput.m_UseReference
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_TrackingStateInput.m_Reference
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_TrackingStateInput.m_Action.m_Id
+      value: 48d6cdba-ba3c-492e-853f-00d978592d8f
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_TrackingStateInput.m_UseReference
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_TrackingStateInput.m_Action.m_Name
+      value: Tracking State
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_PositionInput.m_Action.m_ExpectedControlType
+      value: Vector3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_RotationInput.m_Action.m_ExpectedControlType
+      value: Quaternion
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_PositionAction.m_SingletonActionBindings.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_RotationAction.m_SingletonActionBindings.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_PositionInput.m_Action.m_SingletonActionBindings.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816873404316436072, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: m_RotationInput.m_Action.m_SingletonActionBindings.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5366232192436624926, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
