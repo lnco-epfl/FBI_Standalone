@@ -116,6 +116,14 @@ public class ObjectTransformData
         t.localScale = scale.ToVector3();
     }
 
+    public static Matrix4x4 ToMatrix(ObjectTransformData data)
+    {
+        Vector3 pos = data.position.ToVector3();
+        Quaternion rot = Quaternion.Euler(data.rotation.ToVector3());
+        Vector3 scale = data.scale.ToVector3();
+        return Matrix4x4.TRS(pos, rot, scale);
+    }
+
     public override string ToString()
     {
         return $"ObjectTransformData(ID={ID}, position={position}, rotation={rotation}, scale={scale}, depthMin={depthMin}, depthMax={depthMax}, clampX=[{clampXMin},{clampXMax}], clampY=[{clampYMin},{clampYMax}])";

@@ -146,10 +146,25 @@ public class DisplayCamerasState : IState
                     }
                 }
 
-                sequence.Insert(atTime: cameraData.interpolation.delay,
+                var startTransformData = startConfigFile.pointClouds[pointCloudID - 1];
+                var endTransformData = configFile.pointClouds[pointCloudID - 1];
+
+                var capturedPointCloud = pointCloud;
+
+                pointCloud.SetInterpolationMatrix(startTransformData, endTransformData);
+
+                sequence.Insert(atTime: 0, Tween.Delay(duration: cameraData.interpolation.delay).OnComplete(() => capturedPointCloud.StartInterpolation(cameraData.interpolation.duration, () =>
+                {
+                    pointCloud.SetTransform(endTransformData.position.ToVector3(), endTransformData.rotation.ToVector3(), endTransformData.scale.ToVector3());
+                    pointCloud.HideInterpolation();
+                    pointCloud.DisplayMain();
+                }))); 
+
+                /*sequence.Insert(atTime: cameraData.interpolation.delay,
                     Tween.Position(target: pointCloud.transform, startValue: startConfigFile.pointClouds[pointCloudID - 1].position.ToVector3(), endValue: configFile.pointClouds[pointCloudID - 1].position.ToVector3(), duration: cameraData.interpolation.duration, ease: cameraData.interpolation.ease)
                     .Group(Tween.Rotation(target: pointCloud.transform, startValue: startConfigFile.pointClouds[pointCloudID - 1].rotation.ToVector3(), endValue: configFile.pointClouds[pointCloudID - 1].rotation.ToVector3(), duration: cameraData.interpolation.duration, ease: cameraData.interpolation.ease))
                     .Group(Tween.Scale(target: pointCloud.transform, startValue: startConfigFile.pointClouds[pointCloudID - 1].scale.ToVector3(), endValue: configFile.pointClouds[pointCloudID - 1].scale.ToVector3(), duration: cameraData.interpolation.duration, ease: cameraData.interpolation.ease)));
+                */
 
                 afterInterpolationMaxWait = Mathf.Max(step.displayTime - cameraData.interpolation.duration - cameraData.interpolation.delay, afterInterpolationMaxWait);
             }

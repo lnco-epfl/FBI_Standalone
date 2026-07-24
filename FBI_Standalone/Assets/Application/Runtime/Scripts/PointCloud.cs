@@ -2,6 +2,7 @@ using com.rfilkov.kinect;
 using JetBrains.Annotations;
 using PrimeTween;
 using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
@@ -21,8 +22,8 @@ public class PointCloud : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private InputActionReference debugDissolution;
 
-    [SerializeField] private Transform startT;
-    [SerializeField] private Transform endT;
+    private Transform interpolationStartTransform;
+    private Transform interpolationEndTransform;
 
 
     private Kinect4AzureInterface kinectAzureInterface;
@@ -39,8 +40,6 @@ public class PointCloud : MonoBehaviour
         debugDissolution.action.performed += OnDebugDissolutionPerformed;
     }
 
-
-
     private void OnDisable()
     {
         debugDissolution.action.performed -= OnDebugDissolutionPerformed;
@@ -55,8 +54,7 @@ public class PointCloud : MonoBehaviour
     {
         mainVisualEffect.enabled = false;
         dissolutionVisualEffect.enabled = false;
-
-        interpolationVisualEffect.enabled = true;
+        interpolationVisualEffect.enabled = false;
 
         id = ID;
 
@@ -105,6 +103,11 @@ public class PointCloud : MonoBehaviour
         dissolutionVisualEffect.enabled = false;
     }
 
+    public void HideInterpolation()
+    {
+        Debug.Log($"pointcloud {this.name} HideInterpolation");
+        interpolationVisualEffect.enabled = false;
+    }
 
     public void SetDissolutionDuration(float duration)
     {
@@ -143,6 +146,23 @@ public class PointCloud : MonoBehaviour
         });
     }
 
+    public void StartInterpolation(float duration, Action callback = null)
+    {
+        Debug.Log($"pointcloud {this.name} StartInterpolation");
+        interpolationVisualEffect.enabled = true;
+        interpolationVisualEffect.Play();
+
+        mainVisualEffect.enabled = false;
+
+        interpolationVisualEffect.SetFloat("Duration", duration);
+
+        Tween.Delay(duration: duration).OnComplete(() =>
+        {
+            interpolationVisualEffect.enabled = false;
+            callback?.Invoke();
+        });
+    }
+
     public void SetKinectInterface(Kinect4AzureInterface kinect4Azure)
     {
         kinectAzureInterface = kinect4Azure;
@@ -152,19 +172,27 @@ public class PointCloud : MonoBehaviour
     {
         SetTextures(mainVisualEffect, colorRenderTexture, vertexRenderTexture);
         SetTextures(dissolutionVisualEffect, colorRenderTexture, vertexRenderTexture);
+        SetInterpolationRenderTextures(colorRenderTexture, vertexRenderTexture, colorRenderTexture, vertexRenderTexture);
     }
 
-    [ContextMenu("SetInterpolationMatrix")]
-    private void SetInterpolationMatrix()
+    public void SetInterpolationRenderTextures(RenderTexture startColorRenderTexture, RenderTexture startVertexRenderTexture, RenderTexture endColorRenderTexture, RenderTexture endVertexRenderTexture)
     {
-        Matrix4x4 startMatrix = Matrix4x4.TRS(startT.localPosition, startT.localRotation, startT.localScale);
-        Debug.Log($"Start Matrix: {startMatrix}");
+        interpolationVisualEffect.SetTexture("Color Start", startColorRenderTexture);
+        interpolationVisualEffect.SetTexture("Vertex Start", startVertexRenderTexture);
+
+        interpolationVisualEffect.SetTexture("Color End", endColorRenderTexture);
+        interpolationVisualEffect.SetTexture("Vertex End", endVertexRenderTexture);
+    }
+
+    public void SetInterpolationMatrix(ObjectTransformData startData, ObjectTransformData endData)
+    {
+        Matrix4x4 startMatrix = ObjectTransformData.ToMatrix(startData);
+        Matrix4x4 endMatrix = ObjectTransformData.ToMatrix(endData);
+
+        Matrix4x4 relativeMatrix = startMatrix.inverse * endMatrix;
+
         interpolationVisualEffect.SetMatrix4x4("StartMatrix", startMatrix);
-
-
-        Matrix4x4 endMatrix = Matrix4x4.TRS(endT.localPosition, endT.localRotation, endT.localScale);
-        Debug.Log($"End Matrix: {endMatrix}");
-        interpolationVisualEffect.SetMatrix4x4("EndMatrix", startT.worldToLocalMatrix * endT.localToWorldMatrix);
+        interpolationVisualEffect.SetMatrix4x4("EndMatrix", relativeMatrix);
     }
 
 
@@ -204,6 +232,11 @@ public class PointCloud : MonoBehaviour
         dissolutionVisualEffect.SetFloat("Clamp X Max", xMax);
         dissolutionVisualEffect.SetFloat("Clamp Y Min", yMin);
         dissolutionVisualEffect.SetFloat("Clamp Y Max", yMax);
+
+        interpolationVisualEffect.SetFloat("Clamp X Min", xMin);
+        interpolationVisualEffect.SetFloat("Clamp X Max", xMax);
+        interpolationVisualEffect.SetFloat("Clamp Y Min", yMin);
+        interpolationVisualEffect.SetFloat("Clamp Y Max", yMax);
     }
 
  

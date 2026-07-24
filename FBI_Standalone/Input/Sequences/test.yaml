@@ -38,18 +38,20 @@ steps:
     startTime: 15.0
     duration: 5
     cameraDatas:
-#      - id: "1"
-#        delay: 0.0
-#        configName: 3PP
-#        dissolution:
-#          duration: 5.0
-#          delay: 5.0
       - id: "1"
         delay: 0.0
         configName: Mirror
-        fade:
+        interpolation:
           duration: 5.0
           delay: 1.0
+          ease: InOutQuad
+          startConfigName: 1PP
+#      - id: "1"
+#        delay: 0.0
+#        configName: 1PP
+#        fade:
+#          duration: 5.0
+#          delay: 1.0
 
   - stepType: displayCameras
     startTime: 10
