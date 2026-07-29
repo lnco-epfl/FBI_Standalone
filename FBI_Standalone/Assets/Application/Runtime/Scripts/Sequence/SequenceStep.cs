@@ -212,7 +212,7 @@ public class InterpolationData
 {
     public float duration = 0;
     public float delay = 0;
-    public Ease ease = Ease.Default;
+    public EasingType ease = EasingType.Default;
     public string startConfigName = string.Empty;
 }
 

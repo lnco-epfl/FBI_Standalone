@@ -153,7 +153,7 @@ public class DisplayCamerasState : IState
 
                 pointCloud.SetInterpolationMatrix(startTransformData, endTransformData);
 
-                sequence.Insert(atTime: 0, Tween.Delay(duration: cameraData.interpolation.delay).OnComplete(() => capturedPointCloud.StartInterpolation(cameraData.interpolation.duration, () =>
+                sequence.Insert(atTime: 0, Tween.Delay(duration: cameraData.interpolation.delay).OnComplete(() => capturedPointCloud.StartInterpolation(cameraData.interpolation.duration, cameraData.interpolation.ease, () =>
                 {
                     pointCloud.SetTransform(endTransformData.position.ToVector3(), endTransformData.rotation.ToVector3(), endTransformData.scale.ToVector3());
                     pointCloud.HideInterpolation();

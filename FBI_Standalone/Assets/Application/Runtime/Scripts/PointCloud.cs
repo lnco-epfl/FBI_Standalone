@@ -146,7 +146,7 @@ public class PointCloud : MonoBehaviour
         });
     }
 
-    public void StartInterpolation(float duration, Action callback = null)
+    public void StartInterpolation(float duration, EasingType ease, Action callback = null)
     {
         Debug.Log($"pointcloud {this.name} StartInterpolation");
         interpolationVisualEffect.enabled = true;
@@ -154,6 +154,9 @@ public class PointCloud : MonoBehaviour
 
         mainVisualEffect.enabled = false;
 
+        var curve = EasingCurveFactory.Create(ease);
+
+        interpolationVisualEffect.SetAnimationCurve("EasingCurve", curve);
         interpolationVisualEffect.SetFloat("Duration", duration);
 
         Tween.Delay(duration: duration).OnComplete(() =>

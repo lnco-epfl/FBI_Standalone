@@ -345,6 +345,17 @@ public class RigInterpolationYamlData
     public PrimeTween.Ease ease = PrimeTween.Ease.Default;
 }
 
+public enum EasingType
+{
+    Default,
+    Linear,
+    InOutSine,
+    InOutQuad,
+    InOutCubic,
+    InOutQuart,
+    InOutExpo
+}
+
 [Serializable]
 public class Vector3YamlData
 {
