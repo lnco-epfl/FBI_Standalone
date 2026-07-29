@@ -237,7 +237,7 @@ Each entry in `cameraDatas` supports the following fields:
 | `delay` | float | Temporal delay in seconds. `0.0` = real-time display |
 | `configName` | string | *(Optional)* Name of a camera config file to load for this camera (without extension). If omitted, the currently loaded config is used |
 | | | |
-| `interpolation` | object | *(Optional)* Smoothly animates the point cloud transform from a start config to the target config |
+| `interpolation` | object | *(Optional)* Smoothly animates the point cloud particules from a start config to the target config |
 | `interpolation.duration` | float | Duration of the interpolation animation in seconds |
 | `interpolation.delay` | float | Delay before the interpolation starts, in seconds |
 | `interpolation.ease` | string | Easing function available : `Default`, `Linear`, `InOutSine`, `InOutQuad`, `InOutCubic`, `InOutQuart`, `InOutExpo`. For more detail on easing function, here is a [cheat sheet](https://easings.net/)|
