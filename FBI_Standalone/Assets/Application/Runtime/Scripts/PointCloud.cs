@@ -47,7 +47,7 @@ public class PointCloud : MonoBehaviour
 
     private void OnDebugDissolutionPerformed(InputAction.CallbackContext obj)
     {
-        StartDissolution();
+        StartDissolution(5.0f);
     }
 
     public void Init(int ID)
@@ -127,18 +127,31 @@ public class PointCloud : MonoBehaviour
     }
 
     [ContextMenu("StartDissolution")]
-    public void StartDissolution()
+    public void StartDissolution(float duration)
     {
         Debug.Log($"pointcloud {this.name} StartDissolution");
 
         mainVisualEffect.enabled = true;
         dissolutionVisualEffect.enabled = true;
 
+        var EffectAgeID = Shader.PropertyToID("EffectAge");
+
+        dissolutionVisualEffect.SetFloat(EffectAgeID, 0.0f);
+        dissolutionVisualEffect.SetFloat("Duration", duration);
+
         dissolutionVisualEffect.Play();
+
+        Tween.Custom(startValue: 0.0f, endValue: 1.0f, duration: duration, ease: Ease.Linear, onValueChange: (float value) =>
+        {
+            Debug.Log($"pointcloud {this.name} StartDissolution value {value}");
+            dissolutionVisualEffect.SetFloat(EffectAgeID, 0.0f);
+        }).OnComplete(() =>
+        {
+            dissolutionVisualEffect.enabled = false;
+        });
 
         Tween.Custom(startValue: 1.0f, endValue: 0.0f, duration: 0.5f, ease: Ease.Linear, onValueChange: (float value) =>
         {
-            Debug.Log($"pointcloud {this.name} mainVisualEffect.SetFloat {value}");
             mainVisualEffect.SetFloat("Alpha", value);
         }).OnComplete(() =>
         {
@@ -148,7 +161,6 @@ public class PointCloud : MonoBehaviour
 
     public void StartInterpolation(float duration, EasingType ease, Action callback = null)
     {
-        Debug.Log($"pointcloud {this.name} StartInterpolation");
         interpolationVisualEffect.enabled = true;
         interpolationVisualEffect.Play();
 

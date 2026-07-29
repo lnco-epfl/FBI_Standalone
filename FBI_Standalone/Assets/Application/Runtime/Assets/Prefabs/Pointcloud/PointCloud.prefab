@@ -349,7 +349,7 @@ VisualEffect:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8945646006965483795}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: fc244434d6275de4097d473fe7288e6e, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: 41bc9b026b7af384a87eefb2c11e66e0, type: 3}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
@@ -377,10 +377,25 @@ VisualEffect:
       - m_Value: 5
         m_Name: Duration
         m_Overridden: 1
+      - m_Value: 0
+        m_Name: EffectAge
+        m_Overridden: 1
+      - m_Value: 0.25
+        m_Name: SphereRadius
+        m_Overridden: 1
+      - m_Value: 0.4
+        m_Name: GatherEnd
+        m_Overridden: 1
+      - m_Value: 0.6
+        m_Name: FlashEnd
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
-      m_Array: []
+      m_Array:
+      - m_Value: {x: 0, y: 0, z: 0}
+        m_Name: SphereCenter
+        m_Overridden: 1
     m_Vector4f:
       m_Array: []
     m_Uint:

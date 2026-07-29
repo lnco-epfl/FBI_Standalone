@@ -36,7 +36,7 @@ steps:
 
   - stepType: displayCameras
     startTime: 15.0
-    duration: 5
+    duration: 10
     cameraDatas:
 #      - id: "1"
 #        delay: 0.0
@@ -50,8 +50,8 @@ steps:
         delay: 0.0
         configName: 1PP
         dissolution:
-          duration: 3.0
-          delay: 5.0
+          duration: 5.0
+          delay: 1.0
 
   - stepType: displayCameras
     startTime: 10

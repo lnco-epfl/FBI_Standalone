@@ -5425,7 +5425,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 1
+      m_SerializableObject: 0
     m_Space: -1
   m_Property:
     name: b
@@ -7383,7 +7383,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: -151, y: 1209}
+  m_UIPosition: {x: -129, y: 1176}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:

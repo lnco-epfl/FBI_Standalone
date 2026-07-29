@@ -179,7 +179,7 @@ public class DisplayCamerasState : IState
 
                 var capturedPointCloud = pointCloud;
 
-                sequence.Insert(atTime: 0, Tween.Delay(duration: cameraData.dissolution.delay).OnComplete(() => capturedPointCloud.StartDissolution()));
+                sequence.Insert(atTime: 0, Tween.Delay(duration: cameraData.dissolution.delay).OnComplete(() => capturedPointCloud.StartDissolution(cameraData.dissolution.duration)));
 
                 afterDissolutionMaxWait = Mathf.Max(step.displayTime - cameraData.dissolution.delay, afterDissolutionMaxWait);
 

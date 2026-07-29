@@ -3147,6 +3147,17 @@
                     "action": "Debug Dissolution",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ca77d383-9ed1-46d3-a52c-ae449c4d0464",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Debug Dissolution",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
