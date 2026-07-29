@@ -240,7 +240,7 @@ Each entry in `cameraDatas` supports the following fields:
 | `interpolation` | object | *(Optional)* Smoothly animates the point cloud transform from a start config to the target config |
 | `interpolation.duration` | float | Duration of the interpolation animation in seconds |
 | `interpolation.delay` | float | Delay before the interpolation starts, in seconds |
-| `interpolation.ease` | string | Easing function available : `Default`, `Linear`, `InOutSine`, `InOutQuad`, `InOutCubic`, `InOutQuart`, `InOutExpo` |
+| `interpolation.ease` | string | Easing function available : `Default`, `Linear`, `InOutSine`, `InOutQuad`, `InOutCubic`, `InOutQuart`, `InOutExpo`. For more detail on easing function, here is a [cheat sheet](https://easings.net/)|
 | `interpolation.startConfigName` | string | *(Optional)* Name of the config to use as the start position of the interpolation. If omitted, the current transform is used as the start |
 | | | |
 | `dissolution` | object | *(Optional)* Progressively dissolves the point cloud using a particle/noise effect |
