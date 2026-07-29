@@ -240,7 +240,7 @@ Each entry in `cameraDatas` supports the following fields:
 | `interpolation` | object | *(Optional)* Smoothly animates the point cloud transform from a start config to the target config |
 | `interpolation.duration` | float | Duration of the interpolation animation in seconds |
 | `interpolation.delay` | float | Delay before the interpolation starts, in seconds |
-| `interpolation.ease` | string | Easing function from [PrimeTween](https://github.com/KyryloKuzyk/PrimeTween#support). Recommended values: `Default`, `Linear`, `InOutSine`, `InOutQuad`, `InOutCubic`, `InOutQuart`, `InOutExpo` |
+| `interpolation.ease` | string | Easing function available : `Default`, `Linear`, `InOutSine`, `InOutQuad`, `InOutCubic`, `InOutQuart`, `InOutExpo` |
 | `interpolation.startConfigName` | string | *(Optional)* Name of the config to use as the start position of the interpolation. If omitted, the current transform is used as the start |
 | | | |
 | `dissolution` | object | *(Optional)* Progressively dissolves the point cloud using a particle/noise effect |
@@ -262,7 +262,7 @@ The step also supports an optional `rigInterpolation` block (at the step level, 
 | `rigInterpolation.endYaw` | float | Y-axis rotation of the rig at the end of the transition, in degrees. Default: `0` (set to `180` to rotate to face backwards, i.e. a full 3PP back view) |
 | `rigInterpolation.duration` | float | Duration of the rig movement in seconds |
 | `rigInterpolation.delay` | float | Delay before the rig starts moving, in seconds |
-| `rigInterpolation.ease` | string | Easing function. Recommended: `InOutSine` for VR comfort |
+| `rigInterpolation.ease` | string | Easing function from [PrimeTween](https://github.com/KyryloKuzyk/PrimeTween#support). Recommended: `InOutSine` for VR comfort |
  
 > ℹ️ `rigInterpolation` runs in the same timeline as point cloud interpolation and dissolution — all `delay` values are relative to the start of the step and can overlap freely.
  
