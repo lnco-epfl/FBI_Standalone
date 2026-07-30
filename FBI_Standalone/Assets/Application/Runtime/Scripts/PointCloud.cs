@@ -131,20 +131,31 @@ public class PointCloud : MonoBehaviour
     {
         Debug.Log($"pointcloud {this.name} StartDissolution");
 
-        mainVisualEffect.enabled = true;
+        mainVisualEffect.enabled = false;
         dissolutionVisualEffect.enabled = true;
 
-        var EffectAgeID = Shader.PropertyToID("EffectAge");
+        int particuleCount = 500000;
+        float sphereRadius = 0.05f;
 
+        dissolutionVisualEffect.SetVector3("SphereCenter", Vector3.zero);
+
+        dissolutionVisualEffect.SetInt("ParticuleCount", particuleCount);
+
+        var texture = FibonacciSphereBaker.BakeSphereTexture(particuleCount, sphereRadius);
+        dissolutionVisualEffect.SetFloat("SphereRadius", sphereRadius);
+        dissolutionVisualEffect.SetTexture("FibonacciSphere", texture);
+
+        var EffectAgeID = Shader.PropertyToID("EffectAge");
         dissolutionVisualEffect.SetFloat(EffectAgeID, 0.0f);
+
         dissolutionVisualEffect.SetFloat("Duration", duration);
 
         dissolutionVisualEffect.Play();
 
         Tween.Custom(startValue: 0.0f, endValue: 1.0f, duration: duration, ease: Ease.Linear, onValueChange: (float value) =>
         {
-            Debug.Log($"pointcloud {this.name} StartDissolution value {value}");
-            dissolutionVisualEffect.SetFloat(EffectAgeID, 0.0f);
+            Debug.Log($"pointcloud {this.name} EffectAgeID {value}");
+            dissolutionVisualEffect.SetFloat(EffectAgeID, value);
         }).OnComplete(() =>
         {
             dissolutionVisualEffect.enabled = false;
@@ -152,7 +163,7 @@ public class PointCloud : MonoBehaviour
 
         Tween.Custom(startValue: 1.0f, endValue: 0.0f, duration: 0.5f, ease: Ease.Linear, onValueChange: (float value) =>
         {
-            mainVisualEffect.SetFloat("Alpha", value);
+            //mainVisualEffect.SetFloat("Alpha", value);
         }).OnComplete(() =>
         {
             mainVisualEffect.enabled = false;

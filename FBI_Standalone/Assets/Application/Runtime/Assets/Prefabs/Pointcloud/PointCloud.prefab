@@ -69,6 +69,12 @@ VisualEffect:
       - m_Value: 5
         m_Name: Duration
         m_Overridden: 1
+      - m_Value: 0.1
+        m_Name: NoiseSpeed
+        m_Overridden: 1
+      - m_Value: 0.1
+        m_Name: Amplitude
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -82,7 +88,33 @@ VisualEffect:
     m_Matrix4x4f:
       m_Array: []
     m_AnimationCurve:
-      m_Array: []
+      m_Array:
+      - m_Value:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        m_Name: EasingCurve
+        m_Overridden: 1
     m_Gradient:
       m_Array: []
     m_NamedObject:
@@ -401,7 +433,10 @@ VisualEffect:
     m_Uint:
       m_Array: []
     m_Int:
-      m_Array: []
+      m_Array:
+      - m_Value: 500000
+        m_Name: ParticuleCount
+        m_Overridden: 1
     m_Matrix4x4f:
       m_Array: []
     m_AnimationCurve:
@@ -421,6 +456,9 @@ VisualEffect:
         m_Overridden: 1
       - m_Value: {fileID: 8400000, guid: ea74259af53a37e42b78d52b0170f1c8, type: 2}
         m_Name: Vertex
+        m_Overridden: 1
+      - m_Value: {fileID: 2800000, guid: 8aafaa78fe944854997fef757ff4ba72, type: 3}
+        m_Name: FibonacciSphere
         m_Overridden: 1
     m_Bool:
       m_Array: []
