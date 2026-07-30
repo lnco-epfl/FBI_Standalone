@@ -22,10 +22,6 @@ public class PointCloud : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private InputActionReference debugDissolution;
 
-    private Transform interpolationStartTransform;
-    private Transform interpolationEndTransform;
-
-
     private Kinect4AzureInterface kinectAzureInterface;
 
     private int id = 0;
@@ -137,12 +133,14 @@ public class PointCloud : MonoBehaviour
         int particuleCount = 500000;
         float sphereRadius = 0.05f;
 
-        dissolutionVisualEffect.SetVector3("SphereCenter", Vector3.zero);
+        var pos = new Vector3(0.0f, -0.148f, 1.658f);
+
+        dissolutionVisualEffect.SetVector3("SphereCenter", pos);
 
         dissolutionVisualEffect.SetInt("ParticuleCount", particuleCount);
 
         var texture = FibonacciSphereBaker.BakeSphereTexture(particuleCount, sphereRadius);
-        dissolutionVisualEffect.SetFloat("SphereRadius", sphereRadius);
+        //dissolutionVisualEffect.SetFloat("SphereRadius", sphereRadius);
         dissolutionVisualEffect.SetTexture("FibonacciSphere", texture);
 
         var EffectAgeID = Shader.PropertyToID("EffectAge");
@@ -154,7 +152,6 @@ public class PointCloud : MonoBehaviour
 
         Tween.Custom(startValue: 0.0f, endValue: 1.0f, duration: duration, ease: Ease.Linear, onValueChange: (float value) =>
         {
-            Debug.Log($"pointcloud {this.name} EffectAgeID {value}");
             dissolutionVisualEffect.SetFloat(EffectAgeID, value);
         }).OnComplete(() =>
         {

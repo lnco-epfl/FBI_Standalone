@@ -48,9 +48,9 @@ steps:
 #          startConfigName: 1PP
       - id: "1"
         delay: 0.0
-        configName: 1PP
+        configName: Mirror
         dissolution:
-          duration: 5.0
+          duration: 10.0
           delay: 1.0
 
   - stepType: displayCameras
