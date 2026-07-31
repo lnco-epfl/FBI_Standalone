@@ -250,6 +250,8 @@ Each entry in `cameraDatas` supports the following fields:
 | `fade` | object | *(Optional)* Fades out the point cloud by reducing its opacity to zero. Alternative to `dissolution` — use one or the other per camera entry |
 | `fade.duration` | float | Duration of the fade-out in seconds |
 | `fade.delay` | float | Delay before the fade starts, in seconds |
+
+> ℹ️ The dissolution effect's sphere center is not set per-step — it comes from the `referencePoint` field of the camera config file currently loaded for that camera (see [Point Clouds](#point-clouds)).
  
 The step also supports an optional `rigInterpolation` block (at the step level, not per camera) that smoothly translates the VR rig — moving the participant's point of view in the scene. This is used to transition between a first-person perspective (1PP) and a third-person perspective (3PP) during a single step, while the point clouds are displayed.
  
@@ -648,6 +650,10 @@ pointClouds:
     clampXMax: 1.0
     clampYMin: 0.0
     clampYMax: 1.0
+    referencePoint:
+      x: 0.0
+      y: -0.148
+      z: 1.658
 ```
 
 ## Point Clouds
@@ -666,6 +672,7 @@ The `pointClouds` list defines the spatial configuration, depth settings and spa
 | `clampXMax` | float | Right boundary of the visible area, normalized between `0` and `1` |
 | `clampYMin` | float | Bottom boundary of the visible area, normalized between `0` and `1` |
 | `clampYMax` | float | Top boundary of the visible area, normalized between `0` and `1` |
+| `referencePoint` | Vector3 | A general-purpose local-space position, relative to the point cloud (not world space). Currently drives the [dissolution effect's](#displaycameras) sphere center. Editable via the [Reference Point](#reference-point) panel |
 
 # Display Config Files
 
@@ -828,6 +835,15 @@ Flips the point cloud along a given axis.
 |--------|-------------|
 | **↔ Horizontal** | Flips the point cloud horizontally (X axis) |
 | **↕ Vertical** | Flips the point cloud vertically (Y axis) |
+
+### Reference Point
+
+Sets a local-space position relative to the point cloud (rather than the scene), so it stays correctly placed regardless of the point cloud's own position/rotation. This is a general-purpose reference point; it currently drives the center of the sphere used by the [dissolution effect](#displaycameras).
+
+| Control | Description |
+|---------|-------------|
+| **Position X / Y / Z** | Position of the reference point, relative to the point cloud |
+| **Show gizmo** toggle | Displays a sphere gizmo in the preview at the current position, to help placing it visually. This is a visual aid only for the editor — it is not saved to the config file and always starts hidden when a config is loaded |
 
 ## Stimulus Display
 
