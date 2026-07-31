@@ -278,6 +278,10 @@ MonoBehaviour:
     m_Localized: Display config
     m_Metadata:
       m_Items: []
+  - m_Id: 144702058248511488
+    m_Localized: Reference point
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -92,6 +92,8 @@ public class ObjectTransformData
     public float clampYMin = 0f;
     public float clampYMax = 1f;
 
+    public SerializableVector3 referencePoint = new SerializableVector3(0.0f, 0.0f, 0.0f);
+
     public ObjectTransformData() { }
 
     public ObjectTransformData(int cameraID)
@@ -126,7 +128,7 @@ public class ObjectTransformData
 
     public override string ToString()
     {
-        return $"ObjectTransformData(ID={ID}, position={position}, rotation={rotation}, scale={scale}, depthMin={depthMin}, depthMax={depthMax}, clampX=[{clampXMin},{clampXMax}], clampY=[{clampYMin},{clampYMax}])";
+        return $"ObjectTransformData(ID={ID}, position={position}, rotation={rotation}, scale={scale}, depthMin={depthMin}, depthMax={depthMax}, clampX=[{clampXMin},{clampXMax}], clampY=[{clampYMin},{clampYMax}], referencePoint={referencePoint})";
     }
 }
 
@@ -159,5 +161,3 @@ public class DisplayConfigFile
         return $"ConfigFile(configName={configName}, createdAt={createdAt}, lastModified={lastModified}, UICanvas=[{stimulusDisplay}])";
     }
 }
-
-

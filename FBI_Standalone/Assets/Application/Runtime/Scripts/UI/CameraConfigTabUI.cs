@@ -174,7 +174,10 @@ public class CameraConfigTabUI : MonoBehaviour
         configEditor.OnStaticCameraRotationChanged -= SetStaticCameraRotationFields;
 
         foreach (var entry in pointCloudEntries)
+        {
             entry.OnDisplayToggleRequested -= OnDisplayToggleRequested;
+            entry.OnReferencePointChanged -= OnEntryReferencePointChanged;
+        }
     }
 
     // ----------------------------------------------------------------- Scene (duplicated widget)
@@ -416,6 +419,7 @@ public class CameraConfigTabUI : MonoBehaviour
             entry.OnMinDepthChanged -= OnEntryMinDepthChanged;
             entry.OnFlipChanged -= OnEntryFlipChanged;
             entry.OnClampChanged -= OnEntryClampChanged;
+            entry.OnReferencePointChanged -= OnEntryReferencePointChanged;
         }
 
         pointCloudEntries.Clear();
@@ -448,6 +452,7 @@ public class CameraConfigTabUI : MonoBehaviour
             entry.OnMinDepthChanged += OnEntryMinDepthChanged;
             entry.OnFlipChanged += OnEntryFlipChanged;
             entry.OnClampChanged += OnEntryClampChanged;
+            entry.OnReferencePointChanged += OnEntryReferencePointChanged;
             pointCloudEntries.Add(entry);
         }
 
@@ -516,6 +521,13 @@ public class CameraConfigTabUI : MonoBehaviour
         configEditor.Bridge?.MirrorEntryClamp(i, xMin, xMax, yMin, yMax);
     }
 
+    private void OnEntryReferencePointChanged(int cameraId, Vector3 center)
+    {
+        int i = pointCloudEntries.FindIndex(e => e.CameraId == cameraId);
+        if (i < 0) return;
+        configEditor.Bridge?.MirrorEntryReferencePoint(i, center);
+    }
+
     private IEnumerator SwitchPointCloudCoroutine(PointCloudUIEntry previous, PointCloudUIEntry next)
     {
         isSwitching = true;
@@ -556,6 +568,7 @@ public class CameraConfigTabUI : MonoBehaviour
             pointCloudEntries[i].SetMaxDepth(data.depthMax);
             pointCloudEntries[i].SetFlip(data.scale.x == -1, data.scale.y == -1);
             pointCloudEntries[i].SetClamp(data.clampXMin, data.clampXMax, data.clampYMin, data.clampYMax);
+            pointCloudEntries[i].SetReferencePointFields(data.referencePoint.ToVector3());
 
             configEditor.Bridge?.MirrorEntryData(i,
                 data.position.ToVector3(),
@@ -566,6 +579,7 @@ public class CameraConfigTabUI : MonoBehaviour
                 data.scale.y == -1);
 
             configEditor.Bridge?.MirrorEntryClamp(i, data.clampXMin, data.clampXMax, data.clampYMin, data.clampYMax);
+            configEditor.Bridge?.MirrorEntryReferencePoint(i, data.referencePoint.ToVector3());
 
             PointCloudManager.Instance.SetPointcloudConfig(PointCloudManager.Instance.GetPointCloud(pointCloudEntries[i].CameraId), file);
         }

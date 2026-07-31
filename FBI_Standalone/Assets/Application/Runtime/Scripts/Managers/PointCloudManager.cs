@@ -35,8 +35,6 @@ public class PointCloudManager : MonoBehaviour
 
     private Dictionary<int, ConditionRenderTextureContainer> renderTextureDictionary = new Dictionary<int, ConditionRenderTextureContainer>();
 
-    // Global tracking list — read-only reference, not used for ownership.
-    // Ownership of spawned point clouds belongs to whichever state spawned them (via the list returned by SpawnPointCloud).
     private List<PointCloud> spawnedPointClouds = new List<PointCloud>();
 
     private static PointCloudManager instance;
@@ -156,26 +154,24 @@ public class PointCloudManager : MonoBehaviour
             var clampXMax = configFile.pointClouds[cameraID - 1].clampXMax;
             var clampYMin = configFile.pointClouds[cameraID - 1].clampYMin;
             var clampYMax = configFile.pointClouds[cameraID - 1].clampYMax;
+            var referencePoint = configFile.pointClouds[cameraID - 1].referencePoint.ToVector3();
 
             pointCloud.SetTransform(position, rotation, scale);
             pointCloud.SetCameraDeptValues(depthMin, depthMax);
             pointCloud.SetClampValues(clampXMin, clampXMax, clampYMin, clampYMax);
+            pointCloud.SetReferencePoint(referencePoint);
         }
     }
 
 
     public void DespawnPointClouds(List<PointCloud> pointClouds)
     {
-        Debug.Log($"DespawnPointClouds count:{pointClouds.Count}");
-
         var toDestroy = new List<PointCloud>(pointClouds);
 
         pointClouds.Clear();
 
         Tween.Delay(0.5f).OnComplete(() =>
         {
-            Debug.Log($"DespawnPointClouds destroying:{toDestroy.Count}");
-
             foreach (var pointCloud in toDestroy)
             {
                 if (pointCloud != null)
@@ -189,8 +185,6 @@ public class PointCloudManager : MonoBehaviour
 
     public void DisplaySpawnedPointClouds(List<PointCloud> pointClouds)
     {
-
-        Debug.Log($"DisplaySpawnedPointClouds count:{pointClouds.Count}");
         foreach (var pointCloud in pointClouds)
         {
             pointCloud.DisplayMain();
@@ -199,8 +193,6 @@ public class PointCloudManager : MonoBehaviour
 
     public void HideSpawnedPointClouds(List<PointCloud> pointClouds)
     {
-        Debug.Log($"HideSpawnedPointClouds count:{pointClouds.Count}");
-
         foreach (var pointCloud in pointClouds)
         {
             pointCloud.HideMain();

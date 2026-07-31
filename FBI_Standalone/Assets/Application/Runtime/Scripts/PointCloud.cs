@@ -10,14 +10,41 @@ using YamlDotNet.Core.Tokens;
 
 public class PointCloud : MonoBehaviour
 {
-  
+
     [Header("VisualEffect")]
     [SerializeField] private VisualEffect mainVisualEffect;
     [SerializeField] private VisualEffect dissolutionVisualEffect;
     [SerializeField] private VisualEffect interpolationVisualEffect;
 
+    [Header("Share Settings")]
+    [Range(1000, 1000000)]
+    [SerializeField] private int particuleCount = 500000;
+    [Range(0.001f, 1.0f)]
+    [SerializeField] private float particleSize = 0.0075f;
+
+    [Header("Interpolation")]
+    [SerializeField] private float interpolationNoiseSpeed = 0.1f;
+    [SerializeField] private float interpolationNoiseAmplitude = 0.1f;
+
+    [Header("Dissolution")]
+    [SerializeField] private float stage1NoiseSpeed = 0.1f;
+    [SerializeField] private float stage1NoiseAmplitude = 0.1f;
+    [SerializeField] private float stage1End = 0.4f;
+    [SerializeField] private float stage1SphereRadius = 0.05f;
+    [SerializeField] private float stage2End = 0.6f;
+    [SerializeField] private float stage2ColorIntensity = 10.0f;
+    [SerializeField] private float stage2ParticleGrow = 0.1f;
+    [SerializeField] private float stage3DelayFactor = 0.25f;
+    [SerializeField] private float stage3SpreadFactor = 0.05f;
+
     [Header("Fade")]
     [SerializeField] private float fadeDuration = 0.25f;
+
+    [Header("Reference Point")]
+    [Tooltip("Child transform of this PointCloud, exposed as a general-purpose local reference point relative to it. Currently drives Stage1SphereCenter for the dissolution effect.")]
+    [SerializeField] private Transform referencePointTransform;
+    [Tooltip("Visual gizmo (e.g. a simple sphere mesh), child of referencePointTransform, used only to help placing it in the editor. Never saved to the config file.")]
+    [SerializeField] private GameObject referencePointGizmo;
 
     [Header("Debug")]
     [SerializeField] private InputActionReference debugDissolution;
@@ -27,7 +54,7 @@ public class PointCloud : MonoBehaviour
     private int id = 0;
     private Tween fadeTween;
 
-    public int Id { get => id;  }
+    public int Id { get => id; }
 
     public bool isMainVFXVisible => mainVisualEffect.enabled;
 
@@ -54,15 +81,41 @@ public class PointCloud : MonoBehaviour
 
         id = ID;
 
+        if (referencePointGizmo != null)
+        {
+            referencePointGizmo.SetActive(false);
+        }
     }
 
+
+    public void SetReferencePoint(Vector3 localPosition)
+    {
+        if (referencePointTransform != null)
+        {
+            referencePointTransform.localPosition = localPosition;
+        }
+    }
+
+    public Vector3 GetReferencePoint()
+    {
+        return referencePointTransform != null ? referencePointTransform.localPosition : Vector3.zero;
+    }
+
+    public void SetReferencePointGizmoVisible(bool visible)
+    {
+        if (referencePointGizmo != null)
+        {
+            referencePointGizmo.SetActive(visible);
+        }
+    }
 
     public void DisplayMain()
     {
         mainVisualEffect.enabled = true;
-        mainVisualEffect.SetFloat("Alpha", 0.0f);
 
-        Debug.Log($"pointcloud {this.name} DisplayMain");
+        mainVisualEffect.SetInt("ParticuleCount", particuleCount);
+        mainVisualEffect.SetFloat("ParticuleSize", particleSize);
+        mainVisualEffect.SetFloat("Alpha", 0.0f);
 
         if (fadeTween.isAlive)
         {
@@ -82,8 +135,6 @@ public class PointCloud : MonoBehaviour
             fadeTween.Stop();
         }
 
-        Debug.Log($"pointcloud {this.name} HideMain");
-
         fadeTween = Tween.Custom(startValue: 1.0f, endValue: 0.0f, duration: fadeDuration, ease: Ease.InOutSine, onValueChange: (float value) =>
         {
             mainVisualEffect.SetFloat("Alpha", value);
@@ -95,20 +146,12 @@ public class PointCloud : MonoBehaviour
 
     public void HideDissolution()
     {
-        Debug.Log($"pointcloud {this.name} HideDissolution");
         dissolutionVisualEffect.enabled = false;
     }
 
     public void HideInterpolation()
     {
-        Debug.Log($"pointcloud {this.name} HideInterpolation");
         interpolationVisualEffect.enabled = false;
-    }
-
-    public void SetDissolutionDuration(float duration)
-    {
-        Debug.Log($"pointcloud {this.name} SetDissolutionDuration {duration}");
-        dissolutionVisualEffect.SetFloat("Duration", duration);
     }
 
     public void StartFadeOut(float duration)
@@ -123,61 +166,64 @@ public class PointCloud : MonoBehaviour
     }
 
     [ContextMenu("StartDissolution")]
-    public void StartDissolution(float duration)
+    public void StartDissolution(float duration, Action callback = null)
     {
-        Debug.Log($"pointcloud {this.name} StartDissolution");
-
-        mainVisualEffect.enabled = false;
+        mainVisualEffect.enabled = true;
         dissolutionVisualEffect.enabled = true;
 
-        int particuleCount = 500000;
-        float sphereRadius = 0.05f;
-
-        var pos = new Vector3(0.0f, -0.148f, 1.658f);
-
-        dissolutionVisualEffect.SetVector3("SphereCenter", pos);
-
         dissolutionVisualEffect.SetInt("ParticuleCount", particuleCount);
-
-        var texture = FibonacciSphereBaker.BakeSphereTexture(particuleCount, sphereRadius);
-        //dissolutionVisualEffect.SetFloat("SphereRadius", sphereRadius);
-        dissolutionVisualEffect.SetTexture("FibonacciSphere", texture);
-
-        var EffectAgeID = Shader.PropertyToID("EffectAge");
-        dissolutionVisualEffect.SetFloat(EffectAgeID, 0.0f);
+        dissolutionVisualEffect.SetFloat("ParticuleSize", particleSize);
+        dissolutionVisualEffect.SetFloat("Alpha", 0.0f);
 
         dissolutionVisualEffect.SetFloat("Duration", duration);
 
+        //stage 1
+        dissolutionVisualEffect.SetFloat("Stage1End", stage1End);
+        dissolutionVisualEffect.SetTexture("Stage1FibonacciSphere", FibonacciSphereBaker.BakeSphereTexture(particuleCount, stage1SphereRadius));
+        dissolutionVisualEffect.SetVector3("Stage1SphereCenter", GetReferencePoint());
+        dissolutionVisualEffect.SetFloat("Stage1NoiseSpeed", stage1NoiseSpeed);
+        dissolutionVisualEffect.SetFloat("Stage1NoiseAmplitude", stage1NoiseAmplitude);
+
+        //stage 2
+        dissolutionVisualEffect.SetFloat("Stage2End", stage2End);
+        dissolutionVisualEffect.SetFloat("Stage2ColorIntensity", stage2ColorIntensity);
+        dissolutionVisualEffect.SetFloat("Stage2ParticleGrow", stage2ParticleGrow);
+
+        //stage 3
+        dissolutionVisualEffect.SetFloat("Stage3DelayFactor", stage3DelayFactor);
+        dissolutionVisualEffect.SetFloat("Stage3SpreadFactor", stage3SpreadFactor);
+
         dissolutionVisualEffect.Play();
 
-        Tween.Custom(startValue: 0.0f, endValue: 1.0f, duration: duration, ease: Ease.Linear, onValueChange: (float value) =>
-        {
-            dissolutionVisualEffect.SetFloat(EffectAgeID, value);
-        }).OnComplete(() =>
+        StartFadeOut(fadeDuration);
+
+        Tween.Delay(duration: duration).OnComplete(() =>
         {
             dissolutionVisualEffect.enabled = false;
+            callback?.Invoke();
         });
 
-        Tween.Custom(startValue: 1.0f, endValue: 0.0f, duration: 0.5f, ease: Ease.Linear, onValueChange: (float value) =>
-        {
-            //mainVisualEffect.SetFloat("Alpha", value);
-        }).OnComplete(() =>
-        {
-            mainVisualEffect.enabled = false;
-        });
+
     }
 
     public void StartInterpolation(float duration, EasingType ease, Action callback = null)
     {
         interpolationVisualEffect.enabled = true;
-        interpolationVisualEffect.Play();
-
         mainVisualEffect.enabled = false;
 
         var curve = EasingCurveFactory.Create(ease);
 
-        interpolationVisualEffect.SetAnimationCurve("EasingCurve", curve);
+        interpolationVisualEffect.SetInt("ParticuleCount", particuleCount);
+        interpolationVisualEffect.SetFloat("ParticuleSize", particleSize);
+        interpolationVisualEffect.SetFloat("Alpha", 0.0f);
+
         interpolationVisualEffect.SetFloat("Duration", duration);
+        interpolationVisualEffect.SetAnimationCurve("LerpEasingCurve", curve);
+        interpolationVisualEffect.SetFloat("NoiseSpeed", interpolationNoiseSpeed);
+        interpolationVisualEffect.SetFloat("NoiseAmplitude", interpolationNoiseAmplitude);
+
+
+        interpolationVisualEffect.Play();
 
         Tween.Delay(duration: duration).OnComplete(() =>
         {
@@ -194,17 +240,15 @@ public class PointCloud : MonoBehaviour
     public void SetRenderTextures(RenderTexture colorRenderTexture, RenderTexture vertexRenderTexture)
     {
         SetTextures(mainVisualEffect, colorRenderTexture, vertexRenderTexture);
+        SetTextures(interpolationVisualEffect, colorRenderTexture, vertexRenderTexture);
         SetTextures(dissolutionVisualEffect, colorRenderTexture, vertexRenderTexture);
-        SetInterpolationRenderTextures(colorRenderTexture, vertexRenderTexture, colorRenderTexture, vertexRenderTexture);
+
     }
 
-    public void SetInterpolationRenderTextures(RenderTexture startColorRenderTexture, RenderTexture startVertexRenderTexture, RenderTexture endColorRenderTexture, RenderTexture endVertexRenderTexture)
+    private void SetTextures(VisualEffect visualEffect, RenderTexture colorTexture, RenderTexture vertexTexture)
     {
-        interpolationVisualEffect.SetTexture("Color Start", startColorRenderTexture);
-        interpolationVisualEffect.SetTexture("Vertex Start", startVertexRenderTexture);
-
-        interpolationVisualEffect.SetTexture("Color End", endColorRenderTexture);
-        interpolationVisualEffect.SetTexture("Vertex End", endVertexRenderTexture);
+        visualEffect.SetTexture("ColorTexture", colorTexture);
+        visualEffect.SetTexture("VertexTexture", vertexTexture);
     }
 
     public void SetInterpolationMatrix(ObjectTransformData startData, ObjectTransformData endData)
@@ -214,15 +258,7 @@ public class PointCloud : MonoBehaviour
 
         Matrix4x4 relativeMatrix = startMatrix.inverse * endMatrix;
 
-        interpolationVisualEffect.SetMatrix4x4("StartMatrix", startMatrix);
         interpolationVisualEffect.SetMatrix4x4("EndMatrix", relativeMatrix);
-    }
-
-
-    private void SetTextures(VisualEffect visualEffect, RenderTexture colorTexture, RenderTexture vertexTexture)
-    {
-        visualEffect.SetTexture("Color", colorTexture);
-        visualEffect.SetTexture("Vertex", vertexTexture);
     }
 
     public void SetTransform(Vector3 postion, Vector3 rotation, Vector3 scale)
@@ -246,24 +282,24 @@ public class PointCloud : MonoBehaviour
 
     public void SetClampValues(float xMin, float xMax, float yMin, float yMax)
     {
-        mainVisualEffect.SetFloat("Clamp X Min", xMin);
-        mainVisualEffect.SetFloat("Clamp X Max", xMax);
-        mainVisualEffect.SetFloat("Clamp Y Min", yMin);
-        mainVisualEffect.SetFloat("Clamp Y Max", yMax);
+        mainVisualEffect.SetFloat("ClampXMin", xMin);
+        mainVisualEffect.SetFloat("ClampXMax", xMax);
+        mainVisualEffect.SetFloat("ClampYMin", yMin);
+        mainVisualEffect.SetFloat("ClampYMax", yMax);
 
-        dissolutionVisualEffect.SetFloat("Clamp X Min", xMin);
-        dissolutionVisualEffect.SetFloat("Clamp X Max", xMax);
-        dissolutionVisualEffect.SetFloat("Clamp Y Min", yMin);
-        dissolutionVisualEffect.SetFloat("Clamp Y Max", yMax);
+        dissolutionVisualEffect.SetFloat("ClampXMin", xMin);
+        dissolutionVisualEffect.SetFloat("ClampXMax", xMax);
+        dissolutionVisualEffect.SetFloat("ClampYMin", yMin);
+        dissolutionVisualEffect.SetFloat("ClampYMax", yMax);
 
-        interpolationVisualEffect.SetFloat("Clamp X Min", xMin);
-        interpolationVisualEffect.SetFloat("Clamp X Max", xMax);
-        interpolationVisualEffect.SetFloat("Clamp Y Min", yMin);
-        interpolationVisualEffect.SetFloat("Clamp Y Max", yMax);
+        interpolationVisualEffect.SetFloat("ClampXMin", xMin);
+        interpolationVisualEffect.SetFloat("ClampXMax", xMax);
+        interpolationVisualEffect.SetFloat("ClampYMin", yMin);
+        interpolationVisualEffect.SetFloat("ClampYMax", yMax);
     }
 
- 
-   
+
+
 
 
 }

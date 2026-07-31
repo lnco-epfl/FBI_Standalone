@@ -175,8 +175,6 @@ public class DisplayCamerasState : IState
 
                 displayText.Append(" with dissolution");
 
-                pointCloud.SetDissolutionDuration(cameraData.dissolution.duration);
-
                 var capturedPointCloud = pointCloud;
 
                 sequence.Insert(atTime: 0, Tween.Delay(duration: cameraData.dissolution.delay).OnComplete(() => capturedPointCloud.StartDissolution(cameraData.dissolution.duration)));

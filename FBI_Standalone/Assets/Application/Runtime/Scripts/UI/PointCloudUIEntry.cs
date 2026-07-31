@@ -35,6 +35,12 @@ public class PointCloudUIEntry : MonoBehaviour
     [SerializeField] private Slider clampYMinSlider;
     [SerializeField] private Slider clampYMaxSlider;
 
+    [Header("Reference Point")]
+    [SerializeField] private TMP_InputField referencePointXInputField;
+    [SerializeField] private TMP_InputField referencePointYInputField;
+    [SerializeField] private TMP_InputField referencePointZInputField;
+    [SerializeField] private UISwitcher.UISwitcher displayReferencePointGizmoToggle;
+
     private SensorData sensorData;
     private Kinect4AzureInterface kinectInerface;
 
@@ -45,6 +51,7 @@ public class PointCloudUIEntry : MonoBehaviour
     public event Action<int, float> OnMinDepthChanged;
     public event Action<int, bool, bool> OnFlipChanged;
     public event Action<int, float, float, float, float> OnClampChanged;
+    public event Action<int, Vector3> OnReferencePointChanged;
 
     public float DepthMin => kinectInerface != null ? kinectInerface.minDepthDistance : 0f;
     public float DepthMax => kinectInerface != null ? kinectInerface.maxDepthDistance : 10f;
@@ -69,6 +76,12 @@ public class PointCloudUIEntry : MonoBehaviour
         ParseField(rotationXInputField),
         ParseField(rotationYInputField),
         ParseField(rotationZInputField)
+    );
+
+    public Vector3 ReferencePoint => new Vector3(
+        ParseField(referencePointXInputField),
+        ParseField(referencePointYInputField),
+        ParseField(referencePointZInputField)
     );
 
     private void Awake()
@@ -136,6 +149,12 @@ public class PointCloudUIEntry : MonoBehaviour
         if (clampXMaxSlider != null) clampXMaxSlider.onValueChanged.AddListener(OnClampSliderChanged);
         if (clampYMinSlider != null) clampYMinSlider.onValueChanged.AddListener(OnClampSliderChanged);
         if (clampYMaxSlider != null) clampYMaxSlider.onValueChanged.AddListener(OnClampSliderChanged);
+
+        referencePointXInputField?.onValueChanged.AddListener((str) => { OnReferencePointFieldsChanged(); });
+        referencePointYInputField?.onValueChanged.AddListener((str) => { OnReferencePointFieldsChanged(); });
+        referencePointZInputField?.onValueChanged.AddListener((str) => { OnReferencePointFieldsChanged(); });
+
+        displayReferencePointGizmoToggle?.onValueChanged.AddListener(OnReferencePointGizmoToggleChanged);
     }
 
     private void OnDisable()
@@ -160,6 +179,12 @@ public class PointCloudUIEntry : MonoBehaviour
         if (clampXMaxSlider != null) clampXMaxSlider.onValueChanged.RemoveListener(OnClampSliderChanged);
         if (clampYMinSlider != null) clampYMinSlider.onValueChanged.RemoveListener(OnClampSliderChanged);
         if (clampYMaxSlider != null) clampYMaxSlider.onValueChanged.RemoveListener(OnClampSliderChanged);
+
+        referencePointXInputField?.onValueChanged.RemoveAllListeners();
+        referencePointYInputField?.onValueChanged.RemoveAllListeners();
+        referencePointZInputField?.onValueChanged.RemoveAllListeners();
+
+        displayReferencePointGizmoToggle?.onValueChanged.RemoveListener(OnReferencePointGizmoToggleChanged);
     }
 
     public void ForceApplyAndSave()
@@ -186,6 +211,8 @@ public class PointCloudUIEntry : MonoBehaviour
             clampYMinSlider != null ? clampYMinSlider.value : 0f,
             clampYMaxSlider != null ? clampYMaxSlider.value : 1f,
             saveImmediately: false);
+
+        CameraConfigFileManager.Instance.SaveReferencePoint(CameraId, ReferencePoint, saveImmediately: false);
     }
 
     private void OnPositionOrRotationChanged()
@@ -350,12 +377,39 @@ public class PointCloudUIEntry : MonoBehaviour
         ApplyClampToVFX(xMin, xMax, yMin, yMax);
     }
 
-    private (Vector3 position, Vector3 rotation, float depthMin, float depthMax, bool flipX, bool flipY, float clampXMin, float clampXMax, float clampYMin, float clampYMax) initialDefaults;
+    private void OnReferencePointFieldsChanged()
+    {
+        var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
+        pointCloud?.SetReferencePoint(ReferencePoint);
+
+        CameraConfigFileManager.Instance.SaveReferencePoint(CameraId, ReferencePoint);
+        OnReferencePointChanged?.Invoke(CameraId, ReferencePoint);
+    }
+
+    public void SetReferencePointFields(Vector3 center)
+    {
+        referencePointXInputField?.SetTextWithoutNotify(center.x.ToString());
+        referencePointYInputField?.SetTextWithoutNotify(center.y.ToString());
+        referencePointZInputField?.SetTextWithoutNotify(center.z.ToString());
+
+        var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
+        pointCloud?.SetReferencePoint(center);
+    }
+
+    private void OnReferencePointGizmoToggleChanged(bool isOn)
+    {
+        var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
+        pointCloud?.SetReferencePointGizmoVisible(isOn);
+    }
+
+    public void SetReferencePointGizmoToggle(bool isOn) => displayReferencePointGizmoToggle?.SetWithoutNotify(isOn);
+
+    private (Vector3 position, Vector3 rotation, float depthMin, float depthMax, bool flipX, bool flipY, float clampXMin, float clampXMax, float clampYMin, float clampYMax, Vector3 referencePoint) initialDefaults;
 
     public void CaptureDefaults()
     {
         var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
-        if(pointCloud == null)
+        if (pointCloud == null)
         {
             return;
         }
@@ -374,7 +428,8 @@ public class PointCloudUIEntry : MonoBehaviour
             clampXMinSlider != null ? clampXMinSlider.value : 0f,
             clampXMaxSlider != null ? clampXMaxSlider.value : 1f,
             clampYMinSlider != null ? clampYMinSlider.value : 0f,
-            clampYMaxSlider != null ? clampYMaxSlider.value : 1f
+            clampYMaxSlider != null ? clampYMaxSlider.value : 1f,
+            pointCloud.GetReferencePoint()
         );
     }
 
@@ -386,5 +441,6 @@ public class PointCloudUIEntry : MonoBehaviour
         SetMaxDepth(initialDefaults.depthMax);
         SetFlip(initialDefaults.flipX, initialDefaults.flipY);
         SetClamp(initialDefaults.clampXMin, initialDefaults.clampXMax, initialDefaults.clampYMin, initialDefaults.clampYMax);
+        SetReferencePointFields(initialDefaults.referencePoint);
     }
 }

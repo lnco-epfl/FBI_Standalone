@@ -37,6 +37,15 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
     [SerializeField] private Slider clampYMinSlider;
     [SerializeField] private Slider clampYMaxSlider;
 
+    [Header("Reference Point")]
+    [SerializeField] private Slider referencePointXSlider;
+    [SerializeField] private Slider referencePointYSlider;
+    [SerializeField] private Slider referencePointZSlider;
+    [SerializeField] private UISwitcher.UISwitcher displayReferencePointGizmoToggle;
+
+    [Header("Reference Point Range")]
+    [SerializeField] private float referencePointRange = 3f;
+
     public event Action<WorldSpacePointCloudEntry, bool> OnDisplayToggleRequested;
 
     public int CameraId { get; private set; }
@@ -49,7 +58,7 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
         if (displayPointCloudToggle == null)
         {
             displayPointCloudToggle = GetComponentInChildren<UISwitcher.UISwitcher>();
-        }    
+        }
     }
 
     public void Init(int cameraId)
@@ -63,6 +72,9 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
 
         SetupPositionSliders();
         SetupRotationSliders();
+        SetupReferencePointSliders();
+
+        displayReferencePointGizmoToggle?.SetWithoutNotify(false);
 
         var sensorData = KinectManager.Instance != null && KinectManager.Instance.IsInitialized() ? KinectManager.Instance.GetSensorData(cameraId - 1) : null;
 
@@ -81,7 +93,7 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
         {
             if (s == null) continue;
             s.minValue = -positionRange;
-            s.maxValue =  positionRange;
+            s.maxValue = positionRange;
         }
     }
 
@@ -91,7 +103,17 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
         {
             if (s == null) continue;
             s.minValue = -rotationRange;
-            s.maxValue =  rotationRange;
+            s.maxValue = rotationRange;
+        }
+    }
+
+    private void SetupReferencePointSliders()
+    {
+        foreach (var s in new[] { referencePointXSlider, referencePointYSlider, referencePointZSlider })
+        {
+            if (s == null) continue;
+            s.minValue = -referencePointRange;
+            s.maxValue = referencePointRange;
         }
     }
 
@@ -117,6 +139,12 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
         clampYMinSlider?.onValueChanged.AddListener(_ => OnClampChanged());
         clampYMaxSlider?.onValueChanged.AddListener(_ => OnClampChanged());
 
+        referencePointXSlider?.onValueChanged.AddListener(_ => OnReferencePointChanged());
+        referencePointYSlider?.onValueChanged.AddListener(_ => OnReferencePointChanged());
+        referencePointZSlider?.onValueChanged.AddListener(_ => OnReferencePointChanged());
+
+        displayReferencePointGizmoToggle?.onValueChanged.AddListener(OnReferencePointGizmoToggleChanged);
+
         displayPointCloudToggle?.onValueChanged.AddListener(OnDisplayToggleChanged);
     }
 
@@ -139,6 +167,12 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
         clampXMaxSlider?.onValueChanged.RemoveAllListeners();
         clampYMinSlider?.onValueChanged.RemoveAllListeners();
         clampYMaxSlider?.onValueChanged.RemoveAllListeners();
+
+        referencePointXSlider?.onValueChanged.RemoveAllListeners();
+        referencePointYSlider?.onValueChanged.RemoveAllListeners();
+        referencePointZSlider?.onValueChanged.RemoveAllListeners();
+
+        displayReferencePointGizmoToggle?.onValueChanged.RemoveListener(OnReferencePointGizmoToggleChanged);
 
         displayPointCloudToggle?.onValueChanged.RemoveListener(OnDisplayToggleChanged);
     }
@@ -204,6 +238,22 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
 
     private void OnDisplayToggleChanged(bool isOn) => OnDisplayToggleRequested?.Invoke(this, isOn);
 
+    private void OnReferencePointChanged()
+    {
+        var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
+        pointCloud?.SetReferencePoint(ReferencePoint);
+
+        CameraConfigFileManager.Instance.SaveReferencePoint(CameraId, ReferencePoint);
+        pairedOverlayEntry?.SetReferencePointFields(ReferencePoint);
+    }
+
+    private void OnReferencePointGizmoToggleChanged(bool isOn)
+    {
+        var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
+        pointCloud?.SetReferencePointGizmoVisible(isOn);
+        pairedOverlayEntry?.SetReferencePointGizmoToggle(isOn);
+    }
+
     // Mirror API
 
     public void SetPositionFields(Vector3 position)
@@ -250,6 +300,26 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
         ApplyFlip(flipX, flipY);
     }
 
+    public void SetReferencePointFields(Vector3 center)
+    {
+        referencePointXSlider?.SetValueWithoutNotify(center.x);
+        referencePointXSlider?.GetComponent<SliderToText>()?.UpdateText(center.x);
+        referencePointYSlider?.SetValueWithoutNotify(center.y);
+        referencePointYSlider?.GetComponent<SliderToText>()?.UpdateText(center.y);
+        referencePointZSlider?.SetValueWithoutNotify(center.z);
+        referencePointZSlider?.GetComponent<SliderToText>()?.UpdateText(center.z);
+
+        var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
+        pointCloud?.SetReferencePoint(center);
+    }
+
+    public void SetReferencePointGizmoToggle(bool isOn) => displayReferencePointGizmoToggle?.SetWithoutNotify(isOn);
+
+    private Vector3 ReferencePoint => new Vector3(
+        referencePointXSlider != null ? referencePointXSlider.value : 0f,
+        referencePointYSlider != null ? referencePointYSlider.value : 0f,
+        referencePointZSlider != null ? referencePointZSlider.value : 0f);
+
     public void SetClamp(float xMin, float xMax, float yMin, float yMax)
     {
         clampXMinSlider?.SetValueWithoutNotify(xMin);
@@ -284,7 +354,7 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
     {
         var cg = GetComponent<CanvasGroup>();
         if (cg == null) return;
-        cg.interactable   = interactable;
+        cg.interactable = interactable;
         cg.blocksRaycasts = interactable;
     }
 
@@ -300,7 +370,7 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
 
     private static float NormalizeAngle(float angle)
     {
-        while (angle >  180f) angle -= 360f;
+        while (angle > 180f) angle -= 360f;
         while (angle < -180f) angle += 360f;
         return angle;
     }
@@ -309,7 +379,7 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
     {
         var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
         if (pointCloud == null) return;
-        Transform t  = pointCloud.transform;
+        Transform t = pointCloud.transform;
         Vector3 scale = t.localScale;
         scale.x = Mathf.Abs(scale.x) * (flipX ? -1f : 1f);
         scale.y = Mathf.Abs(scale.y) * (flipY ? -1f : 1f);

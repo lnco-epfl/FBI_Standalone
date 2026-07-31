@@ -271,6 +271,10 @@ MonoBehaviour:
     m_Key: display-config
     m_Metadata:
       m_Items: []
+  - m_Id: 144702058248511488
+    m_Key: referencePoint
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

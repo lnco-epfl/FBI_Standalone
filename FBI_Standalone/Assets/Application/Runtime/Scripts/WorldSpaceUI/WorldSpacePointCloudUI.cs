@@ -8,14 +8,14 @@ public class WorldSpacePointCloudUI : MonoBehaviour
 {
     [Header("Point Cloud Entries")]
     [SerializeField] private GameObject pointCloudEntryPrefab;
-    [SerializeField] private Transform  pointCloudContainer;
+    [SerializeField] private Transform pointCloudContainer;
 
     [Header("Status")]
     [SerializeField] private TMP_Text currentFileNameText;
 
     [Header("Canvas UI")]
     [SerializeField] private UISwitcher.UISwitcher displayCanvaUIToggle;
-    [SerializeField] private Image  canvaUIAlphaPreview;
+    [SerializeField] private Image canvaUIAlphaPreview;
     [SerializeField] private Button canvaUIColorPickerButton;
 
     [SerializeField] private Slider canvaUIPositionXSlider;
@@ -50,13 +50,13 @@ public class WorldSpacePointCloudUI : MonoBehaviour
         {
             if (s == null) continue;
             s.minValue = -canvasPositionRange;
-            s.maxValue =  canvasPositionRange;
+            s.maxValue = canvasPositionRange;
         }
         foreach (var s in new[] { canvaUIRotationXSlider, canvaUIRotationYSlider, canvaUIRotationZSlider })
         {
             if (s == null) continue;
             s.minValue = -canvasRotationRange;
-            s.maxValue =  canvasRotationRange;
+            s.maxValue = canvasRotationRange;
         }
     }
 
@@ -145,8 +145,8 @@ public class WorldSpacePointCloudUI : MonoBehaviour
         ClearEntries();
         foreach (var id in cameraIds)
         {
-            var go    = Instantiate(pointCloudEntryPrefab, pointCloudContainer);
-            go.name   = $"WSPointCloudEntry_Camera{id}";
+            var go = Instantiate(pointCloudEntryPrefab, pointCloudContainer);
+            go.name = $"WSPointCloudEntry_Camera{id}";
             var entry = go.GetComponent<WorldSpacePointCloudEntry>();
             entry.Init(id);
             entry.SetInteractable(false);
@@ -221,6 +221,18 @@ public class WorldSpacePointCloudUI : MonoBehaviour
         wsEntries[index].SetClamp(xMin, xMax, yMin, yMax);
     }
 
+    public void MirrorEntryReferencePoint(int index, Vector3 center)
+    {
+        if (index < 0 || index >= wsEntries.Count) return;
+        wsEntries[index].SetReferencePointFields(center);
+    }
+
+    public void MirrorEntryReferencePointGizmoToggle(int index, bool isOn)
+    {
+        if (index < 0 || index >= wsEntries.Count) return;
+        wsEntries[index].SetReferencePointGizmoToggle(isOn);
+    }
+
     // Stubs for bridge compatibility
     public void MirrorStatus(string message, Color color) { }
     public void MirrorFileName(string name)
@@ -232,7 +244,7 @@ public class WorldSpacePointCloudUI : MonoBehaviour
 
     private static float NormalizeAngle(float angle)
     {
-        while (angle >  180f) angle -= 360f;
+        while (angle > 180f) angle -= 360f;
         while (angle < -180f) angle += 360f;
         return angle;
     }

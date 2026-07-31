@@ -341,14 +341,25 @@ public class CameraConfigFileManager : MonoBehaviour
         if (saveImmediately) Save();
     }
 
-    // NOTE: the stimulus display canvas (position/rotation/color) is no longer part of
-    // CameraConfigFile. It now lives in its own DisplayConfigFile, managed by DisplayConfigFileManager.
-    // See DisplayConfigFileManager.SaveUICanvas().
+    public void SaveReferencePoint(int cameraID, Vector3 value, bool saveImmediately = true)
+    {
+        if (CurrentConfig == null) { EventFileManager.Log("[CameraConfigFileManager] No active config."); return; }
 
-    /// <summary>
-    /// Returns the root folder path where configs are stored.
-    /// Used to open StandaloneFileBrowser dialogs in the right location.
-    /// </summary>
+        var existing = CurrentConfig.pointClouds.Find(o => o.ID == cameraID);
+        if (existing != null)
+        {
+            existing.referencePoint = new SerializableVector3(value);
+        }
+        else
+        {
+            var data = new ObjectTransformData(cameraID);
+            data.referencePoint = new SerializableVector3(value);
+            CurrentConfig.pointClouds.Add(data);
+        }
+
+        if (saveImmediately) Save();
+    }
+
     public string GetRootPath() => RootPath;
 
     private string GetPath(string configName) =>

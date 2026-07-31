@@ -86,6 +86,12 @@ public class PointCloudUIBridge : MonoBehaviour
     public void MirrorEntryClamp(int index, float xMin, float xMax, float yMin, float yMax)
         => worldSpaceUI?.MirrorEntryClamp(index, xMin, xMax, yMin, yMax);
 
+    public void MirrorEntryReferencePoint(int index, Vector3 center)
+        => worldSpaceUI?.MirrorEntryReferencePoint(index, center);
+
+    public void MirrorEntryReferencePointGizmoToggle(int index, bool isOn)
+        => worldSpaceUI?.MirrorEntryReferencePointGizmoToggle(index, isOn);
+
     // ── Requests : WS → Overlay ───────────────────────────────────────────────
 
     public void RequestClose()
