@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_DiffusionProfileReferences:
-  - {fileID: 11400000, guid: 8ae28b9a19c36784280380e4799243cb, type: 2}
+  - {fileID: 0}
   m_MaterialReferences: []
 --- !u!21 &2100000
 Material:
@@ -95,7 +95,7 @@ Material:
     m_Ints: []
     m_Floats:
     - Animation_Cutoff: 15
-    - Distance_Fade_End: 600
+    - Distance_Fade_End: 150
     - Distance_Fade_Start: 50
     - Dither_Scale: 1.5
     - Enable_Blend_Terrain_Color: 0
@@ -105,7 +105,7 @@ Material:
     - Terrain_Blend_R: 0
     - Vector1_593c5cea6c4a42e993ed03ced4685732: 4
     - Vector1_8651797e3e304e108dbd25f9d5a426ba: 0
-    - Vector1_a5b8b09028ce49a39f4d090894c89e22: 0.415
+    - Vector1_a5b8b09028ce49a39f4d090894c89e22: 0.559
     - Vector1_a6983181c8dc4691ba6a28a34c4223a6: 2
     - Wind_Blast: 0.05
     - Wind_Intensity: 0.04
@@ -142,19 +142,25 @@ Material:
     - _CullModeForward: 0
     - _DepthOffsetEnable: 0
     - _DiffusionProfileHash: 3.128872
+    - _Diffusion_Profile: 0
     - _DoubleSidedEnable: 1
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 0
+    - _DstBlend2: 0
     - _DstBlendAlpha: 0
     - _ENVIRONMENTREFLECTIONS_OFF: 1
     - _EnableBlendModePreserveSpecularLighting: 1
     - _EnableFogOnTransparent: 1
+    - _ExcludeFromTUAndAA: 0
     - _FadeBias: 0.75
     - _ForceForwardEmissive: 0
     - _GrassNormal: 0
     - _GroundFalloff: 1
+    - _MaterialID: 5
+    - _MaterialTypeMask: 32
     - _OpaqueCullMode: 2
+    - _PerPixelSorting: 0
     - _QueueControl: 1
     - _QueueOffset: 0
     - _RayTracing: 0
@@ -181,6 +187,7 @@ Material:
     - _SupportDecals: 0
     - _Surface: 0
     - _SurfaceType: 0
+    - _TransmissionEnable: 1
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 2
     - _TransparentDepthPostpassEnable: 0
@@ -207,10 +214,11 @@ Material:
     - _AORemap: {r: 0.5, g: 1, b: 0, a: 0}
     - _BlendScale: {r: 2, g: 2, b: 0, a: 0}
     - _DiffusionProfileAsset: {r: -5.7855046e-23, g: -2.7243504e-36, b: -1.8891285e+22, a: -12817017}
+    - _Diffusion_Profile_Asset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _SSSColor: {r: 1.6921526, g: 1.6921526, b: 1.6921526, a: 1}
-    - _Subsurface_Scattering_Color: {r: 5.9921575, g: 5.9921575, b: 5.9921575, a: 1}
+    - _Subsurface_Scattering_Color: {r: 8, g: 8, b: 8, a: 1}
     - _Thickness_Remap: {r: 0.1, g: 1, b: 0, a: 0}
     - _blendOffset: {r: 1024, g: 1024, b: 0, a: 0}
   m_BuildTextureStacks: []
