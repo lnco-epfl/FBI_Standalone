@@ -672,7 +672,7 @@ The `pointClouds` list defines the spatial configuration, depth settings and spa
 | `clampXMax` | float | Right boundary of the visible area, normalized between `0` and `1` |
 | `clampYMin` | float | Bottom boundary of the visible area, normalized between `0` and `1` |
 | `clampYMax` | float | Top boundary of the visible area, normalized between `0` and `1` |
-| `referencePoint` | Vector3 | A general-purpose local-space position, relative to the point cloud (not world space). Currently drives the [dissolution effect's](#displaycameras) sphere center. Editable via the [Reference Point](#reference-point) panel |
+| `referencePoint` | Vector3 | A general-purpose local-space position, relative to the point cloud (not world space) — **stored value is always local**, even though it's edited in world space in the UI. Currently drives the [dissolution effect's](#displaycameras) sphere center. Editable via the [Reference Point](#reference-point) panel |
 
 # Display Config Files
 
@@ -838,11 +838,13 @@ Flips the point cloud along a given axis.
 
 ### Reference Point
 
-Sets a local-space position relative to the point cloud (rather than the scene), so it stays correctly placed regardless of the point cloud's own position/rotation. This is a general-purpose reference point; it currently drives the center of the sphere used by the [dissolution effect](#displaycameras).
+A general-purpose reference point relative to the point cloud; it currently drives the center of the sphere used by the [dissolution effect](#displaycameras). It is stored **relative to the point cloud** (local space) in the config file, so it stays correctly placed regardless of the point cloud's own position/rotation.
+
+For ease of use, the **X / Y / Z fields are edited in world space** (like Unity's "Global" tool handle mode) rather than local space — otherwise moving it along "X" would follow the point cloud's own (possibly rotated) local axis instead of the scene's. The conversion to/from local space happens automatically; only the local value ever gets written to the config file.
 
 | Control | Description |
 |---------|-------------|
-| **Position X / Y / Z** | Position of the reference point, relative to the point cloud |
+| **Position X / Y / Z** | World-space position of the reference point |
 | **Show gizmo** toggle | Displays a sphere gizmo in the preview at the current position, to help placing it visually. This is a visual aid only for the editor — it is not saved to the config file and always starts hidden when a config is loaded |
 
 ## Stimulus Display
