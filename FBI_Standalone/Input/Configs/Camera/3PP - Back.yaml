@@ -1,24 +1,6 @@
 configName: 3PP - Back
 createdAt: 2026-06-11 14:02:46
-lastModified: 2026-07-14 09:34:12
-stimulusDisplay:
-  position:
-    x: 0
-    y: 0.9
-    z: 0.5
-  rotation:
-    x: 0
-    y: 0
-    z: 0
-  scale:
-    x: 1
-    y: 1
-    z: 1
-  backgroundColor:
-    r: 0
-    g: 0
-    b: 0
-    a: 1
+lastModified: 2026-08-06 14:21:40
 pointClouds:
 - iD: 1
   position:
@@ -39,11 +21,15 @@ pointClouds:
   clampXMax: 1
   clampYMin: 0
   clampYMax: 1
+  referencePoint:
+    x: 0
+    y: 0
+    z: 0
 - iD: 2
   position:
     x: 0.12
     y: 0.9899999
-    z: -2.04
+    z: -1.64
   rotation:
     x: 8.99
     y: 2.45
@@ -52,9 +38,13 @@ pointClouds:
     x: 1
     y: 1
     z: 1
-  depthMax: 2.27823
+  depthMax: 2.25
   depthMin: 0
-  clampXMin: 0.2204771
-  clampXMax: 0.7139753
-  clampYMin: 0
+  clampXMin: 0.3
+  clampXMax: 0.7
+  clampYMin: 0.05
   clampYMax: 1
+  referencePoint:
+    x: -0.0765181
+    y: -0.2242815
+    z: 1.846088

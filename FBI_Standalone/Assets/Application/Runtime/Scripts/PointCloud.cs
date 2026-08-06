@@ -72,7 +72,7 @@ public class PointCloud : MonoBehaviour
     {
         if(isMainVFXVisible)
         {
-            StartDissolution(5.0f);
+            StartDissolution(5.0f, () => DisplayMain());
         }
         
     }

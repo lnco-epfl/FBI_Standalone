@@ -1,0 +1,322 @@
+# ============================================================================
+# Demo.yaml — showcase of ALL available features
+# ============================================================================
+#
+# This file is not a real experiment: it acts as a living catalog of every
+# stepType and YAML parameter supported by the program, with one example of
+# each variant. Use it as a reference / copy-paste source.
+#
+# General reminders (see README > Timeline model):
+#   - startTime : time in seconds since the start of the experiment.
+#     Steps do NOT need to be written in chronological order, they are
+#     automatically sorted by startTime when the sequence is loaded.
+#   - blocking  : if true, the timeline waits for the step to finish before
+#     jumping to the next step's startTime. If false (default), the timeline
+#     keeps advancing normally while the step runs in the background.
+#   - stepType is case-insensitive (LoadScene == loadScene).
+# ============================================================================
+
+steps:
+
+  # --------------------------------------------------------------------
+  # 1. LoadScene — loads a Unity scene
+  # --------------------------------------------------------------------
+  # Available scenes: BlackScene, EmptyGrayRoom, GrayInfinityScene, EmptyRoom
+  - stepType: LoadScene
+    startTime: 0
+    scenePath: "EmptyRoom"
+
+  # --------------------------------------------------------------------
+  # 2. LoadCameraConfig — loads a camera config file (pointClouds)
+  # --------------------------------------------------------------------
+  - stepType: LoadCameraConfig
+    startTime: 1.0
+    configName: 3PP
+
+  # --------------------------------------------------------------------
+  # 3. LoadDisplayConfig — stimulus canvas (position/rotation/scale/color)
+  #    A DisplayText is shown after each variant so the change on the
+  #    stimulus display canvas is visible/confirmed while it's playing out.
+  # --------------------------------------------------------------------
+
+  # 3a. Loads a display config file as-is
+  - stepType: LoadDisplayConfig
+    startTime: 3.0
+    configName: MainDisplay
+
+  - stepType: DisplayText
+    startTime: 3.0
+    text: "Display config loaded from file: MainDisplay"
+    duration: 3.0
+
+  # 3b. Loads a file, but overrides the background color for this step only
+  - stepType: LoadDisplayConfig
+    startTime: 7.0
+    configName: MainDisplay
+    backgroundColorOverride:
+      r: 0.1
+      g: 0.1
+      b: 0.15
+      a: 1.0
+
+  - stepType: DisplayText
+    startTime: 7.0
+    text: "Background color overridden for this step"
+    duration: 3.0
+
+  # 3c. No config file — just nudges the currently active canvas transform
+  - stepType: LoadDisplayConfig
+    startTime: 11.0
+    positionOverride:
+      x: 0.0
+      y: 1.4
+      z: 2.0
+    rotationOverride:
+      x: 0.0
+      y: 180.0
+      z: 0.0
+    scaleOverride:
+      x: 1.0
+      y: 1.0
+      z: 1.0
+
+  - stepType: DisplayText
+    startTime: 11.0
+    text: "Position / rotation / scale overridden, no config file used"
+    duration: 3.0
+
+  # --------------------------------------------------------------------
+  # 4. DisplayText — text on screen for a given duration
+  # --------------------------------------------------------------------
+  - stepType: DisplayText
+    startTime: 15.0
+    text: "Bienvenue dans cette démonstration"
+    duration: 3.0
+
+  # --------------------------------------------------------------------
+  # 5. Wait — pauses the timeline
+  # --------------------------------------------------------------------
+  - stepType: Wait
+    startTime: 18.0
+    duration: 2.0
+
+  # --------------------------------------------------------------------
+  # 6. SendLSLEvent — LSL event marker (EEG / sensor sync)
+  # --------------------------------------------------------------------
+  - stepType: SendLSLEvent
+    startTime: 20.0
+    eventName: "DemoStart"
+
+  # --------------------------------------------------------------------
+  # 7. PlaySound — audio, with and without subtitles
+  # --------------------------------------------------------------------
+  - stepType: PlaySound
+    startTime: 20.0
+    soundPath: "bell-sfx"
+    subtitle: false
+
+  - stepType: PlaySound
+    startTime: 22.0
+    soundPath: "NoM_Phase1"
+    subtitle: true
+
+  # --------------------------------------------------------------------
+  # 8. DisplayVideo — with/without looping, with/without audio, subtitles
+  # --------------------------------------------------------------------
+  # 8a. Single playback (ends automatically when the video finishes)
+  - stepType: DisplayVideo
+    startTime: 28.0
+    videoName: "FBI_demo_video"
+    looping: false
+    muteAudio: false
+    duration: 60.0
+    subtitle: true
+
+  # 8b. Looping video, muted, no subtitles, cut after 15s (timeout)
+  - stepType: DisplayVideo
+    startTime: 43.0
+    videoName: "FBI_demo_video"
+    looping: true
+    muteAudio: true
+    duration: 15.0
+    subtitle: false
+
+  # --------------------------------------------------------------------
+  # 9. DisplayImage — static image
+  # --------------------------------------------------------------------
+  - stepType: DisplayImage
+    startTime: 60.0
+    imagePath: "plus"
+    scale: 0.3
+    duration: 3.0
+
+  # --------------------------------------------------------------------
+  # 10. DisplayCameras — every variant (interpolation, dissolution, fade,
+  #     rigInterpolation), one at a time. All set to a 10s duration.
+  # --------------------------------------------------------------------
+
+  # 10a. Single camera, real-time display
+  - stepType: DisplayCameras
+    startTime: 65.0
+    duration: 10.0
+    cameraDatas:
+      - id: "1"
+        delay: 0.0
+
+  # 10b. Two cameras simultaneously, with a different delay on one of them
+  - stepType: DisplayCameras
+    startTime: 77.0
+    duration: 10.0
+    cameraDatas:
+      - id: "1"
+        delay: 0.0
+      - id: "2"
+        delay: 1.5
+
+  # 10c. Camera config switch + animated interpolation (start position
+  #      defined by startConfigName). Available ease values: Default,
+  #      Linear, InOutSine, InOutQuad, InOutCubic, InOutQuart, InOutExpo.
+  - stepType: DisplayCameras
+    startTime: 89.0
+    duration: 10.0
+    cameraDatas:
+      - id: "1"
+        delay: 0.0
+        configName: 3PP
+        interpolation:
+          duration: 3.0
+          delay: 1.0
+          ease: InOutQuad
+          startConfigName: 1PP
+
+  # 10d. Dissolution effect (the sphere center comes from the `referencePoint`
+  #      field of the camera config file that's loaded, not from the step)
+  - stepType: DisplayCameras
+    startTime: 101.0
+    duration: 10.0
+    cameraDatas:
+      - id: "1"
+        delay: 0.0
+        configName: Mirror
+        dissolution:
+          duration: 3.0
+          delay: 3.0
+
+  # 10e. Fade effect (alternative to dissolution)
+  - stepType: DisplayCameras
+    startTime: 113.0
+    duration: 10.0
+    cameraDatas:
+      - id: "1"
+        delay: 0.0
+        configName: 3PP
+        fade:
+          duration: 3.0
+          delay: 3.0
+
+  # 10f. Full 1PP -> 3PP transition: the rig recedes (rigInterpolation) while
+  #      the 1PP point cloud dissolves, leaving only the 3PP visible at the end.
+  #      dissolution.delay = rigInterpolation.delay + rigInterpolation.duration * 0.6
+  #                         = 1.0 + 3.0 * 0.6 = 2.8s
+  - stepType: DisplayCameras
+    startTime: 125.0
+    duration: 10.0
+    cameraDatas:
+      - id: "1"
+        delay: 0.0
+        configName: 1PP
+        dissolution:
+          duration: 1.5
+          delay: 2.8
+      - id: "2"
+        delay: 0.0
+        configName: 3PP - Back
+    rigInterpolation:
+      startPosition:
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      endPosition:
+        x: 0.0
+        y: 0.0
+        z: -2.0
+      startYaw: 0.0
+      endYaw: 180.0
+      delay: 1.0
+      duration: 3.0
+      ease: InOutSine
+
+  - stepType: Wait
+    startTime: 137.0
+    duration: 2.0
+
+  # --------------------------------------------------------------------
+  # 11. DisplayQuestion — single choice and multiple choice
+  # --------------------------------------------------------------------
+  # blocking: true -> the timeline waits for the response before continuing
+  - stepType: DisplayQuestion
+    blocking: true
+    startTime: 139.0
+    question: "Comment vous sentez-vous ?"
+    options:
+      - "Très mal"
+      - "Mal"
+      - "Bien"
+      - "Très bien"
+
+  - stepType: DisplayQuestion
+    blocking: true
+    startTime: 141.0
+    question: "Quels effets avez-vous ressentis ? (plusieurs réponses possibles)"
+    options:
+      - "Chaleur"
+      - "Vertige"
+      - "Sensation de déplacement"
+      - "Aucun"
+    allowMultipleResponses: true
+
+  # --------------------------------------------------------------------
+  # 12. DisplayLikertScale — random or centered cursor start position
+  # --------------------------------------------------------------------
+  - stepType: DisplayLikertScale
+    blocking: true
+    startTime: 143.0
+    question: "Dans quelle mesure vous sentiez-vous présent dans le corps virtuel ?"
+    leftLabel: "Pas du tout"
+    rightLabel: "Complètement"
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: DisplayLikertScale
+    blocking: true
+    startTime: 145.0
+    question: "Niveau de satisfaction global"
+    leftLabel: "Pas satisfait"
+    rightLabel: "Très satisfait"
+    min: 1
+    max: 5
+    randomCursorPosition: false
+
+  # --------------------------------------------------------------------
+  # 13. Break — pause screen with instructions
+  # --------------------------------------------------------------------
+  - stepType: Break
+    startTime: 147.0
+    text: "Prenez une pause. L'expérience reprendra automatiquement."
+    duration: 15
+
+  - stepType: Wait
+    startTime: 162.0
+    duration: 1.0
+
+  # --------------------------------------------------------------------
+  # 14. End — default startTime/blocking
+  # --------------------------------------------------------------------
+  # startTime (default: 0) and blocking (default: false) are optional on
+  # EVERY step type: they don't need to be repeated when the default value
+  # is what you want.
+  - stepType: DisplayText
+    startTime: 163.0
+    text: "Merci d'avoir participé à cette démonstration"
+    duration: 4.0

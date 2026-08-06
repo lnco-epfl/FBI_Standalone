@@ -1,6 +1,6 @@
 configName: Mirror - Flip
 createdAt: 2026-06-18 10:41:48
-lastModified: 2026-07-14 09:34:51
+lastModified: 2026-08-06 14:17:03
 pointClouds:
 - iD: 1
   position:
@@ -15,12 +15,16 @@ pointClouds:
     x: 1
     y: 1
     z: 1
-  depthMax: 3.0
-  depthMin: 1
+  depthMax: 3
+  depthMin: 0
   clampXMin: 0.3
   clampXMax: 0.7
-  clampYMin: 0.3
-  clampYMax: 0.96
+  clampYMin: 0.04598596
+  clampYMax: 0.9524282
+  referencePoint:
+    x: 0.0363569
+    y: 0.0195266
+    z: 1.362025
 - iD: 2
   position:
     x: 0
@@ -40,3 +44,7 @@ pointClouds:
   clampXMax: 1
   clampYMin: 0
   clampYMax: 1
+  referencePoint:
+    x: 0
+    y: 0
+    z: 0

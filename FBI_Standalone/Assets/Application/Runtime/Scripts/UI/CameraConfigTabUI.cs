@@ -177,6 +177,7 @@ public class CameraConfigTabUI : MonoBehaviour
         {
             entry.OnDisplayToggleRequested -= OnDisplayToggleRequested;
             entry.OnReferencePointChanged -= OnEntryReferencePointChanged;
+            entry.OnReferencePointGizmoVisibilityChanged -= OnEntryReferencePointGizmoVisibilityChanged;
         }
     }
 
@@ -420,6 +421,7 @@ public class CameraConfigTabUI : MonoBehaviour
             entry.OnFlipChanged -= OnEntryFlipChanged;
             entry.OnClampChanged -= OnEntryClampChanged;
             entry.OnReferencePointChanged -= OnEntryReferencePointChanged;
+            entry.OnReferencePointGizmoVisibilityChanged -= OnEntryReferencePointGizmoVisibilityChanged;
         }
 
         pointCloudEntries.Clear();
@@ -453,6 +455,8 @@ public class CameraConfigTabUI : MonoBehaviour
             entry.OnFlipChanged += OnEntryFlipChanged;
             entry.OnClampChanged += OnEntryClampChanged;
             entry.OnReferencePointChanged += OnEntryReferencePointChanged;
+            entry.OnReferencePointGizmoVisibilityChanged += OnEntryReferencePointGizmoVisibilityChanged;
+
             pointCloudEntries.Add(entry);
         }
 
@@ -528,7 +532,14 @@ public class CameraConfigTabUI : MonoBehaviour
         configEditor.Bridge?.MirrorEntryReferencePoint(i, center);
     }
 
-    private IEnumerator SwitchPointCloudCoroutine(PointCloudUIEntry previous, PointCloudUIEntry next)
+    private void OnEntryReferencePointGizmoVisibilityChanged(int cameraId, bool isOn)
+    {
+        int i = pointCloudEntries.FindIndex(e => e.CameraId == cameraId);
+        if (i< 0) return;
+        configEditor.Bridge?.MirrorEntryReferencePointGizmoToggle(i, isOn);
+    }
+
+private IEnumerator SwitchPointCloudCoroutine(PointCloudUIEntry previous, PointCloudUIEntry next)
     {
         isSwitching = true;
 

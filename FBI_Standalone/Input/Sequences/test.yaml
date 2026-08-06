@@ -193,8 +193,8 @@ steps:
     question: "satisfaction question"
     leftLabel: "not satisfied"
     rightLabel: "very satisfied"
-    min: 1
-    max: 5
+    min: 0
+    max: 100
     randomCursorPosition: true
 
   - stepType: displayQuestion
@@ -212,9 +212,9 @@ steps:
     question: "satisfaction question"
     leftLabel: "not satisfied"
     rightLabel: "very satisfied"
-    min: 1
-    max: 5
-    randomCursorPosition: true
+    min: 0
+    max: 100
+    randomCursorPosition: false
 
 
   - stepType: displayQuestion

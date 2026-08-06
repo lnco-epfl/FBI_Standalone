@@ -1,26 +1,30 @@
 configName: 1PP - Flip
 createdAt: 2026-04-23 15:35:05
-lastModified: 2026-07-14 15:06:31
+lastModified: 2026-08-06 14:13:13
 pointClouds:
 - iD: 1
   position:
     x: 0.07
-    y: 1.62
-    z: 0.84
+    y: 1.63
+    z: 1.31
   rotation:
-    x: 44.77001
+    x: 44.77002
     y: 185.25
     z: 4.967257
   scale:
     x: -1
     y: 1
     z: 1
-  depthMax: 3.0
+  depthMax: 3
   depthMin: 1
   clampXMin: 0.3
   clampXMax: 0.7
   clampYMin: 0.3
   clampYMax: 0.96
+  referencePoint:
+    x: 0.03236393
+    y: -0.09236479
+    z: 1.395614
 - iD: 2
   position:
     x: 0
@@ -40,3 +44,7 @@ pointClouds:
   clampXMax: 1
   clampYMin: 0
   clampYMax: 1
+  referencePoint:
+    x: 0
+    y: 0
+    z: 0

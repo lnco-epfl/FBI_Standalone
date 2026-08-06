@@ -49,18 +49,9 @@ public class ConfigEditorUI : MonoBehaviour
 
     public event Action<ConfigEditorUI> OnConfigEditorDestroy;
 
-    /// <summary>Fired for any status message that should show in both tabs' status bars
-    /// (scene loading messages, essentially). Tab-specific messages (save/open/etc.) are raised
-    /// directly by each tab, not through here.</summary>
     public event Action<string, Color> OnGlobalStatus;
-
-    /// <summary>Fired when the scene list or the currently loaded scene changes, so both tabs can
-    /// keep their own dropdown in sync.</summary>
     public event Action<List<string>, int> OnSceneListChanged;
     public event Action<int> OnSceneIndexChanged;
-
-    /// <summary>Fired once a scene has finished loading (fade in/out done, static camera and
-    /// world space canvas ready). Tabs use this to (re)spawn/reset whatever they own.</summary>
     public event Action OnSceneLoadCompleted;
 
     public event Action<bool> OnXRViewChanged;
@@ -79,9 +70,6 @@ public class ConfigEditorUI : MonoBehaviour
         ShortcutManager.Instance.DisableMainShortCut();
         ShortcutManager.Instance.EnableConfigShortCut();
 
-        // NOTE: relies on Unity calling OnEnable on every object present in the scene before
-        // Start runs on any of them, so cameraTab/displayTab have already subscribed to the
-        // events above by the time LoadScene() raises them.
         StartCoroutine(LoadScene());
     }
 
@@ -138,8 +126,6 @@ public class ConfigEditorUI : MonoBehaviour
         OnConfigEditorDestroy?.Invoke(this);
     }
 
-    // ----------------------------------------------------------------- Scene list & loading
-
     public List<string> GetAvailableSceneNames()
     {
         var names = new List<string>();
@@ -153,15 +139,9 @@ public class ConfigEditorUI : MonoBehaviour
     private string currentStatusMessage = "";
     private Color currentStatusColor = Color.white;
 
-    /// <summary>The last status message/color broadcast, so a tab can re-sync its own status
-    /// text immediately when it becomes visible (e.g. after switching tabs), instead of waiting
-    /// for the next status-changing action.</summary>
     public string CurrentStatusMessage => currentStatusMessage;
     public Color CurrentStatusColor => currentStatusColor;
 
-    /// <summary>Single entry point for status updates. Both tabs call this (instead of writing to
-    /// their own status text directly) so the message always shows identically in both panels,
-    /// regardless of which tab triggered it or which tab is currently visible.</summary>
     public void BroadcastStatus(string message, Color color)
     {
         currentStatusMessage = message;

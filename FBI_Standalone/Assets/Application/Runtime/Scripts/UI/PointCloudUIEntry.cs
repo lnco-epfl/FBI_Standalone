@@ -52,6 +52,7 @@ public class PointCloudUIEntry : MonoBehaviour
     public event Action<int, bool, bool> OnFlipChanged;
     public event Action<int, float, float, float, float> OnClampChanged;
     public event Action<int, Vector3> OnReferencePointChanged;
+    public event Action<int, bool> OnReferencePointGizmoVisibilityChanged;
 
     public float DepthMin => kinectInerface != null ? kinectInerface.minDepthDistance : 0f;
     public float DepthMax => kinectInerface != null ? kinectInerface.maxDepthDistance : 10f;
@@ -385,10 +386,6 @@ public class PointCloudUIEntry : MonoBehaviour
         var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
         if (pointCloud == null) return;
 
-        // Fields are edited as a world-aligned offset from the point cloud's own position — like
-        // Unity's "Global" tool mode — for ease of use, even though the value stored in the
-        // config file and sent to the VFX is local space (relative to the point cloud, and
-        // affected by its rotation).
         pointCloud.SetReferencePointOffset(ReferencePointOffset);
         var localValue = pointCloud.GetReferencePoint();
 
@@ -396,15 +393,11 @@ public class PointCloudUIEntry : MonoBehaviour
         OnReferencePointChanged?.Invoke(CameraId, localValue);
     }
 
-    /// <summary>Mirror API — always takes a local-space value (as stored in the config file).</summary>
     public void SetReferencePointFields(Vector3 localPosition)
     {
         var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
         pointCloud?.SetReferencePoint(localPosition);
 
-        // Displayed fields are a world-aligned offset from the point cloud (0,0,0 = point
-        // cloud's own position); fall back to the raw local value if no PointCloud instance is
-        // available to convert with (should not normally happen in the editor).
         Vector3 displayValue = pointCloud != null ? pointCloud.GetReferencePointOffset() : localPosition;
 
         referencePointXInputField?.SetTextWithoutNotify(displayValue.x.ToString());
@@ -414,9 +407,10 @@ public class PointCloudUIEntry : MonoBehaviour
 
     private void OnReferencePointGizmoToggleChanged(bool isOn)
     {
-        // Purely a visual editing aid — never persisted to the config file.
         var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
         pointCloud?.SetReferencePointGizmoVisible(isOn);
+
+        OnReferencePointGizmoVisibilityChanged?.Invoke(CameraId, isOn);
     }
 
     public void SetReferencePointGizmoToggle(bool isOn) => displayReferencePointGizmoToggle?.SetWithoutNotify(isOn);
