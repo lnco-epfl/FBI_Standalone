@@ -3337,7 +3337,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 421048720500651223, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 15
+      value: 1600
       objectReference: {fileID: 0}
     - target: {fileID: 421048720500651223, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: m_LocalScale.x
@@ -3381,11 +3381,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 421048720500651223, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.75
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 421048720500651223, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 421048720500651223, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3779,7 +3779,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1200, y: 1350, z: 1}
+  m_Size: {x: 1200, y: 1600, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!224 &7525227480168777204 stripped
 RectTransform:
@@ -6606,6 +6606,10 @@ PrefabInstance:
     - target: {fileID: 3785095038281853208, guid: 47ef8b9c834a8df418628c6100197d2a, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3810608803502558974, guid: 47ef8b9c834a8df418628c6100197d2a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -22.500183
       objectReference: {fileID: 0}
     - target: {fileID: 3838221420539799405, guid: 47ef8b9c834a8df418628c6100197d2a, type: 3}
       propertyPath: m_AnchorMax.y

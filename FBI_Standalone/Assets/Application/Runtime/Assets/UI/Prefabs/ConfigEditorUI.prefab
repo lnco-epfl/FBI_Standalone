@@ -2692,7 +2692,7 @@ GameObject:
   - component: {fileID: 359825462935335825}
   - component: {fileID: 3223949731855757717}
   - component: {fileID: 6532712994424754468}
-  - component: {fileID: 1050132298329718620}
+  - component: {fileID: 1479989828055207328}
   m_Layer: 0
   m_Name: CamerasConfigTab
   m_TagString: Untagged
@@ -2741,14 +2741,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.24705884, g: 0.26666668, b: 0.3254902, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2758,7 +2758,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1050132298329718620
+--- !u!114 &1479989828055207328
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2769,7 +2769,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
   m_Navigation:
     m_Mode: 3
     m_WrapAround: 0
@@ -2779,11 +2779,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.34928602, g: 0.3687145, b: 0.42700002, a: 1}
-    m_HighlightedColor: {r: 0.3033569, g: 0.3082754, b: 0.3254902, a: 1}
-    m_PressedColor: {r: 0.21568629, g: 0.23529413, b: 0.2784314, a: 1}
-    m_SelectedColor: {r: 0.3033569, g: 0.3082754, b: 0.3254902, a: 1}
-    m_DisabledColor: {r: 0.14098592, g: 0.15380283, b: 0.18200001, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -7385,14 +7385,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.24705884, g: 0.26666668, b: 0.3254902, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7413,7 +7413,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
   m_Navigation:
     m_Mode: 3
     m_WrapAround: 0
@@ -7423,11 +7423,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.34928602, g: 0.3687145, b: 0.42700002, a: 1}
-    m_HighlightedColor: {r: 0.3033569, g: 0.3082754, b: 0.3254902, a: 1}
-    m_PressedColor: {r: 0.21568629, g: 0.23529413, b: 0.2784314, a: 1}
-    m_SelectedColor: {r: 0.3033569, g: 0.3082754, b: 0.3254902, a: 1}
-    m_DisabledColor: {r: 0.14098592, g: 0.15380283, b: 0.18200001, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -14560,7 +14560,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.25490198, g: 0.27058825, b: 0.3254902, a: 1}
+  m_Color: {r: 0.227451, g: 0.24705884, b: 0.29411766, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -18385,7 +18385,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   newDisplayConfigButton: {fileID: 4302584682719659000}
-  openDisplayConfigButton: {fileID: 7931170545944870274}
+  openDisplayConfigButton: {fileID: 4438990102963013062}
   saveDisplayConfigButton: {fileID: 7931170545944870274}
   saveAsDisplayConfigButton: {fileID: 6301086520811692877}
   hamburgerMenu: {fileID: 7659791023479838906}
@@ -18420,8 +18420,8 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8855816560654463696}
   m_Enabled: 1
-  m_Alpha: 0
-  m_Interactable: 0
+  m_Alpha: 1
+  m_Interactable: 1
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!1 &8865299185221485277
@@ -24812,10 +24812,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8228326148685552317}
     - target: {fileID: 1907364733944234094, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
-      propertyPath: camerasTabButton
-      value: 
-      objectReference: {fileID: 1050132298329718620}
-    - target: {fileID: 1907364733944234094, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: loadConfigButton
       value: 
       objectReference: {fileID: 7701892889438033470}
@@ -24949,15 +24945,15 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: d3d1a45f73498e342a392c7ee90153f9, type: 3}
     - target: {fileID: 3031714689053096085, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: m_Color.b
-      value: 0.3254902
+      value: 0.29411766
       objectReference: {fileID: 0}
     - target: {fileID: 3031714689053096085, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: m_Color.g
-      value: 0.27058825
+      value: 0.24705884
       objectReference: {fileID: 0}
     - target: {fileID: 3031714689053096085, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: m_Color.r
-      value: 0.25490198
+      value: 0.227451
       objectReference: {fileID: 0}
     - target: {fileID: 3262699309553235248, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: m_AnchorMax.x
@@ -25058,6 +25054,10 @@ PrefabInstance:
     - target: {fileID: 5389820051351008206, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5558089750558040392, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5578294579033060424, guid: 1028abd8374c3f74c8c05029d6909471, type: 3}
       propertyPath: m_AnchorMax.x
@@ -25300,10 +25300,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Application::ConfigEditor
   closeButton: {fileID: 439303661720649756}
-  camerasTabButton: {fileID: 1050132298329718620}
+  camerasTabButton: {fileID: 1479989828055207328}
   stimulusDisplayTabButton: {fileID: 2080269202858991609}
   cameraTab: {fileID: 1788955649786596732}
   displayTab: {fileID: 4017047475772074789}
+  ActiveColor: {r: 0.24705884, g: 0.26666668, b: 0.3254902, a: 1}
+  DeactiveColor: {r: 0.18975903, g: 0.2048193, b: 0.25, a: 1}
   scene:
     asset: {fileID: 102900000, guid: 1124e634fc283304d876957226301a9e, type: 3}
     guid: 1124e634fc283304d876957226301a9e

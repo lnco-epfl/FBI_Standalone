@@ -28,6 +28,9 @@ public class ConfigEditorUI : MonoBehaviour
     [SerializeField] private CameraConfigTabUI cameraTab;
     [SerializeField] private DisplayConfigTabUI displayTab;
 
+    [SerializeField] private Color ActiveColor;
+    [SerializeField] private Color DeactiveColor; 
+
     [Header("Scene")]
     [SerializeField] private SceneReference scene;
     [SerializeField] private List<SceneReference> availableScenes = new List<SceneReference>();
@@ -71,7 +74,7 @@ public class ConfigEditorUI : MonoBehaviour
 
     private void Start()
     {
-        SwitchTab(showCameras: true);
+        OnCamerasTabButtonPress();
         ShortcutManager.Instance.DisableShortCut();
 
         // NOTE: relies on Unity calling OnEnable on every object present in the scene before
@@ -83,9 +86,10 @@ public class ConfigEditorUI : MonoBehaviour
     private void OnEnable()
     {
         closeButton.onClick.AddListener(OnButtonCloseClick);
-        camerasTabButton.onClick.AddListener(() => SwitchTab(showCameras: true));
-        stimulusDisplayTabButton.onClick.AddListener(() => SwitchTab(showCameras: false));
+        camerasTabButton.onClick.AddListener(OnCamerasTabButtonPress);
+        stimulusDisplayTabButton.onClick.AddListener(OnStimulusDisplayTabButtonPress);
     }
+
 
     private void OnDisable()
     {
@@ -99,6 +103,23 @@ public class ConfigEditorUI : MonoBehaviour
         if (worldSpaceUI != null) Destroy(worldSpaceUI.gameObject);
         if (bridge != null) Destroy(bridge.gameObject);
     }
+
+    private void OnCamerasTabButtonPress()
+    {
+        SwitchTab(showCameras: true);
+
+        stimulusDisplayTabButton.targetGraphic.color = DeactiveColor;
+        camerasTabButton.targetGraphic.color = ActiveColor;
+    }
+
+    private void OnStimulusDisplayTabButtonPress()
+    {
+        SwitchTab(showCameras: false);
+
+        stimulusDisplayTabButton.targetGraphic.color = ActiveColor;
+        camerasTabButton.targetGraphic.color = DeactiveColor;
+    }
+
 
     private void SwitchTab(bool showCameras)
     {

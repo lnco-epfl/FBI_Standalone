@@ -83,7 +83,7 @@ public class CameraConfigTabUI : MonoBehaviour
     public void SetVisible(bool visible)
     {
         canvasGroup.alpha = visible ? 1f : 0f;
-        canvasGroup.interactable = visible;
+        //canvasGroup.interactable = visible;
         canvasGroup.blocksRaycasts = visible;
     }
 
