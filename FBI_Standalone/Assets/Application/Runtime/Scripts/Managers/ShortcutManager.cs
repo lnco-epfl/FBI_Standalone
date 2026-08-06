@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class ShortcutManager : MonoBehaviour
 {
 
-    [Header("Input Action")]
+    [Header("Main Input Action")]
     public InputActionReference StartActionReference;
     public InputActionReference StopActionReference;
     public InputActionReference PauseActionReference;
@@ -12,6 +12,10 @@ public class ShortcutManager : MonoBehaviour
     public InputActionReference PreviousStepActionReference;
     public InputActionReference MuteActionReference;
     public InputActionReference ResetXROriginActionReference;
+
+    [Header("Config Input Action")]
+    public InputActionReference ConfigResetXROriginActionReference;
+    public InputActionReference ConfigStartDissolutionActionReference;
 
     private static ShortcutManager instance;
     public static ShortcutManager Instance { get { return instance; } }
@@ -26,10 +30,11 @@ public class ShortcutManager : MonoBehaviour
 
     private void Start()
     {
-        EnableShortCut();
+        EnableMainShortCut();
+        DisableConfigShortCut();
     }
 
-    public void EnableShortCut()
+    public void EnableMainShortCut()
     {
         StartActionReference.action.Enable();
         StopActionReference.action.Enable();
@@ -40,7 +45,7 @@ public class ShortcutManager : MonoBehaviour
         ResetXROriginActionReference.action.Enable();
     }
 
-    public void DisableShortCut()
+    public void DisableMainShortCut()
     {
         StartActionReference.action.Disable();
         StopActionReference.action.Disable();
@@ -49,6 +54,18 @@ public class ShortcutManager : MonoBehaviour
         PreviousStepActionReference.action.Disable();
         MuteActionReference.action.Disable();
         ResetXROriginActionReference.action.Disable();
+    }
+
+    public void EnableConfigShortCut()
+    {
+        ConfigResetXROriginActionReference.action.Enable();
+        ConfigStartDissolutionActionReference.action.Enable();
+    }
+
+    public void DisableConfigShortCut()
+    {
+        ConfigResetXROriginActionReference.action.Disable();
+        ConfigStartDissolutionActionReference.action.Disable();
     }
 
 }

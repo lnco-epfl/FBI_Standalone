@@ -51,4 +51,5 @@ MonoBehaviour:
   PreviousStepActionReference: {fileID: 5998176310828937312, guid: 9df9307e5230e5949b946ada28151914, type: 3}
   MuteActionReference: {fileID: 305930618955721017, guid: 9df9307e5230e5949b946ada28151914, type: 3}
   ResetXROriginActionReference: {fileID: 1325166840194232567, guid: 9df9307e5230e5949b946ada28151914, type: 3}
-  EnablePasstroughAvatarActionReference: {fileID: 8826972942290961930, guid: 9df9307e5230e5949b946ada28151914, type: 3}
+  ConfigResetXROriginActionReference: {fileID: -5409474239785416629, guid: 9df9307e5230e5949b946ada28151914, type: 3}
+  ConfigStartDissolutionActionReference: {fileID: -7743984251989885545, guid: 9df9307e5230e5949b946ada28151914, type: 3}

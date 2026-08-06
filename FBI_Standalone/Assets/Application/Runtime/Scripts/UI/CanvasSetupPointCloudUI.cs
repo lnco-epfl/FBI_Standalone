@@ -135,7 +135,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
         UpdateDisplayConfigFileNameDisplay();
         SwitchTab(showCameras: true);
 
-        ShortcutManager.Instance.DisableShortCut();
+        ShortcutManager.Instance.DisableMainShortCut();
 
     }
 
@@ -787,7 +787,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void OnButtonCloseClick()
     {
-        ShortcutManager.Instance.EnableShortCut();
+        ShortcutManager.Instance.EnableMainShortCut();
         SceneLoaderManager.Instance.LoadDefaultScene();
         OnCanvasSetupPointCloudUIDestroy.Invoke(this);
     }

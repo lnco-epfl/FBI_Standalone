@@ -266,12 +266,12 @@ public class UIManager : MonoBehaviour
 
     private void OnInputFieldSelect(string value)
     {
-        ShortcutManager.Instance.DisableShortCut();
+        ShortcutManager.Instance.DisableMainShortCut();
     }
 
     private void OnInputFieldDeselect(string value)
     {
-        ShortcutManager.Instance.EnableShortCut();
+        ShortcutManager.Instance.EnableMainShortCut();
     }
 
     private void InitSequenceDropDown()

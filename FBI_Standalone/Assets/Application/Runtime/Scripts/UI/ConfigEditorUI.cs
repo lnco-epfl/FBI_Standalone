@@ -75,7 +75,9 @@ public class ConfigEditorUI : MonoBehaviour
     private void Start()
     {
         OnCamerasTabButtonPress();
-        ShortcutManager.Instance.DisableShortCut();
+
+        ShortcutManager.Instance.DisableMainShortCut();
+        ShortcutManager.Instance.EnableConfigShortCut();
 
         // NOTE: relies on Unity calling OnEnable on every object present in the scene before
         // Start runs on any of them, so cameraTab/displayTab have already subscribed to the
@@ -129,7 +131,9 @@ public class ConfigEditorUI : MonoBehaviour
 
     private void OnButtonCloseClick()
     {
-        ShortcutManager.Instance.EnableShortCut();
+        ShortcutManager.Instance.DisableConfigShortCut();
+        ShortcutManager.Instance.EnableMainShortCut();
+
         SceneLoaderManager.Instance.LoadDefaultScene();
         OnConfigEditorDestroy?.Invoke(this);
     }

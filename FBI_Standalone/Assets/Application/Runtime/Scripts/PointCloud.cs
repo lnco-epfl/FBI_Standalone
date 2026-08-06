@@ -70,7 +70,11 @@ public class PointCloud : MonoBehaviour
 
     private void OnDebugDissolutionPerformed(InputAction.CallbackContext obj)
     {
-        StartDissolution(5.0f);
+        if(isMainVFXVisible)
+        {
+            StartDissolution(5.0f);
+        }
+        
     }
 
     public void Init(int ID)
@@ -87,7 +91,9 @@ public class PointCloud : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Local position (relative to this PointCloud) of the dissolution effect's sphere center.
+    /// </summary>
     public void SetReferencePoint(Vector3 localPosition)
     {
         if (referencePointTransform != null)
@@ -96,11 +102,33 @@ public class PointCloud : MonoBehaviour
         }
     }
 
-    public Vector3 GetReferencePoint()
+    public Vector3 GetReferencePoint() =>
+        referencePointTransform != null ? referencePointTransform.localPosition : Vector3.zero;
+
+    /// <summary>
+    /// Offset from this PointCloud's own position, expressed along world-aligned axes (i.e. NOT
+    /// affected by this PointCloud's rotation). An offset of (0,0,0) places the reference point
+    /// exactly at the PointCloud's own position. Handy for UI controls that want to move the
+    /// reference point along the scene's global axes (like Unity's "Global" tool handle mode)
+    /// instead of the PointCloud's own (possibly rotated) local axes. The value stored in the
+    /// config file (and sent to the VFX) always stays local to the PointCloud — this only
+    /// changes how it's edited.
+    /// </summary>
+    public void SetReferencePointOffset(Vector3 worldAlignedOffset)
     {
-        return referencePointTransform != null ? referencePointTransform.localPosition : Vector3.zero;
+        if (referencePointTransform != null)
+        {
+            referencePointTransform.position = transform.position + worldAlignedOffset;
+        }
     }
 
+    public Vector3 GetReferencePointOffset() =>
+        referencePointTransform != null ? referencePointTransform.position - transform.position : Vector3.zero;
+
+    /// <summary>
+    /// Shows/hides the editor-only gizmo at the reference point. Purely a visual aid, never
+    /// persisted to the config file.
+    /// </summary>
     public void SetReferencePointGizmoVisible(bool visible)
     {
         if (referencePointGizmo != null)
@@ -171,6 +199,9 @@ public class PointCloud : MonoBehaviour
         mainVisualEffect.enabled = true;
         dissolutionVisualEffect.enabled = true;
 
+        var pos = GetReferencePoint();
+        var texture = FibonacciSphereBaker.BakeSphereTexture(particuleCount, stage1SphereRadius);
+
         dissolutionVisualEffect.SetInt("ParticuleCount", particuleCount);
         dissolutionVisualEffect.SetFloat("ParticuleSize", particleSize);
         dissolutionVisualEffect.SetFloat("Alpha", 0.0f);
@@ -179,8 +210,8 @@ public class PointCloud : MonoBehaviour
 
         //stage 1
         dissolutionVisualEffect.SetFloat("Stage1End", stage1End);
-        dissolutionVisualEffect.SetTexture("Stage1FibonacciSphere", FibonacciSphereBaker.BakeSphereTexture(particuleCount, stage1SphereRadius));
-        dissolutionVisualEffect.SetVector3("Stage1SphereCenter", GetReferencePoint());
+        dissolutionVisualEffect.SetTexture("Stage1FibonacciSphere", texture);
+        dissolutionVisualEffect.SetVector3("Stage1SphereCenter", pos);
         dissolutionVisualEffect.SetFloat("Stage1NoiseSpeed", stage1NoiseSpeed);
         dissolutionVisualEffect.SetFloat("Stage1NoiseAmplitude", stage1NoiseAmplitude);
 

@@ -78,7 +78,7 @@ public class PointCloudUIEntry : MonoBehaviour
         ParseField(rotationZInputField)
     );
 
-    public Vector3 ReferencePoint => new Vector3(
+    public Vector3 ReferencePointOffset => new Vector3(
         ParseField(referencePointXInputField),
         ParseField(referencePointYInputField),
         ParseField(referencePointZInputField)
@@ -212,7 +212,10 @@ public class PointCloudUIEntry : MonoBehaviour
             clampYMaxSlider != null ? clampYMaxSlider.value : 1f,
             saveImmediately: false);
 
-        CameraConfigFileManager.Instance.SaveReferencePoint(CameraId, ReferencePoint, saveImmediately: false);
+        // Reference point is edited as a world-aligned offset from the point cloud, but always
+        // stored/applied in local space.
+        pointCloud.SetReferencePointOffset(ReferencePointOffset);
+        CameraConfigFileManager.Instance.SaveReferencePoint(CameraId, pointCloud.GetReferencePoint(), saveImmediately: false);
     }
 
     private void OnPositionOrRotationChanged()
@@ -380,24 +383,38 @@ public class PointCloudUIEntry : MonoBehaviour
     private void OnReferencePointFieldsChanged()
     {
         var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
-        pointCloud?.SetReferencePoint(ReferencePoint);
+        if (pointCloud == null) return;
 
-        CameraConfigFileManager.Instance.SaveReferencePoint(CameraId, ReferencePoint);
-        OnReferencePointChanged?.Invoke(CameraId, ReferencePoint);
+        // Fields are edited as a world-aligned offset from the point cloud's own position — like
+        // Unity's "Global" tool mode — for ease of use, even though the value stored in the
+        // config file and sent to the VFX is local space (relative to the point cloud, and
+        // affected by its rotation).
+        pointCloud.SetReferencePointOffset(ReferencePointOffset);
+        var localValue = pointCloud.GetReferencePoint();
+
+        CameraConfigFileManager.Instance.SaveReferencePoint(CameraId, localValue);
+        OnReferencePointChanged?.Invoke(CameraId, localValue);
     }
 
-    public void SetReferencePointFields(Vector3 center)
+    /// <summary>Mirror API — always takes a local-space value (as stored in the config file).</summary>
+    public void SetReferencePointFields(Vector3 localPosition)
     {
-        referencePointXInputField?.SetTextWithoutNotify(center.x.ToString());
-        referencePointYInputField?.SetTextWithoutNotify(center.y.ToString());
-        referencePointZInputField?.SetTextWithoutNotify(center.z.ToString());
-
         var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
-        pointCloud?.SetReferencePoint(center);
+        pointCloud?.SetReferencePoint(localPosition);
+
+        // Displayed fields are a world-aligned offset from the point cloud (0,0,0 = point
+        // cloud's own position); fall back to the raw local value if no PointCloud instance is
+        // available to convert with (should not normally happen in the editor).
+        Vector3 displayValue = pointCloud != null ? pointCloud.GetReferencePointOffset() : localPosition;
+
+        referencePointXInputField?.SetTextWithoutNotify(displayValue.x.ToString());
+        referencePointYInputField?.SetTextWithoutNotify(displayValue.y.ToString());
+        referencePointZInputField?.SetTextWithoutNotify(displayValue.z.ToString());
     }
 
     private void OnReferencePointGizmoToggleChanged(bool isOn)
     {
+        // Purely a visual editing aid — never persisted to the config file.
         var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
         pointCloud?.SetReferencePointGizmoVisible(isOn);
     }

@@ -561,6 +561,9 @@ public class CameraConfigTabUI : MonoBehaviour
         {
             if (i >= file.pointClouds.Count) break;
 
+
+            PointCloudManager.Instance.SetPointcloudConfig(PointCloudManager.Instance.GetPointCloud(pointCloudEntries[i].CameraId), file);
+
             var data = file.pointClouds[i];
             pointCloudEntries[i].SetPositionFields(data.position.ToVector3());
             pointCloudEntries[i].SetRotationFields(data.rotation.ToVector3());
@@ -581,7 +584,7 @@ public class CameraConfigTabUI : MonoBehaviour
             configEditor.Bridge?.MirrorEntryClamp(i, data.clampXMin, data.clampXMax, data.clampYMin, data.clampYMax);
             configEditor.Bridge?.MirrorEntryReferencePoint(i, data.referencePoint.ToVector3());
 
-            PointCloudManager.Instance.SetPointcloudConfig(PointCloudManager.Instance.GetPointCloud(pointCloudEntries[i].CameraId), file);
+     
         }
     }
 

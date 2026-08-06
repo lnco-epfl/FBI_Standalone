@@ -30,11 +30,15 @@ public class ResetXROrigin : MonoBehaviour
     {
         ShortcutManager.Instance.ResetXROriginActionReference.action.performed += OnResetXROriginActionPerformed;
 
+        ShortcutManager.Instance.ConfigResetXROriginActionReference.action.performed += OnResetXROriginActionPerformed;
+
         SceneLoaderManager.Instance.OnSceneLoaded += OnSceneLoaded;
     }
     private void OnDisable()
     {
         ShortcutManager.Instance.ResetXROriginActionReference.action.performed -= OnResetXROriginActionPerformed;
+
+        ShortcutManager.Instance.ConfigResetXROriginActionReference.action.performed -= OnResetXROriginActionPerformed;
 
         SceneLoaderManager.Instance.OnSceneLoaded -= OnSceneLoaded;
     }

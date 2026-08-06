@@ -3039,7 +3039,16 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Debug Dissolution",
+                    "name": "Config Reset XR Origin",
+                    "type": "Button",
+                    "id": "7217a3c9-1407-4416-963d-e32641bae471",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Config Dissolution",
                     "type": "Button",
                     "id": "447e50d8-f746-4f95-bae0-97820b4c479b",
                     "expectedControlType": "",
@@ -3062,12 +3071,23 @@
                 },
                 {
                     "name": "",
-                    "id": "a3aa3d0e-721f-4847-a6e8-6f89fde05888",
+                    "id": "f3a485db-7236-4e0d-aa3c-6b4a1aac5310",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Config Reset XR Origin",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5c4aee52-63c8-4d3f-8ba8-ec14a14c0a82",
                     "path": "<OculusTouchController>/thumbstickClicked",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Reset XR Origin",
+                    "action": "Config Reset XR Origin",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -3144,7 +3164,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Debug Dissolution",
+                    "action": "Config Dissolution",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -3155,7 +3175,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Debug Dissolution",
+                    "action": "Config Dissolution",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

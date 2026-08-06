@@ -241,14 +241,22 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
     private void OnReferencePointChanged()
     {
         var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
-        pointCloud?.SetReferencePoint(ReferencePoint);
+        if (pointCloud == null) return;
 
-        CameraConfigFileManager.Instance.SaveReferencePoint(CameraId, ReferencePoint);
-        pairedOverlayEntry?.SetReferencePointFields(ReferencePoint);
+        // Sliders are edited as a world-aligned offset from the point cloud's own position —
+        // like Unity's "Global" tool mode — for ease of use, even though the value stored in
+        // the config file and sent to the VFX is local space (relative to the point cloud, and
+        // affected by its rotation).
+        pointCloud.SetReferencePointOffset(ReferencePointOffset);
+        var localValue = pointCloud.GetReferencePoint();
+
+        CameraConfigFileManager.Instance.SaveReferencePoint(CameraId, localValue);
+        pairedOverlayEntry?.SetReferencePointFields(localValue);
     }
 
     private void OnReferencePointGizmoToggleChanged(bool isOn)
     {
+        // Purely a visual editing aid — never persisted to the config file.
         var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
         pointCloud?.SetReferencePointGizmoVisible(isOn);
         pairedOverlayEntry?.SetReferencePointGizmoToggle(isOn);
@@ -300,22 +308,28 @@ public class WorldSpacePointCloudEntry : MonoBehaviour
         ApplyFlip(flipX, flipY);
     }
 
-    public void SetReferencePointFields(Vector3 center)
+    /// <summary>Mirror API — always takes a local-space value (as stored in the config file).</summary>
+    public void SetReferencePointFields(Vector3 localPosition)
     {
-        referencePointXSlider?.SetValueWithoutNotify(center.x);
-        referencePointXSlider?.GetComponent<SliderToText>()?.UpdateText(center.x);
-        referencePointYSlider?.SetValueWithoutNotify(center.y);
-        referencePointYSlider?.GetComponent<SliderToText>()?.UpdateText(center.y);
-        referencePointZSlider?.SetValueWithoutNotify(center.z);
-        referencePointZSlider?.GetComponent<SliderToText>()?.UpdateText(center.z);
-
         var pointCloud = PointCloudManager.Instance.GetPointCloud(CameraId);
-        pointCloud?.SetReferencePoint(center);
+        pointCloud?.SetReferencePoint(localPosition);
+
+        // Displayed fields are a world-aligned offset from the point cloud (0,0,0 = point
+        // cloud's own position); fall back to the raw local value if no PointCloud
+        // instance is available to convert with (should not normally happen in the editor).
+        Vector3 displayValue = pointCloud != null ? pointCloud.GetReferencePointOffset() : localPosition;
+
+        referencePointXSlider?.SetValueWithoutNotify(displayValue.x);
+        referencePointXSlider?.GetComponent<SliderToText>()?.UpdateText(displayValue.x);
+        referencePointYSlider?.SetValueWithoutNotify(displayValue.y);
+        referencePointYSlider?.GetComponent<SliderToText>()?.UpdateText(displayValue.y);
+        referencePointZSlider?.SetValueWithoutNotify(displayValue.z);
+        referencePointZSlider?.GetComponent<SliderToText>()?.UpdateText(displayValue.z);
     }
 
     public void SetReferencePointGizmoToggle(bool isOn) => displayReferencePointGizmoToggle?.SetWithoutNotify(isOn);
 
-    private Vector3 ReferencePoint => new Vector3(
+    private Vector3 ReferencePointOffset => new Vector3(
         referencePointXSlider != null ? referencePointXSlider.value : 0f,
         referencePointYSlider != null ? referencePointYSlider.value : 0f,
         referencePointZSlider != null ? referencePointZSlider.value : 0f);
