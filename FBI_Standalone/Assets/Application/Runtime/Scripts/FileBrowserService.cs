@@ -29,7 +29,7 @@ public static class FileBrowserService
             }
             catch (Exception e)
             {
-                Debug.LogError($"[FileBrowserService] OpenFile error: {e.Message}");
+                EventFileManager.Error($"[FileBrowserService] OpenFile error: {e.Message}");
             }
 
             string result = (paths != null && paths.Length > 0 && !string.IsNullOrEmpty(paths[0]))
@@ -60,7 +60,7 @@ public static class FileBrowserService
             }
             catch (Exception e)
             {
-                Debug.LogError($"[FileBrowserService] SaveFile error: {e.Message}");
+                EventFileManager.Error($"[FileBrowserService] SaveFile error: {e.Message}");
             }
 
             string result = string.IsNullOrEmpty(path) ? null : path;

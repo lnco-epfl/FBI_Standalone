@@ -22,8 +22,6 @@ public class DisplayCamerasState : IState
 
     private bool rigInterpolationStarted = false;
 
-
-
     public void Enter(SequenceStep sequenceStep)
     {
         step = sequenceStep as DisplayCamerasStep;
@@ -31,7 +29,6 @@ public class DisplayCamerasState : IState
         rigInterpolationStarted = false;
         rigPositionTween = default;
         rigRotationTween = default;
-
     }
 
     public IEnumerator Execute()
@@ -280,7 +277,7 @@ public class DisplayCamerasState : IState
         }
 
 
-        Debug.Log($"DisplayCamerasState execute {step.startTime}");
+        EventFileManager.Log($"DisplayCamerasState execute {step.startTime}");
         PointCloudManager.Instance.HideSpawnedPointClouds(step.ownedPointClouds);
 
         for (int i = 0; i < step.camerasData.Count; i++)
@@ -330,7 +327,7 @@ public class DisplayCamerasState : IState
             }
         }
 
-        Debug.Log($"DisplayCamerasState Exit {step.startTime}");
+        EventFileManager.Log($"DisplayCamerasState Exit {step.startTime}");
         PointCloudManager.Instance.HideSpawnedPointClouds(step.ownedPointClouds);
 
         PointCloudManager.Instance.DespawnPointClouds(step.ownedPointClouds);

@@ -27,9 +27,6 @@ public class FibonacciSphereBaker : MonoBehaviour
 
         if(_pointCount != pointCount || _radius != radius)
         {
-
-            Debug.Log("FibonacciSphereBaker::BakeSphereTexture Create new texture");
-
             pointCount = _pointCount;
             radius = _radius;
 

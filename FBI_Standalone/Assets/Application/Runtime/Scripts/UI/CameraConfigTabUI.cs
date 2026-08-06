@@ -472,7 +472,7 @@ public class CameraConfigTabUI : MonoBehaviour
     {
         if (isSwitching)
         {
-            Debug.Log("[CameraConfigTabUI] Switch already in progress, ignoring request.");
+            EventFileManager.Log("[CameraConfigTabUI] Switch already in progress, ignoring request.");
             return;
         }
 
@@ -601,7 +601,7 @@ private IEnumerator SwitchPointCloudCoroutine(PointCloudUIEntry previous, PointC
 
     private void SetStatus(string message, Color color)
     {
-        Debug.Log($"[CameraConfigTabUI] {message}");
+        EventFileManager.Log($"[ConfigEditor - CameraConfigTabUI] {message}");
         if (statusText)
         {
             statusText.text = statusLocalizedText.GetLocalizedString("• " + message);

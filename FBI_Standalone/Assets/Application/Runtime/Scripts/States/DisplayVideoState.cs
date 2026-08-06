@@ -19,7 +19,7 @@ public class DisplayVideoState : IState
 
         if (string.IsNullOrEmpty(videoPath))
         {
-            Debug.LogError($"[DisplayVideoState] Video not found: {step.videoName}");
+            EventFileManager.Error($"[DisplayVideoState] Video not found: {step.videoName}");
             yield break;
         }
 

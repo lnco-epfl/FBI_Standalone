@@ -65,7 +65,7 @@ public class SequenceStateMachine : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"Failed to load sequence: {sequenceName}");
+            EventFileManager.Error($"Failed to load sequence: {sequenceName}");
         }
     }
 
@@ -91,7 +91,7 @@ public class SequenceStateMachine : MonoBehaviour
     {
         if (sequence == null || sequence.steps.Count == 0)
         {
-            Debug.LogWarning("No sequence defined");
+            EventFileManager.Warning("No sequence defined");
             return;
         }
 
@@ -240,7 +240,7 @@ public class SequenceStateMachine : MonoBehaviour
     {
         if (!stateFactories.TryGetValue(stepData.GetStateName(), out Func<IState> factory))
         {
-            Debug.LogWarning($"State '{stepData.GetStateName()}' not found");
+            EventFileManager.Warning($"State '{stepData.GetStateName()}' not found");
             yield break;
         }
 

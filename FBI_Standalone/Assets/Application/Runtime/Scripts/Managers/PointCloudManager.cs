@@ -85,7 +85,7 @@ public class PointCloudManager : MonoBehaviour
     {
         if (!pointCloudPrefab)
         {
-            Debug.LogError("Point cloud prefab is not assigned.");
+            EventFileManager.Error("Point cloud prefab is not assigned.");
             return null;
         }
 
@@ -117,14 +117,14 @@ public class PointCloudManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("No render textures found for any camera.");
+            EventFileManager.Error("No render textures found for any camera.");
         }
 
         var sensorData = KinectManager.Instance.GetSensorData(cameraID - 1);
 
         if (sensorData == null)
         {
-            Debug.LogError($"No sensor data found for camera ID {cameraID}");
+            EventFileManager.Error($"No sensor data found for camera ID {cameraID}");
             return null;
         }
 

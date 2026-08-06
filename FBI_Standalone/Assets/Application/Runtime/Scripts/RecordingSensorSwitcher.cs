@@ -12,7 +12,6 @@ public class RecordingSensorSwitcher : MonoBehaviour
     private void Awake()
     {
 
-
        azureInterface = GetComponent<Kinect4AzureInterface>();
 
 #if CONNECTED_SENSOR
@@ -21,21 +20,9 @@ public class RecordingSensorSwitcher : MonoBehaviour
         azureInterface.deviceStreamingMode = KinectInterop.DeviceStreamingMode.PlayRecording;
 #endif
 
-
         string path = Path.Combine(Application.streamingAssetsPath, "Recordings", fileName);
         path = path.Replace("\\", "/");
         azureInterface.recordingFile = path;
-
-    }
-
-
-    private IEnumerator Start()
-    {
-        yield return new WaitUntil(() => KinectManager.Instance.IsInitialized());
-        {
-            Transform sensorTrans = KinectManager.Instance.GetSensorTransform(azureInterface.deviceIndex);
-            Debug.Log($"Sensor {azureInterface.deviceIndex} pos: {sensorTrans.position}, rot: {sensorTrans.rotation.eulerAngles}");
-        }
 
     }
 }

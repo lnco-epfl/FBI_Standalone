@@ -220,7 +220,7 @@ public class ConfigEditorUI : MonoBehaviour
 
         if (worldSpaceCanvasPrefab == null)
         {
-            Debug.LogWarning("[ConfigEditorUI] worldSpaceCanvasPrefab non assigné — canvas WS ignoré.");
+            EventFileManager.Warning("[ConfigEditorUI] worldSpaceCanvasPrefab non assigné — canvas WS ignoré.");
             return;
         }
 
@@ -233,7 +233,7 @@ public class ConfigEditorUI : MonoBehaviour
 
         if (worldSpaceUI == null)
         {
-            Debug.LogError("[ConfigEditorUI] Prefab is missing WorldSpacePointCloudUI component!");
+            EventFileManager.Error("[ConfigEditorUI] Prefab is missing WorldSpacePointCloudUI component!");
             Destroy(worldSpaceCanvas);
             return;
         }

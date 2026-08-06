@@ -56,7 +56,7 @@ public class SequencesManager : MonoBehaviour
 
         if (!Directory.Exists(folderPath))
         {
-            Debug.LogWarning($"Sequences folder not found: {folderPath}");
+            EventFileManager.Warning($"Sequences folder not found: {folderPath}");
             Directory.CreateDirectory(folderPath);
             return;
         }

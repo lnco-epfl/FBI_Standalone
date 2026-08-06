@@ -33,7 +33,7 @@ public class HyperlinkHandler : MonoBehaviour, IPointerClickHandler
         if (openInBrowser)
         {
             Application.OpenURL(url);
-            Debug.Log($"[HyperlinkHandler] Opening link: {url}");
+            EventFileManager.Log($"[HyperlinkHandler] Opening link: {url}");
         }
 
     }

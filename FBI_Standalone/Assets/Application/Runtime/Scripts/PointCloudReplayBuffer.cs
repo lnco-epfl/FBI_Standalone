@@ -112,12 +112,12 @@ public class PointCloudReplayBuffer : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"[ReplayBuffer] Point cloud textures not ready for sensor {sensorIndex}");
+                EventFileManager.Warning($"[ReplayBuffer] Point cloud textures not ready for sensor {sensorIndex}");
             }
         }
         else
         {
-            Debug.LogError($"[ReplayBuffer] Sensor data not available for index {sensorIndex}");
+            EventFileManager.Error($"[ReplayBuffer] Sensor data not available for index {sensorIndex}");
         }
     }
 
@@ -160,8 +160,7 @@ public class PointCloudReplayBuffer : MonoBehaviour
         // Critical guard — never allocate zero-dimension textures
         if (textureWidth <= 0 || textureHeight <= 0)
         {
-            Debug.LogError($"[ReplayBuffer] Invalid texture dimensions ({textureWidth}x{textureHeight}) " +
-                           $"for sensor {sensorIndex}. Buffer not initialized.");
+            EventFileManager.Error($"[ReplayBuffer] Invalid texture dimensions ({textureWidth}x{textureHeight}) for sensor {sensorIndex}. Buffer not initialized.");
             enabled = false;
             return;
         }
@@ -201,8 +200,7 @@ public class PointCloudReplayBuffer : MonoBehaviour
 
         if (showDebugInfo)
         {
-            Debug.Log($"[ReplayBuffer] Initialized: {bufferSize} frames @ {textureWidth}x{textureHeight}, " +
-                      $"delay: {replayDelaySeconds}s, estimated memory: {estimatedMemoryMB:F2} MB");
+            EventFileManager.Log($"[ReplayBuffer] Initialized: {bufferSize} frames @ {textureWidth}x{textureHeight}, delay: {replayDelaySeconds}s, estimated memory: {estimatedMemoryMB:F2} MB");
         }
     }
 
@@ -225,7 +223,7 @@ public class PointCloudReplayBuffer : MonoBehaviour
 
         if (showDebugInfo && writeIndex == 0)
         {
-            Debug.Log($"[ReplayBuffer] Buffer wrap-around at {Time.time:F2}s");
+            EventFileManager.Log($"[ReplayBuffer] Buffer wrap-around at {Time.time:F2}s");
         }    
     }
 
@@ -337,6 +335,6 @@ public class PointCloudReplayBuffer : MonoBehaviour
         isBufferReady = false;
 
         if (showDebugInfo)
-            Debug.Log("[ReplayBuffer] Buffer released to free memory");
+            EventFileManager.Log("[ReplayBuffer] Buffer released to free memory");
     }
 }

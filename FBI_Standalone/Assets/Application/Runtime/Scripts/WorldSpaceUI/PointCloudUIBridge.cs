@@ -28,7 +28,8 @@ public class PointCloudUIBridge : MonoBehaviour
         this.overlayUI = configEditor;
         this.worldSpaceUI = ws;
         this.switchDelay = switchDelay;
-        Debug.Log("[PointCloudUIBridge] Initialize.");
+
+        EventFileManager.Log("[PointCloudUIBridge] Initialize.");
     }
 
     // ── Entry pairing ─────────────────────────────────────────────────────────
@@ -44,7 +45,7 @@ public class PointCloudUIBridge : MonoBehaviour
             wsEntries[i].SetPairedEntry(overlayEntries[i]);
             entryPairs[camId] = (overlayEntries[i], wsEntries[i]);
         }
-        Debug.Log($"[PointCloudUIBridge] {entryPairs.Count} pair link.");
+        EventFileManager.Log($"[PointCloudUIBridge] {entryPairs.Count} pair link.");
     }
 
     // ── Mirror : Overlay → WS ─────────────────────────────────────────────────

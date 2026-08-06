@@ -167,7 +167,7 @@ public class AssetsManager : MonoBehaviour
             return sprite;
         }
 
-        Debug.LogWarning($"[AssetsManager] Sprite not found: {spriteName}");
+        EventFileManager.Warning($"[AssetsManager] Sprite not found: {spriteName}");
         return null;
     }
 
@@ -176,7 +176,7 @@ public class AssetsManager : MonoBehaviour
         if (string.IsNullOrEmpty(textureName))
             return null;
 
-        Debug.LogWarning($"[AssetsManager] Texture not found: {textureName}");
+        EventFileManager.Warning($"[AssetsManager] Texture not found: {textureName}");
         return null;
     }
 

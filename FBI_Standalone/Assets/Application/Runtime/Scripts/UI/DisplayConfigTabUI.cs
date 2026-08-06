@@ -532,7 +532,7 @@ public class DisplayConfigTabUI : MonoBehaviour
 
     private void SetStatus(string message, Color color)
     {
-        Debug.Log($"[DisplayConfigTabUI] {message}");
+        EventFileManager.Log($"[ConfigEditor - DisplayConfigTabUI] {message}");
         if (statusText)
         {
             statusText.text = statusLocalizedText.GetLocalizedString("• " + message);

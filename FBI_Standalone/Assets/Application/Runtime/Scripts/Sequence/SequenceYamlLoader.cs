@@ -37,7 +37,7 @@ public class SequenceYamlLoader
         {
             if (!File.Exists(filePath))
             {
-                Debug.LogError($"YAML file not found: {filePath}");
+                EventFileManager.Error($"YAML file not found: {filePath}");
                 return null;
             }
 
@@ -54,7 +54,7 @@ public class SequenceYamlLoader
             if (ex.Start.Line - 1 < lines.Length && ex.Start.Line > 0)
                 faultyLine = lines[ex.Start.Line - 1];
 
-            Debug.LogError(
+            EventFileManager.Error(
                 $"YAML Error\n" +
                 $"File   : {filePath}\n" +
                 $"Line   : {ex.Start.Line}\n" +

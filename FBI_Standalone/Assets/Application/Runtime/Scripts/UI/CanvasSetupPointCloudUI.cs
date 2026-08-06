@@ -278,7 +278,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         if (worldSpaceCanvasPrefab == null)
         {
-            Debug.LogWarning("[CanvasSetupPointCloudUI] worldSpaceCanvasPrefab non assigné — canvas WS ignoré.");
+            EventFileManager.Warning("[CanvasSetupPointCloudUI] worldSpaceCanvasPrefab non assigné — canvas WS ignoré.");
             return;
         }
 
@@ -291,7 +291,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
         if (worldSpaceUI == null)
         {
-            Debug.LogError("[CanvasSetupPointCloudUI] Prefab is missing WorldSpacePointCloudUI component!");
+            EventFileManager.Error("[CanvasSetupPointCloudUI] Prefab is missing WorldSpacePointCloudUI component!");
             Destroy(worldSpaceCanvas);
             return;
         }
@@ -645,7 +645,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
 
     private void SetDisplayConfigStatus(string message, Color color)
     {
-        Debug.Log($"[CanvasSetupPointCloudUI] {message}");
+        EventFileManager.Log($"[CanvasSetupPointCloudUI] {message}");
         if (displayConfigStatusText)
         {
             displayConfigStatusText.text = displayConfigStatusLocalizedText.GetLocalizedString("• " + message);
@@ -710,7 +710,7 @@ public class CanvasSetupPointCloudUI : MonoBehaviour
     {
         if (isSwitching)
         {
-            Debug.Log("[CanvasSetupPointCloudUI] Switch already in progress, ignoring request.");
+            EventFileManager.Log("[CanvasSetupPointCloudUI] Switch already in progress, ignoring request.");
             return;
         }
 

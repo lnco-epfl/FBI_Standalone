@@ -426,7 +426,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Invalid input: " + input);
+            EventFileManager.Error("Invalid input: " + input);
         }
     }
 
@@ -440,7 +440,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Invalid input: " + input);
+            EventFileManager.Error("Invalid input: " + input);
         }
     }
 

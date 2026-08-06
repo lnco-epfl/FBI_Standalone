@@ -30,7 +30,7 @@ public class SmoothPositionTracker : MonoBehaviour
     {
         if (target == null)
         {
-            Debug.LogWarning("No target assigned to SmoothTransformTracker on " + gameObject.name);
+            EventFileManager.Warning("No target assigned to SmoothTransformTracker on " + gameObject.name);
         }
     }
 
