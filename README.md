@@ -840,11 +840,11 @@ Flips the point cloud along a given axis.
 
 A general-purpose reference point relative to the point cloud; it currently drives the center of the sphere used by the [dissolution effect](#displaycameras). It is stored **relative to the point cloud** (local space) in the config file, so it stays correctly placed regardless of the point cloud's own position/rotation.
 
-For ease of use, the **X / Y / Z fields are edited in world space** (like Unity's "Global" tool handle mode) rather than local space — otherwise moving it along "X" would follow the point cloud's own (possibly rotated) local axis instead of the scene's. The conversion to/from local space happens automatically; only the local value ever gets written to the config file.
+For ease of use, the **X / Y / Z fields are an offset from the point cloud's own position, aligned to the scene's global axes** (like Unity's "Global" tool handle mode) rather than the point cloud's own (possibly rotated) local axes — `0, 0, 0` places it exactly on the point cloud, and moving "X" by 1 always moves it 1 unit along the scene's global X axis, regardless of how the point cloud is rotated. The conversion to/from local space happens automatically; only the local value ever gets written to the config file.
 
 | Control | Description |
 |---------|-------------|
-| **Position X / Y / Z** | World-space position of the reference point |
+| **Position X / Y / Z** | Offset from the point cloud's own position, aligned to the scene's global axes |
 | **Show gizmo** toggle | Displays a sphere gizmo in the preview at the current position, to help placing it visually. This is a visual aid only for the editor — it is not saved to the config file and always starts hidden when a config is loaded |
 
 ## Stimulus Display
