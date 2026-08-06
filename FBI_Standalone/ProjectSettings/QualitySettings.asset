@@ -26,7 +26,7 @@ QualitySettings:
     softParticles: 0
     softVegetation: 1
     realtimeReflectionProbes: 0
-    billboardsFaceCameraPosition: 0
+    billboardsFaceCameraPosition: 1
     useLegacyDetailDistribution: 1
     adaptiveVsync: 0
     vSyncCount: 0
@@ -37,7 +37,7 @@ QualitySettings:
     meshLodThreshold: 1
     maximumLODLevel: 2
     enableLODCrossFade: 1
-    streamingMipmapsActive: 0
+    streamingMipmapsActive: 1
     streamingMipmapsAddAllCameras: 1
     streamingMipmapsMemoryBudget: 512
     streamingMipmapsRenderersPerFrame: 512

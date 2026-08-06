@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:FBI_Standalone/Assets/Application/Runtime/Settings/Default Volume Profile.asset.meta
 guid: 92351fc5e3958a34880a679869b57c73
 NativeFormatImporter:
+========
+guid: 0b5ac48e2a980ec418acffc9cb8b5563
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> dev/ForestScene:FBI_Standalone/Assets/HDRPDefaultResources.meta
   externalObjects: {}
   mainObjectFileID: 11400000
   userData: 
