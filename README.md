@@ -860,20 +860,20 @@ On the left of the status indicator, the name of the currently loaded file (for 
 
 | Message | Color | Description |
 |---------|-------|-------------|
-| `No config loaded.` | Grey | Initial state at startup, no config is active |
-| `Ready.` | Grey | Config is loaded and no pending changes |
-| `Unsaved changes.` | Yellow | The config has been modified but not yet saveddis, played continuously until saved |
-| `Opened {filename}` | Green | A config file was successfully opened from disk |
-| `Saved as {filename}` | Green | The config was successfully saved under a new name |
-| `Config copied to clipboard.` | Green | The config was successfully copied to the clipboard |
-| `Config pasted from clipboard.` | Green | A config was successfully loaded from the clipboard |
-| `Open cancelled.` | Grey | The file browser was closed without selecting a file |
-| `Save cancelled.` | Grey | The save dialog was closed without saving |
-| `Clipboard is empty.` | Red | Paste was attempted but the clipboard contains nothing |
-| `Clipboard content is invalid.` | Red | Paste was attempted but the clipboard content is not a valid config |
-| `Failed to save file.` | Red | An error occurred while saving to disk |
-| `Failed to read file.` | Red | An error occurred while reading a file from disk |
-| `Invalid file format.` | Red | The opened file is not a valid config YAML |
+| `No config loaded.` | ![Grey](https://img.shields.io/badge/-Grey-808080) | Initial state at startup, no config is active |
+| `Ready.` | ![Grey](https://img.shields.io/badge/-Grey-808080) | Config is loaded and no pending changes |
+| `Open cancelled.` | ![Grey](https://img.shields.io/badge/-Grey-808080) | The file browser was closed without selecting a file |
+| `Save cancelled.` | ![Grey](https://img.shields.io/badge/-Grey-808080) | The save dialog was closed without saving |
+| `Opened {filename}` | ![Green](https://img.shields.io/badge/-Green-4CAF50) | A config file was successfully opened from disk |
+| `Saved as {filename}` | ![Green](https://img.shields.io/badge/-Green-4CAF50) | The config was successfully saved under a new name |
+| `Config copied to clipboard.` | ![Green](https://img.shields.io/badge/-Green-4CAF50) | The config was successfully copied to the clipboard |
+| `Config pasted from clipboard.` | ![Green](https://img.shields.io/badge/-Green-4CAF50) | A config was successfully loaded from the clipboard |
+| `Unsaved changes.` | ![Yellow](https://img.shields.io/badge/-Yellow-FFC107) | The config has been modified but not yet saved |
+| `Clipboard is empty.` | ![Red](https://img.shields.io/badge/-Red-F44336) | Paste was attempted but the clipboard contains nothing |
+| `Clipboard content is invalid.` | ![Red](https://img.shields.io/badge/-Red-F44336) | Paste was attempted but the clipboard content is not a valid config |
+| `Failed to save file.` | ![Red](https://img.shields.io/badge/-Red-F44336) | An error occurred while saving to disk |
+| `Failed to read file.` | ![Red](https://img.shields.io/badge/-Red-F44336) | An error occurred while reading a file from disk |
+| `Invalid file format.` | ![Red](https://img.shields.io/badge/-Red-F44336) | The opened file is not a valid config YAML |
 
 ### Preview Panel (right side)
 
