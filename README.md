@@ -783,31 +783,38 @@ There are two types of output files:
 
 ### Participant form
 
-- **Age:** Enter the participant's age.
-- **Gender:** Select the participant's gender (Male, Female, Other).
-- **Sequence File:** Select which sequence file to use for the experiment.
+| Control | Description |
+|---------|-------------|
+| **Age** | Enter the participant's age |
+| **Gender** | Select the participant's gender (Male, Female, Other) |
+| **Sequence File** | Select which sequence file to use for the experiment |
 
 ### Config editor
 
-- **Config editor:** Open the config editor window.
+| Control | Description |
+|---------|-------------|
+| **Config editor** | Open the config editor window |
 
 ### Experiment Status
 
-- **Start Time:** Displays the time the experiment started.
-- **Elapsed:** Displays elapsed time since start.
-- **Sequence time:** Current sequence time value.
-- **Jump to Time:** Allow to jump to any sequence time.
-- **Progress:** A progress bar showing overall experiment progress.
+| Control | Description |
+|---------|-------------|
+| **Start Time** | Displays the time the experiment started |
+| **Elapsed** | Displays elapsed time since start |
+| **Sequence time** | Current sequence time value |
+| **Jump to Time** | Allows jumping to any sequence time |
+| **Progress** | A progress bar showing overall experiment progress |
 
 ### Experiment Controls
 
-- **Start button:** Starts the experiment. Requires a sequence file to be selected.
-- **Play/Pause button:** Pauses or resumes the experiment. The current step restarts when resuming.
-- **Stop button:** Stops the experiment and resets the state.
-- **Reset head orientation:** Realigns the participant's view to the current facing direction.
-- **Audio volume controls:** Adjust the volume of audio and video during the experiment.
-- **Fullscreen view:** Sets the participant view to fullscreen.
-
+| Control | Description |
+|---------|-------------|
+| **Start button** | Starts the experiment. Requires a sequence file to be selected |
+| **Play/Pause button** | Pauses or resumes the experiment. The current step restarts when resuming |
+| **Stop button** | Stops the experiment and resets the state |
+| **Reset head orientation** | Realigns the participant's view to the current facing direction |
+| **Audio volume controls** | Adjust the volume of audio and video during the experiment |
+| **Fullscreen view** | Sets the participant view to fullscreen |
 ### Keyboard Shortcuts
 
 | Key | Action |
@@ -824,18 +831,17 @@ There are two types of output files:
 
 The Config Editor is a dedicated interface for creating and editing camera and display configuration files. It can be opened from the main GUI and provides a real-time preview of the scene from the participant's perspective.
 
-<img width="1932" height="1098" alt="Config Editor" src="https://github.com/user-attachments/assets/fa9f5c5f-4c59-4a78-8a3d-d2e0d53dd35c" />
-
 ### Tabs
 
 The editor is split into two independent tabs, each with its own toolbar, its own currently-loaded file, and its own status indicator, since camera configs and display configs are separate files:
 
-| Tab | Edits | Saved to |
-|-----|-------|----------|
-| **Cameras** | [Camera Panels](#camera-panels-camera-1-camera-2-) — point cloud position, depth, clamp and mirror settings per camera | `Input/Config/Camera/` |
-| **Stimulus Display** | [Stimulus Display](#stimulus-display-1) panel — position, rotation and background color of the in-world UI canvas | `Input/Config/Display/` |
+| | **Config Cameras** | **Config Display** |
+|---|---|---|
+| **Edits** | Point cloud position, depth, clamp and mirror settings per camera | Display Canvas position, rotation and background color |
+| **Screenshot** | <img width="1920" height="1080" alt="configcamera-gui" src="https://github.com/user-attachments/assets/a2780f4d-6c5f-475e-8f4b-d15bb2fba537" /> | <img width="1920" height="1080" alt="configdisplay-gui" src="https://github.com/user-attachments/assets/86186d39-fc9a-4645-bec6-60f1d027f593" /> |
+| **Saved to** | `Input/Config/Camera/` | `Input/Config/Display/` |
 
-Switching tabs only changes which panel and toolbar are shown — it does not close or discard the file open in the other tab.
+Switching tabs only changes which panel and toolbar are shown, it does not close or discard the file open in the other tab.
 
 ### Toolbar
 
@@ -888,7 +894,9 @@ Additional controls in the preview panel:
 | **Camera Position / Rotation** | Displays the current position and rotation of the static preview camera (read-only) |
 
 
-### Camera Tab
+### Camera Config Tab
+
+Shown under the **Camera Config** tab. This section controls the point cloud position, depth, clamp and mirror settings per camera. Changes here are saved to a [Camera Config Files](#camera-config-files).
 
 One panel is displayed per connected camera. Each panel contains the following controls.
 
@@ -941,9 +949,9 @@ For ease of use, the **X / Y / Z fields are an offset from the point cloud's own
 | **Position X / Y / Z** | Offset from the point cloud's own position, aligned to the scene's global axes |
 | **Show gizmo** toggle | Displays a sphere gizmo in the preview at the current position, to help placing it visually. This is a visual aid only for the editor — it is not saved to the config file and always starts hidden when a config is loaded |
 
-### Display Tab
+### Display Config Tab
 
-Shown under the **Stimulus Display** tab. This section controls the position and appearance of the in-world UI canvas — the panel used to display text, images, questions, and other stimuli to the participant. Changes here are saved to a [Display Config File](#display-config-files), independent from the camera config open in the **Cameras** tab.
+Shown under the **Display Config** tab. This section controls the position and appearance of the in-world UI canvas, the panel is used to display text, images, questions, and other stimuli to the participant. Changes here are saved to a [Display Config File](#display-config-files).
 
 | Control | Description |
 |---------|-------------|
