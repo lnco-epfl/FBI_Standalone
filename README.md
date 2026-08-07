@@ -6,12 +6,16 @@
 * [Requirements](#requirements)
 * [How to use](#how-to-use)
 * [Input Files](#input-files)
-* [Sequence Files](#sequence-files)
-* [Camera Config Files](#camera-config-files)
-* [Display Config Files](#display-config-files)
+  * [Sequence Files](#sequence-files)
+  * [Camera Config Files](#camera-config-files)
+  * [Display Config Files](#display-config-files)
+  * [Images](#images)
+  * [Videos](#videos)
+  * [Audios](#audios)
 * [Output Files](#output-files)
-* [Config Editor](#config-editor)
 * [GUI](#gui)
+  * [Main GUI](#main-gui)
+  * [Config Editor](#config-editor)
 * [Screenshot](#screenshot)
 * [Authors](#authors)
 
@@ -83,11 +87,11 @@ Input/
 └── Audios/           ← Audio assets (WAV, OGG, MP3)
 ```
 
-# Sequence Files
+## Sequence Files
 
 Sequence files are YAML files located in `Input/Sequences/`. Each file defines a timeline of steps that will be executed during an experiment session. The sequence file name is used to name the output files.
 
-## Timeline model
+### Timeline model
 
 The sequence is **time-based**, not purely sequential: every step has a `startTime` (in seconds, relative to the start of the experiment) at which it is triggered. Steps with different start times can overlap and run concurrently — for example, a sound can play while a question is displayed, or two `DisplayCameras` steps can run side by side.
 
@@ -104,9 +108,9 @@ Each step also has a `blocking` flag:
 
 These two parameters (`startTime`, `blocking`) are available on every step type, in addition to the parameters described below.
 
-## Step Types
+### Step Types
 
-### LoadScene
+#### LoadScene
 
 Loads a Unity scene by name.
 
@@ -135,7 +139,7 @@ Available scenes:
 
 ---
 
-### LoadCameraConfig
+#### LoadCameraConfig
 
 Loads a camera configuration file by name. This only affects camera/point cloud settings (`pointClouds`) — it has no effect on the stimulus display canvas, which is managed separately by [`LoadDisplayConfig`](#loaddisplayconfig).
 
@@ -150,7 +154,7 @@ Loads a camera configuration file by name. This only affects camera/point cloud 
 
 ---
 
-### LoadDisplayConfig
+#### LoadDisplayConfig
 
 Loads a display configuration file by name, and/or applies one-off overrides to the stimulus display canvas (position, rotation, scale, background color). Useful for switching the canvas layout mid-experiment, or for tweaking a single value without maintaining a dedicated file.
 
@@ -188,7 +192,7 @@ Loads a display configuration file by name, and/or applies one-off overrides to 
 
 ---
 
-### DisplayText
+#### DisplayText
 
 Displays a text message on screen for a given duration.
 
@@ -205,7 +209,7 @@ Displays a text message on screen for a given duration.
 
 ---
 
-### Wait
+#### Wait
 
 Pauses the sequence for a given duration.
 
@@ -220,7 +224,7 @@ Pauses the sequence for a given duration.
 
 ---
 
-### DisplayCameras
+#### DisplayCameras
  
 Displays one or more point clouds simultaneously, each with its own settings. Each camera entry is defined under a `cameraDatas` list and can independently have a temporal delay, a config file, an interpolation animation, a dissolution effect, or a fade effect.
  
@@ -364,7 +368,7 @@ The step also supports an optional `rigInterpolation` block (at the step level, 
 ---
 
 
-### DisplayImage
+#### DisplayImage
 
 Displays an image from the `Input/Images/` folder.
 
@@ -383,7 +387,7 @@ Displays an image from the `Input/Images/` folder.
 
 ---
 
-### PlaySound
+#### PlaySound
 
 Plays an audio file from the `Input/Audio/` folder.
 
@@ -400,7 +404,7 @@ Plays an audio file from the `Input/Audio/` folder.
 
 ---
 
-### DisplayVideo
+#### DisplayVideo
 
 Plays a video file from the `Input/Videos/` folder. Supported formats: MP4, WEBM, MOV. The step ends automatically when the video finishes, or after `duration` seconds as a fallback timeout if the video duration cannot be determined. If `looping` is enabled, the step runs until the `duration` timeout is reached.
 
@@ -432,7 +436,7 @@ Plays a video file from the `Input/Videos/` folder. Supported formats: MP4, WEBM
 
 ---
 
-### DisplayQuestion
+#### DisplayQuestion
 
 Displays a multiple-choice question and waits for a response.
 
@@ -452,7 +456,7 @@ Displays a multiple-choice question and waits for a response.
 
 ---
 
-### DisplayLikertScale
+#### DisplayLikertScale
 
 Displays a Likert scale question and waits for a response.
 
@@ -477,7 +481,7 @@ Displays a Likert scale question and waits for a response.
 
 ---
 
-### Break
+#### Break
 
 Displays a break screen with instructions for a given duration.
 
@@ -494,7 +498,7 @@ Displays a break screen with instructions for a given duration.
 
 ---
 
-### SendLSLEvent
+#### SendLSLEvent
 
 Sends an LSL (Lab Streaming Layer) event marker, used to synchronize the experiment timeline with external recording systems (e.g. EEG, physiological sensors).
 
@@ -507,9 +511,7 @@ Sends an LSL (Lab Streaming Layer) event marker, used to synchronize the experim
   eventName: "test"
 ```
 
----
-
-## Full Sequence Example
+### Full Sequence Example
 
 This example uses `startTime` and `blocking` to mix sequential and overlapping steps: a sound (`PlaySound`) and an LSL marker fire in parallel with the camera display, while the rest of the sequence remains strictly sequential thanks to `blocking: true`.
 
@@ -622,7 +624,7 @@ steps:
     blocking: true
 ```
 
-# Camera Config Files
+## Camera Config Files
 
 Camera config files are YAML files located in `Input/Config/Camera/`. They define the spatial configuration, depth settings, and clipping boundaries for each camera's point cloud. Camera config files can be created and edited through the **Cameras** tab of the Config Editor.
 
@@ -656,7 +658,7 @@ pointClouds:
       z: 1.658
 ```
 
-## Point Clouds
+### Point Clouds
 
 The `pointClouds` list defines the spatial configuration, depth settings and spatial clipping for each camera.
 
@@ -674,7 +676,7 @@ The `pointClouds` list defines the spatial configuration, depth settings and spa
 | `clampYMax` | float | Top boundary of the visible area, normalized between `0` and `1` |
 | `referencePoint` | Vector3 | A general-purpose local-space position, relative to the point cloud (not world space) — **stored value is always local**, even though it's edited in world space in the UI. Currently drives the [dissolution effect's](#displaycameras) sphere center. Editable via the [Reference Point](#reference-point) panel |
 
-# Display Config Files
+## Display Config Files
 
 Display config files are YAML files located in `Input/Config/Display/`. They define the position and appearance of the stimulus display canvas — the in-world UI panel used to display text, images, questions, and other stimuli to the participant. They are entirely independent from [Camera Config Files](#camera-config-files): loading, saving, or switching one has no effect on the other. Display config files can be created and edited through the **Stimulus Display** tab of the Config Editor, and loaded during an experiment with the [`LoadDisplayConfig`](#loaddisplayconfig) step.
 
@@ -702,7 +704,7 @@ stimulusDisplay:
     a: 1
 ```
 
-## Stimulus Display
+### Stimulus Display
 
 The `stimulusDisplay` block defines the position, orientation and background color of the in-world UI panel displayed during the experiment.
 
@@ -713,6 +715,12 @@ The `stimulusDisplay` block defines the position, orientation and background col
 | `scale` | Vector3 | Scale of the display |
 | `backgroundColor` | Color (r,g,b,a) | Background color of the display. Values are normalized floats between `0` and `1` |
 
+## Images 
+
+## Videos
+
+## Audios
+
 # Output Files
 
 All output files are saved in the `Output/` folder at the root of the executable directory. They follow the naming format: `yyyyMMdd_HHmmss_sequenceFileName_filetype`.
@@ -722,7 +730,7 @@ There are two types of output files:
 - **Event log** (`_Events.txt`): Records all events during the experiment, including errors, warnings, and state transitions. Useful for monitoring experiment progress and debugging.
 - **Data output** (`_Output.csv`): A CSV file containing all data collected during the experiment. Each row corresponds to a `DisplayCameras` step.
 
-## Output file parameters
+### Output file parameters
 
 | Name | Type | Description |
 |------|------|-------------|
@@ -745,139 +753,9 @@ There are two types of output files:
 | `QuestionResponse` | string | Response given to a multiple-choice question |
 | `QuestionResponseTime` | double | Response time for the question (seconds) |
 
-# Config Editor
-
-The Config Editor is a dedicated interface for creating and editing camera and display configuration files. It can be opened from the main GUI and provides a real-time preview of the scene from the participant's perspective.
-
-<img width="1932" height="1098" alt="Config Editor" src="https://github.com/user-attachments/assets/fa9f5c5f-4c59-4a78-8a3d-d2e0d53dd35c" />
-
-## Tabs
-
-The editor is split into two independent tabs, each with its own toolbar, its own currently-loaded file, and its own status indicator, since camera configs and display configs are separate files:
-
-| Tab | Edits | Saved to |
-|-----|-------|----------|
-| **Cameras** | [Camera Panels](#camera-panels-camera-1-camera-2-) — point cloud position, depth, clamp and mirror settings per camera | `Input/Config/Camera/` |
-| **Stimulus Display** | [Stimulus Display](#stimulus-display-1) panel — position, rotation and background color of the in-world UI canvas | `Input/Config/Display/` |
-
-Switching tabs only changes which panel and toolbar are shown — it does not close or discard the file open in the other tab.
-
-## Toolbar
-
-Each tab has its own toolbar with the same set of controls, operating on that tab's file only:
-
-| Button | Description |
-|--------|-------------|
-| **New** | Creates a new empty configuration |
-| **Open** | Opens an existing config file from disk via a file browser |
-| **Save** | Saves the current configuration to disk |
-| **Save as...** | Saves the current configuration under a new name and location |
-| **≡** (menu) | Opens a menu with clipboard options: **Copy** to copy the current configuration as YAML to the clipboard, and **Paste** to load a configuration from the clipboard |
-| **Scene** | Dropdown to select which Unity scene to load in the preview (e.g. `EmptyRoom`) |
-
-On the left of the status indicator, the name of the currently loaded file (for that tab) is displayed. The status indicator shows a message reflecting the current state of the active tab's editor:
-
-| Message | Color | Description |
-|---------|-------|-------------|
-| `No config loaded.` | Grey | Initial state at startup, no config is active |
-| `Ready.` | Grey | Config is loaded and no pending changes |
-| `Unsaved changes.` | Yellow | The config has been modified but not yet saveddis, played continuously until saved |
-| `Opened {filename}` | Green | A config file was successfully opened from disk |
-| `Saved as {filename}` | Green | The config was successfully saved under a new name |
-| `Config copied to clipboard.` | Green | The config was successfully copied to the clipboard |
-| `Config pasted from clipboard.` | Green | A config was successfully loaded from the clipboard |
-| `Open cancelled.` | Grey | The file browser was closed without selecting a file |
-| `Save cancelled.` | Grey | The save dialog was closed without saving |
-| `Clipboard is empty.` | Red | Paste was attempted but the clipboard contains nothing |
-| `Clipboard content is invalid.` | Red | Paste was attempted but the clipboard content is not a valid config |
-| `Failed to save file.` | Red | An error occurred while saving to disk |
-| `Failed to read file.` | Red | An error occurred while reading a file from disk |
-| `Invalid file format.` | Red | The opened file is not a valid config YAML |
-
-## Camera Panels (Camera 1, Camera 2, ...)
-
-One panel is displayed per connected camera. Each panel contains the following controls.
-
-**Display toggle:** enables or disables the real-time point cloud preview for that camera. Only one camera can be displayed at a time.
-
-### Transform
-
-Controls the position and rotation of the point cloud in the 3D scene.
-
-| Control | Description |
-|---------|-------------|
-| **Position X / Y / Z** | Position of the point cloud in world space |
-| **Rotation X / Y / Z** | Euler rotation of the point cloud |
-
-### Depth
-
-Controls the depth range captured by the camera. Points outside this range are discarded.
-
-| Control | Description |
-|---------|-------------|
-| **Max** | Maximum capture depth in meters (0–10 m) |
-| **Min** | Minimum capture depth in meters (0–10 m) |
-
-### Clamp
-
-Crops the visible area of the point cloud along X and Y axes. Values are normalized between `0` and `1`, where `0` is the left/bottom edge and `1` is the right/top edge of the camera frame.
-
-| Control | Description |
-|---------|-------------|
-| **X Min / X Max** | Left and right crop boundaries |
-| **Y Min / Y Max** | Bottom and top crop boundaries |
-
-### Mirror
-
-Flips the point cloud along a given axis.
-
-| Button | Description |
-|--------|-------------|
-| **↔ Horizontal** | Flips the point cloud horizontally (X axis) |
-| **↕ Vertical** | Flips the point cloud vertically (Y axis) |
-
-### Reference Point
-
-A general-purpose reference point relative to the point cloud; it currently drives the center of the sphere used by the [dissolution effect](#displaycameras). It is stored **relative to the point cloud** (local space) in the config file, so it stays correctly placed regardless of the point cloud's own position/rotation.
-
-For ease of use, the **X / Y / Z fields are an offset from the point cloud's own position, aligned to the scene's global axes** (like Unity's "Global" tool handle mode) rather than the point cloud's own (possibly rotated) local axes — `0, 0, 0` places it exactly on the point cloud, and moving "X" by 1 always moves it 1 unit along the scene's global X axis, regardless of how the point cloud is rotated. The conversion to/from local space happens automatically; only the local value ever gets written to the config file.
-
-| Control | Description |
-|---------|-------------|
-| **Position X / Y / Z** | Offset from the point cloud's own position, aligned to the scene's global axes |
-| **Show gizmo** toggle | Displays a sphere gizmo in the preview at the current position, to help placing it visually. This is a visual aid only for the editor — it is not saved to the config file and always starts hidden when a config is loaded |
-
-## Stimulus Display
-
-Shown under the **Stimulus Display** tab. This section controls the position and appearance of the in-world UI canvas — the panel used to display text, images, questions, and other stimuli to the participant. Changes here are saved to a [Display Config File](#display-config-files), independent from the camera config open in the **Cameras** tab.
-
-| Control | Description |
-|---------|-------------|
-| **Display toggle** | Shows or hides the stimulus display canvas in the preview |
-| **Position X / Y / Z** | Position of the canvas in world space |
-| **Rotation Y** | Vertical rotation of the canvas |
-| **Background color** | Background color of the canvas (click to open a color picker) |
-
-## Preview Panel (right side)
-
-The right side of the Config Editor shows a live preview of the scene split into two viewports.
-
-| Viewport | Description |
-|----------|-------------|
-| **Participant view** | First-person view from the VR headset's perspective. Reflects the actual experience seen by the participant |
-| **Static view** | Fixed camera view of the scene, useful for monitoring the overall setup |
-
-Additional controls in the preview panel:
-
-| Control | Description |
-|---------|-------------|
-| **VR edition** toggle | Enables editing mode inside the VR headset, allowing the researcher to adjust the config while wearing the headset |
-| **Reset Headset Orientation** | Resets the headset's forward direction to the current facing direction |
-| **Display Avatar** toggle | Shows or hides a body avatar in the scene (The avatar is only displayed in the config editor ) |
-| **Camera Position / Rotation** | Displays the current position and rotation of the static preview camera (read-only) |
-
 # GUI
 
+## Main GUI
 <img width="1920" height="1080" alt="GUI" src="https://github.com/user-attachments/assets/9eea46ec-23f6-40c3-831b-11695d415903" />
 
 ### Participant form
@@ -918,6 +796,146 @@ Additional controls in the preview panel:
 | M | Mute sound |
 | ← / → | Previous / Next step |
 
+
+## Config Editor
+
+The Config Editor is a dedicated interface for creating and editing camera and display configuration files. It can be opened from the main GUI and provides a real-time preview of the scene from the participant's perspective.
+
+<img width="1932" height="1098" alt="Config Editor" src="https://github.com/user-attachments/assets/fa9f5c5f-4c59-4a78-8a3d-d2e0d53dd35c" />
+
+### Tabs
+
+The editor is split into two independent tabs, each with its own toolbar, its own currently-loaded file, and its own status indicator, since camera configs and display configs are separate files:
+
+| Tab | Edits | Saved to |
+|-----|-------|----------|
+| **Cameras** | [Camera Panels](#camera-panels-camera-1-camera-2-) — point cloud position, depth, clamp and mirror settings per camera | `Input/Config/Camera/` |
+| **Stimulus Display** | [Stimulus Display](#stimulus-display-1) panel — position, rotation and background color of the in-world UI canvas | `Input/Config/Display/` |
+
+Switching tabs only changes which panel and toolbar are shown — it does not close or discard the file open in the other tab.
+
+### Toolbar
+
+Each tab has its own toolbar with the same set of controls, operating on that tab's file only:
+
+| Button | Description |
+|--------|-------------|
+| **New** | Creates a new empty configuration |
+| **Open** | Opens an existing config file from disk via a file browser |
+| **Save** | Saves the current configuration to disk |
+| **Save as...** | Saves the current configuration under a new name and location |
+| **≡** (menu) | Opens a menu with clipboard options: **Copy** to copy the current configuration as YAML to the clipboard, and **Paste** to load a configuration from the clipboard |
+| **Scene** | Dropdown to select which Unity scene to load in the preview (e.g. `EmptyRoom`) |
+
+On the left of the status indicator, the name of the currently loaded file (for that tab) is displayed. The status indicator shows a message reflecting the current state of the active tab's editor:
+
+| Message | Color | Description |
+|---------|-------|-------------|
+| `No config loaded.` | Grey | Initial state at startup, no config is active |
+| `Ready.` | Grey | Config is loaded and no pending changes |
+| `Unsaved changes.` | Yellow | The config has been modified but not yet saveddis, played continuously until saved |
+| `Opened {filename}` | Green | A config file was successfully opened from disk |
+| `Saved as {filename}` | Green | The config was successfully saved under a new name |
+| `Config copied to clipboard.` | Green | The config was successfully copied to the clipboard |
+| `Config pasted from clipboard.` | Green | A config was successfully loaded from the clipboard |
+| `Open cancelled.` | Grey | The file browser was closed without selecting a file |
+| `Save cancelled.` | Grey | The save dialog was closed without saving |
+| `Clipboard is empty.` | Red | Paste was attempted but the clipboard contains nothing |
+| `Clipboard content is invalid.` | Red | Paste was attempted but the clipboard content is not a valid config |
+| `Failed to save file.` | Red | An error occurred while saving to disk |
+| `Failed to read file.` | Red | An error occurred while reading a file from disk |
+| `Invalid file format.` | Red | The opened file is not a valid config YAML |
+
+### Preview Panel (right side)
+
+The right side of the Config Editor shows a live preview of the scene split into two viewports.
+
+| Viewport | Description |
+|----------|-------------|
+| **Participant view** | First-person view from the VR headset's perspective. Reflects the actual experience seen by the participant |
+| **Static view** | Fixed camera view of the scene, useful for monitoring the overall setup |
+
+Additional controls in the preview panel:
+
+| Control | Description |
+|---------|-------------|
+| **VR edition** toggle | Enables editing mode inside the VR headset, allowing the researcher to adjust the config while wearing the headset |
+| **Reset Headset Orientation** | Resets the headset's forward direction to the current facing direction |
+| **Display Avatar** toggle | Shows or hides a body avatar in the scene (The avatar is only displayed in the config editor ) |
+| **Camera Position / Rotation** | Displays the current position and rotation of the static preview camera (read-only) |
+
+
+### Camera Tab (Camera 1, Camera 2, ...)
+
+One panel is displayed per connected camera. Each panel contains the following controls.
+
+**Display toggle:** enables or disables the real-time point cloud preview for that camera. Only one camera can be displayed at a time.
+
+#### Transform
+
+Controls the position and rotation of the point cloud in the 3D scene.
+
+| Control | Description |
+|---------|-------------|
+| **Position X / Y / Z** | Position of the point cloud in world space |
+| **Rotation X / Y / Z** | Euler rotation of the point cloud |
+
+#### Depth
+
+Controls the depth range captured by the camera. Points outside this range are discarded.
+
+| Control | Description |
+|---------|-------------|
+| **Max** | Maximum capture depth in meters (0–10 m) |
+| **Min** | Minimum capture depth in meters (0–10 m) |
+
+#### Clamp
+
+Crops the visible area of the point cloud along X and Y axes. Values are normalized between `0` and `1`, where `0` is the left/bottom edge and `1` is the right/top edge of the camera frame.
+
+| Control | Description |
+|---------|-------------|
+| **X Min / X Max** | Left and right crop boundaries |
+| **Y Min / Y Max** | Bottom and top crop boundaries |
+
+#### Mirror
+
+Flips the point cloud along a given axis.
+
+| Button | Description |
+|--------|-------------|
+| **↔ Horizontal** | Flips the point cloud horizontally (X axis) |
+| **↕ Vertical** | Flips the point cloud vertically (Y axis) |
+
+#### Reference Point
+
+A general-purpose reference point relative to the point cloud; it currently drives the center of the sphere used by the [dissolution effect](#displaycameras). It is stored **relative to the point cloud** (local space) in the config file, so it stays correctly placed regardless of the point cloud's own position/rotation.
+
+For ease of use, the **X / Y / Z fields are an offset from the point cloud's own position, aligned to the scene's global axes** (like Unity's "Global" tool handle mode) rather than the point cloud's own (possibly rotated) local axes — `0, 0, 0` places it exactly on the point cloud, and moving "X" by 1 always moves it 1 unit along the scene's global X axis, regardless of how the point cloud is rotated. The conversion to/from local space happens automatically; only the local value ever gets written to the config file.
+
+| Control | Description |
+|---------|-------------|
+| **Position X / Y / Z** | Offset from the point cloud's own position, aligned to the scene's global axes |
+| **Show gizmo** toggle | Displays a sphere gizmo in the preview at the current position, to help placing it visually. This is a visual aid only for the editor — it is not saved to the config file and always starts hidden when a config is loaded |
+
+### Display Tab
+
+Shown under the **Stimulus Display** tab. This section controls the position and appearance of the in-world UI canvas — the panel used to display text, images, questions, and other stimuli to the participant. Changes here are saved to a [Display Config File](#display-config-files), independent from the camera config open in the **Cameras** tab.
+
+| Control | Description |
+|---------|-------------|
+| **Display toggle** | Shows or hides the stimulus display canvas in the preview |
+| **Position X / Y / Z** | Position of the canvas in world space |
+| **Rotation Y** | Vertical rotation of the canvas |
+| **Background color** | Background color of the canvas (click to open a color picker) |
+
+### Keyboard Shortcuts
+
+| Key | VR Controller | Action |
+|-----|--------|--------|
+| R | Left thumbstick press | Reset head orientation |
+| K | Left primary button (A) | Start Dissolution effect |
+
 # Screenshot
 
 ### Mirror view
@@ -935,4 +953,5 @@ Additional controls in the preview panel:
 # Authors
 
 Development Arnaud Droxler, Haotian Yao.
+
 Supervision Bruno Herbelin, Idil Sezer, Olaf Blanke.
