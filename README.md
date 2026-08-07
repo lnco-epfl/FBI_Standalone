@@ -84,7 +84,7 @@ Input/
 │   └── Display/     ← YAML stimulus display configuration files
 ├── Images/          ← Image assets (PNG, JPG, BMP, TGA)
 ├── Videos/          ← Video assets (MP4 + SRT)
-└── Audios/           ← Audio assets (WAV, OGG, MP3)
+└── Audios/          ← Audio assets (WAV, OGG, MP3)
 ```
 
 ## Sequence Files
@@ -102,7 +102,7 @@ Each step also has a `blocking` flag:
 | `startTime` | float | Time in seconds, from the start of the experiment, at which the step is triggered. Default: `0` |
 | `blocking` | bool | If `true`, the sequence timeline pauses until this step finishes, then jumps directly to the `startTime` of the next step. If `false` (default), the timeline keeps advancing normally while the step runs in the background |
 
-> ℹ️ Steps are automatically sorted by `startTime` when the sequence is loaded — they do not need to be written in chronological order in the YAML file.
+> ℹ️ Steps are automatically sorted by `startTime` when the sequence is loaded, they do not need to be written in chronological order in the YAML file.
 
 > ⚠️ If several `blocking` steps would overlap in time, only the first one encountered blocks the timeline; subsequent steps wait their turn.
 
@@ -141,7 +141,7 @@ Available scenes:
 
 #### LoadCameraConfig
 
-Loads a camera configuration file by name. This only affects camera/point cloud settings (`pointClouds`) — it has no effect on the stimulus display canvas, which is managed separately by [`LoadDisplayConfig`](#loaddisplayconfig).
+Loads a camera configuration file by name.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
@@ -406,7 +406,7 @@ Plays an audio file from the `Input/Audio/` folder.
 
 #### DisplayVideo
 
-Plays a video file from the `Input/Videos/` folder. Supported formats: MP4, WEBM, MOV. The step ends automatically when the video finishes, or after `duration` seconds as a fallback timeout if the video duration cannot be determined. If `looping` is enabled, the step runs until the `duration` timeout is reached.
+Plays a video file from the `Input/Videos/` folder. The step ends automatically when the video finishes, or after `duration` seconds as a fallback timeout if the video duration cannot be determined. If `looping` is enabled, the step runs until the `duration` timeout is reached.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
@@ -500,7 +500,7 @@ Displays a break screen with instructions for a given duration.
 
 #### SendLSLEvent
 
-Sends an LSL (Lab Streaming Layer) event marker, used to synchronize the experiment timeline with external recording systems (e.g. EEG, physiological sensors).
+Sends an LSL ([Lab Streaming Layer](https://labstreaminglayer.org)) event marker, used to synchronize the experiment timeline with external recording systems (e.g. EEG, physiological sensors).
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
@@ -624,6 +624,8 @@ steps:
     blocking: true
 ```
 
+In addition, the build and the repository contain two sequence files: a ‘Demo’ file, which demonstrates in detail all the features available in a sequence, and an ‘FBI’ file, which replicates the sequence of events in a typical full-body illusion experience. 
+
 ## Camera Config Files
 
 Camera config files are YAML files located in `Input/Config/Camera/`. They define the spatial configuration, depth settings, and clipping boundaries for each camera's point cloud. Camera config files can be created and edited through the **Cameras** tab of the Config Editor.
@@ -678,7 +680,7 @@ The `pointClouds` list defines the spatial configuration, depth settings and spa
 
 ## Display Config Files
 
-Display config files are YAML files located in `Input/Config/Display/`. They define the position and appearance of the stimulus display canvas — the in-world UI panel used to display text, images, questions, and other stimuli to the participant. They are entirely independent from [Camera Config Files](#camera-config-files): loading, saving, or switching one has no effect on the other. Display config files can be created and edited through the **Stimulus Display** tab of the Config Editor, and loaded during an experiment with the [`LoadDisplayConfig`](#loaddisplayconfig) step.
+Display config files are YAML files located in `Input/Config/Display/`. They define the position and appearance of the stimulus display canvas, the in-world UI panel used to display text, images, questions, and other stimuli to the participant. Display config files can be created and edited through the **Stimulus Display** tab of the Config Editor, and loaded during an experiment with the [`LoadDisplayConfig`](#loaddisplayconfig) step.
 
 ```yaml
 configName: MainDisplay
@@ -715,11 +717,30 @@ The `stimulusDisplay` block defines the position, orientation and background col
 | `scale` | Vector3 | Scale of the display |
 | `backgroundColor` | Color (r,g,b,a) | Background color of the display. Values are normalized floats between `0` and `1` |
 
-## Images 
+## Images
+
+Image assets are located in `Input/Images/`. Supported formats: **PNG, JPG/JPEG, BMP, TGA**.
+
+All images are loaded at startup (and can be reloaded on demand). The folder is scanned recursively (subfolders are supported), and each image is referenced by its filename without extension - e.g. a file `Input/Images/plus.png` is referenced as `"plus"` in a [`DisplayImage`](#displayimage) step.
+
+> ⚠️ Since only the filename (without extension) is used as the key, two images with the same name in different subfolders will collide, the last one loaded overwrites the previous one.
 
 ## Videos
 
+Video assets are located in `Input/Videos/`. Supported formats: **MP4, WEBM, MOV**.
+
+Videos are registered at startup and referenced by filename without extension in a [`DisplayVideo`](#displayvideo) step - e.g. `Input/Videos/intro.mp4` is referenced as `"intro"`. Unlike images and audios, video files are not loaded into memory at startup; only their file path is kept and the video is streamed when played.
+
+An optional `.srt` subtitle file with the same filename (e.g. `intro.srt`) can be placed alongside the video to enable subtitles via the `subtitle` parameter of the `DisplayVideo` step.
+
 ## Audios
+
+Audio assets are located in `Input/Audios/`. Supported formats: **WAV, OGG, MP3**.
+
+All audio files are loaded asynchronously at startup and referenced by filename without extension in a [`PlaySound`](#playsound) step - 
+e.g. `Input/Audios/bell-sfx.wav` is referenced as `"bell-sfx"`. As with images, the folder is scanned recursively and the key is the filename only, so identically named files in different subfolders will collide.
+
+An optional `.srt` subtitle file with the same filename can be placed alongside the audio file to enable subtitles via the `subtitle` parameter of the `PlaySound` step.
 
 # Output Files
 
@@ -738,8 +759,9 @@ There are two types of output files:
 | `Age` | int | Participant's age |
 | `Language` | string | Language used during the experiment |
 | `SequenceFile` | string | Name of the sequence file used |
-| `ConfigFile` | string | Name of the camera config file loaded |
+| `CameraConfigFile` | string | Name of the camera config file loaded |
 | `DisplayConfigFile` | string | Name of the display config file loaded |
+| `Scene` | string | Name of the Unity scene currently loaded |
 | `TimeSinceStart` | double | Time elapsed since experiment start (seconds) |
 | `StepType` | string | Type of the current step (e.g. `DisplayCameras`) |
 | `StepCount` | int | Current step index |
@@ -751,12 +773,13 @@ There are two types of output files:
 | `LikertResponse` | int | Response given to a Likert scale question |
 | `LikertResponseTime` | double | Response time for the Likert scale (seconds) |
 | `QuestionResponse` | string | Response given to a multiple-choice question |
+| `QuestionResponseIndex` | string | Index of the selected option in the `options` list of the question |
 | `QuestionResponseTime` | double | Response time for the question (seconds) |
 
 # GUI
 
 ## Main GUI
-<img width="1920" height="1080" alt="GUI" src="https://github.com/user-attachments/assets/9eea46ec-23f6-40c3-831b-11695d415903" />
+<img width="1920" height="1080" alt="main-gui" src="https://github.com/user-attachments/assets/8f4d2d0f-65d4-408d-ab53-1426f704fb26" />
 
 ### Participant form
 
@@ -771,10 +794,10 @@ There are two types of output files:
 ### Experiment Status
 
 - **Start Time:** Displays the time the experiment started.
-- **Time since start:** Displays elapsed time since start.
-- **Task steps:** Displays the current step index over the total number of steps.
-- **Task progression:** A progress bar showing overall experiment progress.
-- **Previous / Next step buttons:** Navigate between steps manually.
+- **Elapsed:** Displays elapsed time since start.
+- **Sequence time:** Current sequence time value.
+- **Jump to Time:** Allow to jump to any sequence time.
+- **Progress:** A progress bar showing overall experiment progress.
 
 ### Experiment Controls
 
@@ -865,7 +888,7 @@ Additional controls in the preview panel:
 | **Camera Position / Rotation** | Displays the current position and rotation of the static preview camera (read-only) |
 
 
-### Camera Tab (Camera 1, Camera 2, ...)
+### Camera Tab
 
 One panel is displayed per connected camera. Each panel contains the following controls.
 
@@ -933,8 +956,8 @@ Shown under the **Stimulus Display** tab. This section controls the position and
 
 | Key | VR Controller | Action |
 |-----|--------|--------|
-| R | Left thumbstick press | Reset head orientation |
-| K | Left primary button (A) | Start Dissolution effect |
+| R | Left Controller thumbstick click | Reset head orientation |
+| K | Left Controller primary button (A) | Start Dissolution effect |
 
 # Screenshot
 
