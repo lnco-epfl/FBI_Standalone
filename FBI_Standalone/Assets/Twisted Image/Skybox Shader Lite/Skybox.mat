@@ -78,7 +78,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SkyboxTex:
-        m_Texture: {fileID: 8900000, guid: d4c8dc343ae5d4673b7720ffdb1ddf00, type: 3}
+        m_Texture: {fileID: 8900000, guid: 70645469955dc994b9c3f3be4d705a27, type: 2}
         m_Scale: {x: 0, y: 0}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -129,9 +129,9 @@ Material:
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _SkyboxIntensity: 0.25
+    - _SkyboxIntensity: 0.5
     - _SkyboxRotation: 4.4
-    - _SkyboxSaturation: 0.25
+    - _SkyboxSaturation: 1.5
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
