@@ -624,10 +624,12 @@ public class UIManager : MonoBehaviour
     public void CreateSetupPointCloudUI()
     {
 
-        var canvasUI = Instantiate(configEditorPrefab, canvasDesktopGroup.transform);
+        var canvasUI = Instantiate(configEditorPrefab, this.transform);
         currentCanvasGraphUIs.Add(canvasUI);
 
         canvasUI.OnConfigEditorDestroy += OnConfigEditorDestroy;
+
+        SetCanvasState(canvasDesktopGroup, false);
 
     }
 
@@ -640,6 +642,8 @@ public class UIManager : MonoBehaviour
 
     private void OnConfigEditorDestroy(ConfigEditorUI canvasSetupPointCloudUI)
     {
+        SetCanvasState(canvasDesktopGroup, true);
+
         currentCanvasGraphUIs.Remove(canvasSetupPointCloudUI);
         Destroy(canvasSetupPointCloudUI.gameObject);
 
