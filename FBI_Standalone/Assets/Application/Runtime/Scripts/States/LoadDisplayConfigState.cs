@@ -13,21 +13,20 @@ public class LoadDisplayConfigState : IState
     public IEnumerator Execute()
     {
 
-        EventFileManager.Log($"[LoadDisplayConfigState] Load condig file {step.configName}");
+        EventFileManager.Log($"[LoadDisplayConfigState] Load config file {step.configName}");
 
-        //var configs = ConfigFileManager.Instance.GetAvailableConfigs();
-
-        //if (configs.Contains(step.configName))
+        if (!string.IsNullOrEmpty(step.configName))
         {
+            var configs = DisplayConfigFileManager.Instance.GetAvailableConfigs();
 
-            DisplayConfigFileManager.Instance.ApplyStep(step, WorldUIManager.Instance.transform);
+            if (!configs.Contains(step.configName))
+            {
+                EventFileManager.Error($"[LoadDisplayConfigState] Config file {step.configName} not found");
+                yield break;
+            }
+        }
 
-            //ConfigFileManager.Instance.Load(step.configName);
-        }
-        //else
-        {
-            EventFileManager.Error($"[LoadDisplayConfigState] Config file {step.configName} not found");
-        }
+        DisplayConfigFileManager.Instance.ApplyStep(step, WorldUIManager.Instance.transform);
 
         yield return new WaitForSeconds(0.5f);
 
@@ -39,4 +38,3 @@ public class LoadDisplayConfigState : IState
     }
 
 }
-

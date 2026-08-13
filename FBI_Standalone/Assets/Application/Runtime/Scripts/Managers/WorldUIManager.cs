@@ -659,6 +659,7 @@ public class WorldUIManager : MonoBehaviour
                 videoRenderTexture = null;
 
             }
+
             FadeCanvasGroup(canvasGroupVideoContainer, 0);
         }
 

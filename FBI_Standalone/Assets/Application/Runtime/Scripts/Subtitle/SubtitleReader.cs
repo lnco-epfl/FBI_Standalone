@@ -19,6 +19,7 @@ public class SubtitleReader : MonoBehaviour
     private List<Subtitle> audioSubtitles = new List<Subtitle>();
     private Subtitle currentAudioSubtitle = null;
     private bool audioSubtitlesActive = false;
+    private AudioSource currentAudioSource;
     private float audioElapsed = 0f;
 
     private bool videoSubtitlesEnabled = true;
@@ -55,6 +56,11 @@ public class SubtitleReader : MonoBehaviour
             AudioManager.instance.SfxEnded += AudioSfxEnded;
         }
 
+        HideSubtitle();
+    }
+
+    public void HideSubtitle()
+    {
         textAutoSizer.SetText(string.Empty);
     }
 
@@ -179,7 +185,6 @@ public class SubtitleReader : MonoBehaviour
 
     private void AudioSfxStarted(AudioSource source)
     {
-
         if (!audioSubtitlesEnabled)
         {
             audioSubtitles = new List<Subtitle>();
@@ -195,17 +200,21 @@ public class SubtitleReader : MonoBehaviour
         currentAudioSubtitle = null;
         audioElapsed = 0f;
         audioSubtitlesActive = audioSubtitles.Count > 0;
+        currentAudioSource = source;
     }
 
     private void AudioSfxEnded(AudioSource source)
     {
-        audioSubtitlesActive = false;
-        currentAudioSubtitle = null;
-
-        bool videoShowingText = subtitlesLoaded && videoPlayer != null && videoPlayer.isPlaying;
-        if (!videoShowingText)
+        if(currentAudioSource == source)
         {
-            textAutoSizer.SetText(string.Empty);
+            audioSubtitlesActive = false;
+            currentAudioSubtitle = null;
+
+            bool videoShowingText = subtitlesLoaded && videoPlayer != null && videoPlayer.isPlaying;
+            if (!videoShowingText)
+            {
+                textAutoSizer.SetText(string.Empty);
+            }
         }
     }
 

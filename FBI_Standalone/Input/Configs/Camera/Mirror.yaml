@@ -1,6 +1,6 @@
 configName: Mirror
 createdAt: 2026-06-11 13:58:00
-lastModified: 2026-08-06 14:15:24
+lastModified: 2026-08-13 12:32:38
 pointClouds:
 - iD: 1
   position:
@@ -22,9 +22,9 @@ pointClouds:
   clampYMin: 0.05236926
   clampYMax: 1
   referencePoint:
-    x: 0.07120457
-    y: 0.09711319
-    z: 1.424044
+    x: 0.06532317
+    y: 0.1693044
+    z: 1.359805
 - iD: 2
   position:
     x: 0

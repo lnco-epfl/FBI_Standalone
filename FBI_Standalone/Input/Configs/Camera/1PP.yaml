@@ -1,6 +1,6 @@
 configName: 1PP
 createdAt: 2026-04-23 15:35:05
-lastModified: 2026-08-06 15:37:05
+lastModified: 2026-08-13 12:18:55
 pointClouds:
 - iD: 1
   position:
@@ -22,9 +22,9 @@ pointClouds:
   clampYMin: 0.3
   clampYMax: 0.96
   referencePoint:
-    x: 0.05358155
-    y: 0.009859324
-    z: 1.502176
+    x: 0.007663667
+    y: -0.3911242
+    z: 1.269789
 - iD: 2
   position:
     x: 0

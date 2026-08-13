@@ -1,0 +1,9 @@
+1
+00:00:00,001 --> 00:00:01,297
+Welcome
+
+2
+00:00:02,167 --> 00:00:05,945
+Here is a demo audio
+file that displays subtitles.
+

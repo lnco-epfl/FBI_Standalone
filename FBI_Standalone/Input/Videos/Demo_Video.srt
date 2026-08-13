@@ -1,0 +1,17 @@
+1
+00:00:00,000 --> 00:00:01,468
+Welcome
+
+2
+00:00:02,089 --> 00:00:04,221
+Here is a demo video file
+
+3
+00:00:04,245 --> 00:00:06,927
+that displays subtitles with audio,
+
+4
+00:00:06,951 --> 00:00:09,632
+without looping
+the video at the end.
+

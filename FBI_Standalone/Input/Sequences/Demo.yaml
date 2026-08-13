@@ -42,21 +42,21 @@ steps:
   # 3a. Loads a display config file as-is
   - stepType: LoadDisplayConfig
     startTime: 3.0
-    configName: MainDisplay
+    configName: Main - Display
 
   - stepType: DisplayText
     startTime: 3.0
-    text: "Display config loaded from file: MainDisplay"
+    text: "Display config loaded from file: Main - Display"
     duration: 3.0
 
   # 3b. Loads a file, but overrides the background color for this step only
   - stepType: LoadDisplayConfig
     startTime: 7.0
-    configName: MainDisplay
+    configName: Main - Display
     backgroundColorOverride:
-      r: 0.1
-      g: 0.1
-      b: 0.15
+      r: 0.0
+      g: 0.4
+      b: 0.9
       a: 1.0
 
   - stepType: DisplayText
@@ -69,11 +69,11 @@ steps:
     startTime: 11.0
     positionOverride:
       x: 0.0
-      y: 1.4
-      z: 2.0
+      y: 1
+      z: 1.5
     rotationOverride:
       x: 0.0
-      y: 180.0
+      y: 25.0
       z: 0.0
     scaleOverride:
       x: 1.0
@@ -85,12 +85,17 @@ steps:
     text: "Position / rotation / scale overridden, no config file used"
     duration: 3.0
 
+# 3d. Revert to default display config file
+  - stepType: LoadDisplayConfig
+    startTime: 15.0
+    configName: Main - Display
+
   # --------------------------------------------------------------------
   # 4. DisplayText — text on screen for a given duration
   # --------------------------------------------------------------------
   - stepType: DisplayText
-    startTime: 15.0
-    text: "Bienvenue dans cette démonstration"
+    startTime: 15.1
+    text: "Welcome to this demonstration"
     duration: 3.0
 
   # --------------------------------------------------------------------
@@ -116,8 +121,8 @@ steps:
     subtitle: false
 
   - stepType: PlaySound
-    startTime: 22.0
-    soundPath: "NoM_Phase1"
+    startTime: 21.0
+    soundPath: "Demo_Audio"
     subtitle: true
 
   # --------------------------------------------------------------------
@@ -126,7 +131,7 @@ steps:
   # 8a. Single playback (ends automatically when the video finishes)
   - stepType: DisplayVideo
     startTime: 28.0
-    videoName: "FBI_demo_video"
+    videoName: "Demo_Video"
     looping: false
     muteAudio: false
     duration: 60.0
@@ -135,7 +140,7 @@ steps:
   # 8b. Looping video, muted, no subtitles, cut after 15s (timeout)
   - stepType: DisplayVideo
     startTime: 43.0
-    videoName: "FBI_demo_video"
+    videoName: "Video_Demo_Loop"
     looping: true
     muteAudio: true
     duration: 15.0
@@ -162,16 +167,19 @@ steps:
     cameraDatas:
       - id: "1"
         delay: 0.0
+        configName: Mirror
 
   # 10b. Two cameras simultaneously, with a different delay on one of them
   - stepType: DisplayCameras
     startTime: 77.0
     duration: 10.0
     cameraDatas:
-      - id: "1"
+      - id: "2"
         delay: 0.0
+        configName: 3PP
       - id: "2"
         delay: 1.5
+        configName: 3PP
 
   # 10c. Camera config switch + animated interpolation (start position
   #      defined by startConfigName). Available ease values: Default,
@@ -182,7 +190,7 @@ steps:
     cameraDatas:
       - id: "1"
         delay: 0.0
-        configName: 3PP
+        configName: Mirror
         interpolation:
           duration: 3.0
           delay: 1.0
@@ -199,7 +207,7 @@ steps:
         delay: 0.0
         configName: Mirror
         dissolution:
-          duration: 3.0
+          duration: 10.0
           delay: 3.0
 
   # 10e. Fade effect (alternative to dissolution)
@@ -207,7 +215,7 @@ steps:
     startTime: 113.0
     duration: 10.0
     cameraDatas:
-      - id: "1"
+      - id: "2"
         delay: 0.0
         configName: 3PP
         fade:
@@ -216,8 +224,6 @@ steps:
 
   # 10f. Full 1PP -> 3PP transition: the rig recedes (rigInterpolation) while
   #      the 1PP point cloud dissolves, leaving only the 3PP visible at the end.
-  #      dissolution.delay = rigInterpolation.delay + rigInterpolation.duration * 0.6
-  #                         = 1.0 + 3.0 * 0.6 = 2.8s
   - stepType: DisplayCameras
     startTime: 125.0
     duration: 10.0
@@ -239,11 +245,11 @@ steps:
       endPosition:
         x: 0.0
         y: 0.0
-        z: -2.0
+        z: -1.5
       startYaw: 0.0
-      endYaw: 180.0
+      endYaw: 0.0
       delay: 1.0
-      duration: 3.0
+      duration: 5.0
       ease: InOutSine
 
   - stepType: Wait
@@ -253,26 +259,31 @@ steps:
   # --------------------------------------------------------------------
   # 11. DisplayQuestion — single choice and multiple choice
   # --------------------------------------------------------------------
+
+  - stepType: LoadDisplayConfig
+    startTime: 138.0
+    configName: Back - Display
+
   # blocking: true -> the timeline waits for the response before continuing
   - stepType: DisplayQuestion
     blocking: true
     startTime: 139.0
-    question: "Comment vous sentez-vous ?"
+    question: "How are you feeling?"
     options:
-      - "Très mal"
-      - "Mal"
-      - "Bien"
-      - "Très bien"
+      - "Very bad"
+      - "Bad"
+      - "Good"
+      - "very Good"
 
   - stepType: DisplayQuestion
     blocking: true
     startTime: 141.0
-    question: "Quels effets avez-vous ressentis ? (plusieurs réponses possibles)"
+    question: "What effects did you experience? (multiple answers allowed)"
     options:
-      - "Chaleur"
-      - "Vertige"
-      - "Sensation de déplacement"
-      - "Aucun"
+      - "Heat"
+      - "Vertigo"
+      - "Sense of movementt"
+      - "None"
     allowMultipleResponses: true
 
   # --------------------------------------------------------------------
@@ -281,9 +292,9 @@ steps:
   - stepType: DisplayLikertScale
     blocking: true
     startTime: 143.0
-    question: "Dans quelle mesure vous sentiez-vous présent dans le corps virtuel ?"
-    leftLabel: "Pas du tout"
-    rightLabel: "Complètement"
+    question: "To what extent did you feel present in the virtual body?"
+    leftLabel: "Not at all"
+    rightLabel: "Completely"
     min: 0
     max: 100
     randomCursorPosition: true
@@ -291,9 +302,9 @@ steps:
   - stepType: DisplayLikertScale
     blocking: true
     startTime: 145.0
-    question: "Niveau de satisfaction global"
-    leftLabel: "Pas satisfait"
-    rightLabel: "Très satisfait"
+    question: "Overall Satisfaction Level"
+    leftLabel: "Not satisfied"
+    rightLabel: "Very satisfied"
     min: 1
     max: 5
     randomCursorPosition: false
@@ -303,7 +314,7 @@ steps:
   # --------------------------------------------------------------------
   - stepType: Break
     startTime: 147.0
-    text: "Prenez une pause. L'expérience reprendra automatiquement."
+    text: "Take a break. The experience will resume automatically."
     duration: 15
 
   - stepType: Wait
@@ -318,5 +329,5 @@ steps:
   # is what you want.
   - stepType: DisplayText
     startTime: 163.0
-    text: "Merci d'avoir participé à cette démonstration"
+    text: "Thank you for participating in this demonstration"
     duration: 4.0

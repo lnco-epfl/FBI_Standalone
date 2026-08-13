@@ -26,6 +26,11 @@ public class PlaySoundState : IState
     public void Exit()
     {
         AudioManager.instance.KillSound(audioSource);
+        if(step.subtitle)
+        {
+            SubtitleReader.Instance.HideSubtitle();
+        }
+     
     }
 
 }

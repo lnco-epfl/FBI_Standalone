@@ -38,12 +38,26 @@ public class DisplayVideoState : IState
             }
         );
 
-        float elapsed = 0f;
-        while (!videoFinished && elapsed < timeout)
+
+        if(step.looping)
         {
-            elapsed += Time.deltaTime;
-            yield return null;
+            float elapsed = 0f;
+            while (elapsed < timeout)
+            {
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
         }
+        else
+        {
+            float elapsed = 0f;
+            while (!videoFinished && elapsed < timeout)
+            {
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+        }
+      
 
         WorldUIManager.Instance.HideVideo();
     }
@@ -51,5 +65,6 @@ public class DisplayVideoState : IState
     public void Exit()
     {
         WorldUIManager.Instance.HideVideo();
+        SubtitleReader.Instance.HideSubtitle();
     }
 }

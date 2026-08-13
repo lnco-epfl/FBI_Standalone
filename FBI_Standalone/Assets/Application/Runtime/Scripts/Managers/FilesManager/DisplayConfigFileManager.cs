@@ -71,6 +71,7 @@ public class DisplayConfigFileManager : MonoBehaviour
         if (!File.Exists(path))
         {
             EventFileManager.Log($"[DisplayConfigFileManager] File not found: {path}");
+            CurrentConfig = null;
             return null;
         }
 
@@ -85,6 +86,7 @@ public class DisplayConfigFileManager : MonoBehaviour
         catch (Exception e)
         {
             EventFileManager.Log($"[DisplayConfigFileManager] Load error: {e.Message}\n{e.StackTrace}\n{e.InnerException?.Message}");
+            CurrentConfig = null;
             return null;
         }
     }
@@ -238,11 +240,17 @@ public class DisplayConfigFileManager : MonoBehaviour
 
         if (!string.IsNullOrEmpty(step.configName))
         {
-            // configName given: it becomes the base, applied fully first.
-            Load(step.configName);
-            CurrentConfig?.stimulusDisplay?.ApplyTo(canvasTransform);
+            var loadedConfig = Load(step.configName);
 
-            var loadedColor = CurrentConfig?.stimulusDisplay?.backgroundColor?.ToColor();
+            if (loadedConfig == null)
+            {
+                EventFileManager.Error($"[DisplayConfigFileManager] Cannot apply step: config '{step.configName}' failed to load.");
+                return;
+            }
+
+            loadedConfig.stimulusDisplay?.ApplyTo(canvasTransform);
+
+            var loadedColor = loadedConfig.stimulusDisplay?.backgroundColor?.ToColor();
             if (loadedColor.HasValue)
             {
                 WorldUIManager.Instance.SetCurrentBackgoundColor(loadedColor.Value);
