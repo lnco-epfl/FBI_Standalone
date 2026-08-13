@@ -1,144 +1,168 @@
+# =========================================================================
+# FBI Standalone - Demo Sequence
+# Full-Body Illusion (Baseline)
+#
+# Baseline FBI condition order: back-sync, back-async
+#
+# Camera mapping :
+#   id "1" = 1PP / Mirro view
+#   id "2" = 3PP view
+#
+# Approximate total sequence duration: ~209 seconds (~3.5 min)
+# =========================================================================
+
 steps:
+  # --- Introduction ---
   - stepType: loadScene
     startTime: 0
-    scenePath: "EmptyRoom"
-
-  - stepType: LoadCameraConfig
-    startTime: 1.0
-    configName: 1PP
-
-  - stepType: displayVideo
-    startTime: 2.0
-    videoName: "FBI_demo_video"
-    looping: false
-    muteAudio: false
+    scenePath: BlackScene
 
   - stepType: displayText
-    startTime: 12.0
-    text: "welcome to FBI"
-    duration: 3.0
-
-  - stepType: wait
-    startTime: 15.0
-    duration: 2.0
-
-  - stepType: playSound
-    startTime: 12.0
-    soundPath: "bell-sfx"
-
-  - stepType: displayCameras
-    startTime: 12.0
-    duration: 20
-    cameraDatas:
-#      - id: "1"
-#        delay: 0.0
-#        configName: interpolation
-#        dissolution:
-#          duration: 5.0
-#          delay: 5.0
-      - id: "1"
-        delay: 0.0
-        configName: 1PP
-        dissolution:
-          duration: 5.0
-          delay: 5.0
-
-  - stepType: wait
-    startTime: 37.0
-    duration: 2.0
-
-  - stepType: displayCameras
-    startTime: 39.0
-    duration: 20
-    cameraDatas:
-      - id: "1"
-        delay: 0.0
-        configName: interpolation
-        dissolution:
-          duration: 5.0
-          delay: 5.0
-      - id: "1"
-        delay: 0.0
-        configName: 1PP
-        interpolation:
-          duration: 3.0
-          delay: 5.0
-          ease: InOutQuad
-          startConfigName: 3PP
-
-  - stepType: displayCameras
-    startTime: 59.0
-    duration: 20.0
-    cameraDatas:
-      - id: "1"
-        delay: 0.5
-        configName: 1PP
-
-  - stepType: LoadCameraConfig
-    startTime: 79.0
-    configName: interpolation2
-
-  - stepType: wait
-    startTime: 80.0
-    duration: 2.0
-
-  - stepType: displayCameras
-    startTime: 82.0
-    duration: 20.0
-    cameraDatas:
-      - id: "2"
-        delay: 0.0
-
-  - stepType: wait
-    startTime: 102.0
-    duration: 2.0
-
-  - stepType: displayCameras
-    startTime: 104.0
-    duration: 20.0
-    cameraDatas:
-      - id: "2"
-        delay: 0.5
-
-  - stepType: wait
-    startTime: 124.0
-    duration: 2.0
-
-  - stepType: displayImage
-    startTime: 126.0
-    imagePath: "plus"
-    scale: 0.3
+    startTime: 1
+    text: Welcome to Full Body Illusion experiment
     duration: 5.0
 
-  - stepType: playSound
-    startTime: 131.0
-    soundPath: "bell-sfx"
-
-  - stepType: displayQuestion
-    blocking: true 
-    startTime: 131.5
-    question: "question 1"
-    options:
-      - "option 1"
-      - "option 2"
-
-  - stepType: displayLikertScale
-    blocking: true 
-    startTime: 135.5
-    question: "satisfaction question"
-    leftLabel: "not satisfied"
-    rightLabel: "very satisfied"
-
-  - stepType: break
-    startTime: 139.5
-    text: "break instructions"
-    duration: 90
+  - stepType: displayText
+    startTime: 6
+    text: You will now see a body in front of you and feel a touch in the back and on your shoulders. Then we will ask you some questions and all this will be repeated two times.
+    duration: 5.0
 
   - stepType: wait
-    startTime: 229.5
+    startTime: 11
+    duration: 1.0
+
+  # =====================================================================
+  # --- Condition 1: Back Sync / SYNC stroking (delay 0 s) ---
+  # =====================================================================
+
+  - stepType: wait
+    startTime: 12
+    duration: 1.0
+    # short pause before loading the camera config
+
+  - stepType: LoadCameraConfig
+    startTime: 13
+    configName: 3PP
+
+  - stepType: displayImage
+    startTime: 13
+    imagePath: plus
+    scale: 0.3
+    duration: 3.0
+    # fixation cross
+
+  - stepType: playSound
+    startTime: 16
+    # sound cue marking the start of stroking
+
+  - stepType: displayCameras
+    startTime: 16
+    duration: 90.0
+    cameraDatas:
+    - id: '2'
+      delay: 0.0
+      configName: 3PP
+
+  - stepType: wait
+    startTime: 106
+    duration: 1.0
+
+  - stepType: displayLikertScale
+    startTime: 107
+    blocking: true
+    question: I felt that the body I saw was my body.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 108
+    blocking: true
+    question: I felt that the touch I felt was located where I saw the stroking.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 109
+    blocking: true
+    question: I felt as if I have three bodies.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  # =====================================================================
+  # --- Condition 2: Back Async / ASYNC stroking (delay 0.5 s) ---
+  # =====================================================================
+
+  - stepType: wait
+    startTime: 110
+    duration: 1.0
+
+  - stepType: displayImage
+    startTime: 111
+    imagePath: plus
+    scale: 0.3
+    duration: 3.0
+
+  - stepType: playSound
+    startTime: 114
+
+  - stepType: displayCameras
+    startTime: 114
+    duration: 90.0
+    cameraDatas:
+    - id: '2'
+      delay: 0.5
+      configName: 3PP
+
+  - stepType: wait
+    startTime: 204
+    duration: 1.0
+
+  - stepType: displayLikertScale
+    startTime: 205
+    blocking: true
+    question: I felt that the body I saw was my body.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 206
+    blocking: true
+    question: I felt that the touch I felt was located where I saw the stroking.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 207
+    blocking: true
+    question: I felt as if I have three bodies.
+    leftLabel: Strongly disagree
+    rightLabel: Strongly agree
+    min: 0
+    max: 100
+    randomCursorPosition: true
+
+  # --- End of experiment ---
+
+  - stepType: wait
+    startTime: 208
     duration: 1.0
 
   - stepType: displayText
-    startTime: 230.5
-    text: "thank you"
-    duration: 4.0
+    startTime: 209
+    text: Thank you for participating in the experiment!
+    duration: 3.0

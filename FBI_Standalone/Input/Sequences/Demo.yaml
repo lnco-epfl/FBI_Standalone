@@ -159,7 +159,6 @@ steps:
   # 10. DisplayCameras — every variant (interpolation, dissolution, fade,
   #     rigInterpolation), one at a time. All set to a 10s duration.
   # --------------------------------------------------------------------
-
   # 10a. Single camera, real-time display
   - stepType: DisplayCameras
     startTime: 65.0
@@ -259,7 +258,6 @@ steps:
   # --------------------------------------------------------------------
   # 11. DisplayQuestion — single choice and multiple choice
   # --------------------------------------------------------------------
-
   - stepType: LoadDisplayConfig
     startTime: 138.0
     configName: Back - Display
