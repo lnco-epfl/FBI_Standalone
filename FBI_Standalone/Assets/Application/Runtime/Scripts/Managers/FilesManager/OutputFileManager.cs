@@ -12,7 +12,8 @@ public class OutputFileData
 
     public string SequenceFile { get; set; }
 
-    public string ConfigFile { get; set; }
+    public string CameraConfigFile { get; set; }
+    public string DisplayConfigFile { get; set; }
     public string CameraDelays { get; set; }
     public float CameraDisplayDuration { get; set; }
     public string CameraIDs { get; set; }
@@ -42,7 +43,8 @@ public class OutputFileData
 
         SequenceFile = string.Empty;
 
-        ConfigFile = string.Empty;
+        CameraConfigFile = string.Empty;
+        DisplayConfigFile = string.Empty;
 
         Scene = string.Empty;
 
@@ -107,7 +109,8 @@ public class OutputFileManager : MonoBehaviour
     private void OnEnable()
     {
         ExperimentManager.Instance.OnInitialized += OnExperiementInitialize;
-        CameraConfigFileManager.Instance.OnConfigLoaded += OnConfigLoaded;
+        CameraConfigFileManager.Instance.OnConfigLoaded += OnCameraConfigLoaded;
+        DisplayConfigFileManager.Instance.OnConfigLoaded += OnDisplayConfigLoaded;
     }
 
 
@@ -115,7 +118,8 @@ public class OutputFileManager : MonoBehaviour
     private void OnDisable()
     {
         ExperimentManager.Instance.OnInitialized -= OnExperiementInitialize;
-        CameraConfigFileManager.Instance.OnConfigLoaded -= OnConfigLoaded;
+        CameraConfigFileManager.Instance.OnConfigLoaded -= OnCameraConfigLoaded;
+        DisplayConfigFileManager.Instance.OnConfigLoaded -= OnDisplayConfigLoaded;
     }
 
     private void OnExperiementInitialize(bool isInitialize, Sequence sequence)
@@ -128,9 +132,14 @@ public class OutputFileManager : MonoBehaviour
             OutputFileData.Age = UIManager.Instance.SelectedAge;
         }
     }
-    private void OnConfigLoaded(CameraConfigFile file)
+    private void OnCameraConfigLoaded(CameraConfigFile file)
     {
-        OutputFileData.ConfigFile = file.configName;
+        OutputFileData.CameraConfigFile = file.configName;
+    }
+
+    private void OnDisplayConfigLoaded(DisplayConfigFile file)
+    {
+        OutputFileData.DisplayConfigFile = file.configName;
     }
 
     public void Initialize(string name)

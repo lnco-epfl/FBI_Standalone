@@ -3083,7 +3083,7 @@
                 {
                     "name": "",
                     "id": "5c4aee52-63c8-4d3f-8ba8-ec14a14c0a82",
-                    "path": "<OculusTouchController>/thumbstickClicked",
+                    "path": "<XRController>{LeftHand}/{Primary2DAxisClick}",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
