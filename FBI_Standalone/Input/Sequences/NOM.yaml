@@ -21,6 +21,10 @@ steps:
     startTime: 0
     scenePath: BlackScene
 
+  - stepType: loadDisplayConfig
+    startTime: 0.5
+    configName: Main - Display
+
   - stepType: displayVideo
     startTime: 1
     videoName: NoM_Intro
@@ -31,48 +35,53 @@ steps:
   # A. BASELINE FBI MEASUREMENT
   # =========================================================================
 
+  - stepType: displayText
+    startTime: 78.08
+    text: You will now see a body in front of you and feel a touch in the back and on your shoulders. Then we will ask you some questions and all this will be repeated four times.
+    duration: 17.904
+
+  - stepType: playSound
+    startTime: 78.08
+    soundPath: FBI_instructions_audio
+
   - stepType: wait
-    startTime: 78
+    startTime: 95.984
     duration: 1.0
 
   # --- Front Sync / SYNC stroking (delay 0 s) ---
 
   - stepType: sendLSLEvent
-    startTime: 79
+    startTime: 96.984
     eventName: config_loaded_Mirror_Flip
 
-  - stepType: loadConfig
-    startTime: 79
-    configName: Mirror - Flip
-
   - stepType: displayImage
-    startTime: 80
+    startTime: 97.984
     imagePath: plus
     scale: 0.3
     duration: 3.0
 
   - stepType: sendLSLEvent
-    startTime: 83
+    startTime: 100.984
     eventName: fbi_front_sync_avatar_on
 
   - stepType: displayCameras
-    startTime: 83
-    duration: 90.0
+    startTime: 100.984
+    duration: 90
     cameraDatas:
     - id: '1'
       delay: 0.0
       configName: Mirror - Flip
 
   - stepType: sendLSLEvent
-    startTime: 173
+    startTime: 190.984
     eventName: fbi_front_sync_avatar_off
 
   - stepType: wait
-    startTime: 173
-    duration: 2.0
+    startTime: 190.984
+    duration: 1.0
 
   - stepType: displayLikertScale
-    startTime: 175
+    startTime: 191.984
     blocking: true
     question: I felt that the body I saw was my body.
     leftLabel: Strongly disagree
@@ -82,7 +91,7 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 176
+    startTime: 192.984
     blocking: true
     question: I felt that the touch I felt was located where I saw the stroking.
     leftLabel: Strongly disagree
@@ -92,7 +101,7 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 177
+    startTime: 193.984
     blocking: true
     question: I felt as if I have three bodies.
     leftLabel: Strongly disagree
@@ -104,44 +113,45 @@ steps:
   # --- Front Async / ASYNC stroking (delay 0.5 s) ---
 
   - stepType: wait
-    startTime: 178
-    duration: 2.0
+    startTime: 194.984
+    duration: 1.0
 
   - stepType: displayImage
-    startTime: 180
+    startTime: 195.984
     imagePath: plus
     scale: 0.3
     duration: 3.0
 
   - stepType: sendLSLEvent
-    startTime: 183
+    startTime: 198.984
     eventName: fbi_front_async_cue_audio_start
 
   - stepType: playSound
-    startTime: 183
+    startTime: 198.984
+    soundPath: bell-sfx
 
   - stepType: sendLSLEvent
-    startTime: 183
+    startTime: 198.984
     eventName: fbi_front_async_avatar_on
 
   - stepType: displayCameras
-    startTime: 183
-    duration: 90.0
+    startTime: 198.984
+    duration: 90
     cameraDatas:
     - id: '1'
       delay: 0.5
       configName: Mirror - Flip
 
   - stepType: sendLSLEvent
-    startTime: 273
+    startTime: 288.984
     eventName: fbi_front_async_avatar_off
 
   - stepType: wait
-    startTime: 273
-    duration: 2.0
+    startTime: 288.984
+    duration: 1.0
 
   - stepType: displayLikertScale
-    startTime: 275
+    startTime: 289.984
     blocking: true
     question: I felt that the body I saw was my body.
     leftLabel: Strongly disagree
@@ -151,7 +161,7 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 276
+    startTime: 290.984
     blocking: true
     question: I felt that the touch I felt was located where I saw the stroking.
     leftLabel: Strongly disagree
@@ -161,7 +171,7 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 277
+    startTime: 291.984
     blocking: true
     question: I felt as if I have three bodies.
     leftLabel: Strongly disagree
@@ -173,52 +183,53 @@ steps:
   # --- Back Sync / SYNC stroking (delay 0 s) ---
 
   - stepType: wait
-    startTime: 278
-    duration: 2.0
+    startTime: 292.984
+    duration: 1.0
 
   - stepType: sendLSLEvent
-    startTime: 280
+    startTime: 293.984
     eventName: config_loaded_3PP
 
-  - stepType: loadConfig
-    startTime: 280
+  - stepType: loadCameraConfig
+    startTime: 293.984
     configName: 3PP
 
   - stepType: displayImage
-    startTime: 281
+    startTime: 294.984
     imagePath: plus
     scale: 0.3
     duration: 3.0
 
   - stepType: sendLSLEvent
-    startTime: 284
+    startTime: 297.984
     eventName: fbi_back_sync_cue_audio_start
 
   - stepType: playSound
-    startTime: 284
+    startTime: 297.984
+    soundPath: bell-sfx
 
   - stepType: sendLSLEvent
-    startTime: 284
+    startTime: 297.984
     eventName: fbi_back_sync_avatar_on
 
   - stepType: displayCameras
-    startTime: 284
-    duration: 90.0
+    startTime: 297.984
+    duration: 90
     cameraDatas:
     - id: '2'
       delay: 0.0
       configName: 3PP
 
   - stepType: sendLSLEvent
-    startTime: 374
+    startTime: 387.984
     eventName: fbi_back_sync_avatar_off
 
   - stepType: wait
-    startTime: 374
-    duration: 2.0
+    startTime: 387.984
+    duration: 1.0
 
   - stepType: displayLikertScale
-    startTime: 376
+    startTime: 388.984
     blocking: true
     question: I felt that the body I saw was my body.
     leftLabel: Strongly disagree
@@ -228,7 +239,7 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 377
+    startTime: 389.984
     blocking: true
     question: I felt that the touch I felt was located where I saw the stroking.
     leftLabel: Strongly disagree
@@ -238,7 +249,7 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 378
+    startTime: 390.984
     blocking: true
     question: I felt as if I have three bodies.
     leftLabel: Strongly disagree
@@ -250,44 +261,45 @@ steps:
   # --- Back Async / ASYNC stroking (delay 0.5 s) ---
 
   - stepType: wait
-    startTime: 379
-    duration: 2.0
+    startTime: 391.984
+    duration: 1.0
 
   - stepType: displayImage
-    startTime: 381
+    startTime: 392.984
     imagePath: plus
     scale: 0.3
     duration: 3.0
 
   - stepType: sendLSLEvent
-    startTime: 384
+    startTime: 395.984
     eventName: fbi_back_async_cue_audio_start
 
   - stepType: playSound
-    startTime: 384
+    startTime: 395.984
+    soundPath: bell-sfx
 
   - stepType: sendLSLEvent
-    startTime: 384
+    startTime: 395.984
     eventName: fbi_back_async_avatar_on
 
   - stepType: displayCameras
-    startTime: 384
-    duration: 90.0
+    startTime: 395.984
+    duration: 90
     cameraDatas:
     - id: '2'
       delay: 0.5
       configName: 3PP
 
   - stepType: sendLSLEvent
-    startTime: 474
+    startTime: 485.984
     eventName: fbi_back_async_avatar_off
 
   - stepType: wait
-    startTime: 474
-    duration: 2.0
+    startTime: 485.984
+    duration: 1.0
 
   - stepType: displayLikertScale
-    startTime: 476
+    startTime: 486.984
     blocking: true
     question: I felt that the body I saw was my body.
     leftLabel: Strongly disagree
@@ -297,7 +309,7 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 477
+    startTime: 487.984
     blocking: true
     question: I felt that the touch I felt was located where I saw the stroking.
     leftLabel: Strongly disagree
@@ -307,7 +319,7 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 478
+    startTime: 488.984
     blocking: true
     question: I felt as if I have three bodies.
     leftLabel: Strongly disagree
@@ -317,7 +329,7 @@ steps:
     randomCursorPosition: true
 
   - stepType: break
-    startTime: 479
+    startTime: 489.984
     text: Baseline measurement complete. Please take a short break.
     duration: 30
 
@@ -326,64 +338,49 @@ steps:
   # =========================================================================
 
   - stepType: loadScene
-    startTime: 509
+    startTime: 519.984
     scenePath: EmptyRoom
 
-  - stepType: sendLSLEvent
-    startTime: 510
-    eventName: phase1_audio_NoM_Phase1_start
-
-  - stepType: playSound
-    startTime: 510
-    soundPath: NoM_Phase1
-
-  # settle: hold previous-phase config before interpolation
-
   - stepType: displayCameras
-    startTime: 510
-    duration: 5.0
-    cameraDatas:
-    - id: '2'
-      delay: 0.0
-      configName: 3PP
-
-  - stepType: sendLSLEvent
-    startTime: 515
-    eventName: phase1_avatar_change_to_1PP_start
-
-  - stepType: displayCameras
-    startTime: 515
-    duration: 75.0
+    startTime: 520.984
+    duration: 155
     cameraDatas:
     - id: '1'
       delay: 0.0
       configName: 1PP
-      interpolation:
-        duration: 5.0
-        delay: 0.0
-        ease: InOutSine
-        startConfigName: 3PP
 
   - stepType: sendLSLEvent
-    startTime: 520
+    startTime: 525.984
+    eventName: phase1_audio_NoM_Phase1_start
+
+  - stepType: playSound
+    startTime: 525.984
+    soundPath: NoM_Phase1_audio
+
+  - stepType: sendLSLEvent
+    startTime: 525.984
+    eventName: phase1_avatar_change_to_1PP_start
+
+  - stepType: sendLSLEvent
+    startTime: 530.984
     eventName: phase1_avatar_change_to_1PP_done
 
   - stepType: sendLSLEvent
-    startTime: 587.1
+    startTime: 636.624
     eventName: phase1_audio_NoM_Phase1_end
 
   - stepType: sendLSLEvent
-    startTime: 590
+    startTime: 675.984
     eventName: phase1_avatar_off
 
   - stepType: wait
-    startTime: 590
-    duration: 2.0
+    startTime: 675.984
+    duration: 1.0
 
   - stepType: displayLikertScale
-    startTime: 592
+    startTime: 676.984
     blocking: true
-    question: How much do you feel that the body that you saw is your body?
+    question: How much do you feel that the body that you saw is yours?
     leftLabel: Not at all
     rightLabel: Completely
     min: 0
@@ -391,9 +388,9 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 593
+    startTime: 677.984
     blocking: true
-    question: How much do you experience the sensations of your body right now?
+    question: How much do you feel your center of awareness to be located where you saw the body?
     leftLabel: Not at all
     rightLabel: Completely
     min: 0
@@ -401,19 +398,9 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 594
+    startTime: 678.984
     blocking: true
-    question: How much do you feel your center of awareness to be located where you feel your body to be?
-    leftLabel: Not at all
-    rightLabel: Completely
-    min: 0
-    max: 5
-    randomCursorPosition: true
-
-  - stepType: displayLikertScale
-    startTime: 595
-    blocking: true
-    question: How many times have you been experiencing the nature of mind during this last phase of the experiment?
+    question: How many times have you been experiencing the nature of mind during this last phase of the session?
     leftLabel: Never
     rightLabel: Continuously
     min: 0
@@ -421,19 +408,9 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 596
+    startTime: 679.984
     blocking: true
-    question: How stable is your attention right now?
-    leftLabel: Not stable
-    rightLabel: Very stable
-    min: 0
-    max: 5
-    randomCursorPosition: true
-
-  - stepType: displayLikertScale
-    startTime: 597
-    blocking: true
-    question: How clearly do you feel your body?
+    question: How aware are you of having a body?
     leftLabel: Not clearly
     rightLabel: Very clearly
     min: 0
@@ -441,68 +418,77 @@ steps:
     randomCursorPosition: true
 
   - stepType: wait
-    startTime: 598
-    duration: 2.0
+    startTime: 680.984
+    duration: 1.0
 
   # =========================================================================
   # 2. 3PP BACK (OBX) - camera 2, 3PP back config
   # =========================================================================
 
-  # settle: hold previous-phase config before interpolation
-
   - stepType: displayCameras
-    startTime: 600
-    duration: 5.0
+    startTime: 681.984
+    duration: 185
     cameraDatas:
     - id: '1'
       delay: 0.0
       configName: 1PP
+      fade:
+        duration: 1.5
+        delay: 15
+    - id: '2'
+      delay: 0.0
+      configName: 3PP - Back
+    rigInterpolation:
+      startPosition:
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      endPosition:
+        x: 0.0
+        y: 0.0
+        z: -1.5
+      startYaw: 0.0
+      endYaw: 0.0
+      delay: 5.0
+      duration: 5.0
+      ease: InOutSine
 
   - stepType: sendLSLEvent
-    startTime: 605
+    startTime: 686.984
     eventName: phase2_audio_NoM_Phase2_start
 
   - stepType: playSound
-    startTime: 605
-    soundPath: NoM_Phase2
+    startTime: 686.984
+    soundPath: NoM_Phase2_audio
 
   - stepType: sendLSLEvent
-    startTime: 605
+    startTime: 686.984
     eventName: phase2_avatar_change_to_3PP_start
 
-  - stepType: displayCameras
-    startTime: 605
-    duration: 119.0
-    cameraDatas:
-    - id: '2'
-      delay: 0.0
-      configName: 3PP
-      interpolation:
-        duration: 5.0
-        delay: 0.0
-        ease: InOutSine
-        startConfigName: 1PP
-
   - stepType: sendLSLEvent
-    startTime: 610
+    startTime: 691.984
     eventName: phase2_avatar_change_to_3PP_done
 
+  - stepType: loadDisplayConfig
+    startTime: 852
+    configName: Back - Display
+
   - stepType: sendLSLEvent
-    startTime: 668.6
+    startTime: 852.584
     eventName: phase2_audio_NoM_Phase2_end
 
   - stepType: sendLSLEvent
-    startTime: 724
+    startTime: 866.984
     eventName: phase2_avatar_off
 
   - stepType: wait
-    startTime: 724
-    duration: 2.0
+    startTime: 866.984
+    duration: 1.0
 
   - stepType: displayLikertScale
-    startTime: 726
+    startTime: 867.984
     blocking: true
-    question: How much do you feel that the body that you saw is your body?
+    question: How much do you feel that the body that you saw is yours?
     leftLabel: Not at all
     rightLabel: Completely
     min: 0
@@ -510,9 +496,9 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 727
+    startTime: 868.984
     blocking: true
-    question: How much do you experience the sensations of your body right now?
+    question: How much do you feel your center of awareness to be located where you saw the body?
     leftLabel: Not at all
     rightLabel: Completely
     min: 0
@@ -520,19 +506,9 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 728
+    startTime: 869.984
     blocking: true
-    question: How much do you feel your center of awareness to be located where you feel your body to be?
-    leftLabel: Not at all
-    rightLabel: Completely
-    min: 0
-    max: 5
-    randomCursorPosition: true
-
-  - stepType: displayLikertScale
-    startTime: 729
-    blocking: true
-    question: How many times have you been experiencing the nature of mind during this last phase of the experiment?
+    question: How many times have you been experiencing the nature of mind during this last phase of the session?
     leftLabel: Never
     rightLabel: Continuously
     min: 0
@@ -540,87 +516,96 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayQuestion
-    startTime: 730
+    startTime: 870.984
     blocking: true
     question: Where do you feel yourself to be located?
     options:
-    - Inside the body I see
-    - Outside the body I see
+    - At the location of the body I see
+    - At the location from where I see
     - Somewhere else / unclear
 
   - stepType: displayLikertScale
-    startTime: 731
+    startTime: 871.984
     blocking: true
-    question: Does this body feel like yours?
-    leftLabel: Not at all
-    rightLabel: Completely
+    question: How aware are you of having a body?
+    leftLabel: Not clearly
+    rightLabel: Very clearly
     min: 0
     max: 5
     randomCursorPosition: true
 
   - stepType: wait
-    startTime: 732
-    duration: 2.0
+    startTime: 872.984
+    duration: 1.0
 
   # =========================================================================
   # 3. 1PP INVERTED - camera 1, inverted config
   # =========================================================================
 
-  # settle: hold previous-phase config before interpolation
-
   - stepType: displayCameras
-    startTime: 734
-    duration: 5.0
-    cameraDatas:
-    - id: '2'
-      delay: 0.0
-      configName: 3PP
-
-  - stepType: sendLSLEvent
-    startTime: 739
-    eventName: phase3_audio_NoM_Phase3_start
-
-  - stepType: playSound
-    startTime: 739
-    soundPath: NoM_Phase3
-
-  - stepType: sendLSLEvent
-    startTime: 739
-    eventName: phase3_avatar_change_to_1PP_Flip_start
-
-  - stepType: displayCameras
-    startTime: 739
-    duration: 178.0
+    startTime: 873.984
+    duration: 185
     cameraDatas:
     - id: '1'
       delay: 0.0
       configName: 1PP - Flip
-      interpolation:
-        duration: 5.0
-        delay: 0.0
-        ease: InOutSine
-        startConfigName: 3PP
+    - id: '2'
+      delay: 0.0
+      configName: 3PP - Back
+      fade:
+        duration: 1.5
+        delay: 10
+    rigInterpolation:
+      startPosition:
+        x: 0.0
+        y: 0.0
+        z: -1.5
+      endPosition:
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      startYaw: 0.0
+      endYaw: 0.0
+      delay: 5.0
+      duration: 5.0
+      ease: InOutSine
 
   - stepType: sendLSLEvent
-    startTime: 744
+    startTime: 878.984
+    eventName: phase3_audio_NoM_Phase3_start
+
+  - stepType: playSound
+    startTime: 878.984
+    soundPath: NoM_Phase3_audio
+
+  - stepType: sendLSLEvent
+    startTime: 878.984
+    eventName: phase3_avatar_change_to_1PP_Flip_start
+
+  - stepType: sendLSLEvent
+    startTime: 883.984
     eventName: phase3_avatar_change_to_1PP_Flip_done
 
+  - stepType: loadDisplayConfig
+    startTime: 1031
+    configName: Main - Display
+
   - stepType: sendLSLEvent
-    startTime: 812.2
+    startTime: 1031.552
     eventName: phase3_audio_NoM_Phase3_end
 
   - stepType: sendLSLEvent
-    startTime: 917
+    startTime: 1058.984
     eventName: phase3_avatar_off
 
   - stepType: wait
-    startTime: 917
-    duration: 2.0
+    startTime: 1058.984
+    duration: 1.0
 
   - stepType: displayLikertScale
-    startTime: 919
+    startTime: 1059.984
     blocking: true
-    question: How much do you feel that the body that you saw is your body?
+    question: How much do you feel that the body that you saw is yours?
     leftLabel: Not at all
     rightLabel: Completely
     min: 0
@@ -628,9 +613,9 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 920
+    startTime: 1060.984
     blocking: true
-    question: How much do you experience the sensations of your body right now?
+    question: How much do you feel your center of awareness to be located where you saw the body?
     leftLabel: Not at all
     rightLabel: Completely
     min: 0
@@ -638,19 +623,9 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 921
+    startTime: 1061.984
     blocking: true
-    question: How much do you feel your center of awareness to be located where you feel your body to be?
-    leftLabel: Not at all
-    rightLabel: Completely
-    min: 0
-    max: 5
-    randomCursorPosition: true
-
-  - stepType: displayLikertScale
-    startTime: 922
-    blocking: true
-    question: How many times have you been experiencing the nature of mind during this last phase of the experiment?
+    question: How many times have you been experiencing the nature of mind during this last phase of the session?
     leftLabel: Never
     rightLabel: Continuously
     min: 0
@@ -658,75 +633,63 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayQuestion
-    startTime: 923
+    startTime: 1062.984
     blocking: true
-    question: Are you the visual self or the moving self?
+    question: Where do you feel yourself to be located?
     options:
-    - The visual self
-    - The moving self
-    - Both / neither
+    - At the location of the body I see
+    - At the location from where I see
+    - Somewhere else / unclear
 
   - stepType: displayLikertScale
-    startTime: 924
+    startTime: 1063.984
     blocking: true
-    question: How clear is your sense of where your body begins?
-    leftLabel: Not clear
-    rightLabel: Very clear
+    question: How aware are you of having a body?
+    leftLabel: Not clearly
+    rightLabel: Very clearly
     min: 0
     max: 5
     randomCursorPosition: true
 
   - stepType: wait
-    startTime: 925
-    duration: 2.0
+    startTime: 1064.984
+    duration: 1.0
 
   # =========================================================================
   # 4. 3PP FRONT - Facing avatar  (TWO point clouds shown SIMULTANEOUSLY)
   # =========================================================================
 
-  # Avatar 1: own moving body (1PP - Flip). Runs the full 180 s.
-
-  # settle: hold previous-phase config before interpolation
+  # Avatar 1: own moving body (1PP - Flip). Appears 10 s before the audio, runs the full phase.
 
   - stepType: displayCameras
-    startTime: 927
-    duration: 5.0
+    startTime: 1065.984
+    duration: 195
     cameraDatas:
     - id: '1'
       delay: 0.0
       configName: 1PP - Flip
 
   - stepType: sendLSLEvent
-    startTime: 932
+    startTime: 1070.984
     eventName: phase4_avatar1_on
 
-  - stepType: displayCameras
-    startTime: 932
-    duration: 180.0
-    cameraDatas:
-    - id: '1'
-      delay: 0.0
-      configName: 1PP - Flip
-
-  # Avatar 2: facing 'other self' (Mirror - Flip), starts +10 s, ends together with avatar 1.
-
-  # playSound aligned with avatar 2: 'Now there are two bodies' as the second body emerges. 73 s audio.
+  # Avatar 2: facing 'other self' (Mirror - Flip), starts with the audio, ends together with avatar 1.
 
   - stepType: sendLSLEvent
-    startTime: 942
+    startTime: 1080.984
     eventName: phase4_audio_NoM_Phase4_start
 
   - stepType: playSound
-    startTime: 942
-    soundPath: NoM_Phase4
+    startTime: 1080.984
+    soundPath: NoM_Phase4_audio
 
   - stepType: sendLSLEvent
-    startTime: 942
+    startTime: 1080.984
     eventName: phase4_avatar2_on
 
   - stepType: displayCameras
-    startTime: 942
-    duration: 170.0
+    startTime: 1080.984
+    duration: 180
     cameraDatas:
     - id: '1'
       delay: 0.0
@@ -738,21 +701,21 @@ steps:
         startConfigName: 1PP - Flip
 
   - stepType: sendLSLEvent
-    startTime: 1015.3
+    startTime: 1234.368
     eventName: phase4_audio_NoM_Phase4_end
 
   - stepType: sendLSLEvent
-    startTime: 1112
+    startTime: 1260.984
     eventName: phase4_avatars_off
 
   - stepType: wait
-    startTime: 1112
-    duration: 2.0
+    startTime: 1260.984
+    duration: 1.0
 
   - stepType: displayLikertScale
-    startTime: 1114
+    startTime: 1261.984
     blocking: true
-    question: How much do you feel that the body that you saw is your body?
+    question: How much do you feel that the body that you saw is yours?
     leftLabel: Not at all
     rightLabel: Completely
     min: 0
@@ -760,9 +723,9 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 1115
+    startTime: 1262.984
     blocking: true
-    question: How much do you experience the sensations of your body right now?
+    question: How much do you feel your center of awareness to be located where you saw the body?
     leftLabel: Not at all
     rightLabel: Completely
     min: 0
@@ -770,19 +733,9 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 1116
+    startTime: 1263.984
     blocking: true
-    question: How much do you feel your center of awareness to be located where you feel your body to be?
-    leftLabel: Not at all
-    rightLabel: Completely
-    min: 0
-    max: 5
-    randomCursorPosition: true
-
-  - stepType: displayLikertScale
-    startTime: 1117
-    blocking: true
-    question: How many times have you been experiencing the nature of mind during this last phase of the experiment?
+    question: How many times have you been experiencing the nature of mind during this last phase of the session?
     leftLabel: Never
     rightLabel: Continuously
     min: 0
@@ -790,81 +743,118 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayQuestion
-    startTime: 1118
+    startTime: 1264.984
     blocking: true
-    question: Which body felt most like you?
+    question: Where do you feel yourself to be located?
     options:
-    - The moving body
-    - The mirror body
-    - Neither
+    - At the location of the body I see
+    - At the location from where I see
+    - Somewhere else / unclear
 
   - stepType: displayLikertScale
-    startTime: 1119
+    startTime: 1265.984
     blocking: true
-    question: How fixed was your sense of self-location?
-    leftLabel: Not fixed
-    rightLabel: Very fixed
+    question: How aware are you of having a body?
+    leftLabel: Not clearly
+    rightLabel: Very clearly
     min: 0
     max: 5
     randomCursorPosition: true
 
   - stepType: wait
-    startTime: 1120
-    duration: 2.0
+    startTime: 1266.984
+    duration: 1.0
 
   # =========================================================================
-  # 5. EGO DISSOLUTION - No avatar
+  # 5. EGO DISSOLUTION - both avatars, scripted disappearances
   # =========================================================================
 
   - stepType: loadScene
-    startTime: 1122
+    startTime: 1267.984
     scenePath: EmptyRoom
 
-  - stepType: sendLSLEvent
-    startTime: 1123
-    eventName: phase5_dissolution_start
+  # settle: 'the situation from before' - both avatars visible again
 
   - stepType: displayCameras
-    startTime: 1123
-    duration: 8.0
+    startTime: 1268.984
+    duration: 4
+    cameraDatas:
+    - id: '1'
+      delay: 0.0
+      configName: 1PP - Flip
+
+  - stepType: displayCameras
+    startTime: 1268.984
+    duration: 4
+    cameraDatas:
+    - id: '1'
+      delay: 0.0
+      configName: Mirror - Flip
+
+  - stepType: sendLSLEvent
+    startTime: 1273.984
+    eventName: phase5_audio_NoM_Phase5_start
+
+  - stepType: playSound
+    startTime: 1273.984
+    soundPath: NoM_Phase5_audio
+
+  # 'Now the body that you see will slowly disappear.' (46.5 s) -> Mirror - Flip
+
+  - stepType: displayCameras
+    startTime: 1273.984
+    duration: 57.5
+    cameraDatas:
+    - id: '1'
+      delay: 0.0
+      configName: Mirror - Flip
+      dissolution:
+        duration: 10.0
+        delay: 46.5
+
+  # 'Now the body that you see from will slowly disappear.' (64.5 s) -> 1PP - Flip
+
+  - stepType: displayCameras
+    startTime: 1273.984
+    duration: 75.5
     cameraDatas:
     - id: '1'
       delay: 0.0
       configName: 1PP - Flip
       dissolution:
-        duration: 6.0
-        delay: 1.0
+        duration: 10.0
+        delay: 64.5
 
   - stepType: sendLSLEvent
-    startTime: 1130
-    eventName: phase5_avatar_dissolved
+    startTime: 1320.484
+    eventName: phase5_mirror_flip_dissolution_start
 
   - stepType: sendLSLEvent
-    startTime: 1131
-    eventName: phase5_audio_NoM_Phase5_start
-
-  - stepType: playSound
-    startTime: 1131
-    soundPath: NoM_Phase5
-
-  # rest in open awareness
-
-  - stepType: wait
-    startTime: 1131
-    duration: 169.0
+    startTime: 1330.484
+    eventName: phase5_mirror_flip_dissolved
 
   - stepType: sendLSLEvent
-    startTime: 1177.7
+    startTime: 1338.484
+    eventName: phase5_1pp_flip_dissolution_start
+
+  - stepType: sendLSLEvent
+    startTime: 1348.484
+    eventName: phase5_1pp_flip_dissolved
+
+  - stepType: sendLSLEvent
+    startTime: 1417.84
     eventName: phase5_audio_NoM_Phase5_end
 
+  # rest in open awareness until the end of the phase
+
   - stepType: wait
-    startTime: 1300
-    duration: 2.0
+    startTime: 1453.984
+    duration: 1.0
 
   - stepType: displayLikertScale
-    startTime: 1302
+    startTime: 1454.984
     blocking: true
-    question: How much do you feel that the body that you saw is your body?
+    question: How much do you feel that the body that you saw is yours?
     leftLabel: Not at all
     rightLabel: Completely
     min: 0
@@ -872,9 +862,9 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 1303
+    startTime: 1455.984
     blocking: true
-    question: How much do you experience the sensations of your body right now?
+    question: How much do you feel your center of awareness to be located where you saw the body?
     leftLabel: Not at all
     rightLabel: Completely
     min: 0
@@ -882,46 +872,36 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 1304
+    startTime: 1456.984
     blocking: true
-    question: How much do you feel your center of awareness to be located where you feel your body to be?
-    leftLabel: Not at all
-    rightLabel: Completely
-    min: 0
-    max: 5
-    randomCursorPosition: true
-
-  - stepType: displayLikertScale
-    startTime: 1305
-    blocking: true
-    question: How many times have you been experiencing the nature of mind during this last phase of the experiment?
+    question: How many times have you been experiencing the nature of mind during this last phase of the session?
     leftLabel: Never
     rightLabel: Continuously
     min: 0
     max: 5
     randomCursorPosition: true
 
-  - stepType: displayLikertScale
-    startTime: 1306
+  - stepType: displayQuestion
+    startTime: 1457.984
     blocking: true
-    question: How wide or boundless did your awareness feel?
-    leftLabel: Not wide
-    rightLabel: Very wide
+    question: Where do you feel yourself to be located?
+    options:
+    - At the location of the body I see
+    - At the location from where I see
+    - Somewhere else / unclear
+
+  - stepType: displayLikertScale
+    startTime: 1458.984
+    blocking: true
+    question: How aware are you of having a body?
+    leftLabel: Not clearly
+    rightLabel: Very clearly
     min: 0
     max: 5
     randomCursorPosition: true
 
-  - stepType: displayQuestion
-    startTime: 1307
-    blocking: true
-    question: Was there still a sense of a 'self' present?
-    options:
-    - 0 - Not at all
-    - 2.5 - Somewhat
-    - 5 - Completely
-
   - stepType: break
-    startTime: 1308
+    startTime: 1459.984
     text: This concludes the meditative phase. The following is the final measurement.
     duration: 60
 
@@ -930,56 +910,65 @@ steps:
   # =========================================================================
 
   - stepType: loadScene
-    startTime: 1368
+    startTime: 1519.984
     scenePath: BlackScene
 
   - stepType: displayText
-    startTime: 1369
+    startTime: 1520.984
     text: Welcome to Full Body Illusion experiment
-    duration: 4.0
+    duration: 4
+
+  - stepType: displayText
+    startTime: 1524.984
+    text: You will now see a body in front of you and feel a touch in the back and on your shoulders. Then we will ask you some questions and all this will be repeated four times.
+    duration: 17.904
+
+  - stepType: playSound
+    startTime: 1524.984
+    soundPath: FBI_instructions_audio
 
   - stepType: wait
-    startTime: 1373
+    startTime: 1542.888
     duration: 1.0
 
   # --- Front Sync / SYNC stroking (delay 0 s) ---
 
   - stepType: sendLSLEvent
-    startTime: 1374
+    startTime: 1543.888
     eventName: config_loaded_Mirror_Flip
 
-  - stepType: loadConfig
-    startTime: 1374
+  - stepType: loadCameraConfig
+    startTime: 1543.888
     configName: Mirror - Flip
 
   - stepType: displayImage
-    startTime: 1375
+    startTime: 1544.888
     imagePath: plus
     scale: 0.3
     duration: 3.0
 
   - stepType: sendLSLEvent
-    startTime: 1378
+    startTime: 1547.888
     eventName: fbi_front_sync_avatar_on
 
   - stepType: displayCameras
-    startTime: 1378
-    duration: 90.0
+    startTime: 1547.888
+    duration: 90
     cameraDatas:
     - id: '1'
       delay: 0.0
       configName: Mirror - Flip
 
   - stepType: sendLSLEvent
-    startTime: 1468
+    startTime: 1637.888
     eventName: fbi_front_sync_avatar_off
 
   - stepType: wait
-    startTime: 1468
-    duration: 2.0
+    startTime: 1637.888
+    duration: 1.0
 
   - stepType: displayLikertScale
-    startTime: 1470
+    startTime: 1638.888
     blocking: true
     question: I felt that the body I saw was my body.
     leftLabel: Strongly disagree
@@ -989,7 +978,7 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 1471
+    startTime: 1639.888
     blocking: true
     question: I felt that the touch I felt was located where I saw the stroking.
     leftLabel: Strongly disagree
@@ -999,7 +988,7 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 1472
+    startTime: 1640.888
     blocking: true
     question: I felt as if I have three bodies.
     leftLabel: Strongly disagree
@@ -1011,44 +1000,45 @@ steps:
   # --- Front Async / ASYNC stroking (delay 0.5 s) ---
 
   - stepType: wait
-    startTime: 1473
-    duration: 2.0
+    startTime: 1641.888
+    duration: 1.0
 
   - stepType: displayImage
-    startTime: 1475
+    startTime: 1642.888
     imagePath: plus
     scale: 0.3
     duration: 3.0
 
   - stepType: sendLSLEvent
-    startTime: 1478
+    startTime: 1645.888
     eventName: fbi_front_async_cue_audio_start
 
   - stepType: playSound
-    startTime: 1478
+    startTime: 1645.888
+    soundPath: bell-sfx
 
   - stepType: sendLSLEvent
-    startTime: 1478
+    startTime: 1645.888
     eventName: fbi_front_async_avatar_on
 
   - stepType: displayCameras
-    startTime: 1478
-    duration: 90.0
+    startTime: 1645.888
+    duration: 90
     cameraDatas:
     - id: '1'
       delay: 0.5
       configName: Mirror - Flip
 
   - stepType: sendLSLEvent
-    startTime: 1568
+    startTime: 1735.888
     eventName: fbi_front_async_avatar_off
 
   - stepType: wait
-    startTime: 1568
-    duration: 2.0
+    startTime: 1735.888
+    duration: 1.0
 
   - stepType: displayLikertScale
-    startTime: 1570
+    startTime: 1736.888
     blocking: true
     question: I felt that the body I saw was my body.
     leftLabel: Strongly disagree
@@ -1058,7 +1048,7 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 1571
+    startTime: 1737.888
     blocking: true
     question: I felt that the touch I felt was located where I saw the stroking.
     leftLabel: Strongly disagree
@@ -1068,7 +1058,7 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 1572
+    startTime: 1738.888
     blocking: true
     question: I felt as if I have three bodies.
     leftLabel: Strongly disagree
@@ -1080,52 +1070,53 @@ steps:
   # --- Back Sync / SYNC stroking (delay 0 s) ---
 
   - stepType: wait
-    startTime: 1573
-    duration: 2.0
+    startTime: 1739.888
+    duration: 1.0
 
   - stepType: sendLSLEvent
-    startTime: 1575
+    startTime: 1740.888
     eventName: config_loaded_3PP
 
-  - stepType: loadConfig
-    startTime: 1575
+  - stepType: loadCameraConfig
+    startTime: 1740.888
     configName: 3PP
 
   - stepType: displayImage
-    startTime: 1576
+    startTime: 1741.888
     imagePath: plus
     scale: 0.3
     duration: 3.0
 
   - stepType: sendLSLEvent
-    startTime: 1579
+    startTime: 1744.888
     eventName: fbi_back_sync_cue_audio_start
 
   - stepType: playSound
-    startTime: 1579
+    startTime: 1744.888
+    soundPath: bell-sfx
 
   - stepType: sendLSLEvent
-    startTime: 1579
+    startTime: 1744.888
     eventName: fbi_back_sync_avatar_on
 
   - stepType: displayCameras
-    startTime: 1579
-    duration: 90.0
+    startTime: 1744.888
+    duration: 90
     cameraDatas:
     - id: '2'
       delay: 0.0
       configName: 3PP
 
   - stepType: sendLSLEvent
-    startTime: 1669
+    startTime: 1834.888
     eventName: fbi_back_sync_avatar_off
 
   - stepType: wait
-    startTime: 1669
-    duration: 2.0
+    startTime: 1834.888
+    duration: 1.0
 
   - stepType: displayLikertScale
-    startTime: 1671
+    startTime: 1835.888
     blocking: true
     question: I felt that the body I saw was my body.
     leftLabel: Strongly disagree
@@ -1135,7 +1126,7 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 1672
+    startTime: 1836.888
     blocking: true
     question: I felt that the touch I felt was located where I saw the stroking.
     leftLabel: Strongly disagree
@@ -1145,7 +1136,7 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 1673
+    startTime: 1837.888
     blocking: true
     question: I felt as if I have three bodies.
     leftLabel: Strongly disagree
@@ -1157,44 +1148,45 @@ steps:
   # --- Back Async / ASYNC stroking (delay 0.5 s) ---
 
   - stepType: wait
-    startTime: 1674
-    duration: 2.0
+    startTime: 1838.888
+    duration: 1.0
 
   - stepType: displayImage
-    startTime: 1676
+    startTime: 1839.888
     imagePath: plus
     scale: 0.3
     duration: 3.0
 
   - stepType: sendLSLEvent
-    startTime: 1679
+    startTime: 1842.888
     eventName: fbi_back_async_cue_audio_start
 
   - stepType: playSound
-    startTime: 1679
+    startTime: 1842.888
+    soundPath: bell-sfx
 
   - stepType: sendLSLEvent
-    startTime: 1679
+    startTime: 1842.888
     eventName: fbi_back_async_avatar_on
 
   - stepType: displayCameras
-    startTime: 1679
-    duration: 90.0
+    startTime: 1842.888
+    duration: 90
     cameraDatas:
     - id: '2'
       delay: 0.5
       configName: 3PP
 
   - stepType: sendLSLEvent
-    startTime: 1769
+    startTime: 1932.888
     eventName: fbi_back_async_avatar_off
 
   - stepType: wait
-    startTime: 1769
-    duration: 2.0
+    startTime: 1932.888
+    duration: 1.0
 
   - stepType: displayLikertScale
-    startTime: 1771
+    startTime: 1933.888
     blocking: true
     question: I felt that the body I saw was my body.
     leftLabel: Strongly disagree
@@ -1204,7 +1196,7 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 1772
+    startTime: 1934.888
     blocking: true
     question: I felt that the touch I felt was located where I saw the stroking.
     leftLabel: Strongly disagree
@@ -1214,7 +1206,7 @@ steps:
     randomCursorPosition: true
 
   - stepType: displayLikertScale
-    startTime: 1773
+    startTime: 1935.888
     blocking: true
     question: I felt as if I have three bodies.
     leftLabel: Strongly disagree
@@ -1224,10 +1216,10 @@ steps:
     randomCursorPosition: true
 
   - stepType: wait
-    startTime: 1774
+    startTime: 1936.888
     duration: 1.0
 
   - stepType: displayText
-    startTime: 1775
+    startTime: 1937.888
     text: Thank you for participating in the experiment!
-    duration: 3.0
+    duration: 3

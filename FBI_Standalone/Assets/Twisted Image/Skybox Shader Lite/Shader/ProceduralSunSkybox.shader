@@ -20,17 +20,20 @@
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile_instancing
             #include "UnityCG.cginc"
 
             struct appdata_t
             {
                 float4 vertex : POSITION;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
             struct v2f
             {
                 float3 texcoord : TEXCOORD0;
                 float4 pos : SV_POSITION;
+                UNITY_VERTEX_OUTPUT_STEREO
             };
 
             samplerCUBE _SkyboxTex;
@@ -62,6 +65,10 @@
             v2f vert(appdata_t v)
             {
                 v2f o;
+                UNITY_SETUP_INSTANCE_ID(v);
+                UNITY_INITIALIZE_OUTPUT(v2f, o);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.texcoord = normalize(v.vertex.xyz);
                 return o;

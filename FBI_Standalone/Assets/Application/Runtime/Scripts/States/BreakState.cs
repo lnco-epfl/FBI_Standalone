@@ -37,7 +37,7 @@ public class BreakState : IState
 
         if(skipFromUser)
         {
-            var nextStepTime = step.startTime + step.duration;
+            var nextStepTime = step.startTime + currentValue;
 
             ExperimentManager.Instance.SeekTime(nextStepTime);
         }
