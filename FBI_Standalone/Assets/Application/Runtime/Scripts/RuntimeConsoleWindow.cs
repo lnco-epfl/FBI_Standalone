@@ -52,15 +52,15 @@ public class RuntimeConsoleWindow : MonoBehaviour
 
 
         Application.logMessageReceivedThreaded += OnLog;
-        
-        
+
+
     }
 
     void OnDestroy()
     {
 
         Application.logMessageReceivedThreaded -= OnLog;
-        
+
         Shutdown();
     }
 
@@ -68,7 +68,7 @@ public class RuntimeConsoleWindow : MonoBehaviour
     {
 
         Application.logMessageReceivedThreaded -= OnLog;
-        
+
         Send("Cyan", "──── Application quit ────");
         Shutdown();
     }
@@ -214,7 +214,7 @@ $null = $host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
                 writer = new StreamWriter(pipe) { AutoFlush = true };
                 //Send("Cyan", $"Connecté — {DateTime.Now:HH:mm:ss}");
 
-                PipeFlushLoop(); 
+                PipeFlushLoop();
             }
             catch { running = false; }
         });
@@ -230,5 +230,19 @@ $null = $host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
         try { writer?.Dispose(); } catch { }
         try { pipe?.Dispose(); } catch { }
         pipeThread?.Join(500);
+
+        try
+        {
+            if (psProcess != null && !psProcess.HasExited)
+            {
+                psProcess.Kill();
+            }
+        }
+        catch { }
+        finally
+        {
+            psProcess?.Dispose();
+            psProcess = null;
+        }
     }
 }
