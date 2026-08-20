@@ -17,9 +17,9 @@ public class CameraConfigFileManager : MonoBehaviour
 
     public CameraConfigFile CurrentConfig { get => currentConfig; private set => currentConfig = value; }
 
-    public event Action<CameraConfigFile> OnConfigLoaded;
-    public event Action<CameraConfigFile> OnConfigSaved;
-    public event Action<List<string>> OnFileListRefreshed;
+    public Action<CameraConfigFile> OnConfigLoaded;
+    public Action<CameraConfigFile> OnConfigSaved;
+    public Action<List<string>> OnFileListRefreshed;
 
     private void Awake()
     {

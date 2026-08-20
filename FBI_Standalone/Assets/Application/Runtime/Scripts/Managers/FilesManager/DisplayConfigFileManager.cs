@@ -18,9 +18,9 @@ public class DisplayConfigFileManager : MonoBehaviour
 
     public DisplayConfigFile CurrentConfig { get => currentConfig; private set => currentConfig = value; }
 
-    public event Action<DisplayConfigFile> OnConfigLoaded;
-    public event Action<DisplayConfigFile> OnConfigSaved;
-    public event Action<List<string>> OnFileListRefreshed;
+    public Action<DisplayConfigFile> OnConfigLoaded;
+    public Action<DisplayConfigFile> OnConfigSaved;
+    public Action<List<string>> OnFileListRefreshed;
 
     public static DisplayConfigFileManager Instance { get; private set; }
 

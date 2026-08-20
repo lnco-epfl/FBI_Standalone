@@ -30,6 +30,8 @@ public class DisplayLikertScaleState : IState
 
         WorldUIManager.Instance.DisplayLikertScale(step.question, step.leftLabel, step.rightLabel, step.min, step.max, step.randomCursorPosition);
 
+        //Fader.Instance.FadeToBlack();
+
         float startTime = Time.time;
 
         yield return new WaitUntil(() => likertScaleValue != -1);
@@ -47,6 +49,7 @@ public class DisplayLikertScaleState : IState
         yield return new WaitForSeconds(0.5f);
 
         WorldUIManager.Instance.HideLikertScale();
+        //Fader.Instance.FadeToClear();
     }
 
     public void Exit()
@@ -54,6 +57,8 @@ public class DisplayLikertScaleState : IState
         WorldUIManager.Instance.OnLikertScaleValidated -= OnLikertScaleValidated;
 
         WorldUIManager.Instance.HideLikertScale();
+
+        Fader.Instance.FadeToClear();
 
     }
 
