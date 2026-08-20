@@ -24,9 +24,9 @@ public class CopyInputBuildPostprocessor
             var normalizedDir = Path.GetFullPath(dir);
             Debug.Log(normalizedDir);
 
-            string[] pathParts = normalizedDir.Split(Path.DirectorySeparatorChar);
+            string relativePath = Path.GetRelativePath(basePath, normalizedDir);
 
-            var newPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(pathToBuiltProject), pathParts[pathParts.Length - 3], pathParts[pathParts.Length - 2], pathParts[pathParts.Length - 1]));
+            var newPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(pathToBuiltProject), "Input", relativePath));
             Debug.Log(newPath);
 
             var newDir = Path.GetDirectoryName(newPath);
