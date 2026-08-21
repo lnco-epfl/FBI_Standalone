@@ -732,12 +732,12 @@ MonoBehaviour:
   stage1NoiseSpeed: 0.1
   stage1NoiseAmplitude: 0.1
   stage1End: 0.4
-  stage1SphereRadius: 0.05
-  stage2End: 0.8
-  stage2ColorIntensity: 50
+  stage1SphereRadius: 0.01
+  stage2End: 0.9
+  stage2ColorIntensity: 10
   stage2ParticleGrow: 0.1
   stage3DelayFactor: 0.25
-  stage3SpreadFactor: 0.15
+  stage3SpreadFactor: 0.05
   fadeDuration: 0.25
   referencePointTransform: {fileID: 3548475605340507276}
   referencePointGizmo: {fileID: 8043066278702313266}
