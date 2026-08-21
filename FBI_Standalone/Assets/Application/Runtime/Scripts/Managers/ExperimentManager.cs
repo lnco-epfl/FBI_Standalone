@@ -87,19 +87,21 @@ public class ExperimentManager : MonoBehaviour
 
     public void InitializeExperiment(Sequence sequence)
     {
+        if (isRunning)
+        {
+            StopExperiment(); 
+        }
+
         if (sequence != null)
         {
             sequenceStateMachine.SetSequence(sequence);
-
             this.sequence = sequence;
-
             isInitialized = true;
 
             EventFileManager.Log($"[ExperimentManager] Initialize with sequence {sequence.name}");
         }
         else
         {
-
             sequenceStateMachine.SetSequence(null);
             EventFileManager.Error($"[ExperimentManager] Initialize error with null sequence");
             isInitialized = false;
@@ -110,12 +112,15 @@ public class ExperimentManager : MonoBehaviour
 
     public void StartExperiment()
     {
+        if (isRunning)
+        {
+            EventFileManager.Warning("[ExperimentManager] StartExperiment called while already running, ignored");
+            return;
+        }
 
         startTime = Time.time;
         startDate = DateTime.Now;
-
         elaspedTimeSinceStart = 0;
-
         isRunning = true;
 
         sequenceStateMachine.Play(true);
