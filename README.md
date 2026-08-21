@@ -17,6 +17,12 @@
   * [Main GUI](#main-gui)
   * [Config Editor](#config-editor)
 * [Screenshot](#screenshot)
+* [Development](#development)
+  * [Project Structure](#project-structure)
+  * [Starting the Project (Startup Scene)](#starting-the-project-startup-scene)
+  * [Architecture Overview](#architecture-overview)
+  * [Adding a New Step Type](#adding-a-new-step-type)
+  * [Build Profiles](#build-profiles)
 * [Authors](#authors)
 
 # Description
@@ -93,7 +99,7 @@ Sequence files are YAML files located in `Input/Sequences/`. Each file defines a
 
 ### Timeline model
 
-The sequence is **time-based**, not purely sequential: every step has a `startTime` (in seconds, relative to the start of the experiment) at which it is triggered. Steps with different start times can overlap and run concurrently — for example, a sound can play while a question is displayed, or two `DisplayCameras` steps can run side by side.
+The sequence is **time-based**, not purely sequential: every step has a `startTime` (in seconds, relative to the start of the experiment) at which it is triggered. Steps with different start times can overlap and run concurrently. For example, a sound can play while a question is displayed, or two `DisplayCameras` steps can run side by side.
 
 Each step also has a `blocking` flag:
 
@@ -180,7 +186,7 @@ Loads a display configuration file by name, and/or applies one-off overrides to 
     b: 1
     a: 1
 
-# No config file — just nudge the currently active canvas position
+# No config file, just nudge the currently active canvas position
 - stepType: loadDisplayConfig
   positionOverride:
     x: 0.0
@@ -251,13 +257,13 @@ Each entry in `cameraDatas` supports the following fields:
 | `dissolution.duration` | float | Duration of the dissolution effect in seconds |
 | `dissolution.delay` | float | Delay before the dissolution starts, in seconds |
 | | | |
-| `fade` | object | *(Optional)* Fades out the point cloud by reducing its opacity to zero. Alternative to `dissolution` — use one or the other per camera entry |
+| `fade` | object | *(Optional)* Fades out the point cloud by reducing its opacity to zero. Alternative to `dissolution`, use one or the other per camera entry |
 | `fade.duration` | float | Duration of the fade-out in seconds |
 | `fade.delay` | float | Delay before the fade starts, in seconds |
 
-> ℹ️ The dissolution effect's sphere center is not set per-step — it comes from the `referencePoint` field of the camera config file currently loaded for that camera (see [Point Clouds](#point-clouds)).
+> ℹ️ The dissolution effect's sphere center is not set per-step, it comes from the `referencePoint` field of the camera config file currently loaded for that camera (see [Point Clouds](#point-clouds)).
  
-The step also supports an optional `rigInterpolation` block (at the step level, not per camera) that smoothly translates the VR rig — moving the participant's point of view in the scene. This is used to transition between a first-person perspective (1PP) and a third-person perspective (3PP) during a single step, while the point clouds are displayed.
+The step also supports an optional `rigInterpolation` block (at the step level, not per camera) that smoothly translates the VR rig, moving the participant's point of view in the scene. This is used to transition between a first-person perspective (1PP) and a third-person perspective (3PP) during a single step, while the point clouds are displayed.
  
 | Field | Type | Description |
 |-------|------|-------------|
@@ -270,7 +276,7 @@ The step also supports an optional `rigInterpolation` block (at the step level, 
 | `rigInterpolation.delay` | float | Delay before the rig starts moving, in seconds |
 | `rigInterpolation.ease` | string | Easing function from [PrimeTween](https://github.com/KyryloKuzyk/PrimeTween#support). Recommended: `InOutSine` for VR comfort |
  
-> ℹ️ `rigInterpolation` runs in the same timeline as point cloud interpolation and dissolution — all `delay` values are relative to the start of the step and can overlap freely.
+> ℹ️ `rigInterpolation` runs in the same timeline as point cloud interpolation and dissolution. All `delay` values are relative to the start of the step and can overlap freely.
  
 > ℹ️ To dissolve the 1PP point cloud as the rig recedes, set `dissolution.delay` on that camera entry to match the moment in the rig movement at which the 1PP body is far enough away (e.g. `rigInterpolation.delay + rigInterpolation.duration * 0.6`).
  
@@ -361,7 +367,7 @@ The step also supports an optional `rigInterpolation` block (at the step level, 
     ease: InOutSine
 ```
  
-> ⚠️ When using `interpolation`, `configName` must also be set — it defines the end position of the animation.
+> ⚠️ When using `interpolation`, `configName` must also be set. It defines the end position of the animation.
  
 > ⚠️ Only one delay value can be set per camera; if multiple values are provided, only the last one will be used.
  
@@ -678,7 +684,7 @@ The `pointClouds` list defines the spatial configuration, depth settings and spa
 | `clampXMax` | float | Right boundary of the visible area, normalized between `0` and `1` |
 | `clampYMin` | float | Bottom boundary of the visible area, normalized between `0` and `1` |
 | `clampYMax` | float | Top boundary of the visible area, normalized between `0` and `1` |
-| `referencePoint` | Vector3 | A general-purpose local-space position, relative to the point cloud (not world space) — **stored value is always local**, even though it's edited in world space in the UI. Currently drives the [dissolution effect's](#displaycameras) sphere center. Editable via the [Reference Point](#reference-point) panel |
+| `referencePoint` | Vector3 | A general-purpose local-space position, relative to the point cloud (not world space). **Stored value is always local**, even though it's edited in world space in the UI. Currently drives the [dissolution effect's](#displaycameras) sphere center. Editable via the [Reference Point](#reference-point) panel |
 
 ## Display Config Files
 
@@ -944,12 +950,12 @@ Flips the point cloud along a given axis.
 
 A general-purpose reference point relative to the point cloud; it currently drives the center of the sphere used by the [dissolution effect](#displaycameras). It is stored **relative to the point cloud** (local space) in the config file, so it stays correctly placed regardless of the point cloud's own position/rotation.
 
-For ease of use, the **X / Y / Z fields are an offset from the point cloud's own position, aligned to the scene's global axes** (like Unity's "Global" tool handle mode) rather than the point cloud's own (possibly rotated) local axes — `0, 0, 0` places it exactly on the point cloud, and moving "X" by 1 always moves it 1 unit along the scene's global X axis, regardless of how the point cloud is rotated. The conversion to/from local space happens automatically; only the local value ever gets written to the config file.
+For ease of use, the **X / Y / Z fields are an offset from the point cloud's own position, aligned to the scene's global axes** (like Unity's "Global" tool handle mode) rather than the point cloud's own (possibly rotated) local axes. `0, 0, 0` places it exactly on the point cloud, and moving "X" by 1 always moves it 1 unit along the scene's global X axis, regardless of how the point cloud is rotated. The conversion to/from local space happens automatically; only the local value ever gets written to the config file.
 
 | Control | Description |
 |---------|-------------|
 | **Position X / Y / Z** | Offset from the point cloud's own position, aligned to the scene's global axes |
-| **Show gizmo** toggle | Displays a sphere gizmo in the preview at the current position, to help placing it visually. This is a visual aid only for the editor — it is not saved to the config file and always starts hidden when a config is loaded |
+| **Show gizmo** toggle | Displays a sphere gizmo in the preview at the current position, to help placing it visually. This is a visual aid only for the editor, it is not saved to the config file and always starts hidden when a config is loaded |
 
 ### Display Config Tab
 
@@ -982,6 +988,113 @@ Shown under the **Display Config** tab. This section controls the position and a
 
 ### Full body illusion
 <img width="1920" height="1080" alt="Full body illusion" src="https://github.com/user-attachments/assets/36ab1ab1-0b46-41e7-8183-a50634a27b7a" />
+
+# Development
+
+This section is for developers who want to fork or contribute to the project. It covers the project structure inside Unity, how to correctly start the project in the editor, a high-level overview of the architecture, and how the two build profiles differ.
+
+## Project Structure
+
+Everything specific to this project lives under `Assets/Application/`. Everything else at the root of `Assets/` (`AzureKinectExamples`, `FlexibleColorPicker`, `HDRPDefaultResources`, `AllSkyFree`, etc.) is a third-party asset or plugin, it should not be modified directly.
+
+```
+Assets/Application/
+├── Editor/
+│   └── Scripts/          ← Editor-only tooling
+└── Runtime/
+    ├── Assets/            ← Project-specific runtime assets, organized by type
+    │   ├── Audio/
+    │   ├── Materials/
+    │   ├── Prefabs/
+    │   ├── Rendering/
+    │   ├── SDF/
+    │   ├── Terrain/
+    │   ├── Textures/
+    │   ├── UI/
+    │   └── VFX/
+    ├── Data/              ← Serialized data and default input files
+    │   ├── Input/
+    │   ├── Localization/
+    │   └── Sequences/
+    ├── Scenes/            ← All Unity scenes, including Startup and the ones listed in LoadScene 
+    ├── Scripts/           ← All project C# scripts, grouped by domain
+    │   ├── Managers/      ← Singleton managers 
+    │   ├── Outlet/
+    │   ├── Sequence/      ← Sequence/step data model and per-step states
+    │   ├── States/        ← IState implementations used by the sequence state machine
+    │   ├── Subtitle/
+    │   ├── UI/
+    │   ├── WorldSpaceUI/
+    │   └── XR Rig/
+    └── Settings/
+        └── XR/
+```
+
+> ⚠️ When adding new project code or assets, keep them under `Assets/Application/`. Anything imported from the Asset Store or a package (Azure Kinect/Femto Bolt examples, color picker, sky assets, etc.) is kept separate on purpose so it can be updated or replaced without touching project code.
+
+## Starting the Project (Startup Scene)
+
+The project must always be started from the **`Startup`** scene. This scene instantiates all the core singleton managers (`ExperimentManager`, `SequenceStateMachine`, `AssetsManager`, `CameraConfigFileManager`, `DisplayConfigFileManager`, `OutputFileManager`, `EventFileManager`, etc.). Entering Play mode from any other scene will skip this initialization and the application will not work correctly.
+
+To make this easy in the editor, the project ships with a custom toolbar button (`SceneSwitcherToolbar`, in `Assets/Application/Editor/Scripts/PlaySceneButton.cs`) that saves the current scene if needed, opens `Startup`, and enters Play mode, all in one click, regardless of which scene you currently have open.
+
+This button is not shown by default and needs to be enabled once per Unity install:
+
+1. Open the overflow/hamburger menu (⋮) at the right of the main toolbar, next to the Play/Pause/Step buttons.
+2. Find and enable **`SceneSwitcher/StartupScene`**.
+3. A new **`S`** button is added to the toolbar. It can then be dragged and repositioned anywhere on the toolbar, like any other toolbar element.
+
+Use this **`S`** button (instead of the regular Play button) whenever you want to run the project from the editor.
+
+## Architecture Overview
+
+The experiment runtime is driven by a **time-based state machine** (`SequenceStateMachine`), not a simple sequential list of steps:
+
+- `ExperimentManager` owns the high-level experiment lifecycle (start/pause/stop, elapsed time, keyboard shortcuts) and delegates the actual timeline playback to `SequenceStateMachine`.
+- `SequenceStateMachine` holds the loaded `Sequence` (the parsed YAML from `Input/Sequences/`), sorts its steps by `startTime`, and runs a coroutine (`RunTimeline`) that advances a `sequenceTime` clock each frame. Whenever `sequenceTime` reaches a step's `startTime`, that step is launched as its own coroutine (`RunStep`), independently of the others. This is what allows several steps to run concurrently (see [Sequence Files → Timeline model](#sequence-files)).
+- Each step type (`DisplayText`, `DisplayCameras`, `Wait`, etc.) is implemented as an `IState` (`Enter` / `Execute` / `Exit`). `SequenceStateMachine` keeps a `stateFactories` dictionary mapping each `stepType` string from the YAML to a factory that creates the matching `IState` instance.
+- `blocking` steps pause the timeline (`hasBlocking` check in `RunTimeline`) until their `Execute()` coroutine completes, then jump `sequenceTime` directly to the next step's `startTime`.
+
+Supporting singleton managers, all following the same pattern (`Instance` + `Awake` singleton setup):
+
+| Manager | Responsibility |
+|---|---|
+| `AssetsManager` | Loads all images/audio/video from `Input/Images`, `Input/Audios`, `Input/Videos` into memory at startup, exposed via `GetSprite`, `GetAudioClip`, `GetVideoPath` |
+| `CameraConfigFileManager` | Loads/saves camera config YAML files (`Input/Configs/Camera`), exposes the currently loaded `CameraConfigFile` and per-field save helpers used by the Config Editor |
+| `DisplayConfigFileManager` | Same role as above, for the stimulus display canvas (`Input/Configs/Display`), and applies `LoadDisplayConfig` step overrides to the canvas transform |
+| `OutputFileManager` | Writes one CSV row per `DisplayCameras` step to `Output/..._Output.csv`, using `CsvHelper` |
+| `EventFileManager` | Central logger (`EventFileManager.Log/Warning/Error`); writes to `Output/..._Events.txt` and echoes to the Unity console |
+
+The depth camera capture itself (`KinectManager` and related classes) comes from the imported Azure Kinect / Femto Bolt Unity asset. It is third-party code and should be treated the same way as other imported assets (see [Project Structure](#project-structure)), not modified directly.
+
+## Adding a New Step Type
+
+Because the timeline is driven by `stateFactories`, adding a new sequence step type only requires:
+
+1. A new step data class (under `Scripts/Sequence`) describing the YAML fields, following the pattern of existing steps (`startTime`, `blocking`, plus the step's own parameters).
+2. A new `IState` implementation (under `Scripts/States`) with `Enter`, `Execute` and `Exit`.
+3. Registering the new type in `SequenceStateMachine.InitializeStates()`, mapping the YAML `stepType` name to a factory for the new state.
+4. Documenting the new step type in the [Sequence Files](#sequence-files) section of this README, following the existing table + example format.
+
+## Build Profiles
+
+The project defines two Windows build profiles, available in Unity's Build Profiles window:
+
+| Profile | Description |
+|---|---|
+| `Sensor_Windows` | Standard build: cameras stream in real time from the connected Femto Bolt sensors |
+| `Recording_Windows` | Same build target, but camera input is replaced by pre-recorded video footage instead of the live sensor feed |
+
+The behavior switch is controlled by two scripting define symbols, set per build profile:
+
+| Define | Effect |
+|---|---|
+| `CONNECTED_SENSOR` | Enables the real-time sensor code path (used by `Sensor_Windows`) |
+| `PLAY_RECORDING` | Enables the pre-recorded video playback code path instead of live sensor capture (used by `Recording_Windows`) |
+
+> ℹ️ `Recording_Windows` exists specifically for development: it lets you build and test the application on a machine without a Femto Bolt sensor connected, by replacing the live camera feed with pre-recorded video footage.
+
+> ℹ️ No VR headset is required for day-to-day development either. The application runs and can be tested normally without a Quest connected, using the Config Editor's preview and the flat-screen participant view.
 
 # Authors
 
