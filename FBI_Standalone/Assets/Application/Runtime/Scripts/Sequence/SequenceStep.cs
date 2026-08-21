@@ -194,6 +194,9 @@ public class PlaySoundStep : SequenceStep
     public AudioClip sound;
 
     public bool subtitle = false;
+
+    [Range(0f, 1f)]
+    public float volume = 1f;
     public override float GetDuration()
     {
         return sound != null ? sound.length : 0.0f;
