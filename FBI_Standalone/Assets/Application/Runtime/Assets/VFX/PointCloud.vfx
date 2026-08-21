@@ -75,8 +75,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: -1335
     y: -558
-    width: 2457
-    height: 1782
+    width: 2458
+    height: 1778
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -504,7 +504,7 @@ MonoBehaviour:
   m_Parent: {fileID: 114350483966674976}
   m_Children:
   - {fileID: 8926484042661615218}
-  m_UIPosition: {x: 698, y: 876}
+  m_UIPosition: {x: 698, y: 877}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -519,8 +519,8 @@ MonoBehaviour:
   m_OutputFlowSlot:
   - link: []
   blendMode: 1
-  cullMode: 0
-  zWriteMode: 0
+  cullMode: 3
+  zWriteMode: 2
   zTestMode: 0
   useAlphaClipping: 0
   generateMotionVector: 0
@@ -536,8 +536,8 @@ MonoBehaviour:
   flipbookMotionVectors: 0
   useSoftParticle: 0
   vfxSystemSortPriority: 0
-  sort: 0
-  sortMode: 0
+  sort: 2
+  sortMode: 2
   revertSorting: 0
   indirectDraw: 0
   computeCulling: 0
