@@ -139,7 +139,7 @@ public class PointCloud : MonoBehaviour
         }
     }
 
-    public void DisplayMain()
+    public void DisplayMain(bool NoFade = false)
     {
         mainVisualEffect.enabled = true;
 
@@ -152,10 +152,19 @@ public class PointCloud : MonoBehaviour
             fadeTween.Stop();
         }
 
-        fadeTween = Tween.Custom(startValue: 0.0f, endValue: 1.0f, duration: fadeDuration, ease: Ease.InOutSine, onValueChange: (float value) =>
+
+        if(NoFade)
         {
-            mainVisualEffect.SetFloat("Alpha", value);
-        });
+            mainVisualEffect.SetFloat("Alpha", 1.0f);
+        }
+        else
+        {
+            fadeTween = Tween.Custom(startValue: 0.0f, endValue: 1.0f, duration: fadeDuration, ease: Ease.InOutSine, onValueChange: (float value) =>
+            {
+                mainVisualEffect.SetFloat("Alpha", value);
+            });
+        }
+
     }
 
     public void HideMain()
@@ -206,7 +215,7 @@ public class PointCloud : MonoBehaviour
 
         dissolutionVisualEffect.SetInt("ParticuleCount", particuleCount);
         dissolutionVisualEffect.SetFloat("ParticuleSize", particleSize);
-        dissolutionVisualEffect.SetFloat("Alpha", 0.0f);
+        dissolutionVisualEffect.SetFloat("Alpha", 1.0f);
 
         dissolutionVisualEffect.SetFloat("Duration", duration);
 
@@ -248,7 +257,7 @@ public class PointCloud : MonoBehaviour
 
         interpolationVisualEffect.SetInt("ParticuleCount", particuleCount);
         interpolationVisualEffect.SetFloat("ParticuleSize", particleSize);
-        interpolationVisualEffect.SetFloat("Alpha", 0.0f);
+        interpolationVisualEffect.SetFloat("Alpha", 1.0f);
 
         interpolationVisualEffect.SetFloat("Duration", duration);
         interpolationVisualEffect.SetAnimationCurve("LerpEasingCurve", curve);
@@ -258,6 +267,7 @@ public class PointCloud : MonoBehaviour
 
         interpolationVisualEffect.Play();
 
+    
         Tween.Delay(duration: duration).OnComplete(() =>
         {
             interpolationVisualEffect.enabled = false;
