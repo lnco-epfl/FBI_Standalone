@@ -635,17 +635,14 @@ steps:
 
   - stepType: displayCameras
     startTime: 915.354
-    duration: 221.733
+    duration: 15
     cameraDatas:
-    - id: '1'
-      delay: 0.0
-      configName: 1PP - Flip
     - id: '2'
       delay: 0.0
       configName: 3PP - Back
       fade:
         duration: 1.5
-        delay: 10
+        delay: 8.5
     rigInterpolation:
       startPosition:
         x: 0.0
@@ -660,6 +657,14 @@ steps:
       delay: 5
       duration: 5
       ease: InOutSine
+
+  - stepType: displayCameras
+    startTime: 923.354
+    duration: 213.733
+    cameraDatas:
+    - id: '1'
+      delay: 0.0
+      configName: 1PP - Flip
 
   - stepType: sendLSLEvent
     startTime: 920.354
@@ -907,7 +912,7 @@ steps:
       endPosition:
         x: 0.0
         y: 4.5
-        z: -1.5
+        z: -2.5
       startYaw: 0.0
       endYaw: 0.0
       delay: 135.7
