@@ -303,10 +303,10 @@ MonoBehaviour:
   categories: []
   uiBounds:
     serializedVersion: 2
-    x: -2145
-    y: -559
-    width: 3280
-    height: 4565
+    x: -2146
+    y: -558
+    width: 3281
+    height: 4566
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -960,8 +960,8 @@ MonoBehaviour:
   m_OutputFlowSlot:
   - link: []
   blendMode: 1
-  cullMode: 0
-  zWriteMode: 0
+  cullMode: 3
+  zWriteMode: 2
   zTestMode: 0
   useAlphaClipping: 0
   generateMotionVector: 0
@@ -977,8 +977,8 @@ MonoBehaviour:
   flipbookMotionVectors: 0
   useSoftParticle: 0
   vfxSystemSortPriority: 0
-  sort: 0
-  sortMode: 0
+  sort: 2
+  sortMode: 2
   revertSorting: 0
   indirectDraw: 0
   computeCulling: 0

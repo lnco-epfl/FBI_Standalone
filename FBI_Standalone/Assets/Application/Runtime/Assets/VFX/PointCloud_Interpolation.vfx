@@ -30,8 +30,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: -1703
     y: -786
-    width: 2850
-    height: 3370
+    width: 2851
+    height: 3366
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -520,8 +520,8 @@ MonoBehaviour:
   m_OutputFlowSlot:
   - link: []
   blendMode: 1
-  cullMode: 0
-  zWriteMode: 0
+  cullMode: 3
+  zWriteMode: 2
   zTestMode: 0
   useAlphaClipping: 0
   generateMotionVector: 0
@@ -537,8 +537,8 @@ MonoBehaviour:
   flipbookMotionVectors: 0
   useSoftParticle: 0
   vfxSystemSortPriority: 0
-  sort: 0
-  sortMode: 0
+  sort: 2
+  sortMode: 2
   revertSorting: 0
   indirectDraw: 0
   computeCulling: 0
