@@ -1,36 +1,33 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class FibonacciSphereBaker : MonoBehaviour
+public class FibonacciSphereBaker
 {
+    private int pointCount = 0;
+    private float radius = 0f;
+    private Texture2D texture;
 
-
-    private static int pointCount = 0;
-    private static float radius = 0f;
-
-    private static Texture2D texture;
-
-    public static Texture2D BakeSphereTexture(int _pointCount, float _radius)
+    public Texture2D BakeSphereTexture(int _pointCount, float _radius)
     {
-
-        if(_pointCount <= 0)
+        if (_pointCount <= 0)
         {
             Debug.LogError("Point count must be greater than 0.");
             return null;
         }
-
-        if(_radius <= 0)
+        if (_radius <= 0)
         {
             Debug.LogError("Radius must be greater than 0.");
             return null;
         }
 
-        if(_pointCount != pointCount || _radius != radius)
+        if (_pointCount != pointCount || _radius != radius)
         {
             pointCount = _pointCount;
             radius = _radius;
 
-            Destroy(texture);
+            if (texture != null)
+            {
+                Object.Destroy(texture);
+            }
 
             int texSize = Mathf.CeilToInt(Mathf.Sqrt(pointCount));
             texture = new Texture2D(texSize, texSize, TextureFormat.RGBAFloat, false);
@@ -53,10 +50,8 @@ public class FibonacciSphereBaker : MonoBehaviour
 
             texture.SetPixels(pixels);
             texture.Apply();
-
             texture.filterMode = FilterMode.Point;
             texture.wrapMode = TextureWrapMode.Clamp;
-
         }
 
         return texture;
