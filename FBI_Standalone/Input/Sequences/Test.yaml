@@ -1,0 +1,84 @@
+
+steps:
+
+  - stepType: loadScene
+    startTime: 1
+    scenePath: ForestScene
+    blocking: true
+
+  - stepType: displayCameras
+    startTime: 2
+    duration: 30
+    cameraDatas:
+#    - id: '2'
+#      delay: 0.0
+#      configName: 3PP - Back
+    - id: '1'
+      delay: 0.0
+      configName: 1PP
+#      fade:
+#        duration: 1.5
+#        delay: 7
+#    rigInterpolation:
+#      startPosition:
+#        x: 0.0
+#        y: 0.0
+#        z: 0.0
+#      endPosition:
+#        x: 0.0
+#        y: 0.0
+#        z: -1.5
+#      startYaw: 0.0
+#      endYaw: 0.0
+#      delay: 5
+#      duration: 5
+#      ease: InOutSine
+
+  - stepType: displayLikertScale
+    startTime: 20
+    blocking: true
+    question: How much do you feel that the body that you saw is yours?
+    leftLabel: Not at all
+    rightLabel: Completely
+    min: 0
+    max: 5
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 21
+    blocking: true
+    question: How much do you feel your center of awareness to be located where you saw the body?
+    leftLabel: Not at all
+    rightLabel: Completely
+    min: 0
+    max: 5
+    randomCursorPosition: true
+
+  - stepType: displayLikertScale
+    startTime: 22
+    blocking: true
+    question: How many times have you been experiencing the nature of mind during this last phase of the session?
+    leftLabel: Never
+    rightLabel: Continuously
+    min: 0
+    max: 5
+    randomCursorPosition: true
+
+  - stepType: displayQuestion
+    startTime: 23
+    blocking: true
+    question: Where do you feel yourself to be located?
+    options:
+    - At the location of the body I see
+    - At the location from where I see
+    - Somewhere else / unclear
+
+  - stepType: displayLikertScale
+    startTime: 24
+    blocking: true
+    question: How aware are you of having a body?
+    leftLabel: Not clearly
+    rightLabel: Very clearly
+    min: 0
+    max: 5
+    randomCursorPosition: true
