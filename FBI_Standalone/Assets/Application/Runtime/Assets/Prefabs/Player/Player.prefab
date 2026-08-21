@@ -706,9 +706,9 @@ PrefabInstance:
       propertyPath: m_Depth
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7767452175841115786, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.273
+    - target: {fileID: 7167003491207078582, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
+      propertyPath: near clip plane
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 8699149982491593274, guid: af5475cf2b30b2e45b87664bc3e775b1, type: 3}
       propertyPath: m_RenderShadows
