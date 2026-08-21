@@ -51,6 +51,8 @@ public class PointCloud : MonoBehaviour
 
     private Kinect4AzureInterface kinectAzureInterface;
 
+    private FibonacciSphereBaker baker = new FibonacciSphereBaker();
+
     private int id = 0;
     private Tween fadeTween;
 
@@ -200,7 +202,7 @@ public class PointCloud : MonoBehaviour
         dissolutionVisualEffect.enabled = true;
 
         var pos = GetReferencePoint();
-        var texture = FibonacciSphereBaker.BakeSphereTexture(particuleCount, stage1SphereRadius);
+        var texture = baker.BakeSphereTexture(particuleCount, stage1SphereRadius);
 
         dissolutionVisualEffect.SetInt("ParticuleCount", particuleCount);
         dissolutionVisualEffect.SetFloat("ParticuleSize", particleSize);
