@@ -171,7 +171,8 @@ public class SequenceYamlLoader
                     startTime = data.startTime,
                     blocking = data.blocking,
                     subtitle = data.subtitle,
-                    sound = LoadAudioClip(data.soundPath)
+                    sound = LoadAudioClip(data.soundPath),
+                    volume = data.volume
                 };
 
             case SequenceStepWrapper.StepType.DisplayVideo:
@@ -304,6 +305,9 @@ public class StepData
     public string imagePath;
     public string soundPath;
     public string videoName;
+
+    // Sound
+    public float volume = 1f;
 
     // Config
     public string configName;

@@ -395,11 +395,13 @@ Plays an audio file from the `Input/Audio/` folder.
 |-----------|------|-------------|
 | `soundPath` | string | Audio filename without extension |
 | `subtitle` | bool |  If `true`, displays the corresponding `.srt` subtitle file (if present in `Input/Audios/`) while the sound plays. Default: `false` |
+| `volume` | float | Playback volume, between `0.0` (silent) and `1.0` (full volume). Default: `1.0` |
 
 ```yaml
 - stepType: playSound
   soundPath: "bell-sfx"
   subtitle: false
+  volume: 0.7
 ```
 
 ---

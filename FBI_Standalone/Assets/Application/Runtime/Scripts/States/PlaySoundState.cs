@@ -18,7 +18,7 @@ public class PlaySoundState : IState
 
         SubtitleReader.Instance.SetAudioSubtitlesEnabled(step.subtitle);
 
-        audioSource = AudioManager.instance.Play2DSFX(step.sound);
+        audioSource = AudioManager.instance.Play2DSFX(step.sound, step.volume);
 
         yield return new WaitForSeconds(step.GetDuration());
     }
@@ -26,11 +26,11 @@ public class PlaySoundState : IState
     public void Exit()
     {
         AudioManager.instance.KillSound(audioSource);
-        if(step.subtitle)
+        if (step.subtitle)
         {
             SubtitleReader.Instance.HideSubtitle();
         }
-     
+
     }
 
 }
