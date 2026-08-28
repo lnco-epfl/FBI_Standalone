@@ -216,6 +216,17 @@ public class SequenceYamlLoader
                     backgroundColorOverride = data.backgroundColorOverride
                 };
 
+            case SequenceStepWrapper.StepType.RigPosition:
+                return new RigPositionStep
+                {
+                    startTime = data.startTime,
+                    blocking = data.blocking,
+                    position = data.rigPosition != null
+                        ? new Vector3(data.rigPosition.x, data.rigPosition.y, data.rigPosition.z)
+                        : Vector3.zero,
+                    yaw = data.yaw,
+                };
+
             default:
                 return new WaitStep();
         }
@@ -299,6 +310,11 @@ public class StepData
 
     // Rig interpolation (optional — null if not present in YAML)
     public RigInterpolationYamlData rigInterpolation;
+
+    // RigPosition (maps to YAML "position" field)
+    [YamlMember(Alias = "position")]
+    public Vector3YamlData rigPosition;
+    public float yaw;
 
     // Assets
     public string scenePath;

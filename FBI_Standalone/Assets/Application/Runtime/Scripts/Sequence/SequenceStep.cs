@@ -248,6 +248,18 @@ public class RigInterpolationData
 
 }
 
+[System.Serializable]
+public class RigPositionStep : SequenceStep
+{
+    public Vector3 position = Vector3.zero;
+    public float yaw = 0f;
+
+    public override float GetDuration() => 0f;
+    public override string GetStateName() => "RigPosition";
+    public override string GetDisplayName() => $"Rig Position {position}";
+    public override Color GetColor() => Color.grey;
+}
+
 public class CameraData
 {
     public string id = "1";
@@ -326,7 +338,7 @@ public class SequenceStepWrapper
 
     public enum StepType
     {
-        DisplayText, Wait, SpawnObject, LoadScene, LoadCameraConfig, LoadDisplayConfig, DisplayLikertScale, Break, DisplayImage, DisplayQuestion, PlaySound, DisplayCameras, DisplayVideo, SendLSLEvent
+        DisplayText, Wait, SpawnObject, LoadScene, LoadCameraConfig, LoadDisplayConfig, DisplayLikertScale, Break, DisplayImage, DisplayQuestion, PlaySound, DisplayCameras, DisplayVideo, SendLSLEvent, RigPosition
     }
 
     public SequenceStepWrapper()
@@ -352,6 +364,7 @@ public class SequenceStepWrapper
             case StepType.DisplayCameras: step = new DisplayCamerasStep(); break;
             case StepType.DisplayVideo: step = new DisplayVideoStep(); break;
             case StepType.SendLSLEvent: step = new SendLSLEventStep(); break;
+            case StepType.RigPosition: step = new RigPositionStep(); break;
         }
     }
 }

@@ -51,7 +51,8 @@ public class SequenceStateMachine : MonoBehaviour
             { "PlaySound",          () => new PlaySoundState() },
             { "DisplayCameras",     () => new DisplayCamerasState() },
             { "DisplayVideo",       () => new DisplayVideoState() },
-            { "SendLSLEvent",       () => new SendLSLEventState() }
+            { "SendLSLEvent",       () => new SendLSLEventState() },
+            { "RigPosition",        () => new RigPositionState() }
         };
     }
 
