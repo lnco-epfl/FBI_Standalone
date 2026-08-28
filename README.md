@@ -153,6 +153,8 @@ Available scenes:
   scenePath: "EmptyRoom"
 ```
 
+> ⚠️ Loading a scene resets the VR rig to its default transform. If the rig was moved mid-experiment via `rigInterpolation` (see [`DisplayCameras`](#displaycameras)) before this step, follow this step with a [`RigPosition`](#rigposition) step to resynchronize the rig with the experiment's logical position before running any further `rigInterpolation` — otherwise the next interpolation will snap the rig to its `startPosition` from the wrong actual position, causing a visible teleport.
+
 ---
 
 #### LoadCameraConfig
@@ -205,6 +207,30 @@ Loads a display configuration file by name, and/or applies one-off overrides to 
 ```
 
 > ⚠️ If neither `configName` nor any override field is set, the step has no effect.
+
+---
+
+#### RigPosition
+
+Instantly teleports the VR rig (player origin) to a given position and yaw, with no animation. Unlike the `rigInterpolation` block available on [`DisplayCameras`](#displaycameras), which smoothly animates the rig, this step performs an immediate snap.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `position` | Vector3 | World position to instantly move the rig to |
+| `yaw` | float | Y-axis rotation of the rig, in degrees. Default: `0` |
+
+```yaml
+- stepType: rigPosition
+  position:
+    x: 0.0
+    y: 0.0
+    z: -1.5
+  yaw: 0.0
+```
+
+> ℹ️ This step has no duration (`0s`) and does not block waiting for anything, it applies instantly. Set `blocking: true` if you need the timeline to wait a frame before proceeding, e.g. to guarantee ordering with a following step at the same `startTime`.
+
+> ⚠️ Only Y-axis rotation is supported, consistent with `rigInterpolation`'s yaw-only rotation, to avoid VR disorientation.
 
 ---
 
