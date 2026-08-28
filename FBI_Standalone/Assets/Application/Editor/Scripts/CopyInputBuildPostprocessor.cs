@@ -1,6 +1,3 @@
-#if UNITY_EDITOR
-
-using System;
 using System.IO;
 using UnityEditor;
 using UnityEditor.Callbacks;
@@ -13,7 +10,7 @@ public class CopyInputBuildPostprocessor
     {
         Debug.Log(pathToBuiltProject);
 
-        var basePath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "Input"));
+        var basePath = Path.GetFullPath(Path.Combine(UnityEngine.Application.dataPath, "..", "Input"));
 
         string[] dirs = Directory.GetFiles(basePath, "*", SearchOption.AllDirectories);
 
@@ -40,4 +37,3 @@ public class CopyInputBuildPostprocessor
 
     }
 }
-#endif
