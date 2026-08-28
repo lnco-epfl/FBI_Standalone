@@ -128,14 +128,24 @@ Available scenes:
  
 <table>
 <tr>
-<td align="center"><b>BlackScene</b><br/><img width="800" height="449" alt="BlackScene" src="https://github.com/user-attachments/assets/49a8d5e9-78b8-4344-889a-c7c9b131c16e" /></td>
-<td align="center"><b>EmptyGrayRoom</b><br/><img width="800" height="450" alt="EmptyGrayRoom" src="https://github.com/user-attachments/assets/3aef4415-213c-4dc9-9606-4b5f4e0be8fd" /></td>
+<td align="center"><b>BlackScene</b><br/><img width="800" height="450" alt="BlackScene" src="https://github.com/user-attachments/assets/59daf5d9-7e8d-4b2c-a644-5bb818e09fff" />
+</td>
+<td align="center"><b>EmptyGrayRoom</b><br/><img width="800" height="450" alt="EmptyGrayRoom" src="https://github.com/user-attachments/assets/a4336358-ae9f-4c9b-aeeb-2e7d0fdc873c" />
+</td>
 </tr>
 <tr>
-<td align="center"><b>GrayInfinityScene</b><br/><img width="800" height="450" alt="GrayInfinityScene" src="https://github.com/user-attachments/assets/332ffd76-3ae7-4388-9515-19eec551d1e0" /></td>
-<td align="center"><b>EmptyRoom</b><br/><img width="800" height="450" alt="EmptyRoom" src="https://github.com/user-attachments/assets/1d56b02e-2dc5-49e8-a8b8-a1a6dd0fd6f0" /></td>
+<td align="center"><b>GrayInfinityScene</b><br/><img width="800" height="450" alt="GrayInfinityScene" src="https://github.com/user-attachments/assets/8cb869f3-aaa0-43a5-907b-3534081b4b9c" />
+</td>
+<td align="center"><b>EmptyRoom</b><br/><img width="800" height="450" alt="EmptyRoom" src="https://github.com/user-attachments/assets/bb210cc2-ffe8-47ec-ab76-b5a5312649d8" />
+</td>
+</tr>
+</tr>
+<tr>
+<td align="center"><b>ForestScene</b><br/><img width="800" height="450" alt="ForestScene" src="https://github.com/user-attachments/assets/5724893c-a9a3-49bf-9b1e-d1e7564eeea5" />
+</td>
 </tr>
 </table>
+
 
 
 ```yaml
@@ -978,16 +988,17 @@ Shown under the **Display Config** tab. This section controls the position and a
 # Screenshot
 
 ### Mirror view
-<img width="1920" height="1080" alt="Mirror view" src="https://github.com/user-attachments/assets/11933bce-0d12-4c67-af16-1fbbbd573cfc" />
+<img width="1920" height="1080" alt="mirror" src="https://github.com/user-attachments/assets/7299d0b9-975a-4c42-84f9-6989db953b8b" />
 
 ### 1PP view
-<img width="1920" height="1080" alt="1PP view" src="https://github.com/user-attachments/assets/e0115e12-dedd-4c00-8907-0d4da5daa898" />
+<img width="1920" height="1080" alt="1PP" src="https://github.com/user-attachments/assets/37cc272c-0c37-4457-9180-e58cc56dfc26" />
 
 ### 3PP view
-<img width="1920" height="1078" alt="3PP view" src="https://github.com/user-attachments/assets/07f5fcce-f090-4133-8701-1926ba2b4728" />
+<img width="1920" height="1080" alt="3PP" src="https://github.com/user-attachments/assets/7ad83075-7b8d-467d-bae1-bb50f0932287" />
 
 ### Full body illusion
-<img width="1920" height="1080" alt="Full body illusion" src="https://github.com/user-attachments/assets/36ab1ab1-0b46-41e7-8183-a50634a27b7a" />
+<img width="1920" height="1080" alt="FBI" src="https://github.com/user-attachments/assets/8b6e7ad2-ecd3-4eef-8821-57b77e5fe6c0" />
+
 
 # Development
 
