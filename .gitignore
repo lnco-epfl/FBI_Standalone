@@ -122,3 +122,5 @@ FBI_Standalone/Log/
 .vsconfig
 FBI_Standalone/.vsconfig
 **/Log/
+FBI_Standalone/Assets/StreamingAssets/Recordings/ST-Kinect4Azure-backcamera-color-1920-1080.bin.meta
+FBI_Standalone/Assets/StreamingAssets/Recordings/ST-Kinect4Azure-frontcamera-color-1920-1080.bin.meta
