@@ -78,6 +78,67 @@ To run the application:
 * Create or edit a config file (which defines camera positions, depth values, etc.) and a display config file (which defines the stimulus canvas position and appearance)
 * Press the **Start** button to begin the experiment.
 
+# FBI Standalone: Daily Checklist
+
+## Start of Day
+
+- [ ] Connect the power supply to the Femto Bolt cameras, and power on the Quest 3 headset and the laptop (check the laptop is connected and charging)
+- [ ] Log into the `.\LNCO` session, then connect the 2 cameras and the Quest 3 to the laptop
+- [ ] Check that both camera LEDs are solid white. If blinking or orange, see [Camera Troubleshooting](#camera-troubleshooting)
+- [ ] Open Orbbec Viewer and confirm both cameras appear (`<insert camera name>`), with working Color, Depth, IR, and IMU feeds
+- [ ] Confirm Meta Horizon Link and Quest Link have both started automatically. You should see a white infinite space in the headset (start Meta Horizon Link manually from the taskbar if needed)
+- [ ] Turn on the Bluetooth headphones and connect them via the Windows Quick Settings panel. Confirm sound plays through them (e.g. via YouTube) instead of through the Quest 3's speakers
+- [ ] Launch `FBI Standalone.exe` and confirm the EPFL splash screen appears **small** on the desktop. If it's fullscreen, Quest Link isn't set up properly
+- [ ] Check the runtime console for errors (missing assets, YAML formatting issues, failed camera connection), and note which step caused it if something's wrong
+- [ ] If a sequence file doesn't show up in the dropdown, check the console for a formatting error
+- [ ] In the Config Editor, select a config and toggle the point cloud display to confirm the cameras are working. See [Camera Troubleshooting](#camera-troubleshooting) if nothing shows, and update the config if needed
+- [ ] Fit the headset on the participant: loosen with the wheel (clockwise), guide their head in, tighten (counterclockwise), adjust the top strap, then put on the headphones
+- [ ] Fill in the participant info, select the correct sequence, and start the experiment
+
+## End of Participant
+
+- [ ] Help the participant remove the headset and headphones
+- [ ] Clean the lenses with a damp cloth only (never alcohol), and the headphones/facemask with disinfecting wipes
+- [ ] Close the app
+- [ ] Restart `FBI Standalone.exe` and confirm the cameras and headset are still working before the next participant
+
+## End of Day
+
+- [ ] Close the app, and clean the headset (damp cloth on lenses, disinfecting wipes on headphones/facemask)
+- [ ] Disconnect and power off the Quest 3 and the Femto Bolt cameras (USB and power supply)
+- [ ] Store the equipment, and put the headphones on charge for next time
+- [ ] Back up the day's output files (`Output/_Events.txt`, `Output/_Output.csv`), then shut down the laptop
+
+## Camera Troubleshooting
+
+- [ ] Check the power supply is connected to each camera (not just USB-C). LED should be solid white
+- [ ] Connect via the USB extension cable to the labeled port on the laptop. Do not use a USB hub
+- [ ] Open Orbbec Viewer and confirm Color, Depth, IR, and IMU streams are all visible
+- [ ] Close Orbbec Viewer, k4aviewer, and any other running instance of `FBI Standalone.exe` before launching the app
+
+## Meta Quest 3S Troubleshooting
+
+- [ ] Check the headset is charged (>30%) and connected via USB-C, with Meta Horizon Link running
+- [ ] Ignore the red "hardware requirements" popup. It's a false positive
+- [ ] Confirm the headset shows in Devices with a green dot, and that the output sound setting is "Use Windows setting" (not the Quest 3 headphones)
+- [ ] Quest Link should start automatically on connection: white Meta logo, then the infinite white space with the menu
+- [ ] If the headset freezes or goes black, unplug and reconnect the USB cable, then wear the headset and press OK on the disconnection popup to reconnect
+- [ ] If this happens during the experiment, quit and restart the application. You can use the seek time functionality to go back to where the experiment stopped
+- [ ] Room boundary setup: see [Room Boundary Setup](#room-boundary-setup)
+
+## Room Boundary Setup
+
+- [ ] In the Quest menu, go to Settings → Physical Space → Space Setup
+- [ ] Scan the room automatically via passthrough (walk the play area), or draw the boundary manually if scanning isn't reliable
+- [ ] Confirm the boundary covers the participant's standing area with clearance from cables, cameras, and furniture, then save it
+- [ ] If the boundary looks wrong or triggers unexpectedly during the experiment, redo the Space Setup
+
+## Terminology
+
+- **Meta Horizon Link**: the application running on the laptop
+- **Quest Link**: the feature that streams the PC application into the VR headset
+
+
 # Input Files
 
 All input files are located in the `Input/` folder at the root of the executable directory. This folder is created automatically on first launch if it does not exist. Files are loaded at startup and referenced in sequence files by their filename without extension.
