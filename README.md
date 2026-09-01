@@ -85,7 +85,7 @@ To run the application:
 - [ ] Connect the power supply to the Femto Bolt cameras, and power on the Quest 3 headset and the laptop (check the laptop is connected and charging)
 - [ ] Log into the `.\LNCO` session, then connect the 2 cameras and the Quest 3 to the laptop
 - [ ] Check that both camera LEDs are solid white. If blinking or orange, see [Camera Troubleshooting](#camera-troubleshooting)
-- [ ] Open Orbbec Viewer and confirm both cameras appear (`<insert camera name>`), with working Color, Depth, IR, and IMU feeds
+- [ ] Open Orbbec Viewer and confirm both cameras appear (`Orbbec Femto Bolt SN:CL8RC53009C`, `Orbbec Femto Bolt SN:CL8RC5301KG`), with working Color, Depth, IR, and IMU feeds
 - [ ] Confirm Meta Horizon Link and Quest Link have both started automatically. You should see a white infinite space in the headset (start Meta Horizon Link manually from the taskbar if needed)
 - [ ] Turn on the Bluetooth headphones and connect them via the Windows Quick Settings panel. Confirm sound plays through them (e.g. via YouTube) instead of through the Quest 3's speakers
 - [ ] Launch `FBI Standalone.exe` and confirm the EPFL splash screen appears **small** on the desktop. If it's fullscreen, Quest Link isn't set up properly
