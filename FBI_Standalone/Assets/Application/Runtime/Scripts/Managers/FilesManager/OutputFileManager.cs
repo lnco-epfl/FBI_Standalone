@@ -7,7 +7,7 @@ using UnityEngine;
 public class OutputFileData
 {
     public string Gender { get; set; }
-    public int Age { get; set; }
+    public string ParticipantID { get; set; }
     public string Language { get; set; }
 
     public string SequenceFile { get; set; }
@@ -39,7 +39,7 @@ public class OutputFileData
     {
         Language = string.Empty;
         Gender = string.Empty;
-        Age = 0;
+        ParticipantID = string.Empty;
 
         SequenceFile = string.Empty;
 
@@ -129,7 +129,7 @@ public class OutputFileManager : MonoBehaviour
             Initialize(sequence.name);
             OutputFileData.SequenceFile = sequence != null ? sequence.name : string.Empty;
             OutputFileData.Gender = UIManager.Instance.SelectedGender;
-            OutputFileData.Age = UIManager.Instance.SelectedAge;
+            OutputFileData.ParticipantID = UIManager.Instance.SelectedID;
         }
     }
     private void OnCameraConfigLoaded(CameraConfigFile file)
@@ -147,7 +147,7 @@ public class OutputFileManager : MonoBehaviour
         DateTime now = DateTime.Now;
         timestamp = now.ToString("yyyyMMdd_HHmmss");
 
-        uniqueIdentifier = name;
+        uniqueIdentifier = UIManager.Instance.SelectedID + "_" + name;
 
         var newOutputFilePath = timestamp + "_" + uniqueIdentifier + outputFileName;
 

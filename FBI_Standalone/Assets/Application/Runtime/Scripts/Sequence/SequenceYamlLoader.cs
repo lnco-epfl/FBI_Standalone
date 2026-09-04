@@ -184,6 +184,7 @@ public class SequenceYamlLoader
                     looping = data.looping,
                     muteAudio = data.muteAudio,
                     subtitle = data.subtitle,
+                    volume = data.volume,
                 };
 
             case SequenceStepWrapper.StepType.DisplayCameras:

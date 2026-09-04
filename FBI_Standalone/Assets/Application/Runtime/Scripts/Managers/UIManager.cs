@@ -87,17 +87,17 @@ public class UIManager : MonoBehaviour
             return genderDropdown.options[genderDropdown.value].text;
         }
     }
-    public int SelectedAge
+    public string SelectedID
     {
         get
         {
             if (string.IsNullOrEmpty(ageInputField.text))
             {
-                return 0;
+                return "ID";
             }
             else
             {
-                return int.Parse(ageInputField.text);
+                return ageInputField.text;
             }
 
         }
@@ -143,7 +143,7 @@ public class UIManager : MonoBehaviour
 
         ShortcutManager.Instance.MuteActionReference.action.performed += MuteActionPerformed;
 
-        ageInputField.onSubmit.AddListener(OnAgeInputFieldSubmit);
+        ageInputField.onSubmit.AddListener(OnIDInputFieldSubmit);
         ageInputField.onSelect.AddListener(OnInputFieldSelect);
         ageInputField.onDeselect.AddListener(OnInputFieldDeselect);
 
@@ -190,7 +190,7 @@ public class UIManager : MonoBehaviour
 
         resetXROriginButton.onClick.RemoveListener(OnResetXROriginButtonPress);
 
-        ageInputField.onSubmit.RemoveListener(OnAgeInputFieldSubmit);
+        ageInputField.onSubmit.RemoveListener(OnIDInputFieldSubmit);
         ageInputField.onSelect.RemoveListener(OnInputFieldSelect);
         ageInputField.onDeselect.RemoveListener(OnInputFieldDeselect);
 
@@ -449,9 +449,9 @@ public class UIManager : MonoBehaviour
         OutputFileManager.Instance.OutputFileData.Gender = genderDropdown.options[value].text;
     }
 
-    private void OnAgeInputFieldSubmit(string value)
+    private void OnIDInputFieldSubmit(string value)
     {
-        OutputFileManager.Instance.OutputFileData.Age = int.Parse(value);
+        OutputFileManager.Instance.OutputFileData.ParticipantID = value;
     }
 
     private void OnLanguageChanged(int index)

@@ -299,6 +299,9 @@ public class DisplayVideoStep : SequenceStep
     public bool muteAudio = false;
     public bool subtitle = true;
 
+    [Range(0f, 1f)]
+    public float volume = 1f;
+
     public float displayDuration = 10f;
 
     public override float GetDuration() => displayDuration;

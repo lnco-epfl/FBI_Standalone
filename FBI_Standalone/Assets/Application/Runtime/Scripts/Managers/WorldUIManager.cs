@@ -591,7 +591,7 @@ public class WorldUIManager : MonoBehaviour
 
     }
 
-    public void DisplayVideo(string filePath, bool loop, bool mute, Action onFinished = null, Action<float> onReady = null)
+    public void DisplayVideo(string filePath, bool loop, bool mute, float volume = 1f, Action onFinished = null, Action<float> onReady = null)
     {
 
         isVideoDisplay = true;
@@ -612,6 +612,7 @@ public class WorldUIManager : MonoBehaviour
         videoPlayer.url = $"file://{filePath}";
         videoPlayer.isLooping = loop;
         videoPlayer.SetDirectAudioMute(0, mute);
+        videoPlayer.SetDirectAudioVolume(0, Mathf.Clamp01(volume));
         videoPlayer.Prepare();
         videoPlayer.prepareCompleted += OnVideoPrepared;
         onReadyCallback = onReady;

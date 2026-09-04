@@ -1,16 +1,16 @@
 configName: Mirror - Flip
 createdAt: 2026-06-18 10:41:48
-lastModified: 2026-08-06 14:17:03
+lastModified: 2026-09-01 12:07:26
 pointClouds:
 - iD: 1
   position:
-    x: 0.17
-    y: 1.6
-    z: 0.35
+    x: 0.12
+    y: 1.56
+    z: 0.4194611
   rotation:
-    x: 44.27001
-    y: 350.78
-    z: 353.09
+    x: 37.66969
+    y: 358.8542
+    z: 1.19236
   scale:
     x: 1
     y: 1

@@ -27,7 +27,7 @@ public class DisplayVideoState : IState
 
         float timeout = step.displayDuration;
 
-        WorldUIManager.Instance.DisplayVideo(videoPath, step.looping, step.muteAudio,
+        WorldUIManager.Instance.DisplayVideo(videoPath, step.looping, step.muteAudio, step.volume,
             onFinished: () => videoFinished = true,
             onReady: (duration) =>
             {

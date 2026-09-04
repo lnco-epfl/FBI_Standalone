@@ -1,6 +1,6 @@
 configName: 3PP - Back
 createdAt: 2026-06-11 14:02:46
-lastModified: 2026-08-06 14:21:40
+lastModified: 2026-09-04 13:53:10
 pointClouds:
 - iD: 1
   position:
@@ -27,9 +27,9 @@ pointClouds:
     z: 0
 - iD: 2
   position:
-    x: 0.12
-    y: 0.9899999
-    z: -1.64
+    x: 0.06
+    y: 1
+    z: -2.03
   rotation:
     x: 8.99
     y: 2.45

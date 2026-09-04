@@ -1,16 +1,16 @@
 configName: 1PP
 createdAt: 2026-04-23 15:35:05
-lastModified: 2026-08-21 10:16:24
+lastModified: 2026-09-04 13:49:49
 pointClouds:
 - iD: 1
   position:
-    x: -0.13
-    y: 1.64
-    z: 1.24
+    x: 0.06
+    y: 1.67
+    z: 1.19
   rotation:
-    x: 44.60535
-    y: 171.25
-    z: 356.7675
+    x: 44.60536
+    y: 179.89
+    z: 2.186986
   scale:
     x: 1
     y: 1
