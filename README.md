@@ -457,6 +457,7 @@ Plays a video file from the `Input/Videos/` folder. The step ends automatically 
 | `videoName` | string | Video filename without extension |
 | `looping` | bool | If `true`, the video loops until the duration timeout. Default: `false` |
 | `muteAudio` | bool | If `true`, the video plays without audio. Default: `false` |
+| `volume`   | float | Playback volume, between `0.0` (silent) and `1.0` (full volume). Default: `1.0` |
 | `duration` | float | Fallback timeout in seconds, used when looping or if the video duration cannot be read |
 | `subtitle` | bool | If `true`, displays the corresponding `.srt` subtitle file (if present in `Input/Videos/`) during playback. Default: `true` |
 
@@ -468,6 +469,7 @@ Plays a video file from the `Input/Videos/` folder. The step ends automatically 
   muteAudio: false
   duration: 60.0
   subtitle: true
+  volume: 0.7
 
 # Loop a video for 30 seconds, without subtitles
 - stepType: displayVideo
