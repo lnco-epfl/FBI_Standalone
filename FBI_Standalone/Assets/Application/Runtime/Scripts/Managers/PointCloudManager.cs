@@ -1,13 +1,7 @@
 using com.rfilkov.kinect;
-using Intel.RealSense;
-using NUnit.Framework;
 using PrimeTween;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.VFX;
 
 
 public class RenderTextureContainer
@@ -195,8 +189,11 @@ public class PointCloudManager : MonoBehaviour
     {
         foreach (var pointCloud in pointClouds)
         {
-            pointCloud.HideMain();
-            pointCloud.HideDissolution();
+            if (pointCloud != null)
+            {
+                pointCloud.HideMain();
+                pointCloud.HideDissolution();
+            }
         }
     }
 

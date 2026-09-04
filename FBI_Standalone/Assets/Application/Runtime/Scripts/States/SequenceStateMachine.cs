@@ -250,13 +250,42 @@ public class SequenceStateMachine : MonoBehaviour
         state.Enter(stepData);
 
         IEnumerator exec = state.Execute();
-        while (exec.MoveNext())
+        bool running = true;
+
+        while (running)
         {
-            if (!isPlaying) yield break;
+            bool moved;
+            try
+            {
+                moved = exec.MoveNext();
+            }
+            catch (Exception e)
+            {
+                EventFileManager.Error($"[SequenceStateMachine] Exception in step {index} ({stepData.GetStateName()}): {e}");
+                moved = false; 
+            }
+
+            if (!moved) 
+            {
+                running = false; 
+                break; 
+            }
+            if (!isPlaying) 
+            { 
+                running = false; 
+                break; 
+            } 
             yield return exec.Current;
         }
 
-        state.Exit();
+        try 
+        { 
+            state.Exit(); 
+        } 
+        catch (Exception e) 
+        { 
+            EventFileManager.Error($"[SequenceStateMachine] Exception in Exit of step {index}: {e}"); 
+        }
         activeStates.Remove(index);
 
         if (stepData.blocking)

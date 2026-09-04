@@ -1,12 +1,9 @@
 using com.rfilkov.kinect;
-using JetBrains.Annotations;
 using PrimeTween;
 using System;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
-using YamlDotNet.Core.Tokens;
 
 public class PointCloud : MonoBehaviour
 {
@@ -169,6 +166,11 @@ public class PointCloud : MonoBehaviour
 
     public void HideMain()
     {
+        if (mainVisualEffect == null)
+        {
+            return;
+        }
+
         if (fadeTween.isAlive)
         {
             fadeTween.Stop();
@@ -176,21 +178,34 @@ public class PointCloud : MonoBehaviour
 
         fadeTween = Tween.Custom(startValue: 1.0f, endValue: 0.0f, duration: fadeDuration, ease: Ease.InOutSine, onValueChange: (float value) =>
         {
-            mainVisualEffect.SetFloat("Alpha", value);
+            if (mainVisualEffect != null)
+            {
+                mainVisualEffect.SetFloat("Alpha", value);
+            }
         }).OnComplete(() =>
         {
-            mainVisualEffect.enabled = false;
+            if (mainVisualEffect != null)
+            {
+                mainVisualEffect.enabled = false;
+            }
+          
         });
     }
 
     public void HideDissolution()
     {
-        dissolutionVisualEffect.enabled = false;
+        if (dissolutionVisualEffect != null)
+        {
+            dissolutionVisualEffect.enabled = false;
+        }
     }
 
     public void HideInterpolation()
     {
-        interpolationVisualEffect.enabled = false;
+        if (interpolationVisualEffect != null)
+        {
+            interpolationVisualEffect.enabled = false;
+        }   
     }
 
     public void StartFadeOut(float duration)
@@ -241,7 +256,10 @@ public class PointCloud : MonoBehaviour
 
         Tween.Delay(duration: duration).OnComplete(() =>
         {
-            dissolutionVisualEffect.enabled = false;
+            if(dissolutionVisualEffect != null)
+            {
+                dissolutionVisualEffect.enabled = false;
+            }
             callback?.Invoke();
         });
 
@@ -270,7 +288,10 @@ public class PointCloud : MonoBehaviour
     
         Tween.Delay(duration: duration).OnComplete(() =>
         {
-            interpolationVisualEffect.enabled = false;
+            if (interpolationVisualEffect != null)
+            {
+                interpolationVisualEffect.enabled = false;
+            }
             callback?.Invoke();
         });
     }
