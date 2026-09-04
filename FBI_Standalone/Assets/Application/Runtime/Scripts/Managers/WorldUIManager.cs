@@ -88,7 +88,7 @@ public class WorldUIManager : MonoBehaviour
     private Image questionContainerBackground;
     private CanvasGroup canvasGroupQuestionContainer;
     private TMP_Text questionTextQuestionContainer;
-    private Transform reponseButtonsTransform; 
+    private Transform reponseButtonsTransform;
     private List<Button> responseButtonsList = new List<Button>();
     private Button validationButtonQuestionContainer;
 
@@ -236,14 +236,14 @@ public class WorldUIManager : MonoBehaviour
 
     private void OnConfigLoaded(DisplayConfigFile configFile)
     {
-        if(configFile.stimulusDisplay != null)
+        if (configFile.stimulusDisplay != null)
         {
             backgroundColor = configFile.stimulusDisplay.backgroundColor.ToColor();
 
             this.transform.position = configFile.stimulusDisplay.position.ToVector3();
 
             var rotation = configFile.stimulusDisplay.rotation.ToVector3();
-            this.transform.rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z);  
+            this.transform.rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z);
 
         }
 
@@ -257,7 +257,7 @@ public class WorldUIManager : MonoBehaviour
 
     private void OnValidationLikertButtonPressed()
     {
-        if(validationButtonLikertScaleContrainer.gameObject.activeSelf)
+        if (validationButtonLikertScaleContrainer.gameObject.activeSelf)
         {
             OnLikertScaleValidated?.Invoke((int)sliderLikertScaleContainer.value);
         }
@@ -298,10 +298,10 @@ public class WorldUIManager : MonoBehaviour
         OnSkipHoldValidated?.Invoke();
     }
 
- 
+
     private void OnButtonQuestionPressed(Button button)
     {
-        if(!validationButtonQuestionContainer.gameObject.activeSelf)
+        if (!validationButtonQuestionContainer.gameObject.activeSelf)
         {
             DisplayValidationButtonQuestionContainer(true);
         }
@@ -326,10 +326,10 @@ public class WorldUIManager : MonoBehaviour
             {
                 button.targetGraphic.color = button.colors.normalColor;
             }
-            
+
         }
 
-       
+
 
     }
 
@@ -355,7 +355,7 @@ public class WorldUIManager : MonoBehaviour
 
     public void HideText()
     {
-        if(isTextDisplay)
+        if (isTextDisplay)
         {
 
             isTextDisplay = false;
@@ -369,7 +369,7 @@ public class WorldUIManager : MonoBehaviour
 
             FadeCanvasGroup(canvasGroupTextContainer, 0);
         }
-       
+
     }
 
     public void DisplayLikertScale(string question, string labelLeft, string labelRight, int min, int max, bool randomCursorPosition)
@@ -416,7 +416,7 @@ public class WorldUIManager : MonoBehaviour
 
     public void HideLikertScale()
     {
-        if(isLikertScaleDisplay)
+        if (isLikertScaleDisplay)
         {
 
             isLikertScaleDisplay = false;
@@ -461,7 +461,7 @@ public class WorldUIManager : MonoBehaviour
     public void HideBreak()
     {
 
-        if(isBreakDisplay)
+        if (isBreakDisplay)
         {
             isBreakDisplay = false;
 
@@ -498,7 +498,7 @@ public class WorldUIManager : MonoBehaviour
 
     public void HideImage()
     {
-        if(isImageDisplay)
+        if (isImageDisplay)
         {
             canvasImageContainer.interactable = false;
             canvasImageContainer.blocksRaycasts = false;
@@ -539,7 +539,7 @@ public class WorldUIManager : MonoBehaviour
         {
             var button = GameObject.Instantiate(responceButtonPrefab, reponseButtonsTransform);
             button.GetComponentInChildren<TMP_Text>().text = responseOptions[i];
-            button.onClick.AddListener( () => OnButtonQuestionPressed(button));
+            button.onClick.AddListener(() => OnButtonQuestionPressed(button));
 
             responseButtonsList.Add(button);
         }
@@ -549,7 +549,7 @@ public class WorldUIManager : MonoBehaviour
         canvasGroupQuestionContainer.interactable = true;
         canvasGroupQuestionContainer.blocksRaycasts = true;
 
-        FadeCanvasGroup(canvasGroupQuestionContainer, 1,() =>
+        FadeCanvasGroup(canvasGroupQuestionContainer, 1, () =>
         {
             OnDisplayGazeCursor?.Invoke(true);
         });
@@ -591,6 +591,9 @@ public class WorldUIManager : MonoBehaviour
 
     }
 
+    private bool pendingMute;
+    private float pendingVolume = 1f;
+
     public void DisplayVideo(string filePath, bool loop, bool mute, float volume = 1f, Action onFinished = null, Action<float> onReady = null)
     {
 
@@ -611,17 +614,48 @@ public class WorldUIManager : MonoBehaviour
         videoPlayer.targetTexture = videoRenderTexture;
         videoPlayer.url = $"file://{filePath}";
         videoPlayer.isLooping = loop;
-        videoPlayer.SetDirectAudioMute(0, mute);
-        videoPlayer.SetDirectAudioVolume(0, Mathf.Clamp01(volume));
+
+        pendingMute = mute;
+        pendingVolume = Mathf.Clamp01(volume);
+        ApplyAudioSettings(pendingMute, pendingVolume);
+
         videoPlayer.Prepare();
         videoPlayer.prepareCompleted += OnVideoPrepared;
         onReadyCallback = onReady;
 
     }
 
+    private void ApplyAudioSettings(bool mute, float volume)
+    {
+        if (videoPlayer.audioOutputMode == VideoAudioOutputMode.AudioSource)
+        {
+            var audioSource = videoPlayer.GetTargetAudioSource(0);
+            if (audioSource != null)
+            {
+                audioSource.mute = mute;
+                audioSource.volume = volume;
+            }
+            else
+            {
+                EventFileManager.Warning("[WorldUIManager] VideoPlayer audioOutputMode is AudioSource but no AudioSource is assigned for track 0.");
+            }
+        }
+        else
+        {
+            // Direct mode
+            videoPlayer.SetDirectAudioMute(0, mute);
+            videoPlayer.SetDirectAudioVolume(0, volume);
+        }
+    }
+
     private void OnVideoPrepared(UnityEngine.Video.VideoPlayer vp)
     {
         vp.prepareCompleted -= OnVideoPrepared;
+
+        // Safety net: re-apply audio settings now that the video is fully prepared,
+        // in case the target AudioSource / audio track wasn't ready at DisplayVideo() time.
+        ApplyAudioSettings(pendingMute, pendingVolume);
+
         vp.Play();
 
         canvasGroupVideoContainer.interactable = true;
@@ -643,7 +677,7 @@ public class WorldUIManager : MonoBehaviour
     public void HideVideo()
     {
 
-        if(isVideoDisplay)
+        if (isVideoDisplay)
         {
             isVideoDisplay = false;
             canvasGroupVideoContainer.interactable = false;
@@ -670,7 +704,7 @@ public class WorldUIManager : MonoBehaviour
     {
         backgroundColor = color;
 
-        if(currentBackground != null)
+        if (currentBackground != null)
         {
             currentBackground.color = backgroundColor;
         }

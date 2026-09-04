@@ -1,4 +1,5 @@
 ﻿using CsvHelper;
+using PrimeTween;
 using System;
 using System.Globalization;
 using System.IO;
@@ -109,11 +110,10 @@ public class OutputFileManager : MonoBehaviour
     private void OnEnable()
     {
         ExperimentManager.Instance.OnInitialized += OnExperiementInitialize;
+        ExperimentManager.Instance.OnStarted += OnExperiementStart;
         CameraConfigFileManager.Instance.OnConfigLoaded += OnCameraConfigLoaded;
         DisplayConfigFileManager.Instance.OnConfigLoaded += OnDisplayConfigLoaded;
     }
-
-
 
     private void OnDisable()
     {
@@ -122,16 +122,28 @@ public class OutputFileManager : MonoBehaviour
         DisplayConfigFileManager.Instance.OnConfigLoaded -= OnDisplayConfigLoaded;
     }
 
+
+
     private void OnExperiementInitialize(bool isInitialize, Sequence sequence)
     {
         if(isInitialize)
         {
-            Initialize(sequence.name);
+            
             OutputFileData.SequenceFile = sequence != null ? sequence.name : string.Empty;
             OutputFileData.Gender = UIManager.Instance.SelectedGender;
             OutputFileData.ParticipantID = UIManager.Instance.SelectedID;
         }
     }
+
+    private void OnExperiementStart()
+    {
+
+        OutputFileData.Gender = UIManager.Instance.SelectedGender;
+        OutputFileData.ParticipantID = UIManager.Instance.SelectedID;
+
+        Initialize(OutputFileData.SequenceFile);
+    }
+
     private void OnCameraConfigLoaded(CameraConfigFile file)
     {
         OutputFileData.CameraConfigFile = file.configName;
