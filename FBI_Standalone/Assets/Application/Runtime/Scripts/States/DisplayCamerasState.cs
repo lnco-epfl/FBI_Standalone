@@ -4,11 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Unity.Multiplayer.PlayMode;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
-using UnityEngine.VFX;
 using static PrimeTween.Sequence;
 
 public class DisplayCamerasState : IState
@@ -47,10 +43,11 @@ public class DisplayCamerasState : IState
         bool asDissolution = false;
         bool asFade = false;
 
-        float afterInterpolationMaxWait = 0.0f;
-        float afterDissolutionMaxWait = 0.0f;
-        float afterFadeMaxWait = 0.0f;
+        //float afterInterpolationMaxWait = 0.0f;
+        //float afterDissolutionMaxWait = 0.0f;
+        //float afterFadeMaxWait = 0.0f;
 
+        float lastEffectEndTime = 0f;
 
         for (int i = 0; i < step.camerasData.Count; i++)
         {
@@ -155,7 +152,7 @@ public class DisplayCamerasState : IState
                     pointCloud.SetTransform(endTransformData.position.ToVector3(), endTransformData.rotation.ToVector3(), endTransformData.scale.ToVector3());
                     pointCloud.HideInterpolation();
                     pointCloud.DisplayMain();
-                }))); 
+                })));
 
                 /*sequence.Insert(atTime: cameraData.interpolation.delay,
                     Tween.Position(target: pointCloud.transform, startValue: startConfigFile.pointClouds[pointCloudID - 1].position.ToVector3(), endValue: configFile.pointClouds[pointCloudID - 1].position.ToVector3(), duration: cameraData.interpolation.duration, ease: cameraData.interpolation.ease)
@@ -163,7 +160,8 @@ public class DisplayCamerasState : IState
                     .Group(Tween.Scale(target: pointCloud.transform, startValue: startConfigFile.pointClouds[pointCloudID - 1].scale.ToVector3(), endValue: configFile.pointClouds[pointCloudID - 1].scale.ToVector3(), duration: cameraData.interpolation.duration, ease: cameraData.interpolation.ease)));
                 */
 
-                afterInterpolationMaxWait = Mathf.Max(step.displayTime - cameraData.interpolation.duration - cameraData.interpolation.delay, afterInterpolationMaxWait);
+                //afterInterpolationMaxWait = Mathf.Max(step.displayTime - cameraData.interpolation.duration - cameraData.interpolation.delay, afterInterpolationMaxWait);
+                lastEffectEndTime = Mathf.Max(lastEffectEndTime, cameraData.interpolation.delay + cameraData.interpolation.duration);
             }
 
             if (cameraData.dissolution != null)
@@ -176,8 +174,8 @@ public class DisplayCamerasState : IState
 
                 sequence.Insert(atTime: 0, Tween.Delay(duration: cameraData.dissolution.delay).OnComplete(() => capturedPointCloud.StartDissolution(cameraData.dissolution.duration)));
 
-                afterDissolutionMaxWait = Mathf.Max(step.displayTime - cameraData.dissolution.delay, afterDissolutionMaxWait);
-
+                //afterDissolutionMaxWait = Mathf.Max(step.displayTime - cameraData.dissolution.delay, afterDissolutionMaxWait);
+                lastEffectEndTime = Mathf.Max(lastEffectEndTime, cameraData.dissolution.delay + cameraData.dissolution.duration);
             }
 
             if (cameraData.fade != null)
@@ -190,14 +188,14 @@ public class DisplayCamerasState : IState
 
                 sequence.Insert(atTime: 0, Tween.Delay(duration: cameraData.fade.delay).OnComplete(() => capturedPointCloud.StartFadeOut(cameraData.fade.duration)));
 
-                afterFadeMaxWait = Mathf.Max(step.displayTime - cameraData.fade.delay, afterFadeMaxWait);
-
+                //afterFadeMaxWait = Mathf.Max(step.displayTime - cameraData.fade.delay, afterFadeMaxWait);
+                lastEffectEndTime = Mathf.Max(lastEffectEndTime, cameraData.fade.delay + cameraData.fade.duration);
             }
 
 
         }
 
-        float afterRigInterpolationMaxWait = 0.0f;
+        //float afterRigInterpolationMaxWait = 0.0f;
 
         if (step.rigInterpolation != null)
         {
@@ -220,7 +218,8 @@ public class DisplayCamerasState : IState
                 sequence.Insert(atTime: rigData.delay, rigRotationTween);
             }
 
-            afterRigInterpolationMaxWait = Mathf.Max(step.displayTime - rigData.delay, afterRigInterpolationMaxWait);
+            //afterRigInterpolationMaxWait = Mathf.Max(step.displayTime - rigData.delay, afterRigInterpolationMaxWait);
+            lastEffectEndTime = Mathf.Max(lastEffectEndTime, rigData.delay + rigData.duration);
         }
 
         cameradelays.Append("]");
@@ -247,29 +246,8 @@ public class DisplayCamerasState : IState
         {
             yield return sequence.ToYieldInstruction();
 
-            List<float> afterWaits = new List<float>();
-
-            if(afterDissolutionMaxWait > 0)
-            {
-                afterWaits.Add(afterDissolutionMaxWait);
-            }
-
-            if (afterInterpolationMaxWait > 0)
-            {
-                afterWaits.Add(afterInterpolationMaxWait);
-            }
-
-            if (afterRigInterpolationMaxWait > 0)
-            {
-                afterWaits.Add(afterRigInterpolationMaxWait);
-            }
-
-            if (afterFadeMaxWait > 0)
-            {
-                afterWaits.Add(afterFadeMaxWait);
-            }
-
-            yield return new WaitForSeconds(afterWaits.Min());
+            float remaining = Mathf.Max(0f, step.displayTime - lastEffectEndTime);
+            yield return new WaitForSeconds(remaining);
         }
         else
         {
