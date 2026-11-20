@@ -143,6 +143,9 @@ Available scenes:
 <tr>
 <td align="center"><b>ForestScene</b><br/><img width="800" height="450" alt="ForestScene" src="https://github.com/user-attachments/assets/5724893c-a9a3-49bf-9b1e-d1e7564eeea5" />
 </td>
+ <td align="center"><b>Passthrough</b><br/><img width="800" height="450" alt="BlackScene" src="https://github.com/user-attachments/assets/59daf5d9-7e8d-4b2c-a644-5bb818e09fff" />
+  Passthrough cannot be preview
+</td>
 </tr>
 </table>
 
