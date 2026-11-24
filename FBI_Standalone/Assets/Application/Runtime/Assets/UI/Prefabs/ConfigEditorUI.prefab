@@ -25326,6 +25326,8 @@ MonoBehaviour:
     guid: 3869b54f7a91c024e91fe6c0f41bb122
   - asset: {fileID: 102900000, guid: 802997d783ab061499530bbf3ba16647, type: 3}
     guid: 802997d783ab061499530bbf3ba16647
+  - asset: {fileID: 102900000, guid: fc9b1c5d68471524a806462ac6f77ea0, type: 3}
+    guid: fc9b1c5d68471524a806462ac6f77ea0
   staticCameraPrefab: {fileID: 6769170375330824140, guid: 0c9888940133f424caaef7a23d1e1cbc, type: 3}
   worldSpaceCanvasPrefab: {fileID: 7260147065418068123, guid: b30b79d5eb1a7d64e975407a11dfbec4, type: 3}
   switchDelay: 1.5

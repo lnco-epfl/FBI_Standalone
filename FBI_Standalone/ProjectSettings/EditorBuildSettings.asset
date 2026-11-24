@@ -32,6 +32,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Application/Runtime/Scenes/Passthrough.unity
     guid: 802997d783ab061499530bbf3ba16647
+  - enabled: 1
+    path: Assets/Application/Runtime/Scenes/LabRoom.unity
+    guid: fc9b1c5d68471524a806462ac6f77ea0
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 290a6e6411d135049940bec2237b8938, type: 2}
     com.unity.addressableassets: {fileID: 11400000, guid: 0dc274522aa5367449e62146ad7e5655, type: 2}
