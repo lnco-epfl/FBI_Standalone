@@ -41,6 +41,7 @@ public class GazeReticle : MonoBehaviour
     private void Start()
     {
         canvasGroup.alpha = 0.0f;
+        gazeInteractor.enabled = false;
     }
 
     private void OnDisplayGazeCursor(bool idDisplay)
